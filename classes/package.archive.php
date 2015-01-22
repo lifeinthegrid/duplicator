@@ -47,7 +47,7 @@ class DUP_Archive {
 				case 'TAR':			break;
 				case 'TAR-GZIP': 	break;
 				default:
-					if (class_exists(ZipArchive)) {
+					if (class_exists('ZipArchive')) {
 						$this->Format = 'ZIP';
 						DUP_Zip::Create($this);
 					} else {

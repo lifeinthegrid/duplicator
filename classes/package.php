@@ -321,7 +321,7 @@ class DUP_Package {
 	}
 	
 	/**
-	 * Does a hash already exisit
+	 * Does a hash already exist
 	 * @return int Returns 0 if no has is found, if found returns the table ID
 	 */
 	public function FindHashKey($hash) {
@@ -330,7 +330,7 @@ class DUP_Package {
 		
 		$table = $wpdb->prefix . "duplicator_packages";
 		$qry   = $wpdb->get_row("SELECT ID, hash FROM `{$table}` WHERE hash = '{$hash}'" );
-		if ( strlen($qry->hash) == 0)  {
+		if (!$qry || strlen($qry->hash) == 0)  {
 			return 0;
 		} else {
 			return $qry->ID;
