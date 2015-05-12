@@ -176,7 +176,7 @@ class DupUtil {
      * @param same as mysqli_connect
      * @return database connection handle
      */	
-	static public function mysqli_connect( $host, $username, $password, $dbname = '', $port = null ) {
+	static public function db_connect( $host, $username, $password, $dbname = '', $port = null ) {
 		if ( ! $port ) {
 			$port = ini_get("mysqli.default_port");
 			$port = empty($port) ? 3306 : $port;

@@ -57,7 +57,7 @@ if (file_exists('dtoken.php')) {
                 }
             }
         } else {
-            header("HTML/1.1 404 Not Found", true, 404);
+            header("HTTP/1.1 404 Not Found", true, 404);
             header("Status: 404 Not Found");
         }
     }

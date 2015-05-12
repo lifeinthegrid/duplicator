@@ -152,7 +152,7 @@ jQuery(document).ready(function($) {
 	<table id="dup-log-panels">
 		<tr>
 			<td id="dup-log-panel-left">
-				<div class="name"><i class='fa fa-pencil-square-o'></i> <?php echo basename($logurl); ?></div>
+				<div class="name"><i class='fa fa-list-alt'></i> <?php echo basename($logurl); ?></div>
 				<div class="opts"><a href="javascript:void(0)" id="dup-options"><?php _e("Options", 'wpduplicator') ?> <i class="fa fa-angle-double-right"></i></a> &nbsp;</div>
 				<br style="clear:both" />
 				<iframe id="dup-log-content" src="<?php echo $logurl ?>" ></iframe>							

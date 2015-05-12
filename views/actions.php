@@ -99,11 +99,12 @@ function duplicator_package_delete() {
         if ($postIDs != null) {
             
             foreach ($list as $id) {
-				$getResult = $wpdb->get_results("SELECT name, hash FROM `{$tblName}` WHERE id = {$id}", ARRAY_A);
+				
+				$getResult = $wpdb->get_results($wpdb->prepare("SELECT name, hash FROM `{$tblName}` WHERE id = %d", $id), ARRAY_A);
 				if ($getResult) {
 					$row		=  $getResult[0];
 					$nameHash	= "{$row['name']}_{$row['hash']}";
-					$delResult	= $wpdb->query("DELETE FROM `{$tblName}` WHERE id = {$id}");
+					$delResult	= $wpdb->query($wpdb->prepare( "DELETE FROM `{$tblName}` WHERE id = %d", $id ));
 					if ($delResult != 0) {
 						//Perms
 						@chmod(DUP_Util::SafePath(DUPLICATOR_SSDIR_PATH_TMP . "/{$nameHash}_archive.zip"), 0644);

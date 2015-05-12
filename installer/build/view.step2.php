@@ -7,7 +7,7 @@
 		header("Location: $_baseURL");
 		exit; 
 	}
-	$dbh = @mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname']);
+	$dbh = DupUtil::db_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname'], $_POST['dbport']);
 
 	$all_tables     = DupUtil::get_database_tables($dbh);
 	$active_plugins = DupUtil::get_active_plugins($dbh);

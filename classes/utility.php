@@ -13,6 +13,19 @@ class DUP_Util {
 	}
 
 	/**
+	*  Language slug
+	*/
+	static public function _e($text)
+	{
+		_e($text, DUPLICATOR_LANG_SLUG);
+	}
+
+	static public function __($text)
+	{
+		return __($text, DUPLICATOR_LANG_SLUG);
+	}
+	
+	/**
 	*  returns the snapshot url
 	*/
 	static public function SSDirURL() {
@@ -302,12 +315,12 @@ class DUP_Util {
 		//FILE CREATION	
 		//SSDIR: Create Index File
 		$ssfile = @fopen($path_ssdir . '/index.php', 'w');
-		@fwrite($ssfile, '<?php error_reporting(0);  if (stristr(php_sapi_name(), "fcgi")) { $url  =  "http://" . $_SERVER["HTTP_HOST"]; header("Location: {$url}/404.html");} else { header("HTML/1.1 404 Not Found", true, 404);} exit(); ?>');
+		@fwrite($ssfile, '<?php error_reporting(0);  if (stristr(php_sapi_name(), "fcgi")) { $url  =  "http://" . $_SERVER["HTTP_HOST"]; header("Location: {$url}/404.html");} else { header("HTTP/1.1 404 Not Found", true, 404);} exit(); ?>');
 		@fclose($ssfile);
 
 		//SSDIR: Create token file in snapshot
 		$tokenfile = @fopen($path_ssdir . '/dtoken.php', 'w');
-		@fwrite($tokenfile, '<?php error_reporting(0);  if (stristr(php_sapi_name(), "fcgi")) { $url  =  "http://" . $_SERVER["HTTP_HOST"]; header("Location: {$url}/404.html");} else { header("HTML/1.1 404 Not Found", true, 404);} exit(); ?>');
+		@fwrite($tokenfile, '<?php error_reporting(0);  if (stristr(php_sapi_name(), "fcgi")) { $url  =  "http://" . $_SERVER["HTTP_HOST"]; header("Location: {$url}/404.html");} else { header("HTTP/1.1 404 Not Found", true, 404);} exit(); ?>');
 		@fclose($tokenfile);
 
 		//SSDIR: Create .htaccess
@@ -328,7 +341,7 @@ class DUP_Util {
 
 		//PLUG DIR: Create token file in plugin
 		$tokenfile2 = @fopen($path_plugin . 'installer/dtoken.php', 'w');
-		@fwrite($tokenfile2, '<?php @error_reporting(0); @require_once("../../../../wp-admin/admin.php"); global $wp_query; $wp_query->set_404(); header("HTML/1.1 404 Not Found", true, 404); header("Status: 404 Not Found"); @include(get_template_directory () . "/404.php"); ?>');
+		@fwrite($tokenfile2, '<?php @error_reporting(0); @require_once("../../../../wp-admin/admin.php"); global $wp_query; $wp_query->set_404(); header("HTTP/1.1 404 Not Found", true, 404); header("Status: 404 Not Found"); @include(get_template_directory () . "/404.php"); ?>');
 		@fclose($tokenfile2);
 	}
 

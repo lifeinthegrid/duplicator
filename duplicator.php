@@ -1,10 +1,9 @@
 <?php
-
 /*
   Plugin Name: Duplicator
   Plugin URI: http://www.lifeinthegrid.com/duplicator/
   Description: Create a backup of your WordPress files and database. Duplicate and move an entire site from one location to another in a few steps. Create a full snapshot of your site at any point in time.
-  Version: 0.5.13
+  Version: 0.5.19
   Author: LifeInTheGrid
   Author URI: http://www.lifeinthegrid.com
   License: GPLv2 or later
@@ -157,6 +156,8 @@ if (is_admin() == true) {
                 break;
             case 'duplicator-about': include('views/help/about.php');
                 break;
+			case 'duplicator-gopro': include('views/help/gopro.php');
+                break;
         }
     }
 
@@ -183,13 +184,17 @@ if (is_admin() == true) {
         $perms = apply_filters($wpfront_caps_translator, $perms);
         $page_tools = add_submenu_page('duplicator', __('Tools', 'wpduplicator'), __('Tools', 'wpduplicator'), $perms, 'duplicator-tools', 'duplicator_get_menu');
 
-        $perms = 'read';
+        $perms = 'manage_options';
         $perms = apply_filters($wpfront_caps_translator, $perms);
         $page_help = add_submenu_page('duplicator', __('Help', 'wpduplicator'), __('Help', 'wpduplicator'), $perms, 'duplicator-help', 'duplicator_get_menu');
 
-        $perms = 'read';
+        $perms = 'manage_options';
         $perms = apply_filters($wpfront_caps_translator, $perms);
         $page_about = add_submenu_page('duplicator', __('About', 'wpduplicator'), __('About', 'wpduplicator'), $perms, 'duplicator-about', 'duplicator_get_menu');
+		
+		$perms = 'manage_options';
+        $perms = apply_filters($wpfront_caps_translator, $perms);
+        $page_gopro = add_submenu_page('duplicator', __('Go Pro!', 'wpduplicator'), __('Go Pro!', 'wpduplicator'), $perms, 'duplicator-gopro', 'duplicator_get_menu');
 
         //Apply Scripts
         add_action('admin_print_scripts-' . $page_packages, 'duplicator_scripts');
@@ -197,6 +202,7 @@ if (is_admin() == true) {
         add_action('admin_print_scripts-' . $page_help, 'duplicator_scripts');
         add_action('admin_print_scripts-' . $page_tools, 'duplicator_scripts');
         add_action('admin_print_scripts-' . $page_about, 'duplicator_scripts');
+		add_action('admin_print_scripts-' . $page_gopro, 'duplicator_scripts');
 
         //Apply Styles
         add_action('admin_print_styles-' . $page_packages, 'duplicator_styles');
@@ -204,6 +210,7 @@ if (is_admin() == true) {
         add_action('admin_print_styles-' . $page_help, 'duplicator_styles');
         add_action('admin_print_styles-' . $page_tools, 'duplicator_styles');
         add_action('admin_print_styles-' . $page_about, 'duplicator_styles');
+		add_action('admin_print_styles-' . $page_gopro, 'duplicator_styles');
     }
 
     /**

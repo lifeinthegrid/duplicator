@@ -205,7 +205,7 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
 				<div style="margin:15px 0px 0px 25px">
 					<p class="description">
 						<?php printf('%s <a href="https://wordpress.org/plugins/wpfront-user-role-editor/" target="_blank">%s</a> %s'
-									 . ' <a href="https://wpfront.com/lifeinthegrid" target="_blank">%s</a> %s ' 
+									 . ' <a href="https://wpfront.com/user-role-editor-pro/?ref=3" target="_blank">%s</a> %s ' 
 									 . ' <a href="https://wpfront.com/integrations/duplicator-integration/" target="_blank">%s</a>',
 								__('The User Role Editor Plugin', 'wpduplicator'),
 								__('Free', 'wpduplicator'),

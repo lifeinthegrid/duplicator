@@ -43,7 +43,7 @@ error_reporting(E_ERROR);
 if (isset($_GET['dbtest'])) {
 	
 	$html    = "";
-	$dbConn  = DupUtil::mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], null, $_POST['dbport']);
+	$dbConn  = DupUtil::db_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], null, $_POST['dbport']);
 	$dbErr	 = mysqli_connect_error();
 	$dbFound = mysqli_select_db($dbConn, $_POST['dbname']);
 
@@ -75,7 +75,7 @@ if (isset($_GET['dbtest'])) {
 function_exists('mysqli_connect') or DUPX_Log::Error(ERR_MYSQLI_SUPPORT);
 
 //ERR_DBCONNECT
-$dbh = DupUtil::mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass']);
+$dbh = DupUtil::db_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], null, $_POST['dbport']);
 ($dbh) or DUPX_Log::Error(ERR_DBCONNECT . mysqli_connect_error());
 if ($_POST['dbaction'] == 'empty') {
 	mysqli_select_db($dbh, $_POST['dbname']) or DUPX_Log::Error(sprintf(ERR_DBCREATE, $_POST['dbname']));
@@ -350,7 +350,7 @@ while ($counter < $sql_result_file_length) {
 
 			if (!mysqli_ping($dbh)) {
 				mysqli_close($dbh);
-				$dbh = DupUtil::mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname']);
+				$dbh = DupUtil::db_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname'], $_POST['dbport'] );
 			}
 			DUPX_Log::Info("**ERROR** database error write '{$err}' - [sql=" . substr($sql_result_file_data[$counter], 0, 75) . "...]");
 			$dbquery_errs++;

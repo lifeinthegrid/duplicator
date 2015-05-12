@@ -82,10 +82,18 @@ class DUP_Package {
 
 		//SERVER
 		$srv = DUP_Server::GetChecks();
-		
-		$report['SRV']['PHPServer']		= $srv['CHK-SRV-100'];
-		$report['SRV']['WPSettings']	= $srv['CHK-SRV-101'];
-		$report['SRV']['WebServer']		= $srv['CHK-SRV-102'];
+		$report['SRV']['WEB']['ALL']	  = $srv['SRV']['WEB']['ALL'];
+		$report['SRV']['WEB']['model']	  = $srv['SRV']['WEB']['model'];
+
+		$report['SRV']['PHP']['ALL']	  = $srv['SRV']['PHP']['ALL'];
+		$report['SRV']['PHP']['openbase'] = $srv['SRV']['PHP']['openbase'];
+		$report['SRV']['PHP']['maxtime']  = $srv['SRV']['PHP']['maxtime'];
+		$report['SRV']['PHP']['mysqli']   = $srv['SRV']['PHP']['mysqli'];
+
+		$report['SRV']['WP']['ALL']		  = $srv['SRV']['WP']['ALL'];
+		$report['SRV']['WP']['version']	  = $srv['SRV']['WP']['version'];
+		$report['SRV']['WP']['core']	  = $srv['SRV']['WP']['core'];
+		$report['SRV']['WP']['cache']	  = $srv['SRV']['WP']['cache'];
 		
 		//FILES
 		$this->Archive->Stats();
@@ -321,7 +329,7 @@ class DUP_Package {
 	}
 	
 	/**
-	 * Does a hash already exist
+	 * Does a hash already exisit
 	 * @return int Returns 0 if no has is found, if found returns the table ID
 	 */
 	public function FindHashKey($hash) {
@@ -330,7 +338,7 @@ class DUP_Package {
 		
 		$table = $wpdb->prefix . "duplicator_packages";
 		$qry   = $wpdb->get_row("SELECT ID, hash FROM `{$table}` WHERE hash = '{$hash}'" );
-		if (!$qry || strlen($qry->hash) == 0)  {
+		if ( strlen($qry->hash) == 0)  {
 			return 0;
 		} else {
 			return $qry->ID;

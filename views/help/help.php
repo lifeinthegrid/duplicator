@@ -25,10 +25,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 
 
 <div class="wrap dup-wrap dup-support-all">
-
-    <!-- h2 required here for general system messages -->
-    <h2 style='display:none'></h2>
-
+	
     <?php duplicator_header(__("Help", 'wpduplicator')) ?>
     <hr size="1" />
 
@@ -72,7 +69,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
                 <div><?php _e('Online Support', 'wpduplicator') ?></div>
             </div>
             <div class="dup-support-hlp-txt">
-                <?php _e("Get Help From IT Profressionals", 'wpduplicator'); ?> 
+                <?php _e("Get Help From IT Professionals", 'wpduplicator'); ?> 
                 <br/><br/>
                 <div class="dup-support-txts-links">
                     <button class="button  button-primary button-large" onclick="Duplicator.OpenSupportWindow();
@@ -110,7 +107,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
                 <?php _e('Other Commercial Resources', 'wpduplicator'); ?>
                 <br/><br/>
                 <div class="dup-support-txts-links">
-                    <button class="button button-primary button-large" onclick="window.open('http://lifeinthegrid.com/duplicator-getalts', 'litg');"><?php _e('Go Pro!', 'wpduplicator') ?></button> &nbsp; 
+                    <button class="button button-primary button-large" onclick="window.open('http://lifeinthegrid.com/duplicator-getalts', 'litg');"><?php _e('Pro Solutions!', 'wpduplicator') ?></button> &nbsp; 
                 </div>
             </div>
         </div>

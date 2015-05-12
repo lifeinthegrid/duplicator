@@ -20,7 +20,7 @@ error_reporting(E_ERROR);
 $ajax2_start = DupUtil::get_microtime();
 
 //MYSQL CONNECTION
-$dbh = DupUtil::mysqli_connect($_POST['dbhost'], $_POST['dbuser'], html_entity_decode($_POST['dbpass']), $_POST['dbname'], $_POST['dbport']);
+$dbh = DupUtil::db_connect($_POST['dbhost'], $_POST['dbuser'], html_entity_decode($_POST['dbpass']), $_POST['dbname'], $_POST['dbport']);
 $charset_server = @mysqli_character_set_name($dbh);
 @mysqli_query($dbh, "SET wait_timeout = {$GLOBALS['DB_MAX_TIME']}");
 DupUtil::mysql_set_charset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);

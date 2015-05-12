@@ -1,0 +1,1801 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.5.16\n"
+"POT-Creation-Date: 2015-04-30 19:20+0330\n"
+"PO-Revision-Date: 2015-04-30 19:35+0330\n"
+"Last-Translator: Moslem Fallah Niat <Info@amoozesh98.com>\n"
+"Language-Team: Amoozesh98.com <Amoozesh98@gmail.com | Info@Amoozesh98.com>\n"
+"Language: fa_IR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.4\n"
+"X-Poedit-Basepath: C:\\xampp\\htdocs\\www.wordpress.org\\wp-content\\plugins"
+"\\duplicator\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n;_n_noop;_\n"
+"X-Poedit-SearchPath-0: C:\\xampp\\htdocs\\www.wordpress.org\\wp-content"
+"\\plugins\\duplicator\n"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/classes/ui.php:111
+msgid ""
+"Reserved Duplicator install file(s) still exists in the root directory.  "
+"Please delete these file(s) to avoid possible security issues."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/classes/ui.php:112
+msgid "Remove file(s) now"
+msgstr "پاک کردن پرونده"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/classes/ui.php:113
+msgid "Dismiss this notice"
+msgstr "نمایش ندادن این پیام"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/classes/utility.php:236
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/duplicator.php:100
+msgid "Get Help"
+msgstr "رفتن به راهنما"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/duplicator.php:100
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/duplicator.php:189
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/help.php:29
+msgid "Help"
+msgstr "راهنما"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/duplicator.php:101
+msgid "Support the Plugin"
+msgstr "پشتیبان افزونه"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/duplicator.php:101
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/duplicator.php:193
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/about.php:41
+msgid "About"
+msgstr "درباره"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/duplicator.php:173
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/inc.header.php:9
+msgid "Duplicator"
+msgstr "ایجاد کننده بسته نصبی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/duplicator.php:177
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/controller.php:74
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:235
+msgid "Packages"
+msgstr "بسته های نصبی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/duplicator.php:181
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/controller.php:19
+msgid "Settings"
+msgstr "تنظیمات"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/duplicator.php:185
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/controller.php:13
+msgid "Tools"
+msgstr "ابزارها"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/duplicator.php:197
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:36
+msgid "Go Pro!"
+msgstr "نسخه تجاری!"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/duplicator.php:244
+msgid "Manage"
+msgstr "مدیریت"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/installer/build/view.step1.php:388
+msgid "PHP Version:"
+msgstr "نسخه پی اچ پی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/about.php:54
+msgid ""
+"Created for Admins, Developers and Designers the Duplicator can streamline "
+"your workflows and help you quickly clone a WordPress application.  "
+"Migrating a WordPress site manually can be very time consuming.  The "
+"Duplicator was made to help you speed up the migration process. Please help "
+"us to continue the development effort of this plugin."
+msgstr ""
+"برای مدیران و توسعه دهندگان و طراحان ایجاد تکثیر گردش کار و کمک شما به سرعت "
+"کلون برنامه وردپرس ساده می تواند.  انتقال سایت وردپرس به صورت دستی می تواند "
+"بسیار وقت گیر است.  تکثیر شده است برای کمک به شما سرعت بخشیدن به فرایند "
+"انتقال. لطفا کمک به ما برای ادامه تلاش توسعه این پلاگین."
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/about.php:64
+msgid "Support Duplicator"
+msgstr "پشتیبان ایجاد کننده بسته نصبی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/about.php:71
+msgid "Partner with Us"
+msgstr "همکاری با ما"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/about.php:83
+msgid "Keep Active and Online"
+msgstr "نگه دارید فعال و آنلاین"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/about.php:90
+msgid "Leave 5 Stars"
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/about.php:107
+msgid "Spread the Word"
+msgstr "ارتقا دهید (لطفا!)"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/about.php:113
+msgid "Duplicate Your WordPress"
+msgstr "تولید بسته آسان نصبی وردپرس"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/about.php:114
+msgid "Rapid WordPress Duplication by LifeInTheGrid.com"
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/about.php:131
+msgid "Get More Great Tools"
+msgstr "دریافت ابزارهای بیشتر"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:46
+msgid "Backup and Move Made Easy!"
+msgstr "پشتیبان گیری و حرکت آسان ساخته شده!"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:47
+msgid "The top-rated Duplicator plugin is going professional!"
+msgstr "دارای امتیاز بالا تکثیر پلاگین حرفه ای می گذرد!"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:56
+msgid "Duplicator Free"
+msgstr "ایجاد کننده بسته نصبی رایگان"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:61
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:95
+msgid "Backup Files &amp; Database"
+msgstr "فایل های پشتیبان و پایگاه داده"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:62
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:96
+msgid ""
+"Compresses all your WordPress files and database into a compressed snapshot "
+"archive file."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:65
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:99
+msgid "Directory Filters"
+msgstr "فیلتر های پوشه"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:66
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:100
+msgid ""
+"Filter out the directories and file extensions you want to include/exclude "
+"in your in your archive file."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:69
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:103
+msgid "Database Table Filters"
+msgstr "فعال کردن فیلتر های جدول"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:70
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:104
+msgid ""
+"Filter out only the database tables you want to include/exclude in your "
+"database creation script."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:73
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:107
+msgid "Migration Wizard"
+msgstr "برنامه جادویی انتقال"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:74
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:108
+msgid ""
+"With just two files (archive &amp; installer.php) move your site to a new "
+"location."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:89
+msgid "Duplicator Pro"
+msgstr "ایجاد کننده بسته نصبی تجاری یا همان پولی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:111
+msgid "Schedules"
+msgstr "زمان‌بندی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:112
+msgid ""
+"Automate the creation of your packages to run at various scheduled intervals."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:115
+msgid "Custom Templates"
+msgstr "قالب های سفارشی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:116
+msgid ""
+"Customize how each package is created and built with a customized template."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:119
+msgid "Cloud Storage"
+msgstr "ذخیره سازی ابری"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:120
+msgid ""
+"Backup up your entire package to the cloud with access to services like FTP "
+"and Dropbox."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:123
+msgid "Queued Processing"
+msgstr "صف پردازش"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:124
+msgid ""
+"Enable the build of larger more complex packages and avoid server timeouts "
+"with queued processing."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:127
+msgid "Customer Support"
+msgstr "پشتیبانی 24 ساعته"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:128
+msgid ""
+"Server setups can be quite complex, with pro you get prompt help to get your "
+"site backed up and moved."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/gopro.php:136
+msgid "Check It Out!"
+msgstr "بررسی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/help.php:38
+msgid ""
+"Migrating WordPress is a complex process and the logic to make all the magic "
+"happen smoothly may not work quickly with every site.  With over 30,000 "
+"plugins and a very complex server eco-system some migrations may run into "
+"issues.  This is why the Duplicator includes a detailed knowledgebase that "
+"can help with many common issues.  Resources to additional support, approved "
+"hosting, and alternatives to fit your needs can be found below."
+msgstr ""
+"مهاجرت وردپرس، یک فرآیند پیچیده و منطق را به همه سحر و جادو اتفاق می افتد "
+"هموار ممکن است به سرعت با هر سایت کار نمی کند. با بیش از 30000 پلاگین ها و "
+"سرور اکو سیستم بسیار پیچیده برخی از مهاجرت ممکن است به مسائل اجرا شود. به "
+"همین دلیل است نسخه برداری شامل یک مرکز آموزش دقیق است که می تواند با بسیاری "
+"از مسائل مشترک کمک کند. منابع برای حمایت از اضافی، میزبانی تایید، و جایگزین "
+"های مناسب نیازهای شما می تواند زیر آمده است."
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/help.php:50
+msgid "Knowledgebase"
+msgstr "مرکز آموزش"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/help.php:53
+msgid "Complete Online Documentation"
+msgstr "مستندات کامل آنلاین"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/help.php:55
+msgid "Choose A Section"
+msgstr "یک بخش را انتخاب کنید"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/help.php:56
+msgid "Quick Start"
+msgstr "شروع سریع"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/help.php:57
+msgid "User Guide"
+msgstr "راهنمای کاربر"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/help.php:58
+msgid "FAQs"
+msgstr "پرسش و پاسخ"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/help.php:59
+msgid "Change Log"
+msgstr "تغییر گزارشات"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/help.php:60
+msgid "Product Page"
+msgstr "صفحه محصولات"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/help.php:69
+msgid "Online Support"
+msgstr "پشتیبانی آنلاین"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/help.php:72
+msgid "Get Help From IT Professionals"
+msgstr "کمک گرفتن از حرفه ای های IT"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/help.php:76
+msgid "Get Support!"
+msgstr "گرفتن پشتیبانی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/help.php:88
+msgid "Approved Hosting"
+msgstr "هاستینگ های تایید شده"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/help.php:91
+msgid "Servers That Work With Duplicator"
+msgstr "سرور های هاستینگی که از افزونه ایجاد کننده بسته نصبی پشتیبانی می کنند"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/help.php:94
+msgid "Trusted Providers!"
+msgstr "ارائه دهندگان خدمات قابل اعتماد!"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/help.php:104
+msgid "Alternatives"
+msgstr "جایگزین"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/help.php:107
+msgid "Other Commercial Resources"
+msgstr "سایر منابع تجاری"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/help/help.php:110
+msgid "Pro Solutions!"
+msgstr "راه حل های حرفه ای!"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list-nodata.php:7
+msgid "No Packages Found."
+msgstr "هیچ بسته آسان نصبی وجود ندارد."
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list-nodata.php:8
+msgid "Click the 'Create New' button to build a package."
+msgstr ""
+"برای ایجاد بسته آسان نصبی از دکمه بالای صفحه یعنی ( ایجاد بسته آسان نصبی "
+"جدید ) استفاده نمایید."
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list-nodata.php:13
+msgid "Please visit the"
+msgstr "در صورت نیاز لطفا از "
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list-nodata.php:14
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list-nodata.php:28
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:231
+msgid "help page"
+msgstr "صفحه راهنما"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list-nodata.php:15
+msgid "for additional support"
+msgstr ""
+"برای پیشتیبانی بیشتر استفاده کنید.<p>برای رفتن به صفحه راهنما از منو های "
+"داخل افزونه کپی کننده به گزینه راهنما مراجعه نمایید!</p>"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list-nodata.php:24
+msgid "Older packages prior to 0.5.0 are no longer supported in this version."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list-nodata.php:27
+msgid "To get an older package please visit the"
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list-nodata.php:29
+msgid "and look for the Change Log link for additional instructions."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list-nodata.php:33
+msgid "Hide this message"
+msgstr "این پیغام را ببند"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:39
+msgid "Help Support Duplicator"
+msgstr "پشتیبان ایجاد کننده بسته نصبی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:50
+msgid "Bulk Actions"
+msgstr "انجام عملیات کلی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:51
+msgid "Delete selected package(s)"
+msgstr "حذف بسته های نصبی انتخاب شده(s)"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:51
+msgid "Delete"
+msgstr "حذف"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:53
+msgid "Apply"
+msgstr "اعمال"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:58
+msgid "Package Logs"
+msgstr "گزارش بسته نصبی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:61
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:91
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:68
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:43
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:89
+msgid "All Packages"
+msgstr "تمام بسته های نصبی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:62
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:92
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:69
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:44
+msgid "Create New"
+msgstr "ایجاد بسته نصبی جدید"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:87
+msgid "Select all packages"
+msgstr "انتخاب همه بسته"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:88
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:107
+msgid "Details"
+msgstr "جزئیات"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:89
+msgid "Created"
+msgstr "زمان ایجاد"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:90
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:221
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:323
+msgid "Size"
+msgstr "حجم"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:91
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:9
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:74
+msgid "Name"
+msgstr "نام بسته "
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:93
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:6
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:110
+msgid "Package"
+msgstr "بسته"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:124
+msgid "(No Notes Taken)"
+msgstr "(بدون یادداشت ها گرفته شده)"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:142
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:187
+msgid "View"
+msgstr "مشاهده شده"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:147
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:132
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:79
+msgid "Installer"
+msgstr "نصب کننده"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:150
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:18
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:194
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:83
+msgid "Archive"
+msgstr "آرشیو بسته نصبی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:155
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:200
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:79
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:141
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:160
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:200
+msgid "Version"
+msgstr "نسخه"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:156
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:201
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:151
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:168
+msgid "User"
+msgstr "کاربر دیتابیس"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:157
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:202
+msgid "Hash"
+msgstr "Hash"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:158
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:207
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:12
+msgid "Notes"
+msgstr "توضیحات"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:160
+msgid "Links"
+msgstr "لینک‌ها"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:161
+msgid "SQL"
+msgstr "اس‌کیوال"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:162
+msgid "Log"
+msgstr "گزارش"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:165
+msgid "Open Scan Report"
+msgstr "گزارش اسکن باز"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:166
+msgid "View Package Object"
+msgstr "مشاهده بسته شی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:193
+msgid "View Error Details"
+msgstr "مشاهده جزئیات خطا"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:205
+msgid "Unrecoverable Error! Please remove this package."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:210
+msgid ""
+"This package has encountered errors.  Click 'View Log' for more details.  "
+"For additional support see the "
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:211
+msgid "online knowledgebase"
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:213
+msgid "View Log"
+msgstr "نمایش گزارش"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:236
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:218
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:317
+msgid "Total Size"
+msgstr "اندازه کل"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:255
+msgid "Download Links"
+msgstr "لینک دانلود"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:258
+msgid "The following links contain sensitive data.  Please share with caution!"
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:264
+msgid ""
+"The database SQL script is a quick link to your database backup script.  An "
+"exact copy is also stored in the package."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:287
+msgid ""
+"Please select an action from the bulk action drop down menu to perform a "
+"specific action."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:295
+msgid "Please select at least one package to delete."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:299
+msgid "Are you sure, you want to delete the selected package(s)?"
+msgstr "آیا مطمئنید که مایلید package(s) منتخب را حذف کنید؟"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:333
+msgid "Package File Links"
+msgstr "لینک فایل های بسته"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:336
+msgid "DATABASE"
+msgstr "پایگاه داده"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:337
+msgid "PACKAGE"
+msgstr "بسته"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:338
+msgid "INSTALLER"
+msgstr "نصب کننده"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:339
+msgid "LOG"
+msgstr "گزارش"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/list.base.php:340
+msgid "REPORT"
+msgstr "گزارش"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:11
+msgid "Package settings have been reset."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:81
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:58
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:33
+msgid "Setup"
+msgstr "نصب"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:82
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:59
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:34
+msgid "Scan"
+msgstr "آنالیز ( اسکن )"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:83
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:60
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:375
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:35
+msgid "Build"
+msgstr "ایجاد بسته"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:86
+msgid "Step 1: Package Setup"
+msgstr "بخش 1 : تنظیمات بسته "
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:110
+msgid "Requirements:"
+msgstr "موارد مورد نیاز:"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:111
+msgid "Pass"
+msgstr "همه چیز مورد تایید می باشد"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:111
+msgid "Fail"
+msgstr "مواردی مورد تایید نمی باشد"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:119
+msgid ""
+"System requirements must pass for the Duplicator to work properly.  Click "
+"each link for details."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:125
+msgid "PHP Support"
+msgstr "پشتیبان پی اچ پی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:131
+msgid "PHP Version"
+msgstr "نسخه پی اچ پی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:135
+msgid "Zip Archive Enabled"
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:139
+msgid "Safe Mode Off"
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:143
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:147
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:151
+msgid "Function"
+msgstr "تابع"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:156
+msgid ""
+"PHP versions 5.2.17+ or higher is required. Please note that in versioning "
+"logic a value such as 5.2.9 is less than 5.2.17. For compression to work the "
+"ZipArchive extension for PHP is required. Safe Mode should be set to 'Off' "
+"in you php.ini file and is deprecated as of PHP 5.3.0.  For any issues in "
+"this section please contact your hosting provider or server administrator.  "
+"For additional information see our online documentation."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:164
+msgid "Permissions"
+msgstr "دسترسی‌ها"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:167
+msgid "Required Paths"
+msgstr "مسیرهای مورد نیاز"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:179
+msgid ""
+"Permissions can be difficult to resolve on some systems. If the plugin can "
+"not read the above paths here are a few things to try. 1) Set the above "
+"paths to have permissions of 755 for directories and 644 for files. You can "
+"temporarily try 777 however, be sure you don’t leave them this way. 2) Check "
+"the owner/group settings for both files and directories. The PHP script "
+"owner and the process owner are different. The script owner owns the PHP "
+"script but the process owner is the user the script is running as, thus "
+"determining its capabilities/privileges in the file system. For more details "
+"contact your host or server administrator or visit the 'Help' menu under "
+"Duplicator for additional online resources."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:187
+msgid "Server Support"
+msgstr "پشتیبانی سرور"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:193
+msgid "MySQL Version"
+msgstr "نسخه MySQL"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:197
+msgid "MySQLi Support"
+msgstr "پشتیبانی از MySQLi"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:203
+msgid ""
+"MySQL version 5.0+ or better is required and the PHP MySQLi extension (note "
+"the trailing 'i') is also required.  Contact your server administrator and "
+"request that mysqli extension and MySQL Server 5.0+ be installed. Please "
+"note in future versions support for other databases and extensions will be "
+"added."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:204
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:136
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:148
+msgid "more info"
+msgstr "اطلاعات بیشتر"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:213
+msgid "Reserved Files"
+msgstr "فایل محافظت شده"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:217
+msgid ""
+"None of the reserved files (installer.php, installer-data.sql and installer-"
+"log.txt) where found from a previous install.  This means you are clear to "
+"create a new package."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:220
+msgid ""
+"A reserved file(s) was found in the WordPress root directory. Reserved file "
+"names are installer.php, installer-data.sql and installer-log.txt.  To "
+"archive your data correctly please remove any of these files from your "
+"WordPress root directory.  Then try creating your package again."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:221
+msgid "Remove Files Now"
+msgstr "حذف فایل های حال حاضر"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.base.php:231
+msgid "For additional help please see the "
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:10
+msgid "Create a new default name"
+msgstr "ایجاد یک نام پیشفرض"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:20
+msgid "File filter enabled"
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:21
+msgid "Database filter enabled"
+msgstr "بانک اطلاعات فیلتر فعال"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:28
+msgid "Format"
+msgstr "نوع"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:38
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:202
+msgid "Files"
+msgstr "فایل ها"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:39
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:147
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:301
+msgid "Database"
+msgstr "پایگاه داده"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:51
+msgid "Enable File Filters"
+msgstr "فعال کردن فیلتر های پرونده"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:55
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:63
+msgid "Separate all filters by semicolon"
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:55
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:271
+msgid "Directories"
+msgstr "پوشه ها"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:57
+msgid "root path"
+msgstr "مسیر ریشه"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:58
+msgid "wp-uploads"
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:59
+msgid "cache"
+msgstr "کش"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:60
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:67
+msgid "(clear)"
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:63
+msgid "File extensions"
+msgstr "پسوند فایل ها"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:65
+msgid "media"
+msgstr "فیلم یا آهنگ"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:66
+msgid "archive"
+msgstr "بسته فشرده"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:72
+msgid ""
+"The directory paths and extensions above will be be excluded from the "
+"archive file if enabled is checked."
+msgstr ""
+"مسیر دایرکتوری و پسوند بالا خواهد شد می شود محروم از آرشیو فایل اگر فعال "
+"بررسی می شود."
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:73
+msgid "Use the full path for directories and semicolons to separate all items."
+msgstr "مسیر کامل دایرکتوری و ویرگول برای جدا کردن همه موارد استفاده کنید."
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:84
+msgid "Enable Table Filters"
+msgstr "فعال کردن فیلتر های جدول"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:85
+msgid "checked tables are excluded"
+msgstr "انتخاب جداول محروم شده"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:90
+msgid "Include All"
+msgstr "حذف همه"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:91
+msgid "Exclude All"
+msgstr "انتخاب همه"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:119
+msgid ""
+"Checked tables will not be added to the database script.  Excluding certain "
+"tables can possibly cause your site or plugins to not work correctly after "
+"install!"
+msgstr ""
+"بررسی جداول به اسکریپت بانک اطلاعاتی اضافه خواهد شد.  جداول خاصی به جز "
+"احتمالا سایت یا افزونه هنوز کار درست پس از نصب می تواند باعث شود!"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:137
+msgid "STEP 1 - INPUTS"
+msgstr "بخش 1 - ورودی ها"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:140
+msgid "MySQL Server"
+msgstr "سرور مای اسکیوال"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:143
+msgid "Host"
+msgstr "میزبان"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:144
+msgid "localhost"
+msgstr ""
+"سرور محلی مثال ( localhost یا 127.0.0.1 یا آی پی که هاستینگ برای لوکال هاست "
+"به شما داده )"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:148
+msgid "mydatabaseName"
+msgstr "نام پایگاه داده"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:152
+msgid "databaseUserName"
+msgstr "نام کاربری پایگاه داده"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:155
+msgid "Advanced Options"
+msgstr "تنظیمات بیشتر"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:161
+msgid "SSL"
+msgstr "گواهینامه SSL"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:164
+msgid "Enforce on Admin"
+msgstr "اجرا توسط مدیر"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:168
+msgid "Enforce on Logins"
+msgstr "اجرا بعد از ورود"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:172
+msgid "Cache"
+msgstr "کش"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:175
+msgid "Keep Enabled"
+msgstr "فعال نگه داشتن"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:179
+msgid "Keep Home Path"
+msgstr "نگه داشتن مسیر خانه"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:187
+msgid "STEP 2 - INPUTS"
+msgstr "بخش 2 - ورودی ها"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:191
+msgid "New URL"
+msgstr "آدرس جدید"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:192
+msgid "http://mynewsite.com"
+msgstr "https://www.amoozesh98.com"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:198
+msgid "The installer can have these fields pre-filled at install time."
+msgstr "نصب می توانید این زمینه ها در زمان نصب از پیش پر شده است."
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:198
+msgid "All values are optional."
+msgstr "همه مقادیر اختیاری هستند."
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:207
+msgid "Reset"
+msgstr "بازگشت به تنظیمات اولیه"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:208
+msgid "Next"
+msgstr "ادامه"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new1.inc.form.php:220
+msgid ""
+"This will reset all of the current package settings.  Would you like to "
+"continue?"
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:63
+msgid "Step 2: System Scan"
+msgstr "بخش 2 : آنالیز سیستم"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:79
+msgid "Scanning Site"
+msgstr "آنالیز ( اسکن ) در سایت"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:81
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:57
+msgid "Please Wait..."
+msgstr "لطفا منتظر بمانید ...."
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:87
+msgid "Scan Complete"
+msgstr "آنالیز ( اسکن ) کامل شده"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:89
+msgid ""
+"Scan checks are not required to pass, however they could cause issues on "
+"some systems."
+msgstr ""
+"آنالیز ( اسکن ) انجام شد تمام موارد مورد تایید می باشد با این حال بسته به "
+"سیستم های مختلف می تواند موارد تغییر کند."
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:90
+msgid "Process Time:"
+msgstr "زمان اجرا:"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:99
+msgid "Server"
+msgstr "سرور"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:101
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/controller.php:17
+msgid "Diagnostics"
+msgstr "تشخیص"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:110
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:116
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:106
+msgid "Web Server"
+msgstr "سرور وب"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:118
+msgid "The Duplicator currently works with these web servers:"
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:127
+msgid "PHP Settings"
+msgstr "تنظیمات پی اچ پی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:133
+msgid "Open Base Dir"
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:135
+msgid ""
+"The Duplicator may have issues when [open_basedir] is enabled. Please work "
+"with your server administrator to disable this value in the php.ini file if "
+"you’re having issues building a package."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:140
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:189
+msgid "Max Execution Time"
+msgstr "حداکثر زمان اجرا"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:144
+#, php-format
+msgid ""
+"The Duplicator will have issues when the [max_execution_time] value in the "
+"php.ini is low.  Timeouts effect how long a process is allowed to run.  The "
+"recommended timeout is \"%1$s\" seconds. An attempt is made to override this "
+"value if the server allows it.  Please work with your server administrator "
+"to make sure there are no restrictions for how long a PHP process is allowed "
+"to run."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:147
+msgid ""
+"Note: Timeouts can also be set at the web server layer, so if the PHP max "
+"timeout passes and you still see a build interrupt messages, then your web "
+"server could be killing the process.   If you are limited on processing "
+"time, consider using the database or file filters to shrink the size of your "
+"overall package.   However use caution as excluding the wrong resources can "
+"cause your install to not work properly."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:158
+msgid "WordPress Settings"
+msgstr "تنظیمات وردپرس"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:164
+msgid "WordPress Version"
+msgstr "ورژن وردپرس"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:166
+msgid "It is recommended to have a version of WordPress that is greater that "
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:172
+msgid "Found"
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:172
+msgid "Missing"
+msgstr "گم"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:174
+msgid "Core Files"
+msgstr "فایل های هسته ای"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:176
+msgid ""
+"If the scanner is unable to locate the wp-config.php file in the root "
+"directory, then you will need to manually copy it to its new location."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:183
+msgid "Cache Path"
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:184
+msgid ""
+"Cached data will lead to issues at install time and increases your archive "
+"size. It is recommended to empty your cache directory at build time. Use "
+"caution when removing data from the cache directory. If you have a cache "
+"plugin review the documentation for how to empty it; simply removing files "
+"might cause errors on your site."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:185
+msgid "The cache size minimum threshold is currently set at "
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:207
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:306
+msgid "Enabled"
+msgstr "فعال"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:222
+msgid "File Count"
+msgstr "تعداد پرونده"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:223
+msgid "Directory Count"
+msgstr "تعداد دایرکتوری"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:225
+#, php-format
+msgid ""
+"Total size represents all files minus any filters that have been setup.  The "
+"current thresholds that trigger warnings are %1$s for the entire site and "
+"%2$s for large files."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:234
+msgid "Invalid Names"
+msgstr "نامهای بی اعتبار"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:238
+msgid ""
+"Invalid file or folder names can cause issues when extracting an archive "
+"across different environments.  Invalid file names consist of lengths over "
+"250 characters and illegal characters that may not work on all operating "
+"systems such as * ? > < : / \\ |  .  It is recommended to remove or filter "
+"these files before building the archive or else you might have issues at "
+"install time."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:240
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:255
+msgid "Show Paths"
+msgstr "نشان دادن مسیر"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:249
+msgid "Large Files"
+msgstr "فایل های بزرگ"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:253
+#, php-format
+msgid ""
+"Large files such as movies or other backuped data can cause issues with "
+"timeouts.  The current check for large files is %1$s per file.  If your "
+"having issues creating a package consider excluding these files with the "
+"files filter and manually moving them to your new location."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:265
+msgid "View Filters"
+msgstr "مشاهده فیلتر ها"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:268
+msgid ""
+"Below is a list of the directories and file extension that will be excluded "
+"from the archive."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:276
+msgid "No directory filters have been set."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:281
+msgid "File Extensions"
+msgstr "پسوند فایل ها"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:286
+msgid "No file extension filters have been set."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:321
+msgid "Tables"
+msgstr "جدول"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:322
+msgid "Records"
+msgstr "رکورد"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:325
+msgid "repair and optimization"
+msgstr "تعمیر و بهینه سازی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:326
+#, php-format
+msgid ""
+"Total size and row count for all database tables are approximate values.  "
+"The thresholds that trigger warnings are %1$s and %2$s records.  Large "
+"databases take time to process and can cause issues with server timeout and "
+"memory settings.  Running a %3$s on your database can also help improve the "
+"overall size and performance.  If your server supports shell_exec and "
+"mysqldump you can try to enable this option from the settings menu."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:338
+msgid "Table Details"
+msgstr "جدول جزئیات"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:349
+msgid "Name:"
+msgstr "نام:"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:350
+msgid "Host:"
+msgstr "میزبان:"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:351
+msgid "Build Mode:"
+msgstr "نحوه ساخت:"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:362
+msgid "Scan Error"
+msgstr "خطا در آنالیز ( اسکن )"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:363
+msgid "Please try again!"
+msgstr "لطفا دوباره سعی کنید"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:365
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:110
+msgid "Server Status:"
+msgstr "وضعیت سرور:"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:368
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:114
+msgid "Error Message:"
+msgstr "پیام خطا:"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:376
+msgid "Rescan"
+msgstr "آنالیز یا ( اسکن ) مجدد"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:377
+msgid "Back"
+msgstr "بازگشت"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:463
+msgid "Unable to report on any tables"
+msgstr "قادر به گزارش هیچ کدام از جداول نمی باشم"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:472
+msgid "Unable to report on database stats"
+msgstr "قادر به گزارش آمار پایگاه داده نمی باشم"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:487
+msgid "No name length issues."
+msgstr "بدون مسائل طول نام."
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:490
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:498
+msgid "FILE"
+msgstr "پرونده"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new2.base.php:495
+msgid "No large files found."
+msgstr "هیچ فایلی یافت یا انتخاب نشد"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:38
+msgid "Step 3: Build Package"
+msgstr "بخش 3 : ساخت بسته آسان نصبی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:55
+msgid "Building Package"
+msgstr "در حال ساخت بسته آسان نصبی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:58
+msgid "Keep this window open during the build process."
+msgstr "این پنجره را در طول فرایند ساخت هرگز نبندید."
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:59
+msgid "This may take several minutes."
+msgstr "این ممکن است چند دقیقه طول بکشد."
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:63
+msgid "Build Status"
+msgstr "وضعیت ساخت بسته آسان نصبی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:70
+msgid "Package Completed"
+msgstr "بسته آسان نصبی با موفقییت تولید شد"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:75
+msgid "Process Time"
+msgstr "فرایند تولید بسته"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:100
+msgid "Build Interrupt"
+msgstr "ایجاد وقفه"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:101
+msgid "The current build has experienced an issue."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:103
+msgid "Please try the process again."
+msgstr "لطفا این فرآیند را دوباره امتحان کنید."
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:105
+msgid "Try Again"
+msgstr "دوباره امتحان کردن"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:121
+msgid "Notice"
+msgstr "هشدار"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:124
+msgid "Build Folder:"
+msgstr "پوشه ایجاد:"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:126
+msgid ""
+"Some servers close connections quickly; yet the build can continue to run in "
+"the background. To validate if a build is still running; open the 'tmp' "
+"folder above and see if the archive file is growing in size. If it is not "
+"then your server has strict timeout constraints.  Please visit the support "
+"page for additional resources."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:135
+msgid "Package Log"
+msgstr "گزارش بسته نصبی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/packages/new3.base.php:136
+msgid "Support"
+msgstr "پشتیبانی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/controller.php:22
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:87
+msgid "General"
+msgstr "عمومی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:6
+msgid "Settings Saved"
+msgstr "تنظیمات ذخیره شد"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:75
+msgid "Plugin"
+msgstr "افزونه"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:83
+msgid "Uninstall"
+msgstr "پاک کردن افزونه"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:86
+msgid "Delete Plugin Settings"
+msgstr "حذف تنظیمات افزونه"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:89
+msgid "Delete Entire Storage Directory"
+msgstr "حذف دایرکتوری ذخیره سازی کل"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:94
+msgid "Storage"
+msgstr "ذخیره سازی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:96
+msgid "Full Path"
+msgstr "مسیر کامل"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:99
+msgid "Disable .htaccess File In Storage Directory"
+msgstr "غیر فعال کردن فایل htaccess در دایرکتوری ذخیره سازی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:101
+msgid "Disable if issues occur when downloading installer/archive files."
+msgstr "اگر مسائل را رخ می دهد که دانلود نصب و آرشیو فایل ها را غیر فعال کنید."
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:114
+msgid "Archive Flush"
+msgstr "آرشیو بسته نصبی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:117
+msgid "Attempt Network Keep Alive"
+msgstr "زنده نگه داشتن شبکه تلاش"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:118
+msgid "recommended only for large archives"
+msgstr "توصیه می شود تنها برای آرشیو بزرگ"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:120
+msgid ""
+"This will attempt to keep a network connection established for large "
+"archives."
+msgstr "این تلاش برای حفظ یک اتصال شبکه برای آرشیو بزرگ است."
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:125
+msgid "Database Build"
+msgstr "ساخت پایگاه داده"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:128
+msgid "Use PHP"
+msgstr "استفاده از پی اچ پی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:131
+msgid "Query Limit Size"
+msgstr "پرس و جو حد اندازه"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:140
+msgid "higher values speed up build times but uses more memory"
+msgstr "مقادیر بالاتر سرعت بار ساخت اما با استفاده از حافظه بیشتر"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:147
+msgid "This server does not have shell_exec configured to run."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:149
+msgid "Please contact the server administrator to enable this feature."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:154
+msgid "Use mysqldump"
+msgstr "استفاده از mysqldump"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:155
+msgid "recommended for large databases"
+msgstr "توصیه می شود برای پایگاه های داده بزرگ"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:160
+msgid "Working Path:"
+msgstr "مسیر در حال کار:"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:166
+msgid ""
+"Mysqldump was not found at its default location or the location provided.  "
+"Please enter a path to a valid location where mysqldump can run.  If the "
+"problem persist contact your server administrator."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:171
+msgid "Add Custom Path:"
+msgstr "مسیر سفارشی اضافه کنید:"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:175
+msgid "This is the path to your mysqldump program."
+msgstr "این مسیر برای برنامه mysqldump شما است."
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:184
+msgid "Package Debug"
+msgstr "اشکال زدایی بسته"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:187
+msgid "Show Package Debug Status in Packages Screen"
+msgstr "نمایش وضعیت اشکال زدایی بسته در صفحه نمایش بسته"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:195
+msgid "Roles & Capabilities"
+msgstr "نقش ها و قابلیت ها"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:200
+msgid "Custom Roles"
+msgstr "نقش های سفارشی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:203
+msgid "Enable User Role Editor Plugin Integration"
+msgstr "فعال کردن قابلیت هماهنگ سازی با پلاگین User Role Editor"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:210
+msgid "The User Role Editor Plugin"
+msgstr "پلاگین ویرایش نقش کاربران"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:211
+msgid "Free"
+msgstr "رایگان"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:212
+msgid "or"
+msgstr "یا"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:213
+msgid "Professional"
+msgstr "تجاری"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:214
+msgid "must be installed to use"
+msgstr "باید نصب کنید برای استفاده از"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:215
+msgid "this feature."
+msgstr "این ویژگی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/settings/general.php:227
+msgid "Save Settings"
+msgstr "ذخیره تغییرات"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/cleanup.php:8
+msgid "Installer File Cleanup Ran."
+msgstr "نصب فایل پاک کردن ران."
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/cleanup.php:12
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:44
+msgid "Legacy data removed."
+msgstr "حذف داده های میراث."
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/cleanup.php:16
+msgid "Build cache removed."
+msgstr "پاک کردن کش"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/cleanup.php:73
+msgid ""
+"If the installer files did not successfully get removed, then you WILL need "
+"to remove them manually"
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/cleanup.php:74
+msgid ""
+"Please remove all installer files to avoid leaving open security issues on "
+"your server"
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/cleanup.php:82
+msgid "Data Cleanup"
+msgstr "پاک کردن داده ها"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/cleanup.php:85
+msgid "Delete Reserved Files"
+msgstr "حذف فایلها و پوشه های محافظت شده"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/cleanup.php:86
+msgid "Removes all installer files from a previous install"
+msgstr "تمام فایل های نصب را از یک نصب قبلی حذف می کند"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/cleanup.php:89
+msgid "Delete Legacy Data"
+msgstr "حذف داده های میراث"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/cleanup.php:90
+msgid "Removes all legacy data and settings prior to version"
+msgstr "حذف همه داده های میراث و تنظیمات قبل از نسخه"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/cleanup.php:93
+msgid "Clear Build Cache"
+msgstr "پاک کردن کش"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/cleanup.php:94
+msgid "Removes all build data from:"
+msgstr "حذف همه داده ها از ساخت:"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/cleanup.php:107
+#, php-format
+msgid "This action will remove all legacy settings prior to version %1$s.  "
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/cleanup.php:108
+msgid ""
+"Legacy settings are only needed if you plan to migrate back to an older "
+"version of this plugin."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/cleanup.php:120
+msgid ""
+"This process will remove all build cache files.  Be sure no packages are "
+"currently building or else they will be cancelled."
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/controller.php:16
+msgid "Logging"
+msgstr "گزارشات"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/controller.php:18
+msgid "Cleanup"
+msgstr "گزارش های پاکسازی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:18
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:19
+msgid "unknow"
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:39
+msgid "Plugin settings reset."
+msgstr "بازگشت به تنظیمات اولیه"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:40
+msgid "View state settings reset."
+msgstr "تنظیمات بازنشانی شد"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:41
+msgid "Active package settings reset."
+msgstr "تنظیم مجدد تنظیمات فعال بسته."
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:81
+msgid "Server Settings"
+msgstr "تنظیمات سرور"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:90
+msgid "Duplicator Version"
+msgstr "نسخه ایجاد کننده بسته نصبی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:94
+msgid "Operating System"
+msgstr "سیستم عامل"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:98
+msgid "Timezone"
+msgstr "منطقه زمانی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:102
+msgid "Server Time"
+msgstr "زمان سرور"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:110
+msgid "APC Enabled"
+msgstr "APC فعال"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:111
+msgid "Yes"
+msgstr "بله"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:111
+msgid "No"
+msgstr "نه"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:114
+msgid "Root Path"
+msgstr "مسیر ریشه"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:118
+msgid "ABSPATH"
+msgstr "مسیر کامل دایرکتوری وردپرس"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:122
+msgid "Plugins Path"
+msgstr "مسیر پلاگین ها"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:126
+msgid "Loaded PHP INI"
+msgstr "مسیر php.ini"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:130
+msgid "Server IP"
+msgstr "آی پی سرور"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:134
+msgid "Client IP"
+msgstr "آی پی کاربر"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:138
+msgid "WordPress"
+msgstr "وردپرس"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:145
+msgid "Langugage"
+msgstr "زبان"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:149
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:204
+msgid "Charset"
+msgstr "انکودینگ"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:153
+msgid "Memory Limit "
+msgstr "محدوديت حافظه وردپرس"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:154
+msgid "Max"
+msgstr "بیشترین"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:157
+msgid "PHP"
+msgstr "پی اچ پی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:172
+msgid "Safe Mode"
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:176
+msgid "On"
+msgstr "روشن"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:176
+msgid "Off"
+msgstr "خاموش"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:181
+msgid "Memory Limit"
+msgstr "محدوديت حافظه"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:185
+msgid "Memory In Use"
+msgstr "حافظه در حال استفاده"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:193
+msgid "Shell Exec"
+msgstr ""
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:194
+msgid "Is Supported"
+msgstr "پشتیبانی می شود"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:194
+msgid "Not Supported"
+msgstr "پشتیبانی نمی شود"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:197
+msgid "MySQL"
+msgstr "مای اس کیوال"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:208
+msgid "Wait Timeout"
+msgstr "زمان تمام شدن"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:212
+msgid "Max Allowed Packets"
+msgstr "حداکثر مجاز بسته"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:216
+msgid "msyqldump Path"
+msgstr "مسیر msyqldump"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:220
+msgid "Server Disk"
+msgstr "دیسک سرویس دهنده"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:223
+msgid "Free space"
+msgstr "فضای خالی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:226
+msgid "Note: This value is the physical servers hard-drive allocation."
+msgstr "توجه: این مقدار تخصیص هارد دیسک سرور فیزیکی است."
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:227
+msgid ""
+"On shared hosts check your control panel for the 'TRUE' disk space quota "
+"value."
+msgstr ""
+"در میزبان مشترک کنترل پنل خود را برای ارزش ظرفیت فضای دیسک 'واقعی' را بررسی "
+"کنید."
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:243
+msgid "Stored Data"
+msgstr "داده های ذخیره شده"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:248
+msgid "Options Values"
+msgstr "تنظیمات"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:281
+msgid "PHP Information"
+msgstr "اطلاعات مربوط به پی اچ پی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/diagnostics.php:300
+msgid "Delete this option value"
+msgstr "حذف مقادیر این تنظیمات"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/logging.php:140
+msgid "Log file not found or unreadable"
+msgstr ""
+"فایل گزارشات یافت نشد یا قابل خواندن نیست و احتمال می رود که مشکلی در حال "
+"حاظر وجود نداشته که گزارش شود."
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/logging.php:142
+msgid ""
+"Try to create a package, since no log files were found in the snapshots "
+"directory with the extension *.log"
+msgstr ""
+"سعی کنید به ایجاد یک بسته، بدون ورود به سیستم فایل در دایرکتوری فوری با فرمت "
+"*.log یافت شد"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/logging.php:144
+msgid "Reasons for log file not showing"
+msgstr "دلایلی برای نمایش ندادن فایل گزارشات"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/logging.php:145
+msgid "The web server does not support returning .log file extentions"
+msgstr ""
+"سرور وب شما از پسوند .log پشتیبانی نمی کند. بنا بر این می توانید به سرور خود "
+"اطلاع دهید تا مشکل را بررسی و رفع نمایند"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/logging.php:146
+msgid ""
+"The snapshots directory does not have the correct permissions to write "
+"files.  Try setting the permissions to 755"
+msgstr ""
+"احتمالا دایکرکتوری wp-snapshots سطح دسترسی لازم را ندارد برای نوشتن را "
+"ندارد. بنا بر این به هاست خود بروید و سطح دسترسی این پوشه را روی 755 تنظیم "
+"کنید"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/logging.php:147
+msgid ""
+"The process that PHP runs under does not have enough permissions to create "
+"files.  Please contact your hosting provider for more details"
+msgstr ""
+"پی اچی پی امکان اجرای دستورات لازم را ندارد بنا بر این با هاستینگ خود تماس "
+"بگیرید و مشکل را جهت رفع آن ارجاع دهید"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/logging.php:156
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/logging.php:161
+msgid "Options"
+msgstr "تنظیمات"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/logging.php:163
+msgid "Refresh"
+msgstr "بازسازی"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/logging.php:168
+msgid "Auto Refresh"
+msgstr "بازسازی اتوماتیک"
+
+#: C:\xampp\htdocs\www.wordpress.org\wp-content\plugins\duplicator/views/tools/logging.php:174
+msgid "Last 20 Logs"
+msgstr "20 گزارش اخیر"
+
+#~ msgid "Good"
+#~ msgstr "خوب"
+
+#~ msgid "Warn"
+#~ msgstr ""
+#~ "اخطار ( البته به این معنی نمی باشد که مشکل در ایجاد بسته نصبی وجود خواهد "
+#~ "داشت )"
+
+#~ msgid "unable to read"
+#~ msgstr "قادر به خواندن نمی باشم"
+
+#~ msgid "Goods"
+#~ msgstr "خوب"

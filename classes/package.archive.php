@@ -47,7 +47,7 @@ class DUP_Archive {
 				case 'TAR':			break;
 				case 'TAR-GZIP': 	break;
 				default:
-					if (class_exists('ZipArchive')) {
+					if (class_exists(ZipArchive)) {
 						$this->Format = 'ZIP';
 						DUP_Zip::Create($this);
 					} else {
@@ -118,7 +118,7 @@ class DUP_Archive {
 		foreach ($this->Dirs as $key => $val) {
 			//Remove path filter directories
 			foreach($this->filterDirsArray as $item) { 
-				if (strstr($val, $item)) {
+				if (strstr($val, $item . '/') || $val == $item) {
 					$this->OmitDirs[] = $val;
 					unset($this->Dirs[$key]);
 					continue 2;

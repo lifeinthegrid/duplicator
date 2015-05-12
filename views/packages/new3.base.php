@@ -24,17 +24,29 @@
 </style>
 
 <!-- =========================================
-WIZARD STEP TABS -->
-<div id="dup-wiz">
-	<div id="dup-wiz-steps">
-		<div class="completed-step"><a><span>1</span> <?php _e('Setup', 'wpduplicator'); ?></a></div>
-		<div class="completed-step"><a><span>2</span> <?php _e('Scan', 'wpduplicator'); ?> </a></div>
-		<div class="active-step"><a><span>3</span> <?php _e('Build', 'wpduplicator'); ?> </a></div>
-	</div>
-	<div id="dup-wiz-title">
-		<?php _e('Step 3: Build Package', 'wpduplicator'); ?>
-	</div> <hr/>
-</div>
+TOOL BAR: STEPS -->
+<table id="dup-toolbar">
+	<tr valign="top">
+		<td style="white-space: nowrap">
+			<div id="dup-wiz">
+				<div id="dup-wiz-steps">
+					<div class="completed-step"><a><span>1</span> <?php _e('Setup', 'wpduplicator'); ?></a></div>
+					<div class="completed-step"><a><span>2</span> <?php _e('Scan', 'wpduplicator'); ?> </a></div>
+					<div class="active-step"><a><span>3</span> <?php _e('Build', 'wpduplicator'); ?> </a></div>
+				</div>
+				<div id="dup-wiz-title">
+					<?php _e('Step 3: Build Package', 'wpduplicator'); ?>
+				</div> 
+			</div>
+		</td>
+		<td class="dup-toolbar-btns">
+			<a id="dup-pro-create-new"  href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php _e("All Packages", 'wpduplicator'); ?></a> &nbsp;
+			<span> <?php _e("Create New", 'wpduplicator'); ?></span>
+		</td>
+	</tr>
+</table>		
+<hr style="margin-bottom:10px">
+
 
 <form id="form-duplicator" method="post" action="?page=duplicator">
 
@@ -90,7 +102,8 @@ WIZARD STEP TABS -->
 			
 				<i><?php _e('Please try the process again.', 'wpduplicator'); ?></i><br/><br/>
 				  
-				<input type="button" class="button" value="<?php _e('Try Again', 'wpduplicator'); ?>" onclick="window.location = 'admin.php?page=duplicator'" />
+				<input type="button" style="margin-right:10px;" class="button" value="<?php _e('Diagnose', 'wpduplicator'); ?>" onclick="window.open('http://lifeinthegrid.com/support/knowledgebase.php?article=12#faq-trouble-timeout', '_blank');return false;" />
+                                <input type="button" class="button" value="<?php _e('Try Again', 'wpduplicator'); ?>" onclick="window.location = 'admin.php?page=duplicator'" />                                
 				<fieldset>
 					<legend><b><i class="fa fa-exclamation"></i> <?php _e('Details', 'wpduplicator'); ?></b></legend>
 					<div class="dup-msg-error-area">
@@ -120,8 +133,7 @@ WIZARD STEP TABS -->
 				<!-- LOGS -->
 				<div id="dup-logs">
 					<div style="font-weight:bold">
-						<a href='javascript:void(0)' onclick='Duplicator.OpenLogWindow()'> <?php _e('Package Log', 'wpduplicator');?> </a> &nbsp; | &nbsp;
-						<a href='admin.php?page=duplicator-support' target="support"> <?php _e('Support', 'wpduplicator');?> </a>
+						<a href='javascript:void(0)' onclick='Duplicator.OpenLogWindow()'> <?php _e('Package Log', 'wpduplicator');?> </a>						
 					</div> 
 					<br/>
 				</div>
@@ -130,15 +142,10 @@ WIZARD STEP TABS -->
 			
 		</div>
 	</div>
-	
-
-	
 </form>
 
 <script type="text/javascript">
 jQuery(document).ready(function($) {
-	
-	
 	/*	----------------------------------------
 	*	METHOD: Performs Ajax post to create a new package
 	*	Timeout (10000000 = 166 minutes)  */

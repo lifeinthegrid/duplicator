@@ -3,10 +3,10 @@
 ?>
 
 <div id='dup-list-alert-nodata'>
-	<b><i class="fa fa-archive"></i> 
+	<i class="fa fa-archive"></i> 
 		<?php _e("No Packages Found.", 'wpduplicator'); ?><br/>
-		<?php _e("Click the 'Create New' tab to build a package.", 'wpduplicator'); ?> <br/><br/>
-	</b>
+		<?php _e("Click the 'Create New' button to build a package.", 'wpduplicator'); ?> <br/><br/>
+
 	<i>
 		<?php
 			printf("%s <a href='admin.php?page=duplicator-help'>%s</a> %s",

@@ -37,10 +37,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 <script type="text/javascript">stLight.options({publisher: "1a44d92e-2a78-42c3-a32e-414f78f9f484"});</script> 
 
 <div class="wrap dup-wrap dup-support-all">
-
-    <!-- h2 required here for general system messages -->
-    <h2 style='display:none'></h2>
-
+	
     <?php duplicator_header(__("About", 'wpduplicator')) ?>
     <hr size="1" />
 

@@ -7,25 +7,17 @@
 ?>
 
 <style>
-	div#dup-list-alert-nodata {padding:50px 20px;text-align:center; font-size:16px; line-height:22px}
+	div#dup-list-alert-nodata {padding:50px 20px;text-align:center; font-size:20px; line-height:26px}
 	div.dup-notice-msg {border:1px solid silver; padding: 10px; border-radius: 5px; width: 550px; 
 		margin:40px auto 0px auto; font-size:12px; text-align: left; word-break:normal;
 		background: #fefcea; 
 		background: -moz-linear-gradient(top,  #fefcea 0%, #efe5a2 100%);
 		background: -ms-linear-gradient(top,  #fefcea 0%,#efe5a2 100%);
 		background: linear-gradient(to bottom,  #fefcea 0%,#efe5a2 100%);
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefcea', endColorstr='#efe5a2',GradientType=0 );
 	}
 	input#dup-bulk-action-all {margin:0px;padding:0px 0px 0px 5px;}
 	button.dup-button-selected {border:1px solid #000 !important; background-color:#dfdfdf !important;}
 	div.dup-details-area-error {padding:10px; background-color:#FEF6F3; width:98%; border:1px solid silver; border-radius: 3px }
-	
-	table#toolbar-table td {padding:0px; white-space:nowrap;}
-	table#toolbar-table input {border:1px solid silver; border-radius:4px}
-	table#toolbar-table input:hover {border:1px solid gray;}
-	td.toolbar-label label {font-size:14px !important; margin-top:7px; display:inline-block; font-weight:bold}
-	td.toolbar-textbox {white-space:nowrap;width:100%; vertical-align:middle}
-	img.toolbar-divider {height:26px; padding:0px 5px 0px 5px}	
 	
 	/* Table package details */
 	table.dup-pack-table {word-break:break-all;}
@@ -42,11 +34,42 @@
 
 <form id="form-duplicator" method="post">
 
+<?php if($statusCount >= 3)  :	?>
+	<div style="font-size:13px; position: absolute; top:10px; right:20px">
+		<a href="admin.php?page=duplicator-about"  style="color:maroon"><i><i class="fa fa-check-circle"></i> <?php _e("Help Support Duplicator", 'wpduplicator') ?></i> </a>
+	</div>
+<?php endif; ?>	
+
+<!-- ====================
+TOOL-BAR -->
+<table id="dup-toolbar">
+	<tr valign="top">
+		<td style="white-space: nowrap">
+			<div class="alignleft actions">
+				<select id="dup-pack-bulk-actions">
+					<option value="-1" selected="selected"><?php _e("Bulk Actions", 'wpduplicator') ?></option>
+					<option value="delete" title="<?php _e("Delete selected package(s)", 'wpduplicator') ?>"><?php _e("Delete", 'wpduplicator') ?></option>
+				</select>
+				<input type="button" id="dup-pack-bulk-apply" class="button action" value="<?php _e("Apply", 'wpduplicator') ?>" onclick="Duplicator.Pack.Delete()">
+			</div>
+			<br class="clear">
+		</td>
+		<td align="center">
+			<a href="?page=duplicator-tools" id="btn-logs-dialog" class="button"  title="<?php _e("Package Logs", 'wpduplicator') ?>..."><i class="fa fa-list-alt"></i>
+		</td>
+		<td class="dup-toolbar-btns">
+			<span><i class="fa fa-archive"></i> <?php _e("All Packages", 'wpduplicator'); ?></span> &nbsp;
+			<a id="dup-pro-create-new"  href="?page=duplicator&tab=new1" class="add-new-h2"><?php _e("Create New", 'wpduplicator'); ?></a>
+		</td>
+	</tr>
+</table>	
+
+
 <?php if($totalElements == 0)  :	?>
 	
 	<!-- ====================
 	NO-DATA MESSAGES-->
-	<table class="widefat dup-pack-table" style="margin-top:20px">
+	<table class="widefat dup-pack-table">
 		<thead><tr><th>&nbsp;</th></tr></thead>
 		<tbody><tr><td><?php include (DUPLICATOR_PLUGIN_PATH .  "views/packages/list-nodata.php") ?> </td></tr></tbody>
 		<tfoot><tr><th>&nbsp;</th></tr></tfoot>
@@ -54,34 +77,7 @@
 	
 <?php else : ?>	
 	
-	<!-- ====================
-	TOOL-BAR -->
-	<table border="0" id="toolbar-table" cellspacing="0" style="margin-top:15px; width:100%">
-		<tr valign="top">
-			<td style="white-space: nowrap">
-				<div class="alignleft actions">
-					<select id="dup-pack-bulk-actions">
-						<option value="-1" selected="selected"><?php _e("Bulk Actions", 'wpduplicator') ?></option>
-						<option value="delete" title="<?php _e("Delete selected package(s)", 'wpduplicator') ?>"><?php _e("Delete", 'wpduplicator') ?></option>
-					</select>
-					<input type="button" id="dup-pack-bulk-apply" class="button action" value="<?php _e("Apply", 'wpduplicator') ?>" onclick="Duplicator.Pack.Delete()">
-				</div>
-				<br class="clear">
-			</td>
-			<!-- Logs -->
-			<td><img src="<?php echo DUPLICATOR_PLUGIN_URL  ?>assets/img/hdivider.png" class="toolbar-divider" /></td>
-			<td align="center">
-				<a href="?page=duplicator-tools" id="btn-logs-dialog" class="button"  title="<?php _e("Package Logs", 'wpduplicator') ?>..."><i class="fa fa-pencil-square-o"></i> </button>
-			</td>
-			<td align="right" style="width:100%;">
-				<?php if($statusCount >= 3)  :	?>
-				<div style="margin:8px 5px 0px 0px; font-size:13px">
-					<a href="admin.php?page=duplicator-about"  style="color:maroon"><i><i class="fa fa-check-circle"></i> <?php _e("Help Support Duplicator", 'wpduplicator') ?></i> </a>
-				</div>
-				<?php endif; ?>	
-			</td>
-		</tr>
-	</table>	
+
 	
 	<!-- ====================
 	LIST ALL PACKAGES -->
@@ -162,8 +158,8 @@
 						<b><?php _e("Notes", 'wpduplicator')?>:</b> <?php echo $notes ?> 
 						<div style="height:7px">&nbsp;</div>
 						<button class="button" onclick="Duplicator.Pack.ShowLinksDialog(<?php echo "'{$sqlfilelink}', '{$packagepath}', '{$installfilelink}', '{$logfilelink}', '{$reportfilelink}' " ;?>); return false;" class="thickbox"><i class="fa fa-lock"></i> &nbsp; <?php _e("Links", 'wpduplicator')?></button> &nbsp; 
-						<button class="button" onclick="window.open(<?php echo "'{$sqlfilelink}', '_blank'" ;?>); return false;"><i class="fa fa-table"></i> &nbsp; <?php _e("SQL File", 'wpduplicator')?></button> &nbsp; 
-						<button class="button" onclick="Duplicator.OpenLogWindow(<?php echo "'{$logfilename}'" ;?>); return false;"><i class="fa fa-pencil-square-o"></i> &nbsp; <?php _e("View Log", 'wpduplicator')?></button>
+						<button class="button" onclick="window.open(<?php echo "'{$sqlfilelink}', '_blank'" ;?>); return false;"><i class="fa fa-table"></i> &nbsp; <?php _e("SQL", 'wpduplicator')?></button> &nbsp; 
+						<button class="button" onclick="Duplicator.OpenLogWindow(<?php echo "'{$logfilename}'" ;?>); return false;"><i class="fa fa-list-alt"></i> &nbsp; <?php _e("Log", 'wpduplicator')?></button>
 						<?php if ($package_debug) : ?>
 							<div style="margin-top:7px">
 								<a href="javascript:void(0)" onclick="window.open(<?php echo "'{$reportfilelink}', '_blank'" ;?>); return false;">[<?php _e("Open Scan Report", 'wpduplicator')?>]</a> &nbsp;
