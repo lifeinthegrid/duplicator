@@ -48,7 +48,7 @@ if (function_exists('plugin_dir_url'))
 
 	define('DUPLICATOR_HTACCESS_ORIG_FILENAME', 'htaccess.orig');
 	define('DUPLICATOR_WPCONFIG_ARK_FILENAME', 'wp-config-arc.txt');
-	define("DUPLICATOR_ENHANCED_INSTALLER_DIRECTORY", DUPLICATOR_WPROOTPATH.'dpro-installer');
+	define("DUPLICATOR_ENHANCED_INSTALLER_DIRECTORY", DUPLICATOR_WPROOTPATH.'dup-installer');
 	
     $GLOBALS['DUPLICATOR_SERVER_LIST'] = array('Apache','LiteSpeed', 'Nginx', 'Lighttpd', 'IIS', 'WebServerX', 'uWSGI');
 	$GLOBALS['DUPLICATOR_OPTS_DELETE'] = array('duplicator_ui_view_state', 'duplicator_package_active', 'duplicator_settings');

@@ -314,32 +314,32 @@ class DUP_Installer
 //        $this->numFilesAdded++;
 //
 //        $base_installer_directory = DUPLICATOR_PLUGIN_PATH.'installer';
-//        $installer_directory      = "$base_installer_directory/dpro-installer";
+//        $installer_directory      = "$base_installer_directory/dup-installer";
 //
 //        $counts = DupArchiveEngine::addDirectoryToArchiveST($archive_filepath, $installer_directory, $base_installer_directory, true);
 //        $this->numFilesAdded += $counts->numFilesAdded;
 //        $this->numDirsAdded += $counts->numDirsAdded;
 //
-//        $archive_config_relative_path = 'dpro-installer/archive.cfg';
+//        $archive_config_relative_path = 'dup-installer/archive.cfg';
 //
 //        DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $archive_config_filepath, $archive_config_relative_path);
 //        $this->numFilesAdded++;
 //
 //        // Include dup archive
 //        $duparchive_lib_directory = DUPLICATOR_PLUGIN_PATH.'lib/dup_archive';
-//        $duparchive_lib_counts = DupArchiveEngine::addDirectoryToArchiveST($archive_filepath, $duparchive_lib_directory, DUPLICATOR_PLUGIN_PATH, true, 'dpro-installer/');
+//        $duparchive_lib_counts = DupArchiveEngine::addDirectoryToArchiveST($archive_filepath, $duparchive_lib_directory, DUPLICATOR_PLUGIN_PATH, true, 'dup-installer/');
 //        $this->numFilesAdded += $duparchive_lib_counts->numFilesAdded;
 //        $this->numDirsAdded += $duparchive_lib_counts->numDirsAdded;
 //
 //        // Include snaplib
 //        $snaplib_directory = DUPLICATOR_PLUGIN_PATH.'lib/snaplib';
-//        $snaplib_counts = DupArchiveEngine::addDirectoryToArchiveST($archive_filepath, $snaplib_directory, DUPLICATOR_PLUGIN_PATH, true, 'dpro-installer/');
+//        $snaplib_counts = DupArchiveEngine::addDirectoryToArchiveST($archive_filepath, $snaplib_directory, DUPLICATOR_PLUGIN_PATH, true, 'dup-installer/');
 //        $this->numFilesAdded += $snaplib_counts->numFilesAdded;
 //        $this->numDirsAdded += $snaplib_counts->numDirsAdded;
 //
 //        // Include fileops
 //        $fileops_directory = DUPLICATOR_PLUGIN_PATH.'lib/fileops';
-//        $fileops_counts = DupArchiveEngine::addDirectoryToArchiveST($archive_filepath, $fileops_directory, DUPLICATOR_PLUGIN_PATH, true, 'dpro-installer/');
+//        $fileops_counts = DupArchiveEngine::addDirectoryToArchiveST($archive_filepath, $fileops_directory, DUPLICATOR_PLUGIN_PATH, true, 'dup-installer/');
 //        $this->numFilesAdded += $fileops_counts->numFilesAdded;
 //        $this->numDirsAdded += $fileops_counts->numDirsAdded;
 //
@@ -397,9 +397,9 @@ class DUP_Installer
 //        $global  = DUP_Global_Entity::get_instance();
 //
 //        $installer_source_directory      = DUPLICATOR_PLUGIN_PATH.'installer/';
-//        $installer_dpro_source_directory = "$installer_source_directory/dpro-installer";
+//        $installer_dpro_source_directory = "$installer_source_directory/dup-installer";
 //        $extras_directory                = DUP_U::safePath(DUPLICATOR_PRO_SSDIR_PATH_TMP).'/extras';
-//        $extras_installer_directory      = $extras_directory.'/dpro-installer';
+//        $extras_installer_directory      = $extras_directory.'/dup-installer';
 //        $extras_lib_directory            = $extras_installer_directory.'/lib';
 //
 //        $snaplib_source_directory        = DUPLICATOR_PRO_LIB_PATH.'/snaplib';
@@ -508,13 +508,13 @@ class DUP_Installer
 //
 //        $stderr = shell_exec($command);
 //
-//        //-- STAGE 2 ADD - old code until we can figure out how to add the snaplib library within dpro-installer/lib/snaplib
+//        //-- STAGE 2 ADD - old code until we can figure out how to add the snaplib library within dup-installer/lib/snaplib
 //        if ($stderr == '') {
 //            if (!$one_stage_add) {
 //                // Since we didn't bundle the installer files in the earlier stage we have to zip things up right from the plugin source area
 //                $command = 'cd '.escapeshellarg($installer_source_directory);
 //                $command .= ' && '.escapeshellcmd(DUP_Zip_U::getShellExecZipPath())." $compression_parameter".' -g -rq ';
-//                $command .= escapeshellarg($zip_filepath).' dpro-installer/*';
+//                $command .= escapeshellarg($zip_filepath).' dup-installer/*';
 //
 //                DUP_Log::Info("Executing Shell Exec Zip Stage 2 to add installer files: $command");
 //                $stderr = shell_exec($command);
@@ -589,25 +589,26 @@ class DUP_Installer
         if (DUP_Zip_U::addFileToZipArchive($zip_archive, $installer_filepath, $installer_backup_filename, $is_compressed)) {
             DUPLICATOR_PLUGIN_PATH.'installer/';
 
-            $installer_directory = DUPLICATOR_PLUGIN_PATH.'installer/dpro-installer';
+            $installer_directory = DUPLICATOR_PLUGIN_PATH.'installer/dup-installer';
 
 
             if (DUP_Zip_U::addDirWithZipArchive($zip_archive, $installer_directory, true, '', $is_compressed)) {
-                $archive_config_local_name = 'dpro-installer/archive.cfg';
+                $archive_config_local_name = 'dup-installer/archive.cfg';
 
                 // if ($zip_archive->addFile($archive_config_filepath, $archive_config_local_name)) {
                 if (DUP_Zip_U::addFileToZipArchive($zip_archive, $archive_config_filepath, $archive_config_local_name, $is_compressed)) {
 
                     $snaplib_directory = DUPLICATOR_PLUGIN_PATH . 'lib/snaplib';
-                    $fileops_directory = DUPLICATOR_PLUGIN_PATH . 'lib/fileops';
+                 //   $fileops_directory = DUPLICATOR_PLUGIN_PATH . 'lib/fileops';
 
-                    //DupArchiveEngine::addDirectoryToArchiveST($archive_filepath, $snaplib_directory, DUPLICATOR_PLUGIN_PATH, true, 'dpro-installer/');
-                    if (DUP_Zip_U::addDirWithZipArchive($zip_archive, $snaplib_directory, true, 'dpro-installer/lib/', $is_compressed) &&
-                        DUP_Zip_U::addDirWithZipArchive($zip_archive, $fileops_directory, true, 'dpro-installer/lib/', $is_compressed)) {
-
+                    //DupArchiveEngine::addDirectoryToArchiveST($archive_filepath, $snaplib_directory, DUPLICATOR_PLUGIN_PATH, true, 'dup-installer/');
+                    if (DUP_Zip_U::addDirWithZipArchive($zip_archive, $snaplib_directory, true, 'dup-installer/lib/', $is_compressed))// &&
+                 //       DUP_Zip_U::addDirWithZipArchive($zip_archive, $fileops_directory, true, 'dup-installer/lib/', $is_compressed)) {
+					{
                         $success = true;
                     } else {
-                        DUP_Log::error("Error adding directory {$snaplib_directory} or {$fileops_directory} to zipArchive", '', false);
+                      //  DUP_Log::error("Error adding directory {$snaplib_directory} or {$fileops_directory} to zipArchive", '', false);
+						  DUP_Log::error("Error adding directory {$snaplib_directory} to zipArchive", '', false);
                     }
                 } else {
                     DUP_Log::error("Error adding $archive_config_filepath to zipArchive", '', false);

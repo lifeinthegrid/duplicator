@@ -28,6 +28,7 @@ class DUP_Zip_U
     {
         $success = true;
 
+		error_log('add dir to zip' . print_r($directoryPath, true));
         $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directoryPath), RecursiveIteratorIterator::SELF_FIRST);
 
         foreach ($objects as $path => $object) {
