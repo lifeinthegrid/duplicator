@@ -45,6 +45,10 @@ if (function_exists('plugin_dir_url'))
 	define('DUPLICATOR_SCAN_DB_TBL_SIZE',	10485760);  //10MB Table
 	define('DUPLICATOR_SCAN_TIMEOUT',		150);		//Seconds
 	define('DUPLICATOR_SCAN_MIN_WP',		'4.7.0');
+
+	define('DUPLICATOR_HTACCESS_ORIG_FILENAME', 'htaccess.orig');
+	define('DUPLICATOR_WPCONFIG_ARK_FILENAME', 'wp-config-arc.txt');
+	define("DUPLICATOR_ENHANCED_INSTALLER_DIRECTORY", DUPLICATOR_WPROOTPATH.'dpro-installer');
 	
     $GLOBALS['DUPLICATOR_SERVER_LIST'] = array('Apache','LiteSpeed', 'Nginx', 'Lighttpd', 'IIS', 'WebServerX', 'uWSGI');
 	$GLOBALS['DUPLICATOR_OPTS_DELETE'] = array('duplicator_ui_view_state', 'duplicator_package_active', 'duplicator_settings');

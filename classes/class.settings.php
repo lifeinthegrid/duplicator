@@ -2,6 +2,16 @@
 if ( ! defined( 'DUPLICATOR_VERSION' ) ) exit; // Exit if accessed directly
 
 
+abstract class DUP_Archive_Build_Mode
+{
+    const Unconfigured = -1;
+    const Auto         = 0; // should no longer be used
+    const Shell_Exec   = 1;
+    const ZipArchive   = 2;
+    const DupArchive   = 3;
+
+}
+
 class DUP_Settings
 {
 	
@@ -131,7 +141,7 @@ class DUP_Settings
 		$default['package_phpdump_qrylimit'] = isset(self::$Data['package_phpdump_qrylimit']) ? self::$Data['package_phpdump_qrylimit'] : "100";
 		//Optional mysqldump search path
 		$default['package_zip_flush']		 = isset(self::$Data['package_zip_flush']) ? self::$Data['package_zip_flush'] : false;
-		
+
 		//Flag for .htaccess file
 		$default['storage_htaccess_off'] = isset(self::$Data['storage_htaccess_off']) ? self::$Data['storage_htaccess_off'] : false;
 		

@@ -42,6 +42,10 @@ class DUP_Log {
 		//$results = DUP_Util::byteSize(memory_get_usage(true)) . "\t" . $msg;
 		//@fwrite(self::$logFileHandle, "{$results} \n"); 
 	}
+
+	static public function TraceObject($msg, $o) {
+		self::Info($msg . ':' . print_r($o, true));
+	}
 	
 	/**
 	*  Called when an error is detected and no further processing should occur
