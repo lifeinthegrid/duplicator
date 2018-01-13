@@ -141,6 +141,10 @@
 	textarea#debug-dbtest-json {width:98%; height:200px}
 
 	/*Toggle Buttons */
+	<?php if($GLOBALS['DUPX_AC']->type == 0): ?>
+	div.s2-btngrp {display:none;}
+
+	<?php else: ?>
 	div.s2-btngrp {text-align:center; margin:0 auto 10px auto}
 	div.s2-btngrp input[type=button] {font-size:14px; padding:6px; width:120px; border:1px solid silver;  cursor:pointer}
 	div.s2-btngrp input[type=button]:first-child {border-radius:5px 0 0 5px; margin-right:-2px}
@@ -148,6 +152,7 @@
 	div.s2-btngrp input[type=button].active {background-color:#13659C; color:#fff;}
 	div.s2-btngrp input[type=button].in-active {background-color:#E4E4E4; }
 	div.s2-btngrp input[type=button]:hover {border:1px solid #999}
+	<?php endif; ?>
 
 	/*Basic DB */
 	select#dbname-select {width:100%; border-radius:3px; height:20px; font-size:12px; border:1px solid silver;}

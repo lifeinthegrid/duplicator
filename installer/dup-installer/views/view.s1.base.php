@@ -113,7 +113,7 @@ SETUP TYPE: @todo implement
 	<label for="setup-type-overwrite"><b>Overwrite Install</b></label>
 	<i class="fa fa-question-circle"
 		data-tooltip-title="Overwrite Install"
-		data-tooltip="An Overwrite Install allows Duplicator Pro to overwrite an existing WordPress Site."></i><br/>
+		data-tooltip="An Overwrite Install allows Duplicator to overwrite an existing WordPress Site."></i><br/>
 	<div class="s1-setup-type-sub" id="s1-setup-type-sub-2">
 		<input type="checkbox" name="setup-backup-files" id="setup-backup-files-overwrite" />
 		<label for="setup-backup-files-overwrite">Backup Existing Files</label><br/>
@@ -307,7 +307,7 @@ VALIDATION
 			<div class="status <?php echo ($notice['01'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['01']; ?></div>
 			<div class="title" data-type="toggle" data-target="#s1-notice01"><i class="fa fa-caret-right"></i> Configuration File</div>
 			<div class="info" id="s1-notice01">
-				Duplicator Pro works best by placing the installer and archive files into an empty directory.  If a wp-config.php file is found in the extraction
+				Duplicator works best by placing the installer and archive files into an empty directory.  If a wp-config.php file is found in the extraction
 				directory it might indicate that a pre-existing WordPress site exists which can lead to a bad install.  <i>If this archive was manually extracted or the mode
 				is set to "Overwrite Install" then	this notice can be ignored.</i>
 				<br/><br/>
@@ -405,7 +405,7 @@ VALIDATION
 			time to finish running before the process is killed causing a timeout.
 			<br/><br/>
 
-			Duplicator Pro attempts to turn off the timeout by using the
+			Duplicator attempts to turn off the timeout by using the
 			<a href="http://php.net/manual/en/function.set-time-limit.php" target="_blank">set_time_limit</a> setting.   If this notice shows as a warning then it is
 			still safe to continue with the install.  However, if a timeout occurs then you will need to consider working with the max_execution_time setting or extracting the
 			archive file using the 'Manual Archive Extraction' method.

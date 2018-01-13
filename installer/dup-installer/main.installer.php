@@ -1,10 +1,10 @@
 <?php
 /*
- * Duplicator Pro Website Installer
+ * Duplicator Website Installer
  * Copyright (C) 2016, Snap Creek LLC
  * website: snapcreek.com
  *
- * Duplicator Pro Plugin is distributed under the GNU General Public License, Version 3,
+ * Duplicator Plugin is distributed under the GNU General Public License, Version 3,
  * June 2007. Copyright (C) 2007 Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110, USA
  *
@@ -145,7 +145,7 @@ if (isset($_POST['ctrl_action'])) {
                 <?php if(isset($GLOBALS['DUPX_AC']->brand) && isset($GLOBALS['DUPX_AC']->brand->logo) && !empty($GLOBALS['DUPX_AC']->brand->logo)) : ?>
                     <?php echo $GLOBALS['DUPX_AC']->brand->logo; ?>
                 <?php else: ?>
-                    <i class="fa fa-bolt"></i> Duplicator Pro
+					<i class="fa fa-bolt"></i> Duplicator<?php if($GLOBALS['DUPX_AC']->type == 1) { echo 'Pro'; }; ?>
                 <?php endif; ?>
 			</div>
 		</td>

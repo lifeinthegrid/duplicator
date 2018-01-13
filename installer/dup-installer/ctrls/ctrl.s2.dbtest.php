@@ -730,7 +730,7 @@ class DUPX_DBTest
 		$this->tblPerms['create'] = ($qry_create) ? 1 : 0;
 
 		if ($qry_create) {
-			$qry_insert	 = @mysqli_query($this->dbh, "INSERT INTO `{$tmp_table}` (`text`) VALUES ('Duplicator Pro Test: Please Remove this Table')");
+			$qry_insert	 = @mysqli_query($this->dbh, "INSERT INTO `{$tmp_table}` (`text`) VALUES ('Duplicator Test: Please Remove this Table')");
 			$qry_insert	 = @mysqli_query($this->dbh, "INSERT INTO `{$tmp_table}` (`text`) VALUES ('TEXT-1')");
 			$qry_select	 = @mysqli_query($this->dbh, "SELECT COUNT(*) FROM `{$tmp_table}`");
 			$qry_update	 = @mysqli_query($this->dbh, "UPDATE `{$tmp_table}` SET text = 'TEXT-2' WHERE text = 'TEXT-1'");

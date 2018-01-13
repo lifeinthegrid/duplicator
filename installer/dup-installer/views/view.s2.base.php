@@ -12,7 +12,7 @@ $_POST['dbcollate'] = isset($_POST['dbcollate']) ? trim($_POST['dbcollate']) : $
 $_POST['exe_safe_mode'] = (isset($_POST['exe_safe_mode'])) ? DUPX_U::sanitize($_POST['exe_safe_mode']) : 0;
 
 $_POST['logging'] = isset($_POST['logging']) ? trim(DUPX_U::sanitize($_POST['logging'])) : 1;
-$cpnl_supported =  DUPX_U::$on_php_53_plus ? true : false;
+$cpnl_supported =  (DUPX_U::$on_php_53_plus && ($GLOBALS['DUPX_AC']->type == 1));
 ?>
 
 <form id='s2-input-form' method="post" class="content-form"  data-parsley-validate="true" data-parsley-excluded="input[type=hidden], [disabled], :hidden">
@@ -51,7 +51,11 @@ $cpnl_supported =  DUPX_U::$on_php_53_plus ? true : false;
 
 	<!-- CPANEL TAB -->
 	<div id="s2-cpnl-pane">
-		<?php require_once('view.s2.cpnl.php'); ?>
+		<?php
+			if($cpnl_supported) {
+				require_once('view.s2.cpnl.php');
+			}
+		?>
 	</div>
 </form>
 
@@ -176,7 +180,9 @@ Auto Posts to view.step3.php  -->
 	 * Open an in-line confirm dialog*/
 	DUPX.confirmDeployment= function ()
 	{
+		<?php if($GLOBALS['DUPX_AC']->type == 1): ?>
 		DUPX.cpnlSetResults();
+		<?php endif; ?>
 		var dbhost = $("#dbhost").val();
 		var dbname = $("#dbname").val();
 		var dbuser = $("#dbuser").val();

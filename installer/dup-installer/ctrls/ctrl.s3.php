@@ -52,7 +52,7 @@ $date = @date('h:i:s');
 $log  = <<<LOG
 \n\n
 ********************************************************************************
-DUPLICATOR PRO INSTALL-LOG
+DUPLICATOR INSTALL-LOG
 STEP-3 START @ {$date}
 NOTICE: Do NOT post to public sites or forums
 ********************************************************************************
@@ -503,7 +503,7 @@ DUPX_Log::info("====================================\n");
 
 $blog_name   = mysqli_real_escape_string($dbh, $_POST['blogname']);
 $plugin_list = (isset($_POST['plugins'])) ? $_POST['plugins'] : array();
-// Force Duplicator Pro active so we the security cleanup will be available
+// Force Duplicator active so we the security cleanup will be available
 if (!in_array('duplicator-pro/duplicator-pro.php', $plugin_list)) {
 	$plugin_list[] = 'duplicator-pro/duplicator-pro.php';
 }

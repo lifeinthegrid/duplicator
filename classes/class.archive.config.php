@@ -51,6 +51,7 @@ class DUP_Archive_Config
     public $mu_is_filtered;
     //MISC
     public $license_limit;
+	public $type;
     //BRAND
     public $brand;
 

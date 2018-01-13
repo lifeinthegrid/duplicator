@@ -172,6 +172,8 @@ class DUP_Installer
         //LICENSING
         $ac->license_limit = -2;
 
+		$ac->type = 0;
+
         $json = json_encode($ac);
 
         DUP_Log::TraceObject('json', $json);
