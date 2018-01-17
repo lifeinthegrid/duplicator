@@ -46,6 +46,8 @@ if (function_exists('plugin_dir_url'))
 	define('DUPLICATOR_SCAN_TIMEOUT',		150);		//Seconds
 	define('DUPLICATOR_SCAN_MIN_WP',		'4.7.0');
 
+	define('DUPLICATOR_TEMP_CLEANUP_SECONDS', 900);   // 15 min = How many seconds to keep temp files around when delete is requested
+	define('DUPLICATOR_MAX_BUILD_RETRIES', 10);			// Max times to try a part of progressive build work
 	define('DUPLICATOR_HTACCESS_ORIG_FILENAME', 'htaccess.orig');
 	define('DUPLICATOR_WPCONFIG_ARK_FILENAME', 'wp-config-arc.txt');
 	define("DUPLICATOR_ENHANCED_INSTALLER_DIRECTORY", DUPLICATOR_WPROOTPATH.'dup-installer');

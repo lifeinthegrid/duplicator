@@ -68,34 +68,57 @@ class DUP_Archive
      * @param obj $package The package object that started this process
      *
      * @return null
-     */
-    public function build($package)
-    {
+     */    
+	public function build($package)
+	{
+        DUP_PRO_LOG::trace("Building archive");
+
         try {
             $this->Package = $package;
-            if (!isset($this->PackDir) && !is_dir($this->PackDir)) throw new Exception("The 'PackDir' property must be a valid diretory.");
+            if (!isset($this->PackDir) && !is_dir($this->PackDir)) throw new Exception("The 'PackDir' property must be a valid directory.");
             if (!isset($this->File)) throw new Exception("A 'File' property must be set.");
 
-            $this->Package->setStatus(DUP_PackageStatus::ARCSTART);
+            $completed = false;
+
             switch ($this->Format) {
                 case 'TAR': break;
-                case 'TAR-GZIP': break;
-                default:
+				case 'TAR-GZIP': break;
+                case 'DAF':
+                    $completed = DUP_Dup_Archive::create($this, $build_progress);
+                    $this->Package->Update();
+                    break;
+
+                  default:
                     if (class_exists(ZipArchive)) {
                         $this->Format = 'ZIP';
                         DUP_Zip::create($this);
                     }
                     break;
             }
+						
+			if($package->buildProgress === null) {
+				$storePath  = "{$this->Package->StorePath}/{$this->File}";
+				$this->Size = @filesize($storePath);
+				$this->Package->setStatus(DUP_PackageStatus::ARCDONE);
+			} else if($completed) {
+                if ($build_progress->failed) {
+                    DUP_LOG::traceError("Error building DupArchive");
+                    $this->Package->setStatus(DUP_PackageStatus::ERROR);
+                } else {
+                    $filepath    = DUP_PRO_U::safePath("{$this->Package->StorePath}/{$this->File}");
+                    $this->Size	 = @filesize($filepath);
+                    $this->Package->set_status(DUP_PRO_PackageStatus::ARCDONE);
+                    DUP_LOG::trace("Done building archive");
+                }
+            } else {
+                DUP_PRO_LOG::trace("Archive chunk done but package not completed yet");
+            }
 
-            $storePath  = "{$this->Package->StorePath}/{$this->File}";
-            $this->Size = @filesize($storePath);
-            $this->Package->setStatus(DUP_PackageStatus::ARCDONE);
         } catch (Exception $e) {
             echo 'Caught exception: ', $e->getMessage(), "\n";
         }
-    }
-
+	}
+	
     /**
      *  Builds a list of files and directories to be included in the archive
      *

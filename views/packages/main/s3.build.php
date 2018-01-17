@@ -381,7 +381,7 @@ jQuery(document).ready(function($) {
 
 	//Page Init:
 	Duplicator.UI.AnimateProgressBar('dup-progress-bar');
-	Duplicator.Pack.Create();
+	 ();
 
 });
 </script>

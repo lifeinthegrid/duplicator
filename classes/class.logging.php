@@ -6,7 +6,9 @@ if ( ! defined('DUPLICATOR_VERSION') ) exit; // Exit if accessed directly
  * @package Dupicator\classes
  */
 class DUP_Log {
-	
+
+	static $debugging = true;
+
 	/**
 	 * The file handle used to write to the log file
 	 * @var file resource 
@@ -44,7 +46,9 @@ class DUP_Log {
 	}
 
 	static public function TraceObject($msg, $o) {
-		self::Info($msg . ':' . print_r($o, true));
+		if(self::$debugging) {
+			self::Info($msg . ':' . print_r($o, true));
+		}
 	}
 	
 	/**
