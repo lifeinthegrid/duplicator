@@ -5,25 +5,32 @@
  * and open the template in the editor.
  */
 
-require_once (DUPLICATOR_PRO_PLUGIN_PATH.'lib/dup_archive/classes/states/class.duparchive.state.expand.php');
+require_once(DAWSConstants::$DUPARCHIVE_STATES_DIR.'/class.duparchive.state.expand.php');
 
-class DUP_DupArchive_Expand_State extends DupArchiveExpandState
+class DAWSExpandState extends DupArchiveExpandState
 {
     public static $instance = null;
 
     const StateFilename = 'expandstate.json';
 
+    public static function purgeStatefile()
+    {
+        $stateFilepath = dirname(__FILE__).'/'.self::StateFilename;
+
+        SnapLibIOU::rm($stateFilepath, false);
+    }
+
     public static function getInstance($reset = false)
     {
         if ((self::$instance == null) && (!$reset)) {
-            $stateFilepath = DUPLICATOR_SSDIR_PATH.'/'.self::StateFilename;
+            $stateFilepath = dirname(__FILE__).'/'.self::StateFilename;
 
-            self::$instance = new DaTesterExpandState();
+            self::$instance = new DAWSExpandState();
 
             if (file_exists($stateFilepath)) {
-                $stateHandle = SnapLibIOU::fopen($stateFilepath, 'r');
+                $stateHandle = SnapLibIOU::fopen($stateFilepath, 'rb');
 
-                SnapLibIOU::flock($stateHandle, LOCK_EX);
+               // RSR we shouldn't need read locks and it seems to screw up on some boxes anyway.. SnapLibIOU::flock($stateHandle, LOCK_EX);
 
                 $stateString = fread($stateHandle, filesize($stateFilepath));
 
@@ -31,7 +38,9 @@ class DUP_DupArchive_Expand_State extends DupArchiveExpandState
 
                 self::$instance->setFromData($data);
 
-                SnapLibIOU::flock($stateHandle, LOCK_UN);
+                self::$instance->fileRenames = (array)(self::$instance->fileRenames);
+
+           //     SnapLibIOU::flock($stateHandle, LOCK_UN);
 
                 SnapLibIOU::fclose($stateHandle);
             } else {
@@ -40,7 +49,7 @@ class DUP_DupArchive_Expand_State extends DupArchiveExpandState
         }
 
         if ($reset) {
-            self::$instance = new DaTesterExpandState();
+            self::$instance = new DAWSExpandState();
 
             self::$instance->reset();
         }
@@ -64,9 +73,14 @@ class DUP_DupArchive_Expand_State extends DupArchiveExpandState
         $this->fileWriteCount        = $data->fileWriteCount;
         $this->directoryWriteCount   = $data->directoryWriteCount;
         $this->working               = $data->working;
+        $this->filteredDirectories   = $data->filteredDirectories;
+        $this->filteredFiles         = $data->filteredFiles;
+        $this->fileRenames           = $data->fileRenames;
         $this->directoryModeOverride = $data->directoryModeOverride;
         $this->fileModeOverride      = $data->fileModeOverride;
+        $this->lastHeaderOffset      = $data->lastHeaderOffset;
         $this->throttleDelayInUs     = $data->throttleDelayInUs;
+        $this->timerEnabled          = $data->timerEnabled;
     }
 
     public function reset()
@@ -81,6 +95,8 @@ class DUP_DupArchive_Expand_State extends DupArchiveExpandState
 
         SnapLibIOU::fwrite($stateHandle, json_encode($this));
 
+        SnapLibIOU::flock($stateHandle, LOCK_UN);
+        
         SnapLibIOU::fclose($stateHandle);
     }
 
@@ -95,6 +111,8 @@ class DUP_DupArchive_Expand_State extends DupArchiveExpandState
         DupArchiveUtil::tlog("saving state");
         SnapLibIOU::fwrite($stateHandle, json_encode($this));
 
+        SnapLibIOU::flock($stateHandle, LOCK_UN);
+        
         SnapLibIOU::fclose($stateHandle);
     }
 
@@ -113,8 +131,13 @@ class DUP_DupArchive_Expand_State extends DupArchiveExpandState
         $this->timeSliceInSecs       = -1;
         $this->working               = false;
         $this->validateOnly          = false;
+        $this->filteredDirectories   = array();
+        $this->filteredFiles         = array();
+        $this->fileRenames           = array();
         $this->directoryModeOverride = -1;
         $this->fileModeOverride      = -1;
+        $this->lastHeaderOffset  = -1;
         $this->throttleDelayInUs     = 0;
+        $this->timerEnabled          = true;
     }
 }

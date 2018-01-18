@@ -8,9 +8,9 @@ defined("ABSPATH") or die("");
 
 require_once (DUPLICATOR_PRO_PLUGIN_PATH.'lib/dup_archive/classes/states/class.duparchive.state.create.php');
 
-class DUP_PRO_Dup_Archive_Create_State extends DupArchiveCreateState
+class DUP_DupArchive_Create_State extends DupArchiveCreateState
 {
-    /* @var $package DUP_PRO_Package */
+    /* @var $package DUP_Package */
     private $package;
 
     public function setPackage(&$package)
@@ -20,7 +20,7 @@ class DUP_PRO_Dup_Archive_Create_State extends DupArchiveCreateState
 
     public static function createFromPackage(&$package)
     {
-        $instance = new DUP_PRO_Dup_Archive_Create_State();
+        $instance = new DUP_Dup_Archive_Create_State();
 
         $instance->setPackage($package);
 
@@ -49,7 +49,7 @@ class DUP_PRO_Dup_Archive_Create_State extends DupArchiveCreateState
 
     public static function createNew($package, $archivePath, $basePath, $timeSliceInSecs, $isCompressed, $setArchiveOffsetToEndOfArchive)
     {
-        $instance = new DUP_PRO_Dup_Archive_Create_State();
+        $instance = new DUP_Dup_Archive_Create_State();
 
         $instance->setPackage($package);
 

@@ -57,6 +57,7 @@ final class DUP_PackageStatus
     const DBDONE   = 30;
     const ARCSTART = 40;
     const ARCDONE  = 50;
+	const ARCVALIDATION = 60;
     const COMPLETE = 100;
 
 }

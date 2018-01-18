@@ -5,9 +5,9 @@
  * and open the template in the editor.
  */
 
-require_once (DUPLICATOR_PRO_PLUGIN_PATH.'lib/dup_archive/classes/states/class.duparchive.state.expand.php');
+require_once(DUPARCHIVE_STATES_DIR.'/class.duparchive.state.expand.php');
 
-class DUP_DupArchive_Expand_State extends DupArchiveExpandState
+class DaTesterExpandState extends DupArchiveExpandState
 {
     public static $instance = null;
 
@@ -16,7 +16,7 @@ class DUP_DupArchive_Expand_State extends DupArchiveExpandState
     public static function getInstance($reset = false)
     {
         if ((self::$instance == null) && (!$reset)) {
-            $stateFilepath = DUPLICATOR_SSDIR_PATH.'/'.self::StateFilename;
+            $stateFilepath = dirname(__FILE__).'/'.self::StateFilename;
 
             self::$instance = new DaTesterExpandState();
 

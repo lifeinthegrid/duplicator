@@ -5,20 +5,26 @@
  * and open the template in the editor.
  */
 
-require_once (DUPLICATOR_PRO_PLUGIN_PATH.'lib/dup_archive/classes/states/class.duparchive.state.expand.php');
+require_once(DUPARCHIVE_STATES_DIR.'/class.duparchive.state.create.php');
 
-class DUP_DupArchive_Expand_State extends DupArchiveExpandState
+/**
+ * Description of BuildState
+ *
+ * @author Bob
+ */
+// Note: All this stuff needs to be stored in the processstate of the package
+class DaTesterCreateState extends DupArchiveCreateState
 {
     public static $instance = null;
 
-    const StateFilename = 'expandstate.json';
+    const StateFilename = 'createstate.json';
 
     public static function getInstance($reset = false)
     {
         if ((self::$instance == null) && (!$reset)) {
-            $stateFilepath = DUPLICATOR_SSDIR_PATH.'/'.self::StateFilename;
+            $stateFilepath = dirname(__FILE__).'/'.self::StateFilename;
 
-            self::$instance = new DaTesterExpandState();
+            self::$instance = new DaTesterCreateState();
 
             if (file_exists($stateFilepath)) {
                 $stateHandle = SnapLibIOU::fopen($stateFilepath, 'r');
@@ -38,9 +44,8 @@ class DUP_DupArchive_Expand_State extends DupArchiveExpandState
                 $reset = true;
             }
         }
-
         if ($reset) {
-            self::$instance = new DaTesterExpandState();
+            self::$instance = new DaTesterCreateState();
 
             self::$instance->reset();
         }
@@ -50,22 +55,18 @@ class DUP_DupArchive_Expand_State extends DupArchiveExpandState
 
     private function setFromData($data)
     {
-        $this->currentFileHeader     = $data->currentFileHeader;
-        $this->archiveHeader         = $data->archiveHeader;
         $this->archiveOffset         = $data->archiveOffset;
         $this->archivePath           = $data->archivePath;
         $this->basePath              = $data->basePath;
+        $this->globSize              = $data->globSize;
+        $this->currentFileIndex      = $data->currentFileIndex;
+        $this->currentDirectoryIndex = $data->currentDirectoryIndex;
         $this->currentFileOffset     = $data->currentFileOffset;
         $this->failures              = $data->failures;
         $this->isCompressed          = $data->isCompressed;
         $this->startTimestamp        = $data->startTimestamp;
         $this->timeSliceInSecs       = $data->timeSliceInSecs;
-        $this->validateOnly          = $data->validateOnly;
-        $this->fileWriteCount        = $data->fileWriteCount;
-        $this->directoryWriteCount   = $data->directoryWriteCount;
         $this->working               = $data->working;
-        $this->directoryModeOverride = $data->directoryModeOverride;
-        $this->fileModeOverride      = $data->fileModeOverride;
         $this->throttleDelayInUs     = $data->throttleDelayInUs;
     }
 
@@ -100,21 +101,20 @@ class DUP_DupArchive_Expand_State extends DupArchiveExpandState
 
     private function initMembers()
     {
-        $this->currentFileHeader = null;
-
         $this->archiveOffset         = 0;
-        $this->archiveHeader         = 0;
         $this->archivePath           = null;
         $this->basePath              = null;
+        $this->globSize              = -1;
+        $this->currentFileIndex      = 0;
         $this->currentFileOffset     = 0;
+        $this->currentDirectoryIndex = 0;
+        $this->fileWriteCount        = 0;
+        $this->directoryWriteCount   = 0;
         $this->failures              = array();
         $this->isCompressed          = false;
         $this->startTimestamp        = time();
         $this->timeSliceInSecs       = -1;
         $this->working               = false;
-        $this->validateOnly          = false;
-        $this->directoryModeOverride = -1;
-        $this->fileModeOverride      = -1;
         $this->throttleDelayInUs     = 0;
     }
 }
