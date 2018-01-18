@@ -309,7 +309,7 @@ jQuery(document).ready(function($) {
 	/*	----------------------------------------
 	*	METHOD: Performs Ajax post to create a new package
 	*	Timeout (10000000 = 166 minutes)  */
-	Duplicator.Pack.Create = function() {
+	Duplicator.Pack.CreateZip = function() {
 
 		var startTime;
 		var endTime;
@@ -370,6 +370,72 @@ jQuery(document).ready(function($) {
 		return false;
 	}
 
+	/*	----------------------------------------
+	*	METHOD: Performs Ajax post to create a new package
+	*	Timeout (10000000 = 166 minutes)  */
+	Duplicator.Pack.CreateZip = function() {
+
+		// RSR TODO: add constant calling into web service until it has completed.  Update percent along the way.
+
+//		var startTime;
+//		var endTime;
+//
+//		var data = {action : 'duplicator_package_build', nonce: '<?php echo $ajax_nonce; ?>'}
+//
+//		$.ajax({
+//			type: "POST",
+//			url: ajaxurl,
+//			dataType: "json",
+//			timeout: 10000000,
+//			data: data,
+//			beforeSend: function() {startTime = new Date().getTime();},
+//			complete:   function() {
+//				endTime = new Date().getTime();
+//				var millis = (endTime - startTime);
+//				var minutes = Math.floor(millis / 60000);
+//				var seconds = ((millis % 60000) / 1000).toFixed(0);
+//				var status = minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+//				$('#dup-msg-error-response-time span.data').html(status);
+//				$('#dup-create-area-nolink').hide();
+//				$('#dup-create-area-link').show();
+//			},
+//			success:    function(data) {
+//				$('#dup-progress-bar-area').hide();
+//				$('#dup-progress-area, #dup-msg-success').show(300);
+//
+//				var Pack = data.Package;
+//				var InstallURL = Pack.StoreURL + Pack.Installer.File + "?get=1&file=" + Pack.Installer.File;
+//				var ArchiveURL = Pack.StoreURL + Pack.Archive.File   + "?get=1";
+//
+//				$('#dup-btn-archive-size').append('&nbsp; (' + data.ZipSize + ')')
+//				$('#data-name-hash').text(Pack.NameHash || 'error read');
+//				$('#data-time').text(data.Runtime || 'unable to read time');
+//
+//				//Wire Up Downloads
+//				$('#dup-btn-installer').on("click", {name: InstallURL }, Duplicator.Pack.DownloadFile  );
+//				$('#dup-btn-archive').on("click",   {name: ArchiveURL }, Duplicator.Pack.DownloadFile  );
+//
+//				$('#dup-link-download-both').on("click",   function() {
+//					 window.open(InstallURL);
+//					 window.open(ArchiveURL);
+//
+//				});
+
+
+			},
+			error: function(data) {
+//				$('#dup-progress-bar-area').hide();
+//				$('#dup-progress-area, #dup-msg-error').show(200);
+//				var status = data.status + ' -' + data.statusText;
+//				var response = (data.responseText != undefined && data.responseText.trim().length > 1) ? data.responseText.trim() : 'No client side error - see package log file';
+//				$('#dup-msg-error-response-status span.data').html(status)
+//				$('#dup-msg-error-response-text span.data').html(response);
+//				console.log(data);
+			}
+		});
+		return false;
+	}
+
 	Duplicator.Pack.ToggleTwoPart = function() {
 		var $btn = $('#dup-two-part-btn');
 		if ($('#dup-two-part-check').is(':checked')) {
@@ -381,7 +447,11 @@ jQuery(document).ready(function($) {
 
 	//Page Init:
 	Duplicator.UI.AnimateProgressBar('dup-progress-bar');
-	Duplicator.Pack.Create();
 
+	<?php if(DUP_Settings::Get('archive_build_mode') == DUP_Archive_Build_Mode::ZipArchive):?>
+	Duplicator.Pack.CreateZip();
+	<?php else:?>
+	Duplicator.Pack.CreateDupArchive();
+	<?php endif; ?>
 });
 </script>

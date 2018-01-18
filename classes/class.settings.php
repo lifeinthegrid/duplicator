@@ -6,7 +6,7 @@ abstract class DUP_Archive_Build_Mode
 {
     const Unconfigured = -1;
     const Auto         = 0; // should no longer be used
-    const Shell_Exec   = 1;
+  //  const Shell_Exec   = 1;
     const ZipArchive   = 2;
     const DupArchive   = 3;
 
@@ -144,6 +144,9 @@ class DUP_Settings
 
 		//Flag for .htaccess file
 		$default['storage_htaccess_off'] = isset(self::$Data['storage_htaccess_off']) ? self::$Data['storage_htaccess_off'] : false;
+		
+		// Initial archive build mode
+		$default['archive_build_mode'] = isset(self::$Data['archive_build_mode']) ? self::$Data['archive_build_mode'] : DUP_Archive_Build_Mode::ZipArchive;
 		
 		return $default;
 	}

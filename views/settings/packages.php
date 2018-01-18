@@ -22,6 +22,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
 	
 	DUP_Settings::Set('last_updated', date('Y-m-d-H-i-s'));
     DUP_Settings::Set('package_zip_flush', isset($_POST['package_zip_flush']) ? "1" : "0");
+	DUP_Settings::Set('archive_build_mode', $_POST['archive_build_mode']);
 	DUP_Settings::Set('package_mysqldump', $mysqldump_enabled ? "1" : "0");
 	DUP_Settings::Set('package_phpdump_qrylimit', isset($_POST['package_phpdump_qrylimit']) ? $_POST['package_phpdump_qrylimit'] : "100");
 	if ($mysqldump_path_valid) {
@@ -42,7 +43,7 @@ $package_mysqldump_path = trim(DUP_Settings::Get('package_mysqldump_path'));
 $package_ui_created = is_numeric(DUP_Settings::Get('package_ui_created')) ? DUP_Settings::Get('package_ui_created') : 1;
 $mysqlDumpPath = DUP_DB::getMySqlDumpPath();
 $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
-
+$archive_build_mode = DUP_Settings::Get('archive_build_mode')
 ?>
 
 <style>
@@ -50,6 +51,7 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
     div.dup-feature-found {padding:10px 0 5px 0; color:green;}
     div.dup-feature-notfound {color:maroon; width:600px; line-height: 18px}
 	select#package_ui_created {font-family: monospace}
+	div.engine-radio {float: left; min-width: 100px}
 </style>
 
 <form id="dup-settings-form" action="<?php echo admin_url('admin.php?page=duplicator-settings&tab=package'); ?>" method="post">
@@ -204,6 +206,29 @@ $mysqlDumpFound = ($mysqlDumpPath) ? true : false;
 				</div><br/>
             </td>
         </tr>
+		<tr>
+			<th scope="row"><label><?php DUP_PRO_U::_e("Archive Engine"); ?></label></th>
+			<td>
+				<div class="engine-radio">
+					<input type="radio" name="archive_build_mode" id="archive_build_mode2"  value="<?php echo DUP_Archive_Build_Mode::ZipArchive; ?>" <?php echo ($archive_build_mode == DUP_Archive_Build_Mode::ZipArchive) ? 'checked="checked"' : ''; ?> />
+					<label for="archive_build_mode2"><?php DUP_PRO_U::_e("ZipArchive"); ?></label>
+				</div>
+
+				<div class="engine-radio">
+					<input type="radio" name="archive_build_mode" id="archive_build_mode3"  value="<?php echo DUP_Archive_Build_Mode::DupArchive; ?>" <?php echo ($archive_build_mode == DUP_Archive_Build_Mode::DupArchive) ? 'checked="checked"' : ''; ?> />
+					<label for="archive_build_mode3"><?php DUP_PRO_U::_e("DupArchive"); ?></label> &nbsp; &nbsp;
+				</div>
+
+				<br style="clear:both"/>
+
+				<!-- DUPARCHIVE -->
+				<div class="engine-sub-opts" id="engine-details-3" style="display:none">
+					<p class="description">
+						<?php _e('Creates a custom archive format (archive.daf).<br/>  This option is recommended for large sites or sites on constrained servers.', 'duplicator'); ?>
+					</p>
+				</div>
+			</td>
+		</tr>
         <tr>
             <th scope="row"><label><?php _e("Archive Flush", 'duplicator'); ?></label></th>
             <td>
