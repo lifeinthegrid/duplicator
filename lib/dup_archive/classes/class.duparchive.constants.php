@@ -9,11 +9,13 @@ class DupArchiveConstants
 {
     public static $DARoot;
     public static $LibRoot;
+	public static $MaxFilesizeForHashing;
 
     public static function init() {
 
         self::$LibRoot = dirname(__FILE__).'/../../';
         self::$DARoot = dirname(__FILE__).'/../';
+		self::$MaxFilesizeForHashing = 1000000000;
     }
 }
 

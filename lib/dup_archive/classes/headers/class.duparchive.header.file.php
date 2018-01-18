@@ -38,7 +38,14 @@ class DupArchiveFileHeader// extends HeaderBase
         $instance->mtime              = SnapLibIOU::filemtime($filepath);
         // end profile ok
 
-        $instance->hash = hash_file('crc32b', $filepath);
+
+		// RSR CONSIDER ADDING THIS IN THE FUTURE since hashing very large files takes way too long
+		if($instance->fileSize > DupArchiveConstants::MaxFilesizeForHashing) {
+			$instance->hash = false;
+		}
+		else {
+			$instance->hash = hash_file('crc32b', $filepath);
+		}
   
         $instance->relativePath       = $relativeFilePath;
         $instance->relativePathLength = strlen($instance->relativePath);

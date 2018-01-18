@@ -489,7 +489,8 @@ class DUP_Package
 
 
         DUP_PRO_Log::close();
-        return $this;
+
+        return $this->BuildProgress->has_completed();
     }
 
     /**
@@ -497,7 +498,7 @@ class DUP_Package
      *
      * @return obj Returns a DUP_Package object
      */
-    public function runBuild()
+    public function runZipBuild()
     {
         global $wp_version;
         global $wpdb;

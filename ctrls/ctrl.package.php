@@ -57,8 +57,8 @@ function duplicator_package_build() {
 	if (!is_readable(DUPLICATOR_SSDIR_PATH_TMP . "/{$Package->ScanFile}")) {
 		die("The scan result file was not found.  Please run the scan step before building the package.");
 	}
-	
-	$Package->runBuild();
+
+	$Package->runZipBuild();
 	
 	//JSON:Debug Response
 	//Pass = 1, Warn = 2, Fail = 3
@@ -68,6 +68,55 @@ function duplicator_package_build() {
 	$json['Runtime']  = $Package->Runtime;
 	$json['ExeSize']  = $Package->ExeSize;
 	$json['ZipSize']  = $Package->ZipSize;
+	$json_response = json_encode($json);
+
+	//Simulate a Host Build Interrupt
+	//die(0);
+
+	error_reporting($errLevel);
+    die($json_response);
+}
+
+/**
+ *  duplicator_package_build
+ *  Returns the package result status
+ *
+ *  @return json   JSON object of package results
+ */
+function duplicator_duparchive_package_build() {
+
+	DUP_Util::hasCapability('export');
+
+	check_ajax_referer( 'duplicator_duparchive_package_build', 'nonce');
+
+	header('Content-Type: application/json');
+
+	@set_time_limit(0);
+	$errLevel = error_reporting();
+	error_reporting(E_ERROR);
+	DUP_Util::initSnapshotDirectory();
+
+	$Package = DUP_Package::getActive();
+
+	if (!is_readable(DUPLICATOR_SSDIR_PATH_TMP . "/{$Package->ScanFile}")) {
+		die("The scan result file was not found.  Please run the scan step before building the package.");
+	}
+
+	$hasCompleted = $Package->runDupArchiveBuild();
+
+	//JSON:Debug Response
+	//Pass = 1, Warn = 2, Fail = 3, 4 = Not Done
+	$json = array();
+	if($hasCompleted) {
+		$json['Status']   = 1;
+		$json['Package']  = $Package;
+		$json['Runtime']  = $Package->Runtime;
+		$json['ExeSize']  = $Package->ExeSize;
+		$json['ZipSize']  = $Package->ZipSize;
+	} else {
+		$json['Status']   = 4;
+	}
+
 	$json_response = json_encode($json);
 
 	//Simulate a Host Build Interrupt
