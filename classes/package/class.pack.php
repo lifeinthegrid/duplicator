@@ -451,6 +451,7 @@ class DUP_Package
                 $this->setStatus(DUP_PackageStatus::ERROR);
 
                 $message = "Package creation failed.";
+                
                 DUP_Log::error($message);
                 DUP_Log::trace($message);
             } else {

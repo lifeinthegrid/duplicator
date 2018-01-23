@@ -96,9 +96,9 @@ function duplicator_duparchive_package_build() {
 	error_reporting(E_ERROR);
 	DUP_Util::initSnapshotDirectory();
 
-	$Package = DUP_Package::getActive();
+	$package = DUP_Package::getActive();
 
-	if (!is_readable(DUPLICATOR_SSDIR_PATH_TMP . "/{$Package->ScanFile}")) {
+	if (!is_readable(DUPLICATOR_SSDIR_PATH_TMP . "/{$package->ScanFile}")) {
 		die("The scan result file was not found.  Please run the scan step before building the package.");
 	}
 
@@ -109,11 +109,14 @@ function duplicator_duparchive_package_build() {
 	$json = array();
 
 	if($hasCompleted) {
+        $createState = DUP_DupArchive_Create_State::createFromPackage($Package);
+        
 		$json['Status']   = 1;
-		$json['Package']  = $Package;
-		$json['Runtime']  = $Package->Runtime;
-		$json['ExeSize']  = $Package->ExeSize;
-		$json['ZipSize']  = $Package->ZipSize;
+		$json['Package']  = $package;
+		$json['Runtime']  = $package->Runtime;
+		$json['ExeSize']  = $package->ExeSize;
+		$json['ZipSize']  = $package->ZipSize;
+        $json['Failures'] = $createState->failures; // ?or just do package->buildprogress->warnings?
 	} else {
 		$json['Status']   = 4;
 	}

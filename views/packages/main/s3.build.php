@@ -406,21 +406,21 @@ jQuery(document).ready(function($) {
 			//	console.log("pingDAWS:updating progress percent");
 			//	DUPX.updateProgressPercent(percent);
 
-				var criticalFailureText = DUPX.getCriticalFailureText(status.failures);
+				var criticalFailureText = DUPX.getCriticalFailureText(data.Failures);
 
-				if(status.failures.length > 0) {
-					console.log("pingDAWS:There are failures present. (" + status.failures.length) + ")";
+				if(data.Failures.length > 0) {
+					console.log("CreateDupArchive:There are failures present. (" + data.Failures.length) + ")";
 				}
 
 				if (criticalFailureText === null) {
-					console.log("pingDAWS:No critical failures");
+					console.log("CreateDupArchive:No critical failures");
 					if (status.is_done) {
 
-						console.log("pingDAWS:archive has completed");
+						console.log("CreateDupArchive:archive has completed");
 						if(status.failures.length > 0) {
 
 							console.log(status.failures);
-							var errorMessage = "pingDAWS:Problems during extract. These may be non-critical so continue with install.\n------\n";
+							var errorMessage = "CreateDupArchive:Problems during extract. These may be non-critical so continue with install.\n------\n";
 							var len = status.failures.length;
 
 							for(var j = 0; j < len; j++) {
@@ -432,9 +432,9 @@ jQuery(document).ready(function($) {
 						}
 
 						DUPX.clearDupArchiveStatusTimer();
-						console.log("pingDAWS:calling finalizeDupArchiveExtraction");
+						console.log("CreateDupArchive:calling finalizeDupArchiveExtraction");
 						DUPX.finalizeDupArchiveExtraction(status);
-						console.log("pingDAWS:after finalizeDupArchiveExtraction");
+						console.log("CreateDupArchive:after finalizeDupArchiveExtraction");
 
 						var dataJSON = JSON.stringify(data);
 
@@ -443,14 +443,6 @@ jQuery(document).ready(function($) {
 						$("#ajax-logging").val($("input:radio[name=logging]:checked").val());
 						$("#ajax-retain-config").val($("#retain_config").is(":checked") ? 1 : 0);
 						$("#ajax-json").val(escape(dataJSON));
-
-						<?php if($show_multisite) : ?>
-						if ($("#full-network").is(":checked")) {
-							$("#ajax-subsite-id").val(-1);
-						} else {
-							$("#ajax-subsite-id").val($('#subsite-id').val());
-						}
-						<?php endif; ?>
 
 						<?php if (!$GLOBALS['DUPX_DEBUG']) : ?>
 						setTimeout(function () {
@@ -509,4 +501,70 @@ jQuery(document).ready(function($) {
 	Duplicator.Pack.CreateDupArchive();
 	<?php endif; ?>
 });
+
+DUPX.clearDupArchiveStatusTimer = function ()
+{
+	if (DUPX.dupArchiveStatusIntervalID != -1) {
+		clearInterval(DUPX.dupArchiveStatusIntervalID);
+		DUPX.dupArchiveStatusIntervalID = -1;
+	}
+};
+
+
+DUPX.finalizeDupArchiveExtraction = function(dawsStatus)
+{
+	console.log("finalizeDupArchiveExtraction:start");
+	var $form = $('#s1-input-form');
+	$("#s1-input-form-extra-data").val(JSON.stringify(dawsStatus));
+	console.log("finalizeDupArchiveExtraction:after stringify dawsstatus");
+	var formData = $form.serialize();
+
+	$.ajax({
+		type: "POST",
+		timeout: 30000,
+		dataType: "json",
+		url: window.location.href,
+		data: formData,
+		beforeSend: function () {
+		//    DUPX.showProgressBar();
+		//    $form.hide();
+		//    $('#s1-result-form').show();
+		},
+		success: function (data) {
+			console.log("finalizeDupArchiveExtraction:success");
+//                var dataJSON = JSON.stringify(data);
+//                $("#ajax-json-debug").val(dataJSON);
+//                if (typeof (data) != 'undefined' && data.pass == 1) {
+//                    $("#ajax-logging").val($("input:radio[name=logging]:checked").val());
+//                    $("#ajax-retain-config").val($("#retain_config").is(":checked") ? 1 : 0);
+//                    $("#ajax-json").val(escape(dataJSON));
+//
+//                    <?php if($show_multisite) : ?>
+//                    if ($("#full-network").is(":checked")) {
+//                        $("#ajax-subsite-id").val(-1);
+//                    } else {
+//                        $("#ajax-subsite-id").val($('#subsite-id').val());
+//                    }
+//                    <?php endif; ?>
+//
+//                    <?php if (!$GLOBALS['DUPX_DEBUG']) : ?>
+//                    setTimeout(function () {
+//                        $('#s1-result-form').submit();
+//                    }, 500);
+//                    <?php endif; ?>
+//                    $('#progress-area').fadeOut(1000);
+//                } else {
+//                    $('#ajaxerr-data').html('Error Processing Step 1');
+//                    DUPX.hideProgressBar();
+//                }
+		},
+		error: function (xHr) {
+			console.log("finalizeDupArchiveExtraction:error");
+			console.log(xHr.statusText);
+			console.log(xHr.getAllResponseHeaders());
+			console.log(xHr.responseText);
+		   // DUPX.ajaxCommunicationFailed(xHr);
+		}
+	});
+};
 </script>
