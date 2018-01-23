@@ -406,7 +406,7 @@ class DUP_Package
         global $wp_version;
         global $wpdb;
         global $current_user;
-
+		
         /* @var $global DUP_PRO_Global_Entity */
         $global = DUP_PRO_Global_Entity::get_instance();
 
@@ -467,12 +467,12 @@ class DUP_Package
             $this->update();
             DUP_LOG::trace("Set db built for package $this->ID");
         } else if (!$this->build_progress->archive_built) {
-            $this->Archive->buildFile($this, $this->build_progress);
+            $this->Archive->build($this);
             $this->update();
         } else if (!$this->build_progress->installer_built) {
 
             // Note: Duparchive builds installer within the main build flow not here
-            $this->Installer->build($this, $this->build_progress);
+            $this->Installer->build($this);
             $this->update();
 
             if ($this->build_progress->failed) {

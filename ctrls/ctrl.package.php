@@ -107,6 +107,7 @@ function duplicator_duparchive_package_build() {
 	//JSON:Debug Response
 	//Pass = 1, Warn = 2, Fail = 3, 4 = Not Done
 	$json = array();
+
 	if($hasCompleted) {
 		$json['Status']   = 1;
 		$json['Package']  = $Package;
