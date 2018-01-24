@@ -29,7 +29,7 @@ class DUP_DupArchive_Create_State extends DupArchiveCreateState
         // RSR TODO: get from options table
 //        $instance->setPackage($package);
 //
-//        $buildProgress = $package->build_progress;
+//        $buildProgress = $package->BuildProgress;
 //
 //        $instance->archiveOffset         = $buildProgress->custom_data->archive_offset;
 //        $instance->archivePath           = $buildProgress->custom_data->archive_path;
@@ -61,7 +61,7 @@ class DUP_DupArchive_Create_State extends DupArchiveCreateState
      //   $instance->setPackage($package);
 
         /* @var $buildProgress DUP_PRO_Build_Progress */
-        $buildProgress = &$package->build_progress;
+        $buildProgress = &$package->BuildProgress;
 
         //$buildProgress->custom_data = new stdClass();
 
@@ -96,7 +96,7 @@ class DUP_DupArchive_Create_State extends DupArchiveCreateState
         $failure = parent::addFailure($type, $subject, $description, $isCritical);
 
         /* @var $buildProgress DUP_PRO_Build_Progress */
-        $buildProgress = &$this->package->build_progress;
+        $buildProgress = &$this->package->BuildProgress;
 
         if ($isCritical) {
             $buildProgress->failed = true;
@@ -107,21 +107,21 @@ class DUP_DupArchive_Create_State extends DupArchiveCreateState
 
     public function save()
     {
-//        $this->package->build_progress->custom_data->archive_path            = $this->archivePath;
-//        $this->package->build_progress->custom_data->time_slice_in_secs      = $this->timeSliceInSecs;
-//        $this->package->build_progress->custom_data->base_path               = $this->basePath;
-//        $this->package->build_progress->custom_data->glob_size               = $this->globSize;
-//        $this->package->build_progress->custom_data->archive_offset          = $this->archiveOffset;
-//        $this->package->build_progress->custom_data->failures                = $this->failures;
-//        $this->package->build_progress->custom_data->working                 = $this->working;
-//        $this->package->build_progress->custom_data->is_compressed           = $this->isCompressed;
-//        $this->package->build_progress->custom_data->current_file_offset     = $this->currentFileOffset;
-//        $this->package->build_progress->custom_data->throttle_delay_in_us    = $this->throttleDelayInUs;
-//        $this->package->build_progress->custom_data->skipped_directory_count = $this->skippedDirectoryCount;
-//        $this->package->build_progress->custom_data->skipped_file_count      = $this->skippedFileCount;
+//        $this->package->BuildProgress->custom_data->archive_path            = $this->archivePath;
+//        $this->package->BuildProgress->custom_data->time_slice_in_secs      = $this->timeSliceInSecs;
+//        $this->package->BuildProgress->custom_data->base_path               = $this->basePath;
+//        $this->package->BuildProgress->custom_data->glob_size               = $this->globSize;
+//        $this->package->BuildProgress->custom_data->archive_offset          = $this->archiveOffset;
+//        $this->package->BuildProgress->custom_data->failures                = $this->failures;
+//        $this->package->BuildProgress->custom_data->working                 = $this->working;
+//        $this->package->BuildProgress->custom_data->is_compressed           = $this->isCompressed;
+//        $this->package->BuildProgress->custom_data->current_file_offset     = $this->currentFileOffset;
+//        $this->package->BuildProgress->custom_data->throttle_delay_in_us    = $this->throttleDelayInUs;
+//        $this->package->BuildProgress->custom_data->skipped_directory_count = $this->skippedDirectoryCount;
+//        $this->package->BuildProgress->custom_data->skipped_file_count      = $this->skippedFileCount;
 //
-//        $this->package->build_progress->next_archive_dir_index  = $this->currentDirectoryIndex;
-//        $this->package->build_progress->next_archive_file_index = $this->currentFileIndex;
+//        $this->package->BuildProgress->next_archive_dir_index  = $this->currentDirectoryIndex;
+//        $this->package->BuildProgress->next_archive_file_index = $this->currentFileIndex;
 
 //        $this->package->save();
         

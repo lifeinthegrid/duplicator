@@ -44,11 +44,17 @@ class DUP_Log {
 		//$results = DUP_Util::byteSize(memory_get_usage(true)) . "\t" . $msg;
 		//@fwrite(self::$logFileHandle, "{$results} \n"); 
 	}
+    
+    // RSR TODO: Swap trace logic out for real trace later
+    static public function trace($msg) {
+        error_log($msg);
+    }
+        
 
 	static public function TraceObject($msg, $o) {
-		if(self::$debugging) {
-			self::Info($msg . ':' . print_r($o, true));
-		}
+		//if(self::$debugging) {
+			error_log($msg . ':' . print_r($o, true));
+		//}
 	}
 	
 	/**

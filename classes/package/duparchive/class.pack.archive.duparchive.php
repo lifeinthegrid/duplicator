@@ -139,7 +139,7 @@ class DUP_DupArchive
 					$createState                    = DUP_DupArchive_Create_State::createNew($archive->Package, $archivePath, $compressDir, self::WorkerTimeInSec, $buildProgress->current_build_compression, true);
                     $createState->throttleDelayInUs = 0; // RSR TODO
                 } else {
-                    DUP_LOG::TraceObject('Resumed build_progress', $archive->Package->build_progress);
+                    DUP_LOG::TraceObject('Resumed build_progress', $archive->Package->BuildProgress);
 
                     $createState = DUP_DupArchive_Create_State::createFromPackage($archive->Package);
                 }
@@ -168,7 +168,7 @@ class DUP_DupArchive
                     $createState->save();
 
                     DUP_LOG::TraceObject("Stored Create State", $createState);
-                    DUP_LOG::TraceObject('Stored build_progress', $archive->Package->build_progress);
+                    DUP_LOG::TraceObject('Stored build_progress', $archive->Package->BuildProgress);
 
                     if ($createState->working == false) {
                         // Want it to do the final cleanup work in an entirely new thread so return immediately

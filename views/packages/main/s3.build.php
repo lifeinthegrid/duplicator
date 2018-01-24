@@ -387,6 +387,7 @@ jQuery(document).ready(function($) {
 
 	request.action = "duplicator_duparchive_package_build";
 
+
 	$.ajax({
 		type: "POST",
 		timeout: <?php echo DUP_DupArchive::WorkerTimeInSec * 2000 ?>, // Double worker time and convert to ms
@@ -405,9 +406,10 @@ jQuery(document).ready(function($) {
         },
 		success: function (data) {
 
-			Duplicator.Pack.DupArchiveFailureCount = 0;
-			console.log("CreateDupArchive:AJAX success. Resetting failure count");
-
+		//	Duplicator.Pack.DupArchiveFailureCount = 0;
+			console.log("CreateDupArchive:AJAX success. Data equals:");
+            
+            console.log(data);
 			// DATA FIELDS
 			// archive_offset, archive_size, failures, file_index, is_done, timestamp
 
@@ -478,34 +480,40 @@ jQuery(document).ready(function($) {
 
 					errorString += criticalFailureText;
 
-					Duplicator.Pack.DAWSProcessingFailed(errorString);
+					Duplicator.Pack.DupArchiveProcessingFailed(errorString);
 				}
 			} else {
 				// data is null or Status is warn or fail
 				var errorString = 'Error Processing Step 1<br/>';
 				errorString += data.error;
 
-				Duplicator.Pack.HandleDAWSProcessingProblem(null, null, errorString, true);
+				Duplicator.Pack.HandleDupArchiveProblem(null, null, errorString, false);
 			}
 		},
 		error: function (xHr, textStatus) {
 			console.log('AJAX error. textStatus=');
 			console.log(textStatus);
-			Duplicator.Pack.HandleDupArchiveProblem(xHr, textStatus, true);
+			Duplicator.Pack.HandleDupArchiveProblem(xHr, textStatus,  '', true);
 		}
 	});
 	};
     
+    console.log('d');
     Duplicator.Pack.HandleDupArchiveProblem = function(xHr, textStatus, text, isCommunicationProblem)
     {
-        console.log('HandleDupArchiveProblem:" + isCommunicationProblem);
+        console.log("HandleDupArchiveProblem:Is communication problem" + isCommunicationProblem);
         Duplicator.Pack.DupArchiveFailureCount++;
 
         if(Duplicator.Pack.DupArchiveFailureCount <= Duplicator.Pack.DupArchiveMaxRetries) {
 
             console.log('!!!DUPARCHIVE (COMMUNICATION) FAILURE #' + Duplicator.Pack.DupArchiveFailureCount);
 
-            console.log(xHr);
+            if(isCommunicationProblem) {
+                console.log("xHr");
+                console.log(xHr);
+            } else {
+                console.log(text);
+            }
             
             // / rsr todo don’t worry about this right now Duplicator.Pack.DupArchiveThrottleDelay = 9;	// Equivalent of 'low' server throttling (ms)
             console.log('Relaunching in ' + Duplicator.Pack.DupArchiveRetryDelayInMs);
@@ -530,14 +538,16 @@ jQuery(document).ready(function($) {
         }
     };
         
+        console.log('e');
     Duplicator.Pack.DupArchiveProcessingFailed = function(errorText)
     {
         $('#dup-progress-bar-area').hide(); 
         $('#dup-progress-area, #dup-msg-error').show(200);
         $('#dup-msg-error-response-text span.data').html(errorText);
         console.log(data);
-    }
+    };
 
+console.log('f');
     Duplicator.Pack.GetCriticalFailureText = function(failures)
     {
         var retVal = null;
@@ -558,6 +568,7 @@ jQuery(document).ready(function($) {
         return retVal;
     };
 
+console.log('g');
 	Duplicator.Pack.ToggleTwoPart = function() {
 		var $btn = $('#dup-two-part-btn');
 		if ($('#dup-two-part-check').is(':checked')) {
@@ -567,6 +578,7 @@ jQuery(document).ready(function($) {
 		}
 	};
 
+console.log('h');
 	//Page Init:
 	Duplicator.UI.AnimateProgressBar('dup-progress-bar');
 

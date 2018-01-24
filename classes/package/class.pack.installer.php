@@ -71,7 +71,7 @@ class DUP_Installer
         $installer_contents = file_get_contents($template_filepath);
 
 		// RSR TODO: uncomment once duparchive integrated
-//        if ($this->Package->build_progress->current_build_mode == DUP_Archive_Build_Mode::DupArchive) {
+//        if ($this->Package->BuildProgress->current_build_mode == DUP_Archive_Build_Mode::DupArchive) {
 //            $mini_expander_string = file_get_contents($mini_expander_filepath);
 //
 //            if ($mini_expander_string === false) {
@@ -225,13 +225,13 @@ class DUP_Installer
             }
         }
 
-       // DUP_Log::Info("Add extra files: Current build mode = ".$package->build_progress->current_build_mode);
+       // DUP_Log::Info("Add extra files: Current build mode = ".$package->BuildProgress->current_build_mode);
 
 		// RSR TODO: add a build mode to settings. For now assume everything is ziparchive
-        //if ($package->build_progress->current_build_mode == DUP_Archive_Build_Mode::ZipArchive) {
-            $success = $this->add_extra_files_using_ziparchive($installer_filepath, $scan_filepath, $sql_filepath, $archive_filepath, $archive_config_filepath, $package->build_progress->current_build_compression);
-//        } else if ($package->build_progress->current_build_mode == DUP_Archive_Build_Mode::Shell_Exec) {
-//            $success = $this->add_extra_files_using_shellexec($archive_filepath, $installer_filepath, $scan_filepath, $sql_filepath, $archive_config_filepath, $package->build_progress->current_build_compression);
+        //if ($package->BuildProgress->current_build_mode == DUP_Archive_Build_Mode::ZipArchive) {
+            $success = $this->add_extra_files_using_ziparchive($installer_filepath, $scan_filepath, $sql_filepath, $archive_filepath, $archive_config_filepath, $package->BuildProgress->current_build_compression);
+//        } else if ($package->BuildProgress->current_build_mode == DUP_Archive_Build_Mode::Shell_Exec) {
+//            $success = $this->add_extra_files_using_shellexec($archive_filepath, $installer_filepath, $scan_filepath, $sql_filepath, $archive_config_filepath, $package->BuildProgress->current_build_compression);
 //            // Adding the shellexec fail text fix
 //            if(!$success) {
 ////                $error_text = __("Problem adding installer to archive", 'duplicator');
@@ -242,7 +242,7 @@ class DUP_Installer
 ////                $system_global->save();
 //				// TODO
 //            }
-//        } else if ($package->build_progress->current_build_mode == DUP_Archive_Build_Mode::DupArchive) {
+//        } else if ($package->BuildProgress->current_build_mode == DUP_Archive_Build_Mode::DupArchive) {
 //            $success = $this->add_extra_files_using_duparchive($installer_filepath, $scan_filepath, $sql_filepath, $archive_filepath, $archive_config_filepath);
 //        }
 

@@ -85,10 +85,11 @@ function duplicator_package_build() {
  */
 function duplicator_duparchive_package_build() {
 
-	DUP_Util::hasCapability('export');
+//rsr todo	DUP_Util::hasCapability('export');
 
-	check_ajax_referer( 'duplicator_duparchive_package_build', 'nonce');
+//rsr todo	check_ajax_referer( 'duplicator_duparchive_package_build', 'nonce');
 
+    DUP_LOG::Trace("call to duplicator_duparchive_package_build");
 	header('Content-Type: application/json');
 
 	@set_time_limit(0);
@@ -101,8 +102,12 @@ function duplicator_duparchive_package_build() {
 	if (!is_readable(DUPLICATOR_SSDIR_PATH_TMP . "/{$package->ScanFile}")) {
 		die("The scan result file was not found.  Please run the scan step before building the package.");
 	}
+    
+    if($package === null) {
+        die("There is no active package.");
+    }
 
-	$hasCompleted = $Package->runDupArchiveBuild();
+	$hasCompleted = $package->runDupArchiveBuild();
 
 	//JSON:Debug Response
 	//Pass = 1, Warn = 2, Fail = 3, 4 = Not Done

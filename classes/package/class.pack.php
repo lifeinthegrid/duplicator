@@ -261,7 +261,7 @@ class DUP_Package
         $sql_easy_size = DUP_PRO_U::byteSize($sql_temp_size);
         $sql_done_txt = DUP_PRO_U::tailFile($sql_temp_path, 3);
         if (!strstr($sql_done_txt, 'DUPLICATOR_PRO_MYSQLDUMP_EOF') || $sql_temp_size < 5120) {
-            $this->build_progress->failed = true;
+            $this->BuildProgress->failed = true;
             $this->update();
             $this->set_status(DUP_PRO_PackageStatus::ERROR);
 
@@ -281,8 +281,8 @@ class DUP_Package
         $exe_easy_size = DUP_Util::byteSize($exe_temp_size);
         $exe_done_txt = DUP_Util::tailFile($exe_temp_path, 10);
 
-        if (!strstr($exe_done_txt, 'DUPLICATOR_INSTALLER_EOF') && !$this->build_progress->failed) {
-            $this->build_progress->failed = true;
+        if (!strstr($exe_done_txt, 'DUPLICATOR_INSTALLER_EOF') && !$this->BuildProgress->failed) {
+            $this->BuildProgress->failed = true;
             $this->update();
             $this->set_status(DUP_PRO_PackageStatus::ERROR);
             DUP_Log::error("ERROR: Installer file not complete.  The end of file marker was not found.  Please try to re-create the package.", '', false);
@@ -297,7 +297,7 @@ class DUP_Package
         if ($this->Archive->file_count != -1) {
             $zip_easy_size = DUP_Util::byteSize($this->Archive->Size);
             if (!($this->Archive->Size)) {
-                $this->build_progress->failed = true;
+                $this->BuildProgress->failed = true;
                 $this->update();
                 $this->set_status(DUP_PRO_PackageStatus::ERROR);
                 DUP_Log::error("ERROR: The archive file contains no size.", "Archive Size: {$zip_easy_size}", false);
@@ -314,7 +314,7 @@ class DUP_Package
             } else {
                 $error_message = sprintf(__("Can't find Scanfile %s. Please ensure there no non-English characters in the package or schedule name.", 'duplicator'), $scan_filepath);
 
-                $this->build_progress->failed = true;
+                $this->BuildProgress->failed = true;
                 $this->set_status(DUP_PRO_PackageStatus::ERROR);
                 $this->update();
 
@@ -352,7 +352,7 @@ class DUP_Package
                 if (($straight_ratio < 0.90) || ($straight_ratio > 1.01)) {
                     // Has to exceed both the straight as well as the warning ratios
                     if (($warning_ratio < 0.90) || ($warning_ratio > 1.01)) {
-                        $this->build_progress->failed = true;
+                        $this->BuildProgress->failed = true;
                         $this->update();
                         $this->set_status(DUP_PRO_PackageStatus::ERROR);
 
@@ -407,12 +407,9 @@ class DUP_Package
         global $wpdb;
         global $current_user;
 		
-        /* @var $global DUP_PRO_Global_Entity */
-        $global = DUP_PRO_Global_Entity::get_instance();
+        $this->BuildProgress->start_timer();
 
-        $this->build_progress->start_timer();
-
-        if ($this->build_progress->initialized == false) {
+        if ($this->BuildProgress->initialized == false) {
 
             DUP_LOG::TraceObject("**** START OF BUILD ****", $this);
 
@@ -420,14 +417,14 @@ class DUP_Package
 
 			$this->insertNewPackageForBuilding('daf');
 
-            $this->build_progress->initialized = true;
+            $this->BuildProgress->initialized = true;
             $this->update();
         }
 
         // Note: Think that by putting has_completed() at top of check will prevent archive from continuing to build after a failure has hit.
-        if ($this->build_progress->has_completed()) {
+        if ($this->BuildProgress->has_completed()) {
 
-            if (!$this->build_progress->failed) {
+            if (!$this->BuildProgress->failed) {
                 // Only makees sense to perform build integrity check on completed archives
                 $this->runDupArchiveBuildIntegrityCheck();
             }
@@ -446,7 +443,7 @@ class DUP_Package
             DUP_PRO_Log::info($info);
             DUP_PRO_LOG::trace("Done package building");
 
-            if ($this->build_progress->failed) {
+            if ($this->BuildProgress->failed) {
 
                 $this->setStatus(DUP_PackageStatus::ERROR);
 
@@ -462,32 +459,25 @@ class DUP_Package
         }
 
         //START BUILD
-        else if (!$this->build_progress->database_script_built) {
+        else if (!$this->BuildProgress->database_script_built) {
             $this->Database->build($this);
-            $this->build_progress->database_script_built = true;
+            $this->BuildProgress->database_script_built = true;
             $this->update();
             DUP_LOG::trace("Set db built for package $this->ID");
-        } else if (!$this->build_progress->archive_built) {
+        } else if (!$this->BuildProgress->archive_built) {
             $this->Archive->build($this);
             $this->update();
-        } else if (!$this->build_progress->installer_built) {
+        } else if (!$this->BuildProgress->installer_built) {
 
             // Note: Duparchive builds installer within the main build flow not here
             $this->Installer->build($this);
             $this->update();
 
-            if ($this->build_progress->failed) {
+            if ($this->BuildProgress->failed) {
                 $this->set_status(DUP_PRO_PackageStatus::ERROR);
                 DUP_PRO_Log::error('ERROR: Problem adding installer to archive.');
             }
         }
-
-        if ($global->trace_profiler_on) {
-            $profileLogsEntity = DUP_PRO_Profile_Logs_Entity::get_instance();
-            $profileLogsEntity->profileLogs = DUP_PRO_Log::$profileLogs;
-            $profileLogsEntity->save();
-        }
-
 
         DUP_PRO_Log::close();
 
@@ -563,7 +553,7 @@ class DUP_Package
     }
 
 
-	private function writeLogHeader($php_max_memory, $php_max_time)
+	private function writeLogHeader()
 	{
 		$php_max_time   = @ini_get("max_execution_time");
         $php_max_memory = @ini_set('memory_limit', DUPLICATOR_PHP_MAX_MEMORY);
