@@ -111,14 +111,14 @@ function duplicator_duparchive_package_build() {
 	if($hasCompleted) {
         $createState = DUP_DupArchive_Create_State::createFromPackage($Package);
         
-		$json['Status']   = 1;
-		$json['Package']  = $package;
-		$json['Runtime']  = $package->Runtime;
-		$json['ExeSize']  = $package->ExeSize;
-		$json['ZipSize']  = $package->ZipSize;
-        $json['Failures'] = $createState->failures; // ?or just do package->buildprogress->warnings?
+		$json['status']   = 1;
+		$json['package']  = $package;
+		$json['runtime']  = $package->Runtime;
+		$json['exeSize']  = $package->ExeSize;
+		$json['archiveSize']  = $package->ZipSize;
+        $json['failures'] = $createState->failures; // ?or just do package->buildprogress->warnings?
 	} else {
-		$json['Status']   = 4;
+		$json['status']   = 4;
 	}
 
 	$json_response = json_encode($json);

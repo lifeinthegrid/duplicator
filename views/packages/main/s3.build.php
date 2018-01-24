@@ -306,6 +306,12 @@ TOOL BAR: STEPS -->
 
 <script>
 jQuery(document).ready(function($) {
+    
+    Duplicator.Pack.DupArchiveFailureCount = 0;
+    Duplicator.Pack.DupArchiveMaxRetries = 10;
+    Duplicator.Pack.DupArchiveRetryDelayInMs = 8000;
+    Duplicator.Pack.DupArchiveStartTime = new Date.getTime();
+
 	/*	----------------------------------------
 	*	METHOD: Performs Ajax post to create a new package
 	*	Timeout (10000000 = 166 minutes)  */
@@ -371,8 +377,7 @@ jQuery(document).ready(function($) {
 	}
 
 	/*	----------------------------------------
-	*	METHOD: Performs Ajax post to create a new package
-	*	Timeout (10000000 = 166 minutes)  */
+	*	METHOD: Performs Ajax post to create a new DupArchive-based package */
 	Duplicator.Pack.CreateDupArchive = function() {
 
 		// RSR TODO: add constant calling into web service until it has completed.  Update percent along the way.
@@ -383,105 +388,159 @@ jQuery(document).ready(function($) {
 
 	$.ajax({
 		type: "POST",
-		timeout: DUPX.DAWS.PingWorkerTimeInSec * 2000, // Double worker time and convert to ms
+		timeout: <?php echo DUP_DupArchive::WorkerTimeInSec * 2000 ?>, // Double worker time and convert to ms
 		dataType: "json",
-		url: DUPX.DAWS.Url,
+		url: ajaxurl,
 		data: JSON.stringify(request),
+        complete:   function() {
+            endTime = new Date().getTime();
+            var millis = (endTime - Duplicator.Pack.DupArchiveStartTime);
+            var minutes = Math.floor(millis / 60000);
+            var seconds = ((millis % 60000) / 1000).toFixed(0);
+            var status = minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+            $('#dup-msg-error-response-time span.data').html(status);
+            $('#dup-create-area-nolink').hide();
+            $('#dup-create-area-link').show();
+        },
 		success: function (data) {
 
-			DUPX.DAWS.FailureCount = 0;
+			Duplicator.Pack.DupArchiveFailureCount = 0;
 			console.log("CreateDupArchive:AJAX success. Resetting failure count");
 
 			// DATA FIELDS
 			// archive_offset, archive_size, failures, file_index, is_done, timestamp
 
-			if ((typeof(data) != 'undefined') && ((data.Status == 1) || (data.Status == 4)) ) {
+			if ((typeof(data) != 'undefined') && ((data.status == 1) || (data.status == 4)) ) {
 
 				// Status = 1 means complete, 4 means more to process
 				console.log("CreateDupArchive:Passed");
 
-				var status = data.status;
-				//var percent = Math.round((status.archive_offset * 100.0) / status.archive_size);
+                var criticalFailureText = Duplicator.Pack.GetCriticalFailureText(data.failures);
 
-			//	console.log("pingDAWS:updating progress percent");
-			//	DUPX.updateProgressPercent(percent);
-
-				var criticalFailureText = DUPX.getCriticalFailureText(data.Failures);
-
-				if(data.Failures.length > 0) {
-					console.log("CreateDupArchive:There are failures present. (" + data.Failures.length) + ")";
+				if(data.failures.length > 0) {
+					console.log("CreateDupArchive:There are failures present. (" + data.failures.length) + ")";
 				}
 
 				if (criticalFailureText === null) {
 					console.log("CreateDupArchive:No critical failures");
-					if (status.is_done) {
+					if (data.status == 1) {
+
+						// Don't stop for non-critical failures - just display those at the end TODO: put these in the log not popup
 
 						console.log("CreateDupArchive:archive has completed");
-						if(status.failures.length > 0) {
+						if(data.failures.length > 0) {
 
-							console.log(status.failures);
+							console.log(data.failures);
 							var errorMessage = "CreateDupArchive:Problems during extract. These may be non-critical so continue with install.\n------\n";
-							var len = status.failures.length;
+							var len = data.failures.length;
 
 							for(var j = 0; j < len; j++) {
-								failure = status.failures[j];
+								failure = data.failures[j];
 								errorMessage += failure.subject + ":" + failure.description + "\n";
 							}
 
 							alert(errorMessage);
 						}
 
-						DUPX.clearDupArchiveStatusTimer();
-						console.log("CreateDupArchive:calling finalizeDupArchiveExtraction");
-						DUPX.finalizeDupArchiveExtraction(status);
-						console.log("CreateDupArchive:after finalizeDupArchiveExtraction");
+                        $('#dup-progress-bar-area').hide(); 
+                        $('#dup-progress-area, #dup-msg-success').show(300);
 
-						var dataJSON = JSON.stringify(data);
+                        var pack = data.package;
+                        var installURL = pack.StoreURL + pack.Installer.File + "?get=1&file=" + pack.Installer.File;
+                        var archiveURL = pack.StoreURL + pack.Archive.File   + "?get=1";
 
-						// Don't stop for non-critical failures - just display those at the end
+                        $('#dup-btn-archive-size').append('&nbsp; (' + data.ArchiveSize + ')')
+                        $('#data-name-hash').text(pack.NameHash || 'error read');
+                        $('#data-time').text(data.Runtime || 'unable to read time');
 
-						$("#ajax-logging").val($("input:radio[name=logging]:checked").val());
-						$("#ajax-retain-config").val($("#retain_config").is(":checked") ? 1 : 0);
-						$("#ajax-json").val(escape(dataJSON));
+                        //Wire Up Downloads
+                        $('#dup-btn-installer').on("click", {name: installURL }, Duplicator.Pack.DownloadFile  );
+                        $('#dup-btn-archive').on("click",   {name: archiveURL }, Duplicator.Pack.DownloadFile  );
 
-						<?php if (!$GLOBALS['DUPX_DEBUG']) : ?>
-						setTimeout(function () {
-							$('#s1-result-form').submit();
-						}, 500);
-						<?php endif; ?>
-						$('#progress-area').fadeOut(1000);
-						//Failures aren't necessarily fatal - just record them for later display
+                        $('#dup-link-download-both').on("click",   function() {
+                             window.open(installURL);
+                             window.open(archiveURL);
 
-						$("#ajax-json-debug").val(dataJSON);
-					} else if (isClientSideKickoff) {
-						console.log('pingDAWS:Archive not completed so continue ping DAWS in 500');
-						setTimeout(DUPX.pingDAWS, 500);
+                        });
+
+					} else {
+                        // data.Status == 4
+						console.log('CreateDupArchive:Archive not completed so continue ping DAWS in 500');
+						setTimeout(Duplicator.Pack.CreateDupArchive, 500);
 					}
 				}
 				else {
-					console.log("pingDAWS:critical failures present");
+                
+					console.log("CreateDupArchive:critical failures present");
 					// If we get a critical failure it means it's something we can't recover from so no purpose in retrying, just fail immediately.
 					var errorString = 'Error Processing Step 1<br/>';
 
 					errorString += criticalFailureText;
 
-					DUPX.DAWSProcessingFailed(errorString);
+					Duplicator.Pack.DAWSProcessingFailed(errorString);
 				}
 			} else {
 				// data is null or Status is warn or fail
 				var errorString = 'Error Processing Step 1<br/>';
 				errorString += data.error;
 
-				DUPX.handleDAWSProcessingProblem(errorString, true);
+				Duplicator.Pack.HandleDAWSProcessingProblem(errorString, true);
 			}
 		},
 		error: function (xHr, textStatus) {
 			console.log('AJAX error. textStatus=');
 			console.log(textStatus);
-			DUPX.handleDAWSCommunicationProblem(xHr, true, textStatus, 'ping');
+			DUPX.HandleDAWSCommunicationProblem(xHr, textStatus, 'CreateDupArchive');
 		}
 	});
-	}
+	};
+    
+    Duplicator.Pack.HandleDupArchiveCommunicationProblem = function(xHr)
+    {
+        Duplicator.Pack.DupArchiveFailureCount++;
+
+        if(Duplicator.Pack.DupArchiveFailureCount <= Duplicator.Pack.DupArchiveMaxRetries) {
+
+            var callback = Duplicator.Pack.CreateDupArchive;
+
+            console.log('!!!PING FAILURE #' + Duplicator.Pack.DupArchiveFailureCount);
+
+            console.log(xHr);
+            // rsr todo don’t worry about this right now Duplicator.Pack.DupArchiveThrottleDelay = 9;	// Equivalent of 'low' server throttling (ms)
+            console.log('Relaunching in ' + Duplicator.Pack.DupArchiveRetryDelayInMs);
+            setTimeout(callback, Duplicator.Pack.DupArchiveRetryDelayInMs);
+        }
+        else {
+            console.log('Too many failures.');
+            $('#dup-progress-bar-area').hide(); 
+            $('#dup-progress-area, #dup-msg-error').show(200);
+            var status = data.status + ' -' + data.statusText;
+            var response = (data.responseText != undefined && data.responseText.trim().length > 1) ? data.responseText.trim() : 'No client side error - see package log file';
+            $('#dup-msg-error-response-status span.data').html(status)
+            $('#dup-msg-error-response-text span.data').html(response);
+            console.log(data);
+        }
+    };
+    
+    Duplicator.Pack.GetCriticalFailureText = function(failures)
+    {
+        var retVal = null;
+
+        if((failures !== null) && (typeof failures !== 'undefined')) {
+            var len = failures.length;
+
+            for(var j = 0; j < len; j++) {
+                failure = failures[j];
+
+                if(failure.isCritical) {
+                    retVal = failure.description;
+                    break;
+                }
+            }
+        }
+
+        return retVal;
+    };
 
 	Duplicator.Pack.ToggleTwoPart = function() {
 		var $btn = $('#dup-two-part-btn');
@@ -502,69 +561,4 @@ jQuery(document).ready(function($) {
 	<?php endif; ?>
 });
 
-DUPX.clearDupArchiveStatusTimer = function ()
-{
-	if (DUPX.dupArchiveStatusIntervalID != -1) {
-		clearInterval(DUPX.dupArchiveStatusIntervalID);
-		DUPX.dupArchiveStatusIntervalID = -1;
-	}
-};
-
-
-DUPX.finalizeDupArchiveExtraction = function(dawsStatus)
-{
-	console.log("finalizeDupArchiveExtraction:start");
-	var $form = $('#s1-input-form');
-	$("#s1-input-form-extra-data").val(JSON.stringify(dawsStatus));
-	console.log("finalizeDupArchiveExtraction:after stringify dawsstatus");
-	var formData = $form.serialize();
-
-	$.ajax({
-		type: "POST",
-		timeout: 30000,
-		dataType: "json",
-		url: window.location.href,
-		data: formData,
-		beforeSend: function () {
-		//    DUPX.showProgressBar();
-		//    $form.hide();
-		//    $('#s1-result-form').show();
-		},
-		success: function (data) {
-			console.log("finalizeDupArchiveExtraction:success");
-//                var dataJSON = JSON.stringify(data);
-//                $("#ajax-json-debug").val(dataJSON);
-//                if (typeof (data) != 'undefined' && data.pass == 1) {
-//                    $("#ajax-logging").val($("input:radio[name=logging]:checked").val());
-//                    $("#ajax-retain-config").val($("#retain_config").is(":checked") ? 1 : 0);
-//                    $("#ajax-json").val(escape(dataJSON));
-//
-//                    <?php if($show_multisite) : ?>
-//                    if ($("#full-network").is(":checked")) {
-//                        $("#ajax-subsite-id").val(-1);
-//                    } else {
-//                        $("#ajax-subsite-id").val($('#subsite-id').val());
-//                    }
-//                    <?php endif; ?>
-//
-//                    <?php if (!$GLOBALS['DUPX_DEBUG']) : ?>
-//                    setTimeout(function () {
-//                        $('#s1-result-form').submit();
-//                    }, 500);
-//                    <?php endif; ?>
-//                    $('#progress-area').fadeOut(1000);
-//                } else {
-//                    $('#ajaxerr-data').html('Error Processing Step 1');
-//                    DUPX.hideProgressBar();
-//                }
-		},
-		error: function (xHr) {
-			console.log("finalizeDupArchiveExtraction:error");
-			console.log(xHr.statusText);
-			console.log(xHr.getAllResponseHeaders());
-			console.log(xHr.responseText);
-		   // DUPX.ajaxCommunicationFailed(xHr);
-		}
-	});
-};
 </script>
