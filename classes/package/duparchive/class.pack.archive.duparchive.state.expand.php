@@ -5,7 +5,7 @@
  * and open the template in the editor.
  */
 
-require_once (DUPLICATOR_PRO_PLUGIN_PATH.'lib/dup_archive/classes/states/class.duparchive.state.expand.php');
+require_once (DUPLICATOR_PLUGIN_PATH.'lib/dup_archive/classes/states/class.duparchive.state.expand.php');
 
 class DUP_DupArchive_Expand_State extends DupArchiveExpandState
 {

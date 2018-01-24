@@ -3,6 +3,7 @@
 	if (! isset( $_POST['dup_form_opts_nonce_field'] ) || ! wp_verify_nonce( $_POST['dup_form_opts_nonce_field'], 'dup_form_opts' ) ) {
 		DUP_UI_Notice::redirect('admin.php?page=duplicator&tab=new1');
 	}
+    require_once (DUPLICATOR_PLUGIN_PATH.'classes/package/duparchive/class.pack.archive.duparchive.php');
 
 	$Package = DUP_Package::getActive();
 	$ajax_nonce	= wp_create_nonce('dup_package_build');
@@ -310,7 +311,7 @@ jQuery(document).ready(function($) {
     Duplicator.Pack.DupArchiveFailureCount = 0;
     Duplicator.Pack.DupArchiveMaxRetries = 10;
     Duplicator.Pack.DupArchiveRetryDelayInMs = 8000;
-    Duplicator.Pack.DupArchiveStartTime = new Date.getTime();
+    Duplicator.Pack.DupArchiveStartTime = new Date().getTime();
 
 	/*	----------------------------------------
 	*	METHOD: Performs Ajax post to create a new package
@@ -484,44 +485,59 @@ jQuery(document).ready(function($) {
 				var errorString = 'Error Processing Step 1<br/>';
 				errorString += data.error;
 
-				Duplicator.Pack.HandleDAWSProcessingProblem(errorString, true);
+				Duplicator.Pack.HandleDAWSProcessingProblem(null, null, errorString, true);
 			}
 		},
 		error: function (xHr, textStatus) {
 			console.log('AJAX error. textStatus=');
 			console.log(textStatus);
-			DUPX.HandleDAWSCommunicationProblem(xHr, textStatus, 'CreateDupArchive');
+			Duplicator.Pack.HandleDupArchiveProblem(xHr, textStatus, true);
 		}
 	});
 	};
     
-    Duplicator.Pack.HandleDupArchiveCommunicationProblem = function(xHr)
+    Duplicator.Pack.HandleDupArchiveProblem = function(xHr, textStatus, text, isCommunicationProblem)
     {
+        console.log('HandleDupArchiveProblem:" + isCommunicationProblem);
         Duplicator.Pack.DupArchiveFailureCount++;
 
         if(Duplicator.Pack.DupArchiveFailureCount <= Duplicator.Pack.DupArchiveMaxRetries) {
 
-            var callback = Duplicator.Pack.CreateDupArchive;
-
-            console.log('!!!PING FAILURE #' + Duplicator.Pack.DupArchiveFailureCount);
+            console.log('!!!DUPARCHIVE (COMMUNICATION) FAILURE #' + Duplicator.Pack.DupArchiveFailureCount);
 
             console.log(xHr);
-            // rsr todo don’t worry about this right now Duplicator.Pack.DupArchiveThrottleDelay = 9;	// Equivalent of 'low' server throttling (ms)
+            
+            // / rsr todo don’t worry about this right now Duplicator.Pack.DupArchiveThrottleDelay = 9;	// Equivalent of 'low' server throttling (ms)
             console.log('Relaunching in ' + Duplicator.Pack.DupArchiveRetryDelayInMs);
-            setTimeout(callback, Duplicator.Pack.DupArchiveRetryDelayInMs);
+            setTimeout(Duplicator.Pack.CreateDupArchive, Duplicator.Pack.DupArchiveRetryDelayInMs);
         }
         else {
             console.log('Too many failures.');
-            $('#dup-progress-bar-area').hide(); 
-            $('#dup-progress-area, #dup-msg-error').show(200);
-            var status = data.status + ' -' + data.statusText;
-            var response = (data.responseText != undefined && data.responseText.trim().length > 1) ? data.responseText.trim() : 'No client side error - see package log file';
-            $('#dup-msg-error-response-status span.data').html(status)
-            $('#dup-msg-error-response-text span.data').html(response);
+           
+            if(isCommunicationProblem) {
+                $('#dup-progress-bar-area').hide(); 
+                $('#dup-progress-area, #dup-msg-error').show(200); 
+                var status = data.status + ' -' + data.statusText;
+                var response = (data.responseText != undefined && data.responseText.trim().length > 1) ? data.responseText.trim() : 'No client side error - see package log file';
+                $('#dup-msg-error-response-status span.data').html(status)
+                $('#dup-msg-error-response-text span.data').html(response);
+            } else {
+                // Processing problem
+                 Duplicator.Pack.DupArchiveProcessingFailed(errorText);
+            }
+           
             console.log(data);
         }
     };
-    
+        
+    Duplicator.Pack.DupArchiveProcessingFailed = function(errorText)
+    {
+        $('#dup-progress-bar-area').hide(); 
+        $('#dup-progress-area, #dup-msg-error').show(200);
+        $('#dup-msg-error-response-text span.data').html(errorText);
+        console.log(data);
+    }
+
     Duplicator.Pack.GetCriticalFailureText = function(failures)
     {
         var retVal = null;

@@ -6,7 +6,7 @@ defined("ABSPATH") or die("");
  * and open the template in the editor.
  */
 
-require_once (DUPLICATOR_PRO_PLUGIN_PATH.'lib/dup_archive/classes/states/class.duparchive.state.create.php');
+require_once (DUPLICATOR_PLUGIN_PATH.'lib/dup_archive/classes/states/class.duparchive.state.create.php');
 
 class DUP_DupArchive_Create_State extends DupArchiveCreateState
 {

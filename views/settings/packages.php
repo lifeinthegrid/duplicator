@@ -207,16 +207,16 @@ $archive_build_mode = DUP_Settings::Get('archive_build_mode')
             </td>
         </tr>
 		<tr>
-			<th scope="row"><label><?php DUP_PRO_U::_e("Archive Engine"); ?></label></th>
+			<th scope="row"><label><?php _e('Archive Engine', 'duplicator'); ?></label></th>
 			<td>
 				<div class="engine-radio">
 					<input type="radio" name="archive_build_mode" id="archive_build_mode2"  value="<?php echo DUP_Archive_Build_Mode::ZipArchive; ?>" <?php echo ($archive_build_mode == DUP_Archive_Build_Mode::ZipArchive) ? 'checked="checked"' : ''; ?> />
-					<label for="archive_build_mode2"><?php DUP_PRO_U::_e("ZipArchive"); ?></label>
+					<label for="archive_build_mode2"><?php _e('ZipArchive', 'duplicator'); ?></label>
 				</div>
 
 				<div class="engine-radio">
 					<input type="radio" name="archive_build_mode" id="archive_build_mode3"  value="<?php echo DUP_Archive_Build_Mode::DupArchive; ?>" <?php echo ($archive_build_mode == DUP_Archive_Build_Mode::DupArchive) ? 'checked="checked"' : ''; ?> />
-					<label for="archive_build_mode3"><?php DUP_PRO_U::_e("DupArchive"); ?></label> &nbsp; &nbsp;
+					<label for="archive_build_mode3"><?php _e('DupArchive'); ?></label> &nbsp; &nbsp;
 				</div>
 
 				<br style="clear:both"/>
