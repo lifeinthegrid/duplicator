@@ -38,7 +38,7 @@ class DUP_Database
      *
      *  @return null
      */
-    public function build($package, $updateActive)
+    public function build($package)
     {
         try {
 

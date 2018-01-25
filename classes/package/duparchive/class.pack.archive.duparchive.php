@@ -135,7 +135,8 @@ class DUP_DupArchive
             }
 
             try {
-                if ($buildProgress->custom_data == null) {
+                // RSR TODO don’t use custom data
+             xx   if ($buildProgress->custom_data == null) {
 					$createState                    = DUP_DupArchive_Create_State::createNew($archive->Package, $archivePath, $compressDir, self::WorkerTimeInSec, $buildProgress->current_build_compression, true);
                     $createState->throttleDelayInUs = 0; // RSR TODO
                 } else {
