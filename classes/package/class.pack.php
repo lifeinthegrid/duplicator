@@ -203,7 +203,7 @@ class DUP_Package
     }
 
     // Saves the active package to the package table
-	private function save($extension)
+	public function save($extension)
 	{
         global $wpdb;
            
@@ -411,19 +411,12 @@ class DUP_Package
         global $current_user;
 		
         $this->BuildProgress->start_timer();
-
-        if($this->ID == 0) {
-            // It's an active package so get it into the packages table
-            $this->save('daf');
-        }
         
         DUP_Log::Trace('a');
         
         if ($this->BuildProgress->initialized == false) {
 
-             $this->save('daf');
-
-             DUP_Log::Trace('b');
+            DUP_Log::Trace('b');
        
             $timerStart = DUP_Util::getMicrotime();
 
@@ -474,7 +467,7 @@ class DUP_Package
         else if (!$this->BuildProgress->database_script_built) {
              DUP_Log::Trace('d');
        
-            $this->Database->build($this, true);
+            $this->Database->build($this);
             $this->BuildProgress->database_script_built = true;
             $this->update();
             DUP_LOG::Trace("Set db built for package");

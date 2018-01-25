@@ -15,6 +15,10 @@
 
 	$Package = new DUP_Package();
 	$Package->saveActive($_POST);
+
+    DUP_Settings::Set('active_package_id', -1);
+    DUP_Settings::Save();
+    
 	$Package = DUP_Package::getActive();
 	
 	$mysqldump_on	 = DUP_Settings::Get('package_mysqldump') && DUP_DB::getMySqlDumpPath();

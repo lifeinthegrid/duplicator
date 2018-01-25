@@ -148,6 +148,8 @@ class DUP_Settings
 		// Initial archive build mode
 		$default['archive_build_mode'] = isset(self::$Data['archive_build_mode']) ? self::$Data['archive_build_mode'] : DUP_Archive_Build_Mode::ZipArchive;
 		
+        $default['active_package_id'] = -1;
+        
 		return $default;
 	}
 }

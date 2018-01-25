@@ -98,13 +98,8 @@ class DUP_Database
             DUP_Log::Info("SQL RUNTIME: {$time_sum}");
 
             $this->Size = @filesize($this->dbStorePath);
-            
-            if($updateActive) {
-                $this->Package->setStatus(DUP_PackageStatus::DBDONE);
-            } else {
-                $this->Package->Status = DUP_PackageStatus::DBDONE;
-                $this->Package->update();
-            }
+
+            $this->Package->setStatus(DUP_PackageStatus::DBDONE);
         } catch (Exception $e) {
             DUP_Log::Error("Runtime error in DUP_Database::Build", "Exception: {$e}");
         }

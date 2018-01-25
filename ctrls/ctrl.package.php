@@ -99,8 +99,22 @@ function duplicator_duparchive_package_build() {
 	error_reporting(E_ERROR);
 	DUP_Util::initSnapshotDirectory();
 
-	$package = DUP_Package::getActive();
+    // The DupArchive build process always works on a saved package so the first time through save the active package to the package table. 
+    // After that, just retrieve it.
+    $active_package_id = DUP_Settings::Get('active_package_id');
+    
+    if($active_package_id == -1) { 
 
+        $package = DUP_Package::getActive();
+        
+        $package->save('daf');
+        
+        DUP_Settings::Set('active_package_id', $package->ID);
+    } else {
+ 
+        $package = DUP_Package::getByID($active_package_id);
+    }
+    
 	if (!is_readable(DUPLICATOR_SSDIR_PATH_TMP . "/{$package->ScanFile}")) {
 		die("The scan result file was not found.  Please run the scan step before building the package.");
 	}
@@ -115,7 +129,7 @@ function duplicator_duparchive_package_build() {
 	//Pass = 1, Warn = 2, Fail = 3, 4 = Not Done
 	$json = array();
 
-     $createState = DUP_DupArchive_Create_State::createFromPackage($package);
+     $createState = DUP_DupArchive_Create_State::load();
      $json['failures'] = $createState->failures; // ?or just do package->buildprogress->warnings?
      
 	if($hasCompleted) {
