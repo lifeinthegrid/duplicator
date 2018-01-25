@@ -4,6 +4,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/ctrls/ctrl.base.php');
 require_once(DUPLICATOR_PLUGIN_PATH . '/classes/utilities/class.u.scancheck.php');
 require_once(DUPLICATOR_PLUGIN_PATH . '/classes/utilities/class.u.json.php');
 require_once(DUPLICATOR_PLUGIN_PATH . '/classes/package/class.pack.php');
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/package/duparchive/class.pack.archive.duparchive.state.create.php');
 
 /**
  *  DUPLICATOR_PACKAGE_SCAN
@@ -114,19 +115,18 @@ function duplicator_duparchive_package_build() {
 	//Pass = 1, Warn = 2, Fail = 3, 4 = Not Done
 	$json = array();
 
+     $createState = DUP_DupArchive_Create_State::createFromPackage($package);
+     $json['failures'] = $createState->failures; // ?or just do package->buildprogress->warnings?
+     
 	if($hasCompleted) {
-         DUP_Log::Trace('has completed');
-       
-        $package->saveToPackageTable('daf');
-
-        $createState = DUP_DupArchive_Create_State::createFromPackage($package);
-        
+        DUP_Log::Trace('has completed');
+      
 		$json['status']   = 1;
 		$json['package']  = $package;
 		$json['runtime']  = $package->Runtime;
 		$json['exeSize']  = $package->ExeSize;
 		$json['archiveSize']  = $package->ZipSize;
-        $json['failures'] = $createState->failures; // ?or just do package->buildprogress->warnings?
+        
 	} else {
 		$json['status']   = 4;
 	}

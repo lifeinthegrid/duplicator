@@ -227,7 +227,7 @@ class DUP_Package
 
 		if ($this->ID != 0) {
 			DUP_LOG::Trace("ID non zero so setting to start");
-			$this->setStatus(DUP_PRO_PackageStatus::START);
+			$this->setStatus(DUP_PackageStatus::START);
 		} else {
 			DUP_LOG::Trace("ID IS zero so creating another package");
 			$results = $wpdb->insert($wpdb->base_prefix . "duplicator_packages", array(
@@ -253,20 +253,20 @@ class DUP_Package
         //INTEGRITY CHECKS
         //We should not rely on data set in the serlized object, we need to manually check each value
         //indepentantly to have a true integrity check.
-        DUP_PRO_Log::info("\n********************************************************************************");
-        DUP_PRO_Log::info("INTEGRITY CHECKS:");
-        DUP_PRO_Log::info("********************************************************************************");
+        DUP_Log::info("\n********************************************************************************");
+        DUP_Log::info("INTEGRITY CHECKS:");
+        DUP_Log::info("********************************************************************************");
 
         //------------------------
         //SQL CHECK:  File should be at minimum 5K.  A base WP install with only Create tables is about 9K
-        $sql_temp_path = DUP_PRO_U::safePath(DUPLICATOR_PRO_SSDIR_PATH_TMP . '/' . $this->Database->File);
+        $sql_temp_path = DUP_Util::safePath(DUPLICATOR_PRO_SSDIR_PATH_TMP . '/' . $this->Database->File);
         $sql_temp_size = @filesize($sql_temp_path);
-        $sql_easy_size = DUP_PRO_U::byteSize($sql_temp_size);
-        $sql_done_txt = DUP_PRO_U::tailFile($sql_temp_path, 3);
-        if (!strstr($sql_done_txt, 'DUPLICATOR_PRO_MYSQLDUMP_EOF') || $sql_temp_size < 5120) {
+        $sql_easy_size = DUP_Util::byteSize($sql_temp_size);
+        $sql_done_txt = DUP_Util::tailFile($sql_temp_path, 3);
+        if (!strstr($sql_done_txt, 'DUPLICATOR_MYSQLDUMP_EOF') || $sql_temp_size < 5120) {
             $this->BuildProgress->failed = true;
             $this->update();
-            $this->setStatus(DUP_PRO_PackageStatus::ERROR);
+            $this->setStatus(DUP_PackageStatus::ERROR);
 
             $error_text = "ERROR: SQL file not complete.  The file looks too small ($sql_temp_size bytes) or the end of file marker was not found.";
 
@@ -287,22 +287,22 @@ class DUP_Package
         if (!strstr($exe_done_txt, 'DUPLICATOR_INSTALLER_EOF') && !$this->BuildProgress->failed) {
             $this->BuildProgress->failed = true;
             $this->update();
-            $this->setStatus(DUP_PRO_PackageStatus::ERROR);
+            $this->setStatus(DUP_PackageStatus::ERROR);
             DUP_Log::error("ERROR: Installer file not complete.  The end of file marker was not found.  Please try to re-create the package.", '', false);
             return;
         }
-        DUP_PRO_Log::info("INSTALLER FILE: {$exe_easy_size}");
+        DUP_Log::info("INSTALLER FILE: {$exe_easy_size}");
 
         //------------------------
         //ARCHIVE CHECK:
-        DUP_PRO_LOG::trace("Archive file count is " . $this->Archive->file_count);
+        DUP_LOG::trace("Archive file count is " . $this->Archive->file_count);
 
         if ($this->Archive->file_count != -1) {
             $zip_easy_size = DUP_Util::byteSize($this->Archive->Size);
             if (!($this->Archive->Size)) {
                 $this->BuildProgress->failed = true;
                 $this->update();
-                $this->setStatus(DUP_PRO_PackageStatus::ERROR);
+                $this->setStatus(DUP_PackageStatus::ERROR);
                 DUP_Log::error("ERROR: The archive file contains no size.", "Archive Size: {$zip_easy_size}", false);
                 return;
             }
@@ -318,7 +318,7 @@ class DUP_Package
                 $error_message = sprintf(__("Can't find Scanfile %s. Please ensure there no non-English characters in the package or schedule name.", 'duplicator'), $scan_filepath);
 
                 $this->BuildProgress->failed = true;
-                $this->setStatus(DUP_PRO_PackageStatus::ERROR);
+                $this->setStatus(DUP_PackageStatus::ERROR);
                 $this->update();
 
                 DUP_Log::Error($error_message, '', false);
@@ -330,26 +330,26 @@ class DUP_Package
             $expected_filecount = $scanReport->ARC->UDirCount + $scanReport->ARC->UFileCount;
 
             DUP_Log::info("ARCHIVE FILE: {$zip_easy_size} ");
-            DUP_Log::info(sprintf(DUP_PRO_U::__('EXPECTED FILE/DIRECTORY COUNT: %1$s'), number_format($expected_filecount)));
-            DUP_Log::info(sprintf(DUP_PRO_U::__('ACTUAL FILE/DIRECTORY COUNT: %1$s'), number_format($this->Archive->file_count)));
+            DUP_Log::info(sprintf(__('EXPECTED FILE/DIRECTORY COUNT: %1$s', 'duplicator'), number_format($expected_filecount)));
+            DUP_Log::info(sprintf(__('ACTUAL FILE/DIRECTORY COUNT: %1$s', 'duplicator'), number_format($this->Archive->file_count)));
 
             $this->ExeSize = $exe_easy_size;
             $this->ZipSize = $zip_easy_size;
 
             /* ------- ZIP Filecount Check -------- */
             // Any zip of over 500 files should be within 2% - this is probably too loose but it will catch gross errors
-            DUP_PRO_LOG::trace("Expected filecount = $expected_filecount and archive filecount=" . $this->Archive->file_count);
+            DUP_LOG::trace("Expected filecount = $expected_filecount and archive filecount=" . $this->Archive->file_count);
 
             if ($expected_filecount > 500) {
                 $straight_ratio = (float) $expected_filecount / (float) $this->Archive->file_count;
 
 				$warning_count = $scanReport->ARC->WarnFileCount + $scanReport->ARC->WarnDirCount + $scanReport->ARC->UnreadableFileCount + $scanReport->ARC->UnreadableDirCount;
 
-                DUP_PRO_LOG::trace("Warn/unread counts) warnfile:{$scanReport->ARC->WarnFileCount} warndir:{$scanReport->ARC->WarnDirCount} unreadfile:{$scanReport->ARC->UnreadableFileCount} unreaddir:{$scanReport->ARC->UnreadableDirCount}");
+                DUP_LOG::trace("Warn/unread counts) warnfile:{$scanReport->ARC->WarnFileCount} warndir:{$scanReport->ARC->WarnDirCount} unreadfile:{$scanReport->ARC->UnreadableFileCount} unreaddir:{$scanReport->ARC->UnreadableDirCount}");
 
                 $warning_ratio = ((float) ($expected_filecount + $warning_count)) / (float) $this->Archive->file_count;
 
-                DUP_PRO_LOG::trace("Straight ratio is $straight_ratio and warning ratio is $warning_ratio. # Expected=$expected_filecount # Warning=$warning_count and #Archive File {$this->Archive->file_count}");
+                DUP_LOG::trace("Straight ratio is $straight_ratio and warning ratio is $warning_ratio. # Expected=$expected_filecount # Warning=$warning_count and #Archive File {$this->Archive->file_count}");
 
                 // Allow the real file count to exceed the expected by 10% but only allow 1% the other way
                 if (($straight_ratio < 0.90) || ($straight_ratio > 1.01)) {
@@ -357,7 +357,7 @@ class DUP_Package
                     if (($warning_ratio < 0.90) || ($warning_ratio > 1.01)) {
                         $this->BuildProgress->failed = true;
                         $this->update();
-                        $this->setStatus(DUP_PRO_PackageStatus::ERROR);
+                        $this->setStatus(DUP_PackageStatus::ERROR);
 
                         $archive_file_count = $this->Archive->file_count;
 
@@ -449,11 +449,11 @@ class DUP_Package
             $info = "\n********************************************************************************\n";
             $info .= "RECORD ID:[{$this->ID}]\n";
             $info .= "TOTAL PROCESS RUNTIME: {$timerSum}\n";
-            $info .= "PEAK PHP MEMORY USED: " . DUP_PRO_Server::getPHPMemory(true) . "\n";
+            $info .= "PEAK PHP MEMORY USED: " . DUP_Server::getPHPMemory(true) . "\n";
             $info .= "DONE PROCESSING => {$this->Name} " . @date("Y-m-d H:i:s") . "\n";
 
             DUP_Log::info($info);
-            DUP_PRO_LOG::trace("Done package building");
+            DUP_LOG::trace("Done package building");
 
             if ($this->BuildProgress->failed) {
 
@@ -673,8 +673,14 @@ class DUP_Package
 
         $wpdb->flush();
         $table = $wpdb->prefix."duplicator_packages";
-        $sql   = "UPDATE `{$table}` SET  status = {$status}, package = '{$packageObj}'	WHERE ID = {$this->ID}";
+        $sql   = "UPDATE `{$table}` SET  status = {$this->Status}, package = '{$packageObj}'	WHERE ID = {$this->ID}";
      
+    //    DUP_Log::Trace('-------------------------');
+      //  DUP_Log::Trace("status = {$this->Status}");
+        //DUP_Log::Trace("ID = {$this->ID}");
+       // DUP_Log::Trace($sql);
+       // DUP_Log::Trace('-------------------------');
+        
         $wpdb->query($sql);
     }
 
@@ -709,6 +715,8 @@ class DUP_Package
         if (!isset($status)) {
             DUP_Log::Error("Package SetStatus did not receive a proper code.");
         }
+        
+        $this->Status = $status;
 
         $this->update();
     }
