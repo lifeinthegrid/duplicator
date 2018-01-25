@@ -33,6 +33,7 @@ require_once("define.php");
 
 if (is_admin() == true) 
 {
+    
 	//Classes
     require_once 'classes/class.logging.php';
     require_once 'classes/class.settings.php';
@@ -120,6 +121,8 @@ if (is_admin() == true)
         //Logic has been added to uninstall.php
     }
 
+    error_log('request ' . print_r($_REQUEST, true));
+
 	/** ========================================================
 	 * ACTION HOOKS
      * =====================================================  */
@@ -134,6 +137,7 @@ if (is_admin() == true)
     add_action('wp_ajax_duplicator_package_build',				'duplicator_package_build');
     add_action('wp_ajax_duplicator_package_delete',				'duplicator_package_delete');
 	add_action('wp_ajax_duplicator_duparchive_package_build',	'duplicator_duparchive_package_build');
+    add_action('wp_ajax_nopriv_duplicator_duparchive_package_build',	'duplicator_duparchive_package_build');
 
 	$GLOBALS['CTRLS_DUP_CTRL_UI']		= new DUP_CTRL_UI();
 	$GLOBALS['CTRLS_DUP_CTRL_Tools']	= new DUP_CTRL_Tools();

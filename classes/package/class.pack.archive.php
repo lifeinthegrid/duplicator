@@ -108,7 +108,7 @@ class DUP_Archive
                     $filepath    = DUP_PRO_U::safePath("{$this->Package->StorePath}/{$this->File}");
                     $this->Size	 = @filesize($filepath);
                     $this->Package->set_status(DUP_PRO_PackageStatus::ARCDONE);
-                    DUP_LOG::trace("Done building archive");
+                    DUP_LOG::Trace("Done building archive");
                 }
             } else {
                 DUP_PRO_LOG::trace("Archive chunk done but package not completed yet");

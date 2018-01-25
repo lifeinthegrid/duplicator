@@ -52,7 +52,7 @@ class DUP_DupArchive
 
             DupArchiveEngine::init(new DUP_PRO_DupArchive_Logger());
 
-			DUP_Package::SafeTmpCleanup(true);
+			DUP_Package::safeTmpCleanup(true);
        
             $compressDir = rtrim(DUP_Util::safPath($archive->PackDir), '/');
             $sqlPath     = DUP_Util::safePath("{$archive->Package->StorePath}/{$archive->Package->Database->File}");
@@ -76,7 +76,7 @@ class DUP_DupArchive
                     $errorText = DUP_PRO_U::__("Scan file $scanFilepath is empty!");
                     $fixText = DUP_PRO_U::__("Click on \"Resolve This\" button to fix the JSON settings.");
 
-                    DUP_Log::trace($errorText);
+                    DUP_Log::Trace($errorText);
                     DUP_Log::error("$errorText **RECOMMENDATION:  $fixText.", '', false);
 
                     $buildProgress->failed = true;

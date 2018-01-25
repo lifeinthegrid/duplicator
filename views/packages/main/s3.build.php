@@ -383,9 +383,8 @@ jQuery(document).ready(function($) {
 
 		// RSR TODO: add constant calling into web service until it has completed.  Update percent along the way.
 	console.log('Duplicator.Pack.CreateDupArchive');
-	var request = new Object();
-
-	request.action = "duplicator_duparchive_package_build";
+    
+    var data = {action : 'duplicator_duparchive_package_build', nonce: '<?php echo $ajax_nonce; ?>'}
 
 
 	$.ajax({
@@ -393,7 +392,7 @@ jQuery(document).ready(function($) {
 		timeout: <?php echo DUP_DupArchive::WorkerTimeInSec * 2000 ?>, // Double worker time and convert to ms
 		dataType: "json",
 		url: ajaxurl,
-		data: JSON.stringify(request),
+		data: data,
         complete:   function() {
             endTime = new Date().getTime();
             var millis = (endTime - Duplicator.Pack.DupArchiveStartTime);
@@ -499,7 +498,7 @@ jQuery(document).ready(function($) {
 	};
     
     console.log('d');
-    Duplicator.Pack.HandleDupArchiveProblem = function(xHr, textStatus, text, isCommunicationProblem)
+    Duplicator.Pack.HandleDupArchiveProblem = function(xHr, textStatus, errorText, isCommunicationProblem)
     {
         console.log("HandleDupArchiveProblem:Is communication problem" + isCommunicationProblem);
         Duplicator.Pack.DupArchiveFailureCount++;
@@ -512,7 +511,7 @@ jQuery(document).ready(function($) {
                 console.log("xHr");
                 console.log(xHr);
             } else {
-                console.log(text);
+                console.log(errorText);
             }
             
             // / rsr todo don’t worry about this right now Duplicator.Pack.DupArchiveThrottleDelay = 9;	// Equivalent of 'low' server throttling (ms)

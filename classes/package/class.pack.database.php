@@ -38,7 +38,7 @@ class DUP_Database
      *
      *  @return null
      */
-    public function build($package)
+    public function build($package, $updateActive)
     {
         try {
 
@@ -98,7 +98,13 @@ class DUP_Database
             DUP_Log::Info("SQL RUNTIME: {$time_sum}");
 
             $this->Size = @filesize($this->dbStorePath);
-            $this->Package->setStatus(DUP_PackageStatus::DBDONE);
+            
+            if($updateActive) {
+                $this->Package->setStatus(DUP_PackageStatus::DBDONE);
+            } else {
+                $this->Package->Status = DUP_PackageStatus::DBDONE;
+                $this->Package->update();
+            }
         } catch (Exception $e) {
             DUP_Log::Error("Runtime error in DUP_Database::Build", "Exception: {$e}");
         }

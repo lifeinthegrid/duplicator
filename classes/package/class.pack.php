@@ -202,8 +202,11 @@ class DUP_Package
         return $report;
     }
 
-	private function insertNewPackageForBuilding($extension)
+    // Saves the active package to the package table
+	private function save($extension)
 	{
+        global $wpdb;
+           
 		$this->Archive->File = "{$this->NameHash}_archive.{$extension}";
 		$this->Installer->File = "{$this->NameHash}_installer.php";
 		$this->Database->File = "{$this->NameHash}_database.sql";
@@ -217,20 +220,20 @@ class DUP_Package
 		//CREATE DB RECORD
 		$packageObj = serialize($this);
 		if (!$packageObj) {
-			DUP_Log::Error("Unable to serialize pacakge object while building record.");
+			DUP_Log::Error("Unable to serialize package object while building record.");
 		}
 
 		$this->ID = $this->getHashKey($this->Hash);
 
 		if ($this->ID != 0) {
 			DUP_LOG::Trace("ID non zero so setting to start");
-			$this->set_status(DUP_PRO_PackageStatus::START);
+			$this->setStatus(DUP_PRO_PackageStatus::START);
 		} else {
 			DUP_LOG::Trace("ID IS zero so creating another package");
 			$results = $wpdb->insert($wpdb->base_prefix . "duplicator_packages", array(
 				'name' => $this->Name,
 				'hash' => $this->Hash,
-				'status' => DUP_PRO_PackageStatus::START,
+				'status' => DUP_PackageStatus::START,
 				'created' => current_time('mysql', get_option('gmt_offset', 1)),
 				'owner' => isset($current_user->user_login) ? $current_user->user_login : 'unknown',
 				'package' => $packageObj)
@@ -263,7 +266,7 @@ class DUP_Package
         if (!strstr($sql_done_txt, 'DUPLICATOR_PRO_MYSQLDUMP_EOF') || $sql_temp_size < 5120) {
             $this->BuildProgress->failed = true;
             $this->update();
-            $this->set_status(DUP_PRO_PackageStatus::ERROR);
+            $this->setStatus(DUP_PRO_PackageStatus::ERROR);
 
             $error_text = "ERROR: SQL file not complete.  The file looks too small ($sql_temp_size bytes) or the end of file marker was not found.";
 
@@ -284,7 +287,7 @@ class DUP_Package
         if (!strstr($exe_done_txt, 'DUPLICATOR_INSTALLER_EOF') && !$this->BuildProgress->failed) {
             $this->BuildProgress->failed = true;
             $this->update();
-            $this->set_status(DUP_PRO_PackageStatus::ERROR);
+            $this->setStatus(DUP_PRO_PackageStatus::ERROR);
             DUP_Log::error("ERROR: Installer file not complete.  The end of file marker was not found.  Please try to re-create the package.", '', false);
             return;
         }
@@ -299,7 +302,7 @@ class DUP_Package
             if (!($this->Archive->Size)) {
                 $this->BuildProgress->failed = true;
                 $this->update();
-                $this->set_status(DUP_PRO_PackageStatus::ERROR);
+                $this->setStatus(DUP_PRO_PackageStatus::ERROR);
                 DUP_Log::error("ERROR: The archive file contains no size.", "Archive Size: {$zip_easy_size}", false);
                 return;
             }
@@ -308,14 +311,14 @@ class DUP_Package
 
             $json = '';
 
-            DUP_LOG::trace("***********Does $scan_filepath exist?");
+            DUP_LOG::Trace("***********Does $scan_filepath exist?");
             if (file_exists($scan_filepath)) {
                 $json = file_get_contents($scan_filepath);
             } else {
                 $error_message = sprintf(__("Can't find Scanfile %s. Please ensure there no non-English characters in the package or schedule name.", 'duplicator'), $scan_filepath);
 
                 $this->BuildProgress->failed = true;
-                $this->set_status(DUP_PRO_PackageStatus::ERROR);
+                $this->setStatus(DUP_PRO_PackageStatus::ERROR);
                 $this->update();
 
                 DUP_Log::Error($error_message, '', false);
@@ -354,7 +357,7 @@ class DUP_Package
                     if (($warning_ratio < 0.90) || ($warning_ratio > 1.01)) {
                         $this->BuildProgress->failed = true;
                         $this->update();
-                        $this->set_status(DUP_PRO_PackageStatus::ERROR);
+                        $this->setStatus(DUP_PRO_PackageStatus::ERROR);
 
                         $archive_file_count = $this->Archive->file_count;
 
@@ -368,7 +371,7 @@ class DUP_Package
         }
     }
 
-	public static function SafeTmpCleanup($purge_temp_archives = false)
+	public static function safeTmpCleanup($purge_temp_archives = false)
     {
         if ($purge_temp_archives) {
             $dir = DUPLICATOR_SSDIR_PATH_TMP . "/*_archive.zip.*";
@@ -397,7 +400,7 @@ class DUP_Package
     }
 
 	/**
-     * Starts the package DupArchive progressive build process
+     * Starts the package DupArchive progressive build process - always assumed to only run off active package, NOT one in the package table
      *
      * @return obj Returns a DUP_Package object
      */
@@ -409,13 +412,20 @@ class DUP_Package
 		
         $this->BuildProgress->start_timer();
 
+        if($this->ID == 0) {
+            // It's an active package so get it into the packages table
+            $this->save('daf');
+        }
+        
+        DUP_Log::Trace('a');
+        
         if ($this->BuildProgress->initialized == false) {
 
-            DUP_LOG::TraceObject("**** START OF BUILD ****", $this);
+             $this->save('daf');
 
+             DUP_Log::Trace('b');
+       
             $timerStart = DUP_Util::getMicrotime();
-
-			$this->insertNewPackageForBuilding('daf');
 
             $this->BuildProgress->initialized = true;
             $this->update();
@@ -424,6 +434,8 @@ class DUP_Package
         // Note: Think that by putting has_completed() at top of check will prevent archive from continuing to build after a failure has hit.
         if ($this->BuildProgress->has_completed()) {
 
+             DUP_Log::Trace('c');
+       
             if (!$this->BuildProgress->failed) {
                 // Only makees sense to perform build integrity check on completed archives
                 $this->runDupArchiveBuildIntegrityCheck();
@@ -440,7 +452,7 @@ class DUP_Package
             $info .= "PEAK PHP MEMORY USED: " . DUP_PRO_Server::getPHPMemory(true) . "\n";
             $info .= "DONE PROCESSING => {$this->Name} " . @date("Y-m-d H:i:s") . "\n";
 
-            DUP_PRO_Log::info($info);
+            DUP_Log::info($info);
             DUP_PRO_LOG::trace("Done package building");
 
             if ($this->BuildProgress->failed) {
@@ -450,7 +462,7 @@ class DUP_Package
                 $message = "Package creation failed.";
                 
                 DUP_Log::error($message);
-                DUP_Log::trace($message);
+                DUP_Log::Trace($message);
             } else {
   
                 //File Cleanup
@@ -460,26 +472,34 @@ class DUP_Package
 
         //START BUILD
         else if (!$this->BuildProgress->database_script_built) {
-            $this->Database->build($this);
+             DUP_Log::Trace('d');
+       
+            $this->Database->build($this, true);
             $this->BuildProgress->database_script_built = true;
             $this->update();
-            DUP_LOG::trace("Set db built for package $this->ID");
+            DUP_LOG::Trace("Set db built for package");
         } else if (!$this->BuildProgress->archive_built) {
+             DUP_Log::Trace('e');
+       
             $this->Archive->build($this);
             $this->update();
         } else if (!$this->BuildProgress->installer_built) {
 
+             DUP_Log::Trace('f');
+       
             // Note: Duparchive builds installer within the main build flow not here
             $this->Installer->build($this);
             $this->update();
 
             if ($this->BuildProgress->failed) {
-                $this->set_status(DUP_PRO_PackageStatus::ERROR);
-                DUP_PRO_Log::error('ERROR: Problem adding installer to archive.');
+            //    $this->setStatus(DUP_PRO_PackageStatus::ERROR);
+                $this->Status = DUP_PackageStatus::ERROR;
+                $this->update();
+                DUP_Log::error('ERROR: Problem adding installer to archive.');
             }
         }
 
-        DUP_PRO_Log::close();
+        DUP_Log::close();
 
         return $this->BuildProgress->has_completed();
     }
@@ -497,7 +517,6 @@ class DUP_Package
 
         $timerStart = DUP_Util::getMicrotime();
 
-        $this->insertNewPackageForBuilding('zip');
 
         //START BUILD
         //PHPs serialze method will return the object, but the ID above is not passed
@@ -642,6 +661,23 @@ class DUP_Package
         }
     }
 
+    public function update()
+    {
+        global $wpdb;
+
+        $packageObj = serialize($this);
+
+        if (!$packageObj) {
+            DUP_Log::Error("Package SetStatus was unable to serialize package object while updating record.");
+        }
+
+        $wpdb->flush();
+        $table = $wpdb->prefix."duplicator_packages";
+        $sql   = "UPDATE `{$table}` SET  status = {$status}, package = '{$packageObj}'	WHERE ID = {$this->ID}";
+     
+        $wpdb->query($sql);
+    }
+
     /**
      * Save any property of this class through reflection
      *
@@ -670,22 +706,11 @@ class DUP_Package
      */
     public function setStatus($status)
     {
-        global $wpdb;
-
-        $packageObj = serialize($this);
-
         if (!isset($status)) {
             DUP_Log::Error("Package SetStatus did not receive a proper code.");
         }
 
-        if (!$packageObj) {
-            DUP_Log::Error("Package SetStatus was unable to serialize package object while updating record.");
-        }
-
-        $wpdb->flush();
-        $table = $wpdb->prefix."duplicator_packages";
-        $sql   = "UPDATE `{$table}` SET  status = {$status}, package = '{$packageObj}'	WHERE ID = {$this->ID}";
-        $wpdb->query($sql);
+        $this->update();
     }
 
     /**

@@ -46,7 +46,7 @@ class DUP_Log {
 	}
     
     // RSR TODO: Swap trace logic out for real trace later
-    static public function trace($msg) {
+    static public function Trace($msg) {
         error_log($msg);
     }
         

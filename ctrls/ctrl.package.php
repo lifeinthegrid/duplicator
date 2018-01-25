@@ -89,6 +89,7 @@ function duplicator_duparchive_package_build() {
 
 //rsr todo	check_ajax_referer( 'duplicator_duparchive_package_build', 'nonce');
 
+    error_log('blb');
     DUP_LOG::Trace("call to duplicator_duparchive_package_build");
 	header('Content-Type: application/json');
 
@@ -114,7 +115,11 @@ function duplicator_duparchive_package_build() {
 	$json = array();
 
 	if($hasCompleted) {
-        $createState = DUP_DupArchive_Create_State::createFromPackage($Package);
+         DUP_Log::Trace('has completed');
+       
+        $package->saveToPackageTable('daf');
+
+        $createState = DUP_DupArchive_Create_State::createFromPackage($package);
         
 		$json['status']   = 1;
 		$json['package']  = $package;
