@@ -108,10 +108,15 @@ function duplicator_duparchive_package_build() {
         $package = DUP_Package::getActive();
         
         $package->save('daf');
-        
+
+		DUP_Log::TraceObject("saving active package as new id={$package->ID}", package);
+
         DUP_Settings::Set('active_package_id', $package->ID);
+
+		DUP_Settings::Save();
     } else {
- 
+
+		DUP_Log::TraceObject("getting active package by id {$active_package_id}", package);
         $package = DUP_Package::getByID($active_package_id);
     }
     
@@ -130,7 +135,7 @@ function duplicator_duparchive_package_build() {
 	$json = array();
 
      $createState = DUP_DupArchive_Create_State::get_instance();
-     $json['failures'] = $createState->failures; // ?or just do package->buildprogress->warnings?
+     $json['failures'] = ($createState->failures == null) ? array() : $createState->failures; // ?or just do package->buildprogress->warnings?
      
 	if($hasCompleted) {
         DUP_Log::Trace('has completed');

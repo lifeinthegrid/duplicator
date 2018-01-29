@@ -52,6 +52,7 @@ final class DUP_PackageStatus
     }
 
 	const ERROR = -1;
+	const CREATED  = 0;
     const START    = 10;
     const DBSTART  = 20;
     const DBDONE   = 30;
@@ -124,6 +125,7 @@ class DUP_Package
         $this->Archive   = new DUP_Archive($this);
         $this->Installer = new DUP_Installer($this);
 		$this->BuildProgress = new DUP_Build_Progress();
+		$this->Status = DUP_PackageStatus::CREATED;
     }
 
     /**
@@ -421,6 +423,7 @@ class DUP_Package
             $timerStart = DUP_Util::getMicrotime();
 
             $this->BuildProgress->initialized = true;
+			
             $this->update();
         }
 
@@ -485,7 +488,6 @@ class DUP_Package
             $this->update();
 
             if ($this->BuildProgress->failed) {
-            //    $this->setStatus(DUP_PRO_PackageStatus::ERROR);
                 $this->Status = DUP_PackageStatus::ERROR;
                 $this->update();
                 DUP_Log::error('ERROR: Problem adding installer to archive.');
@@ -668,11 +670,12 @@ class DUP_Package
         $table = $wpdb->prefix."duplicator_packages";
         $sql   = "UPDATE `{$table}` SET  status = {$this->Status}, package = '{$packageObj}'	WHERE ID = {$this->ID}";
      
-    //    DUP_Log::Trace('-------------------------');
-      //  DUP_Log::Trace("status = {$this->Status}");
-        //DUP_Log::Trace("ID = {$this->ID}");
-       // DUP_Log::Trace($sql);
-       // DUP_Log::Trace('-------------------------');
+        DUP_Log::Trace('-------------------------');
+	//	DUP_Log::TraceObject('package object', $this);
+        DUP_Log::Trace("status = {$this->Status}");
+        DUP_Log::Trace("ID = {$this->ID}");
+        DUP_Log::Trace($sql);
+        DUP_Log::Trace('-------------------------');
         
         $wpdb->query($sql);
     }

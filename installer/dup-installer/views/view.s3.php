@@ -145,13 +145,6 @@ VIEW: STEP 3- INPUT -->
 		<!-- SCAN OPTIONS -->
 		<div class="hdr-sub3">Scan Options</div>
 		<table  class="s3-opts">
-			<tr style="display: <?php echo $empty_schedule_display; ?>">
-				<td>Cleanup:</td>
-				<td>
-					<input type="checkbox" name="empty_schedule_storage" id="empty_schedule_storage" value="1" checked />
-					<label for="empty_schedule_storage" style="font-weight: normal">Remove schedules and storage endpoints</label>
-				</td>
-			</tr>
 			<tr>
 				<td style="width:105px">Site URL:</td>
 				<td style="white-space: nowrap">

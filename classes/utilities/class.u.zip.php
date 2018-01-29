@@ -147,15 +147,8 @@ class DUP_Zip_U
     }
 
     public static function addFileToZipArchive(&$zipArchive, $filepath, $localName, $isCompressed)
-    {
-       // $global = DUP_PRO_Global_Entity::get_instance();
-
+    {    
 		$added = $zipArchive->addFile($filepath, $localName);
-    
-//		if(DUP_PRO_U::$PHP7_plus && !$isCompressed)
-//		{
-//            $zipArchive->setCompressionName($localName, ZipArchive::CM_STORE);
-//        }
 
         return $added;
     }

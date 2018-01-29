@@ -545,24 +545,6 @@ if (($GLOBALS['DUPX_AC']->mu_mode == 1) || ($GLOBALS['DUPX_AC']->mu_mode == 2)) 
 	}
 }
 
-//SCHEDULE STORAGE CLEANUP
-if (($_POST['empty_schedule_storage']) == true || (DUPX_U::$on_php_53_plus == false)) {
-
-	$dbdelete_count	 = 0;
-	$dbdelete_count1 = 0;
-	$dbdelete_count2 = 0;
-
-	@mysqli_query($dbh, "DELETE FROM `{$GLOBALS['DUPX_AC']->wp_tableprefix}duplicator_pro_entities` WHERE `type` = 'DUP_PRO_Storage_Entity'");
-	$dbdelete_count1 = @mysqli_affected_rows($dbh);
-
-	@mysqli_query($dbh, "DELETE FROM `{$GLOBALS['DUPX_AC']->wp_tableprefix}duplicator_pro_entities` WHERE `type` = 'DUP_PRO_Schedule_Entity'");
-	$dbdelete_count2 = @mysqli_affected_rows($dbh);
-
-	$dbdelete_count = (abs($dbdelete_count1) + abs($dbdelete_count2));
-	DUPX_Log::info("- Removed '{$dbdelete_count}' schedule storage items");
-}
-
-
 //===============================================
 //NOTICES TESTS
 //===============================================

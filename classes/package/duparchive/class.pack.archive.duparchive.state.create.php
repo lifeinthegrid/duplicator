@@ -60,7 +60,7 @@ class DUP_DupArchive_Create_State extends DupArchiveCreateState
 
      //   $instance->setPackage($package);
 
-        /* @var $buildProgress DUP_PRO_Build_Progress */
+        /* @var $buildProgress DUP_Build_Progress */
         $buildProgress = &$package->BuildProgress;
 
         //$buildProgress->custom_data = new stdClass();
@@ -93,7 +93,7 @@ class DUP_DupArchive_Create_State extends DupArchiveCreateState
     {
         $failure = parent::addFailure($type, $subject, $description, $isCritical);
 
-        /* @var $buildProgress DUP_PRO_Build_Progress */
+        /* @var $buildProgress DUP_Build_Progress */
         $buildProgress = &$this->package->BuildProgress;
 
         if ($isCritical) {

@@ -46,11 +46,9 @@ class DUP_DupArchive
                 $archive->Package->update();
             }
 
-            /* @var $archive DUP_PRO_Archive */
-            /* @var $buildProgress DUP_PRO_Build_Progress */
             $done   = false;
 
-            DupArchiveEngine::init(new DUP_PRO_DupArchive_Logger());
+            DupArchiveEngine::init(new DUP_DupArchive_Logger());
 
 			DUP_Package::safeTmpCleanup(true);
        
@@ -73,8 +71,8 @@ class DUP_DupArchive
                 $json = file_get_contents($scanFilepath);
 
                 if (empty($json)) {
-                    $errorText = DUP_PRO_U::__("Scan file $scanFilepath is empty!");
-                    $fixText = DUP_PRO_U::__("Click on \"Resolve This\" button to fix the JSON settings.");
+                    $errorText = __("Scan file $scanFilepath is empty!", 'duplicator');
+                    $fixText = __("Click on \"Resolve This\" button to fix the JSON settings.", 'duplicator');
 
                     DUP_Log::Trace($errorText);
                     DUP_Log::error("$errorText **RECOMMENDATION:  $fixText.", '', false);
@@ -83,10 +81,10 @@ class DUP_DupArchive
                     return true;
                 }
             } else {
-                DUP_PRO_Log::trace("**** scan file $scanFilepath doesn't exist!!");
-                $errorMessage = sprintf(DUP_PRO_U::__("ERROR: Can't find Scanfile %s. Please ensure there no non-English characters in the package or schedule name."), $scanFilepath);
+                DUP_Log::trace("**** scan file $scanFilepath doesn't exist!!");
+                $errorMessage = sprintf(__("ERROR: Can't find Scanfile %s. Please ensure there no non-English characters in the package or schedule name.", 'duplicator'), $scanFilepath);
 
-                DUP_PRO_Log::error($errorMessage, '', false);
+                DUP_Log::error($errorMessage, '', false);
 
                 $buildProgress->failed = true;
                 return true;
@@ -176,9 +174,9 @@ class DUP_DupArchive
                     }
                 }
             } catch (Exception $ex) {
-                $message = DUP_PRO_U::__('Problem adding items to archive.').' '.$ex->getMessage();
+                $message = __('Problem adding items to archive.', 'duplicator').' '.$ex->getMessage();
 
-                DUP_Log::Error(DUP_PRO_U::__('Problems adding items to archive.'), $message, false);
+                DUP_Log::Error(__('Problems adding items to archive.', 'duplicator'), $message, false);
                 DUP_Log::TraceObject($message." EXCEPTION:", $ex);
                 $buildProgress->failed = true;
                 return true;
@@ -192,7 +190,7 @@ class DUP_DupArchive
 
                     $package->Installer->build($package, $buildProgress);
 
-                    DUP_PRO_Log::traceObject("INSTALLER", $package->Installer);
+                    DUP_Log::traceObject("INSTALLER", $package->Installer);
 
 					$expandState = DUP_DupArchive_Expand_State::getInstance(true);
                     
@@ -233,7 +231,7 @@ class DUP_DupArchive
                         $totalFileCount = count($scanReport->ARC->Files);
                         $archiveSize    = @filesize($expandState->archivePath);
 
-                        $archive->Package->Status = SnapLibUtil::getWorkPercent(DUP_PRO_PackageStatus::ARCVALIDATION, DUP_PRO_PackageStatus::ARCDONE, $archiveSize,
+                        $archive->Package->Status = SnapLibUtil::getWorkPercent(DUP_PackageStatus::ARCVALIDATION, DUP_PackageStatus::ARCDONE, $archiveSize,
                                 $expandState->archiveOffset);
                     } catch (Exception $ex) {
                         DUP_Log::TraceError('Exception:'.$ex->getMessage().':'.$ex->getTraceAsString());
@@ -262,7 +260,7 @@ class DUP_DupArchive
                         DUP_LOG::traceObject("create state", $createState);
 
                         $archiveFileSize = @filesize($archivePath);
-                        DUP_Log::info("COMPRESSED SIZE: ".DUP_PRO_U::byteSize($archiveFileSize));
+                        DUP_Log::info("COMPRESSED SIZE: ".DUP_Util::byteSize($archiveFileSize));
                         DUP_Log::info("ARCHIVE RUNTIME: {$timerAllSum}");
                         DUP_Log::info("MEMORY STACK: ".DUP_Server::getPHPMemory());
                         DUP_Log::info("CREATE WARNINGS: ".$createState->getFailureSummary(false, true));
@@ -280,7 +278,7 @@ class DUP_DupArchive
             }
         } catch (Exception $ex) {
             // Have to have a catchall since the main system that calls this function is not prepared to handle exceptions
-            DUP_PRO_Log::traceError('Top level create Exception:'.$ex->getMessage().':'.$ex->getTraceAsString());
+            DUP_Log::trace('Top level create Exception:'.$ex->getMessage().':'.$ex->getTraceAsString());
             $buildProgress->failed = true;
             return true;
         }

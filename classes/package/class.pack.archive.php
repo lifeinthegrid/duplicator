@@ -71,7 +71,7 @@ class DUP_Archive
      */    
 	public function build($package)
 	{
-        DUP_PRO_LOG::trace("Building archive");
+        DUP_Log::trace("Building archive");
 
         try {
             $this->Package = $package;
@@ -105,13 +105,13 @@ class DUP_Archive
                     DUP_LOG::traceError("Error building DupArchive");
                     $this->Package->setStatus(DUP_PackageStatus::ERROR);
                 } else {
-                    $filepath    = DUP_PRO_U::safePath("{$this->Package->StorePath}/{$this->File}");
+                    $filepath    = DUP_Util::safePath("{$this->Package->StorePath}/{$this->File}");
                     $this->Size	 = @filesize($filepath);
-                    $this->Package->set_status(DUP_PRO_PackageStatus::ARCDONE);
+                    $this->Package->set_status(DUP_PackageStatus::ARCDONE);
                     DUP_LOG::Trace("Done building archive");
                 }
             } else {
-                DUP_PRO_LOG::trace("Archive chunk done but package not completed yet");
+                DUP_Log::trace("Archive chunk done but package not completed yet");
             }
 
         } catch (Exception $e) {
