@@ -129,7 +129,7 @@ function duplicator_duparchive_package_build() {
 	//Pass = 1, Warn = 2, Fail = 3, 4 = Not Done
 	$json = array();
 
-     $createState = DUP_DupArchive_Create_State::load();
+     $createState = DUP_DupArchive_Create_State::get_instance();
      $json['failures'] = $createState->failures; // ?or just do package->buildprogress->warnings?
      
 	if($hasCompleted) {

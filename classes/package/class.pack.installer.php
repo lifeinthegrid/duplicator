@@ -38,11 +38,11 @@ class DUP_Installer
             $success = $this->add_extra_files($package);
         }
 
-//        if ($success) {
-//            $build_progress->installer_built = true;
-//        } else {
-//            $build_progress->failed = true;
-//        }
+        if ($success) {
+            $build_progress->installer_built = true;
+        } else {
+            $build_progress->failed = true;
+        }
 
 		return $success;
     }
@@ -225,26 +225,7 @@ class DUP_Installer
             }
         }
 
-       // DUP_Log::Info("Add extra files: Current build mode = ".$package->BuildProgress->current_build_mode);
-
-		// RSR TODO: add a build mode to settings. For now assume everything is ziparchive
-        //if ($package->BuildProgress->current_build_mode == DUP_Archive_Build_Mode::ZipArchive) {
-            $success = $this->add_extra_files_using_ziparchive($installer_filepath, $scan_filepath, $sql_filepath, $archive_filepath, $archive_config_filepath, $package->BuildProgress->current_build_compression);
-//        } else if ($package->BuildProgress->current_build_mode == DUP_Archive_Build_Mode::Shell_Exec) {
-//            $success = $this->add_extra_files_using_shellexec($archive_filepath, $installer_filepath, $scan_filepath, $sql_filepath, $archive_config_filepath, $package->BuildProgress->current_build_compression);
-//            // Adding the shellexec fail text fix
-//            if(!$success) {
-////                $error_text = __("Problem adding installer to archive", 'duplicator');
-////                $fix_text   = __("Go to: Settings > Packages Tab > Archive Engine to ZipArchive'", 'duplicator');
-////                // Getting the globar error and setting the fix
-////                $system_global = DUP_System_Global_Entity::get_instance();
-////                $system_global->add_recommended_text_fix($error_text, $fix_text);
-////                $system_global->save();
-//				// TODO
-//            }
-//        } else if ($package->BuildProgress->current_build_mode == DUP_Archive_Build_Mode::DupArchive) {
-//            $success = $this->add_extra_files_using_duparchive($installer_filepath, $scan_filepath, $sql_filepath, $archive_filepath, $archive_config_filepath);
-//        }
+		$success = $this->add_extra_files_using_duparchive($installer_filepath, $scan_filepath, $sql_filepath, $archive_filepath, $archive_config_filepath);
 
         // No sense keeping the archive config around
         @unlink($archive_config_filepath);
@@ -254,99 +235,99 @@ class DUP_Installer
         return $success;
     }
 
-//    private function add_extra_files_using_duparchive($installer_filepath, $scan_filepath, $sql_filepath, $archive_filepath, $archive_config_filepath)
-//    {
-//        $success = false;
-//
-//        try {
-//			$htaccess_filepath = DUPLICATOR_PRO_WPROOTPATH . '.htaccess';
-//			$wpconfig_filepath = DUPLICATOR_PRO_WPROOTPATH . 'wp-config.php';
-//
-//            $logger = new DUP_Dup_Archive_Logger();
-//
-//            DupArchiveEngine::init($logger, 'DUP_Log::profile');
-//
-//            DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $scan_filepath, DUPLICATOR_PRO_EMBEDDED_SCAN_FILENAME);
-//            $this->numFilesAdded++;
-//
-//			if(file_exists($htaccess_filepath)) {
-//				try
-//				{
-//					DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $htaccess_filepath, DUPLICATOR_PRO_HTACCESS_ORIG_FILENAME);
-//					$this->numFilesAdded++;
-//				}
-//				catch (Exception $ex)
-//				{
-//					// Non critical so bury exception
-//				}
-//			}
-//
-//			if(file_exists($wpconfig_filepath)) {
-//				DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $wpconfig_filepath, DUPLICATOR_PRO_WPCONFIG_ARK_FILENAME);
-//				$this->numFilesAdded++;
-//			}
-//
-//            $this->add_installer_files_using_duparchive($archive_filepath, $installer_filepath, $archive_config_filepath);
-//
-//            $success = true;
-//        } catch (Exception $ex) {
-//            DUP_Log::error("Error adding installer files to archive. ".$ex->getMessage());
-//        }
-//
-//        return $success;
-//    }
-//
-//    private function add_installer_files_using_duparchive($archive_filepath, $installer_filepath, $archive_config_filepath)
-//    {
-//        $success                   = false;
-//        /* @var $global DUP_Global_Entity */
-//        $global                    = DUP_Global_Entity::get_instance();
-//        $installer_backup_filename = $global->get_installer_backup_filename();
-//
-//		$installer_backup_filepath = dirname($installer_filepath) . "/{$installer_backup_filename}";
-//
-//        DUP_Log::Info('Adding enhanced installer files to archive using DupArchive');
-//
-//		SnapLibIOU::copy($installer_filepath, $installer_backup_filepath);
-//
-//		DupArchiveEngine::addFileToArchiveUsingBaseDirST($archive_filepath, dirname($installer_backup_filepath), $installer_backup_filepath);
-//
-//		SnapLibIOU::rm($installer_backup_filepath);
-//
-//        $this->numFilesAdded++;
-//
-//        $base_installer_directory = DUPLICATOR_PLUGIN_PATH.'installer';
-//        $installer_directory      = "$base_installer_directory/dup-installer";
-//
-//        $counts = DupArchiveEngine::addDirectoryToArchiveST($archive_filepath, $installer_directory, $base_installer_directory, true);
-//        $this->numFilesAdded += $counts->numFilesAdded;
-//        $this->numDirsAdded += $counts->numDirsAdded;
-//
-//        $archive_config_relative_path = 'dup-installer/archive.cfg';
-//
-//        DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $archive_config_filepath, $archive_config_relative_path);
-//        $this->numFilesAdded++;
-//
-//        // Include dup archive
-//        $duparchive_lib_directory = DUPLICATOR_PLUGIN_PATH.'lib/dup_archive';
-//        $duparchive_lib_counts = DupArchiveEngine::addDirectoryToArchiveST($archive_filepath, $duparchive_lib_directory, DUPLICATOR_PLUGIN_PATH, true, 'dup-installer/');
-//        $this->numFilesAdded += $duparchive_lib_counts->numFilesAdded;
-//        $this->numDirsAdded += $duparchive_lib_counts->numDirsAdded;
-//
-//        // Include snaplib
-//        $snaplib_directory = DUPLICATOR_PLUGIN_PATH.'lib/snaplib';
-//        $snaplib_counts = DupArchiveEngine::addDirectoryToArchiveST($archive_filepath, $snaplib_directory, DUPLICATOR_PLUGIN_PATH, true, 'dup-installer/');
-//        $this->numFilesAdded += $snaplib_counts->numFilesAdded;
-//        $this->numDirsAdded += $snaplib_counts->numDirsAdded;
-//
-//        // Include fileops
-//        $fileops_directory = DUPLICATOR_PLUGIN_PATH.'lib/fileops';
-//        $fileops_counts = DupArchiveEngine::addDirectoryToArchiveST($archive_filepath, $fileops_directory, DUPLICATOR_PLUGIN_PATH, true, 'dup-installer/');
-//        $this->numFilesAdded += $fileops_counts->numFilesAdded;
-//        $this->numDirsAdded += $fileops_counts->numDirsAdded;
-//
-//        return $success;
-//    }
+    private function add_extra_files_using_duparchive($installer_filepath, $scan_filepath, $sql_filepath, $archive_filepath, $archive_config_filepath)
+    {
+        $success = false;
+
+        try {
+			$htaccess_filepath = DUPLICATOR_PRO_WPROOTPATH . '.htaccess';
+			$wpconfig_filepath = DUPLICATOR_PRO_WPROOTPATH . 'wp-config.php';
+
+            $logger = new DUP_Dup_Archive_Logger();
+
+            DupArchiveEngine::init($logger, 'DUP_Log::profile');
+
+            DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $scan_filepath, DUPLICATOR_PRO_EMBEDDED_SCAN_FILENAME);
+            $this->numFilesAdded++;
+
+			if(file_exists($htaccess_filepath)) {
+				try
+				{
+					DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $htaccess_filepath, DUPLICATOR_PRO_HTACCESS_ORIG_FILENAME);
+					$this->numFilesAdded++;
+				}
+				catch (Exception $ex)
+				{
+					// Non critical so bury exception
+				}
+			}
+
+			if(file_exists($wpconfig_filepath)) {
+				DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $wpconfig_filepath, DUPLICATOR_PRO_WPCONFIG_ARK_FILENAME);
+				$this->numFilesAdded++;
+			}
+
+            $this->add_installer_files_using_duparchive($archive_filepath, $installer_filepath, $archive_config_filepath);
+
+            $success = true;
+        } catch (Exception $ex) {
+            DUP_Log::error("Error adding installer files to archive. ".$ex->getMessage());
+        }
+
+        return $success;
+    }
+
+    private function add_installer_files_using_duparchive($archive_filepath, $installer_filepath, $archive_config_filepath)
+    {
+        $success                   = false;
+        /* @var $global DUP_Global_Entity */
+        $global                    = DUP_Global_Entity::get_instance();
+        $installer_backup_filename = $global->get_installer_backup_filename();
+
+		$installer_backup_filepath = dirname($installer_filepath) . "/{$installer_backup_filename}";
+
+        DUP_Log::Info('Adding enhanced installer files to archive using DupArchive');
+
+		SnapLibIOU::copy($installer_filepath, $installer_backup_filepath);
+
+		DupArchiveEngine::addFileToArchiveUsingBaseDirST($archive_filepath, dirname($installer_backup_filepath), $installer_backup_filepath);
+
+		SnapLibIOU::rm($installer_backup_filepath);
+
+        $this->numFilesAdded++;
+
+        $base_installer_directory = DUPLICATOR_PLUGIN_PATH.'installer';
+        $installer_directory      = "$base_installer_directory/dup-installer";
+
+        $counts = DupArchiveEngine::addDirectoryToArchiveST($archive_filepath, $installer_directory, $base_installer_directory, true);
+        $this->numFilesAdded += $counts->numFilesAdded;
+        $this->numDirsAdded += $counts->numDirsAdded;
+
+        $archive_config_relative_path = 'dup-installer/archive.cfg';
+
+        DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $archive_config_filepath, $archive_config_relative_path);
+        $this->numFilesAdded++;
+
+        // Include dup archive
+        $duparchive_lib_directory = DUPLICATOR_PLUGIN_PATH.'lib/dup_archive';
+        $duparchive_lib_counts = DupArchiveEngine::addDirectoryToArchiveST($archive_filepath, $duparchive_lib_directory, DUPLICATOR_PLUGIN_PATH, true, 'dup-installer/');
+        $this->numFilesAdded += $duparchive_lib_counts->numFilesAdded;
+        $this->numDirsAdded += $duparchive_lib_counts->numDirsAdded;
+
+        // Include snaplib
+        $snaplib_directory = DUPLICATOR_PLUGIN_PATH.'lib/snaplib';
+        $snaplib_counts = DupArchiveEngine::addDirectoryToArchiveST($archive_filepath, $snaplib_directory, DUPLICATOR_PLUGIN_PATH, true, 'dup-installer/');
+        $this->numFilesAdded += $snaplib_counts->numFilesAdded;
+        $this->numDirsAdded += $snaplib_counts->numDirsAdded;
+
+        // Include fileops
+        $fileops_directory = DUPLICATOR_PLUGIN_PATH.'lib/fileops';
+        $fileops_counts = DupArchiveEngine::addDirectoryToArchiveST($archive_filepath, $fileops_directory, DUPLICATOR_PLUGIN_PATH, true, 'dup-installer/');
+        $this->numFilesAdded += $fileops_counts->numFilesAdded;
+        $this->numDirsAdded += $fileops_counts->numDirsAdded;
+
+        return $success;
+    }
 
     private function add_extra_files_using_ziparchive($installer_filepath, $scan_filepath, $sql_filepath, $zip_filepath, $archive_config_filepath, $is_compressed)
     {

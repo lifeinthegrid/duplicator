@@ -131,20 +131,18 @@ class DUP_DupArchive
 
                 $buildProgress->retries = 0;
 
+				$createState = DUP_DupArchive_Create_State::createNew($archivePath, $compressDir, self::WorkerTimeInSec, true, true);
+				$createState->throttleDelayInUs = 0;
+
+				$createState->save();
+
                 $archive->Package->Update();
             }
 
             try {
-                // RSR TODO don’t use custom data
-             xx   if ($buildProgress->custom_data == null) {
-					$createState                    = DUP_DupArchive_Create_State::createNew($archive->Package, $archivePath, $compressDir, self::WorkerTimeInSec, $buildProgress->current_build_compression, true);
-                    $createState->throttleDelayInUs = 0; // RSR TODO
-                } else {
-                    DUP_LOG::TraceObject('Resumed build_progress', $archive->Package->BuildProgress);
 
-                    $createState = DUP_DupArchive_Create_State::createFromPackage($archive->Package);
-                }
-
+                $createState = DUP_DupArchive_Create_State::get_instance();
+                
                 if($buildProgress->retries > 1) {
                     // Indicates it had problems before so move into robustness mode
                     $createState->isRobust = true;

@@ -21,7 +21,7 @@ class DUP_DupArchive_Create_State extends DupArchiveCreateState
 
     // Only one active package so straightforward
    // public static function createFromPackage(&$package)
-    public static function load()
+    public static function get_instance()
     {
    //     $instance = new DUP_Dup_Archive_Create_State();
 
@@ -54,7 +54,7 @@ class DUP_DupArchive_Create_State extends DupArchiveCreateState
         return $instance;
     }
 
-    public static function createNew($package, $archivePath, $basePath, $timeSliceInSecs, $isCompressed, $setArchiveOffsetToEndOfArchive)
+    public static function createNew($archivePath, $basePath, $timeSliceInSecs, $isCompressed, $setArchiveOffsetToEndOfArchive)
     {
         $instance = new DUP_Dup_Archive_Create_State();
 
@@ -85,8 +85,6 @@ class DUP_DupArchive_Create_State extends DupArchiveCreateState
         $instance->skippedFileCount      = 0;
 
         $instance->startTimestamp = time();
-
-        $instance->save();
 
         return $instance;
     }

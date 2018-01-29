@@ -18,7 +18,7 @@ class DUP_Build_Progress
     public $failed = false;
    // public $next_archive_file_index = 0;
    // public $next_archive_dir_index = 0;
-    //public $retries = 0;
+    public $retries = 0;
     //public $current_build_mode = -1;
 	//public $current_build_compression = true;
    // public $custom_data = null;
