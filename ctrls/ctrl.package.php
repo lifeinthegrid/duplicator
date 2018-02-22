@@ -90,7 +90,6 @@ function duplicator_duparchive_package_build() {
 
 //rsr todo	check_ajax_referer( 'duplicator_duparchive_package_build', 'nonce');
 
-    error_log('blb');
     DUP_LOG::Trace("call to duplicator_duparchive_package_build");
 	header('Content-Type: application/json');
 

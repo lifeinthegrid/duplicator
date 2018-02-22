@@ -208,7 +208,8 @@ class DUP_Package
 	public function save($extension)
 	{
         global $wpdb;
-           
+
+		$this->Archive->Format = strtoupper($extension);
 		$this->Archive->File = "{$this->NameHash}_archive.{$extension}";
 		$this->Installer->File = "{$this->NameHash}_installer.php";
 		$this->Database->File = "{$this->NameHash}_database.sql";

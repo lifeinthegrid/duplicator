@@ -32,15 +32,19 @@ class DUP_DupArchive
     {
         /* @var $buildProgress DUP_Build_Progress */
 
+		DUP_LOG::trace("c1");
         try {
             $package = &$archive->Package;
 
+			DUP_LOG::trace("c2");
             if ($buildProgress->retries > DUPLICATOR_MAX_BUILD_RETRIES) {
+				DUP_LOG::trace("c3");
                 $error_msg              = __('Package build appears stuck so marking package as failed. Is the Max Worker Time set too high?.', 'duplicator');
                 DUP_Log::error(__('Build Failure', 'duplicator'), $error_msg, false);
                 $buildProgress->failed = true;
                 return true;
             } else {
+				DUP_LOG::trace("c4");
                 // If all goes well retries will be reset to 0 at the end of this function.
                 $buildProgress->retries++;
                 $archive->Package->update();
@@ -48,8 +52,10 @@ class DUP_DupArchive
 
             $done   = false;
 
+			DUP_LOG::trace("c5");
             DupArchiveEngine::init(new DUP_DupArchive_Logger());
 
+			DUP_LOG::trace("c6");
 			DUP_Package::safeTmpCleanup(true);
        
             $compressDir = rtrim(DUP_Util::safPath($archive->PackDir), '/');
@@ -63,14 +69,18 @@ class DUP_DupArchive
 
             $scanFilepath = DUPLICATOR_SSDIR_PATH_TMP."/{$archive->Package->NameHash}_scan.json";
 
+			DUP_LOG::trace("c7");
             $skipArchiveFinalization = false;
             $json                    = '';
 
+			DUP_LOG::trace("c8");
             if (file_exists($scanFilepath)) {
 
+				DUP_LOG::trace("c9");
                 $json = file_get_contents($scanFilepath);
 
                 if (empty($json)) {
+					DUP_LOG::trace("c10");
                     $errorText = __("Scan file $scanFilepath is empty!", 'duplicator');
                     $fixText = __("Click on \"Resolve This\" button to fix the JSON settings.", 'duplicator');
 
@@ -81,6 +91,7 @@ class DUP_DupArchive
                     return true;
                 }
             } else {
+				DUP_LOG::trace("c11");
                 DUP_Log::trace("**** scan file $scanFilepath doesn't exist!!");
                 $errorMessage = sprintf(__("ERROR: Can't find Scanfile %s. Please ensure there no non-English characters in the package or schedule name.", 'duplicator'), $scanFilepath);
 
@@ -90,10 +101,12 @@ class DUP_DupArchive
                 return true;
             }
 
+			DUP_LOG::trace("c12");
             $scanReport = json_decode($json);
 
             if ($buildProgress->archive_started == false) {
 
+				DUP_LOG::trace("c13");
                 DUP_Log::info("\n********************************************************************************");
                 DUP_Log::info("ARCHIVE Type=DUP Mode=DupArchive");
                 DUP_Log::info("********************************************************************************");
@@ -139,6 +152,7 @@ class DUP_DupArchive
 
             try {
 
+				DUP_LOG::trace("c14");
                 $createState = DUP_DupArchive_Create_State::get_instance();
                 
                 if($buildProgress->retries > 1) {
@@ -174,6 +188,7 @@ class DUP_DupArchive
                     }
                 }
             } catch (Exception $ex) {
+				DUP_LOG::trace("c15");
                 $message = __('Problem adding items to archive.', 'duplicator').' '.$ex->getMessage();
 
                 DUP_Log::Error(__('Problems adding items to archive.', 'duplicator'), $message, false);
@@ -182,9 +197,12 @@ class DUP_DupArchive
                 return true;
             }
 
+			DUP_LOG::trace("c16");
 
             //-- Final Wrapup of the Archive
             if ((!$skipArchiveFinalization) && ($createState->working == false)) {
+
+				DUP_LOG::trace("c17");
 
                 if(!$buildProgress->installer_built) {
 
@@ -210,7 +228,8 @@ class DUP_DupArchive
 					$expandState->save();
                 }
                 else {
-                  
+
+					DUP_LOG::trace("c18");
                     try {
                      
                        // $expandState = new DUP_DupArchive_Expand_State($expandStateEntity);
@@ -233,6 +252,7 @@ class DUP_DupArchive
 
                         $archive->Package->Status = SnapLibUtil::getWorkPercent(DUP_PackageStatus::ARCVALIDATION, DUP_PackageStatus::ARCDONE, $archiveSize,
                                 $expandState->archiveOffset);
+						DUP_LOG::trace("c19");
                     } catch (Exception $ex) {
                         DUP_Log::TraceError('Exception:'.$ex->getMessage().':'.$ex->getTraceAsString());
                         $buildProgress->failed = true;
@@ -241,6 +261,7 @@ class DUP_DupArchive
 
                     if($expandState->isCriticalFailurePresent())
                     {
+						DUP_LOG::trace("c20");
                         // Fail immediately if critical failure present - even if havent completed processing the entire archive.
 
                         DUP_Log::Error(__('Build Failure', 'duplicator'), $expandState->getFailureSummary(), false);
@@ -248,6 +269,7 @@ class DUP_DupArchive
                         $buildProgress->failed = true;
                         return true;
                     } else if (!$expandState->working) {
+						DUP_LOG::trace("c21");
 
                         $buildProgress->archive_built = true;
                         $buildProgress->retries       = 0;
@@ -270,9 +292,12 @@ class DUP_DupArchive
 
                         $archive->Package->update();
 
+						DUP_LOG::trace("c22");
                         $done = true;
                     } else {
+						DUP_LOG::trace("c23");
                         $expandState->save();
+						DUP_LOG::trace("c24");
                     }
                 }
             }

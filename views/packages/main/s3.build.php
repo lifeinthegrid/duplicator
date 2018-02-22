@@ -492,6 +492,7 @@ jQuery(document).ready(function($) {
 		error: function (xHr, textStatus) {
 			console.log('AJAX error. textStatus=');
 			console.log(textStatus);
+			console.log(xHr);
 			Duplicator.Pack.HandleDupArchiveProblem(xHr, textStatus,  '', true);
 		}
 	});
@@ -500,7 +501,7 @@ jQuery(document).ready(function($) {
     console.log('d');
     Duplicator.Pack.HandleDupArchiveProblem = function(xHr, textStatus, errorText, isCommunicationProblem)
     {
-        console.log("HandleDupArchiveProblem:Is communication problem" + isCommunicationProblem);
+        console.log("HandleDupArchiveProblem:Is communication problem:" + isCommunicationProblem);
         Duplicator.Pack.DupArchiveFailureCount++;
 
         if(Duplicator.Pack.DupArchiveFailureCount <= Duplicator.Pack.DupArchiveMaxRetries) {

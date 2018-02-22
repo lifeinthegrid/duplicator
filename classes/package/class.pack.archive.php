@@ -74,37 +74,46 @@ class DUP_Archive
         DUP_Log::trace("Building archive");
 
         try {
+			DUP_LOG::trace("b1");
             $this->Package = $package;
             if (!isset($this->PackDir) && !is_dir($this->PackDir)) throw new Exception("The 'PackDir' property must be a valid directory.");
             if (!isset($this->File)) throw new Exception("A 'File' property must be set.");
 
+			DUP_LOG::trace("b2");
             $completed = false;
 
             switch ($this->Format) {
                 case 'TAR': break;
 				case 'TAR-GZIP': break;
                 case 'DAF':
+					DUP_LOG::trace("b3");
                     $completed = DUP_DupArchive::create($this, $package->BuildProgress);
                     $this->Package->Update();
                     break;
 
                   default:
+					  DUP_LOG::trace("b3-1");
                     if (class_exists(ZipArchive)) {
                         $this->Format = 'ZIP';
                         DUP_Zip::create($this);
                     }
                     break;
             }
+			DUP_LOG::trace("b4");
 						
 			if($package->buildProgress === null) {
+				DUP_LOG::trace("b5");
 				$storePath  = "{$this->Package->StorePath}/{$this->File}";
 				$this->Size = @filesize($storePath);
 				$this->Package->setStatus(DUP_PackageStatus::ARCDONE);
 			} else if($completed) {
+				DUP_LOG::trace("b6");
                 if ($build_progress->failed) {
+					DUP_LOG::trace("b7");
                     DUP_LOG::traceError("Error building DupArchive");
                     $this->Package->setStatus(DUP_PackageStatus::ERROR);
                 } else {
+					DUP_LOG::trace("b8");
                     $filepath    = DUP_Util::safePath("{$this->Package->StorePath}/{$this->File}");
                     $this->Size	 = @filesize($filepath);
                     $this->Package->set_status(DUP_PackageStatus::ARCDONE);
@@ -115,6 +124,7 @@ class DUP_Archive
             }
 
         } catch (Exception $e) {
+			DUP_LOG::trace("b9");
             echo 'Caught exception: ', $e->getMessage(), "\n";
         }
 	}
