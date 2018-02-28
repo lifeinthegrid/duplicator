@@ -18,7 +18,7 @@ class DUP_DupArchive_Expand_State extends DupArchiveExpandState
         if ((self::$instance == null) && (!$reset)) {
             $stateFilepath = DUPLICATOR_SSDIR_PATH.'/'.self::StateFilename;
 
-            self::$instance = new DaTesterExpandState();
+            self::$instance = new DUP_DupArchive_Expand_State();
 
             if (file_exists($stateFilepath)) {
                 $stateHandle = SnapLibIOU::fopen($stateFilepath, 'r');
@@ -40,7 +40,7 @@ class DUP_DupArchive_Expand_State extends DupArchiveExpandState
         }
 
         if ($reset) {
-            self::$instance = new DaTesterExpandState();
+            self::$instance = new DUP_DupArchive_Expand_State();
 
             self::$instance->reset();
         }

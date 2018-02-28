@@ -51,6 +51,13 @@ class DUP_Util
 		self::$PHP7_plus = version_compare(PHP_VERSION, '7.0.0', '>=');
     }
 
+    
+    public static function objectCopy($source, $dest) 
+    {
+        foreach(get_object_vars($source) as $key => $value) {
+            $dest->$key = $value;
+        }
+    }
 
     public static function getWPCoreDirs()
     {

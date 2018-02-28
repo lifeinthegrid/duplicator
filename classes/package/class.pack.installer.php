@@ -243,7 +243,7 @@ class DUP_Installer
 			$htaccess_filepath = DUPLICATOR_PRO_WPROOTPATH . '.htaccess';
 			$wpconfig_filepath = DUPLICATOR_PRO_WPROOTPATH . 'wp-config.php';
 
-            $logger = new DUP_Dup_Archive_Logger();
+            $logger = new DUP_DupArchive_Logger();
 
             DupArchiveEngine::init($logger, 'DUP_Log::profile');
 
@@ -281,8 +281,9 @@ class DUP_Installer
     {
         $success                   = false;
         /* @var $global DUP_Global_Entity */
-        $global                    = DUP_Global_Entity::get_instance();
-        $installer_backup_filename = $global->get_installer_backup_filename();
+     //   $global                    = DUP_Global_Entity::get_instance();
+       // $installer_backup_filename = $global->get_installer_backup_filename();
+        $installer_backup_filename = 'installer-backup.php';
 
 		$installer_backup_filepath = dirname($installer_filepath) . "/{$installer_backup_filename}";
 
