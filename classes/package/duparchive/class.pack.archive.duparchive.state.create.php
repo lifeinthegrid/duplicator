@@ -69,6 +69,9 @@ class DUP_DupArchive_Create_State extends DupArchiveCreateState
         
         $instance->startTimestamp = time();
 
+        DUP_Log::TraceObject("create state", $data);
+        DUP_Log::TraceObject("instance create state", $instance);
+        
         return $instance;
     }
 
@@ -143,6 +146,9 @@ class DUP_DupArchive_Create_State extends DupArchiveCreateState
         
         // RSR TODO: Save to options table
         
+        DUP_Log::TraceObject("Saving create state", $this);
         DUP_Settings::Set('duparchive_create_state', $this);
+        
+        DUP_Settings::Save();
     }
 }
