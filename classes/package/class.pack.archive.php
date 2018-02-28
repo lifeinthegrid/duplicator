@@ -1,6 +1,7 @@
 <?php
 if (!defined('DUPLICATOR_VERSION')) exit; // Exit if accessed directly
 
+require_once (DUPLICATOR_PLUGIN_PATH.'classes/package/duparchive/class.pack.archive.duparchive.php');
 require_once (DUPLICATOR_PLUGIN_PATH.'classes/package/class.pack.archive.filters.php');
 require_once (DUPLICATOR_PLUGIN_PATH.'classes/package/class.pack.archive.zip.php');
 require_once (DUPLICATOR_PLUGIN_PATH.'lib/forceutf8/Encoding.php');
@@ -87,7 +88,7 @@ class DUP_Archive
 				case 'TAR-GZIP': break;
                 case 'DAF':
 					DUP_LOG::trace("b3");
-                    $completed = DUP_DupArchive::create($this, $package->BuildProgress);
+                    $completed = DUP_DupArchive::create($this, $package->BuildProgress, $package);
                     $this->Package->Update();
                     break;
 

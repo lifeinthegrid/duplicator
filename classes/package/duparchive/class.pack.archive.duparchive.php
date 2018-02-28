@@ -28,14 +28,12 @@ class DUP_DupArchive
      *  CREATE
      *  Creates the zip file and adds the SQL file to the archive
      */
-    public static function create($archive, $buildProgress)
+    public static function create($archive, $buildProgress, $package)
     {
         /* @var $buildProgress DUP_Build_Progress */
 
 		DUP_LOG::trace("c1");
         try {
-            $package = &$archive->Package;
-
 			DUP_LOG::trace("c2");
             if ($buildProgress->retries > DUPLICATOR_MAX_BUILD_RETRIES) {
 				DUP_LOG::trace("c3");
@@ -47,7 +45,7 @@ class DUP_DupArchive
 				DUP_LOG::trace("c4");
                 // If all goes well retries will be reset to 0 at the end of this function.
                 $buildProgress->retries++;
-                $archive->Package->update();
+                $package->update();
             }
 
             $done   = false;
@@ -58,16 +56,16 @@ class DUP_DupArchive
 			DUP_LOG::trace("c6");
 			DUP_Package::safeTmpCleanup(true);
        
-            $compressDir = rtrim(DUP_Util::safPath($archive->PackDir), '/');
-            $sqlPath     = DUP_Util::safePath("{$archive->Package->StorePath}/{$archive->Package->Database->File}");
-            $archivePath = DUP_Util::safePath("{$archive->Package->StorePath}/{$archive->File}");
+            $compressDir = rtrim(DUP_Util::safePath($archive->PackDir), '/');
+            $sqlPath     = DUP_Util::safePath("{$package->StorePath}/{$package->Database->File}");
+            $archivePath = DUP_Util::safePath("{$package->StorePath}/{$archive->File}");
 
             $filterDirs  = empty($archive->FilterDirs) ? 'not set' : $archive->FilterDirs;
             $filterExts  = empty($archive->FilterExts) ? 'not set' : $archive->FilterExts;
             $filterFiles = empty($archive->FilterFiles) ? 'not set' : $archive->FilterFiles;
             $filterOn    = ($archive->FilterOn) ? 'ON' : 'OFF';
 
-            $scanFilepath = DUPLICATOR_SSDIR_PATH_TMP."/{$archive->Package->NameHash}_scan.json";
+            $scanFilepath = DUPLICATOR_SSDIR_PATH_TMP."/{$package->NameHash}_scan.json";
 
 			DUP_LOG::trace("c7");
             $skipArchiveFinalization = false;
@@ -147,7 +145,7 @@ class DUP_DupArchive
 
 				$createState->save();
 
-                $archive->Package->Update();
+                $package->Update();
             }
 
             try {
@@ -172,14 +170,14 @@ class DUP_DupArchive
 
                     $totalFileCount = count($scanReport->ARC->Files);
 
-                    $archive->Package->Status = SnapLibUtil::getWorkPercent(DUP_PackageStatus::ARCSTART, DUP_PackageStatus::ARCVALIDATION, $totalFileCount, $createState->currentFileIndex);
+                    $package->Status = SnapLibUtil::getWorkPercent(DUP_PackageStatus::ARCSTART, DUP_PackageStatus::ARCVALIDATION, $totalFileCount, $createState->currentFileIndex);
 
                     $buildProgress->retries = 0;
 
                     $createState->save();
 
                     DUP_LOG::TraceObject("Stored Create State", $createState);
-                    DUP_LOG::TraceObject('Stored build_progress', $archive->Package->BuildProgress);
+                    DUP_LOG::TraceObject('Stored build_progress', $package->BuildProgress);
 
                     if ($createState->working == false) {
                         // Want it to do the final cleanup work in an entirely new thread so return immediately
@@ -250,7 +248,7 @@ class DUP_DupArchive
                         $totalFileCount = count($scanReport->ARC->Files);
                         $archiveSize    = @filesize($expandState->archivePath);
 
-                        $archive->Package->Status = SnapLibUtil::getWorkPercent(DUP_PackageStatus::ARCVALIDATION, DUP_PackageStatus::ARCDONE, $archiveSize,
+                        $package->Status = SnapLibUtil::getWorkPercent(DUP_PackageStatus::ARCVALIDATION, DUP_PackageStatus::ARCDONE, $archiveSize,
                                 $expandState->archiveOffset);
 						DUP_LOG::trace("c19");
                     } catch (Exception $ex) {
@@ -274,10 +272,10 @@ class DUP_DupArchive
                         $buildProgress->archive_built = true;
                         $buildProgress->retries       = 0;
 
-                        $archive->Package->update();
+                        $package->update();
 
                         $timerAllEnd = DUP_Util::getMicrotime();
-                        $timerAllSum = DUP_Util::elapsedTime($timerAllEnd, $archive->Package->timer_start);
+                        $timerAllSum = DUP_Util::elapsedTime($timerAllEnd, $package->timer_start);
 
                         DUP_LOG::traceObject("create state", $createState);
 
@@ -290,7 +288,7 @@ class DUP_DupArchive
 
                         $archive->file_count = $expandState->fileWriteCount + $expandState->directoryWriteCount;
 
-                        $archive->Package->update();
+                        $package->update();
 
 						DUP_LOG::trace("c22");
                         $done = true;

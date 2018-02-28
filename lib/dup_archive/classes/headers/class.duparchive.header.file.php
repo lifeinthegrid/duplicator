@@ -40,7 +40,7 @@ class DupArchiveFileHeader// extends HeaderBase
 
 
 		// RSR CONSIDER ADDING THIS IN THE FUTURE since hashing very large files takes way too long
-		if($instance->fileSize > DupArchiveConstants::MaxFilesizeForHashing) {
+		if($instance->fileSize > DupArchiveConstants::$MaxFilesizeForHashing) {
 			$instance->hash = false;
 		}
 		else {
