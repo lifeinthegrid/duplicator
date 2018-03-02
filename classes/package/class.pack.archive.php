@@ -102,7 +102,7 @@ class DUP_Archive
             }
 			DUP_LOG::trace("b4");
 						
-			if($package->buildProgress === null) {
+			if($package->BuildProgress === null) {
 				DUP_LOG::trace("b5");
 				$storePath  = "{$this->Package->StorePath}/{$this->File}";
 				$this->Size = @filesize($storePath);

@@ -69,8 +69,7 @@ class DUP_DupArchive_Create_State extends DupArchiveCreateState
         
         $instance->startTimestamp = time();
 
-        DUP_Log::TraceObject("create state", $data);
-        DUP_Log::TraceObject("instance create state", $instance);
+        DUP_Log::TraceObject("retrieving create state", $instance);
         
         return $instance;
     }

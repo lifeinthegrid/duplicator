@@ -206,7 +206,7 @@ class DUP_DupArchive
 
                     $package->Installer->build($package, $buildProgress);
 
-                    DUP_PRO_LOG::trace("Installer has been built so running expand now");
+                    DUP_Log::Trace("Installer has been built so running expand now");
                //     DUP_Log::traceObject("INSTALLER", $package->Installer);
 
 					$expandState = DUP_DupArchive_Expand_State::getInstance(true);
