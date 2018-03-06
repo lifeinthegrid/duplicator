@@ -100,25 +100,30 @@ class DUP_Archive
                     }
                     break;
             }
-			DUP_LOG::trace("b4");
+			DUP_LOG::Trace("b4");
 						
 			if($package->BuildProgress === null) {
-				DUP_LOG::trace("b5");
+				DUP_LOG::Trace("b5");
 				$storePath  = "{$this->Package->StorePath}/{$this->File}";
 				$this->Size = @filesize($storePath);
 				$this->Package->setStatus(DUP_PackageStatus::ARCDONE);
 			} else if($completed) {
-				DUP_LOG::trace("b6");
-                if ($build_progress->failed) {
-					DUP_LOG::trace("b7");
-                    DUP_LOG::traceError("Error building DupArchive");
+				DUP_LOG::Trace("b6");
+                if ($package->BuildProgress->failed) {
+					DUP_LOG::Trace("b7");
+                    DUP_LOG::Trace("Error building DupArchive");
                     $this->Package->setStatus(DUP_PackageStatus::ERROR);
                 } else {
-					DUP_LOG::trace("b8");
+					DUP_LOG::Trace("b8");
                     $filepath    = DUP_Util::safePath("{$this->Package->StorePath}/{$this->File}");
                     $this->Size	 = @filesize($filepath);
                     $this->Package->setStatus(DUP_PackageStatus::ARCDONE);
                     DUP_LOG::Trace("Done building archive");
+					if($package->BuildProgress->failed) {
+						DUP_LOG::Trace("Already failed when done building archive");
+					} else {
+						DUP_LOG::Trace("Not yet failed after done building archive");
+					}
                 }
             } else {
                 DUP_Log::trace("Archive chunk done but package not completed yet");

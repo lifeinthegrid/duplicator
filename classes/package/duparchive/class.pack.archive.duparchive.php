@@ -162,6 +162,7 @@ class DUP_DupArchive
                 }
 
                 if ($createState->working) {
+					DUP_LOG::Trace("Create state is working");
                     DupArchiveEngine::addItemsToArchive($createState, $scanReport->ARC);
 
                     if($createState->isCriticalFailurePresent()) {
@@ -200,6 +201,8 @@ class DUP_DupArchive
 
             //-- Final Wrapup of the Archive
             if ((!$skipArchiveFinalization) && ($createState->working == false)) {
+
+				DUP_LOG::Trace("Create state is not working and not skip archive finalization");
 
 				DUP_LOG::trace("c17");
 

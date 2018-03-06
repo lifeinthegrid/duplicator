@@ -426,49 +426,10 @@ class DUP_Package
             $this->BuildProgress->initialized = true;
 			
             $this->update();
-        }
-
-        // Note: Think that by putting has_completed() at top of check will prevent archive from continuing to build after a failure has hit.
-        if ($this->BuildProgress->has_completed()) {
-
-             DUP_Log::Trace('c');
-       
-            if (!$this->BuildProgress->failed) {
-                // Only makees sense to perform build integrity check on completed archives
-                $this->runDupArchiveBuildIntegrityCheck();
-            }
-
-            $timerEnd = DUP_Util::getMicrotime();
-            $timerSum = DUP_Util::elapsedTime($timerEnd, $this->timer_start);
-            $this->Runtime = $timerSum;
-
-            //FINAL REPORT
-            $info = "\n********************************************************************************\n";
-            $info .= "RECORD ID:[{$this->ID}]\n";
-            $info .= "TOTAL PROCESS RUNTIME: {$timerSum}\n";
-            $info .= "PEAK PHP MEMORY USED: " . DUP_Server::getPHPMemory(true) . "\n";
-            $info .= "DONE PROCESSING => {$this->Name} " . @date("Y-m-d H:i:s") . "\n";
-
-            DUP_Log::info($info);
-            DUP_LOG::trace("Done package building");
-
-            if ($this->BuildProgress->failed) {
-
-                $this->setStatus(DUP_PackageStatus::ERROR);
-
-                $message = "Package creation failed.";
-                
-                DUP_Log::error($message);
-                DUP_Log::Trace($message);
-            } else {
-  
-                //File Cleanup
-                $this->buildCleanup();
-            }
-        }
+        }       
 
         //START BUILD
-        else if (!$this->BuildProgress->database_script_built) {
+        if (!$this->BuildProgress->database_script_built) {
              DUP_Log::Trace('d');
        
             $this->Database->build($this);
@@ -496,6 +457,49 @@ class DUP_Package
                 $this->Status = DUP_PackageStatus::ERROR;
                 $this->update();
                 DUP_Log::error('ERROR: Problem adding installer to archive.');
+            }
+        }
+// Note: Think that by putting has_completed() at top of check will prevent archive from continuing to build after a failure has hit.
+        if ($this->BuildProgress->has_completed()) {
+
+            DUP_Log::Trace('c');
+
+            if (!$this->BuildProgress->failed) {
+				DUP_LOG::trace("top of loop build progress not failed");
+                // Only makees sense to perform build integrity check on completed archives
+                $this->runDupArchiveBuildIntegrityCheck();
+            } else {
+				DUP_LOG::trace("top of loop build progress failed");
+			}
+
+            $timerEnd = DUP_Util::getMicrotime();
+            $timerSum = DUP_Util::elapsedTime($timerEnd, $this->timer_start);
+            $this->Runtime = $timerSum;
+
+            //FINAL REPORT
+            $info = "\n********************************************************************************\n";
+            $info .= "RECORD ID:[{$this->ID}]\n";
+            $info .= "TOTAL PROCESS RUNTIME: {$timerSum}\n";
+            $info .= "PEAK PHP MEMORY USED: " . DUP_Server::getPHPMemory(true) . "\n";
+            $info .= "DONE PROCESSING => {$this->Name} " . @date("Y-m-d H:i:s") . "\n";
+
+            DUP_Log::info($info);
+            DUP_LOG::trace("Done package building");
+
+            if ($this->BuildProgress->failed) {
+
+				DUP_LOG::Trace("build progress failed");
+                $this->setStatus(DUP_PackageStatus::ERROR);
+
+                $message = "Package creation failed.";
+
+                DUP_Log::error($message);
+                DUP_Log::Trace($message);
+            } else {
+
+				DUP_LOG::Trace("Cleaning up duparchive temp files");
+                //File Cleanup
+                $this->buildCleanup();
             }
         }
 
