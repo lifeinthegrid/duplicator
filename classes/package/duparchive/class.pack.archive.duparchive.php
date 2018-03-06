@@ -207,6 +207,10 @@ class DUP_DupArchive
 
                     $package->Installer->build($package);
 
+					$package->Runtime = -1;
+					$package->ExeSize = DUP_Util::byteSize($package->Installer->Size);
+					$package->ZipSize = DUP_Util::byteSize($package->Archive->Size);
+
 					$package->update();
 
                     DUP_Log::Trace("Installer has been built so running expand now");

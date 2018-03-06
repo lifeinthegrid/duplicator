@@ -137,13 +137,15 @@ function duplicator_duparchive_package_build() {
      $json['failures'] = ($createState->failures == null) ? array() : $createState->failures; // ?or just do package->buildprogress->warnings?
      
 	if($hasCompleted) {
-        DUP_Log::Trace('has completed');
+        
       
 		$json['status']   = 1;
 		$json['package']  = $package;
 		$json['runtime']  = $package->Runtime;
 		$json['exeSize']  = $package->ExeSize;
 		$json['archiveSize']  = $package->ZipSize;
+
+		DUP_Log::TraceObject('has completed. Package=', $package);
         
 	} else {
 		$json['status']   = 4;

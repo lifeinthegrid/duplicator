@@ -451,6 +451,9 @@ jQuery(document).ready(function($) {
                         var installURL = pack.StoreURL + pack.Installer.File + "?get=1&file=" + pack.Installer.File;
                         var archiveURL = pack.StoreURL + pack.Archive.File   + "?get=1";
 
+						console.log("installer url" + installURL);
+						console.log("archive url" + archiveURL);
+						
                         $('#dup-btn-archive-size').append('&nbsp; (' + data.archiveSize + ')')
                         $('#data-name-hash').text(pack.NameHash || 'error read');
                         $('#data-time').text(data.runtime || 'unable to read time');

@@ -482,6 +482,10 @@ class DUP_Package
             $this->update();
         } else if (!$this->BuildProgress->installer_built) {
 
+//			$this->Runtime = -1;
+//			$this->ExeSize = DUP_Util::byteSize($this->Installer->Size);
+//			$this->ZipSize = DUP_Util::byteSize($this->Archive->Size);
+
              DUP_Log::Trace('f');
        
             // Note: Duparchive builds installer within the main build flow not here
