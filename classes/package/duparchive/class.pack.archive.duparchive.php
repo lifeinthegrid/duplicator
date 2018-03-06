@@ -205,7 +205,9 @@ class DUP_DupArchive
 
                 if(!$buildProgress->installer_built) {
 
-                    $package->Installer->build($package, $buildProgress);
+                    $package->Installer->build($package);
+
+					$package->update();
 
                     DUP_Log::Trace("Installer has been built so running expand now");
 
@@ -251,9 +253,9 @@ class DUP_DupArchive
 
                         $package->Status = SnapLibUtil::getWorkPercent(DUP_PackageStatus::ARCVALIDATION, DUP_PackageStatus::ARCDONE, $archiveSize,
                                 $expandState->archiveOffset);
-						DUP_LOG::trace("c19");
+						DUP_LOG::Trace("c19");
                     } catch (Exception $ex) {
-                        DUP_Log::TraceError('Exception:'.$ex->getMessage().':'.$ex->getTraceAsString());
+                        DUP_Log::Trace('Exception:'.$ex->getMessage().':'.$ex->getTraceAsString());
                         $buildProgress->failed = true;
                         return true;
                     }

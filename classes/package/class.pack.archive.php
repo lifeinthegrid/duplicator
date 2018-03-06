@@ -117,7 +117,7 @@ class DUP_Archive
 					DUP_LOG::trace("b8");
                     $filepath    = DUP_Util::safePath("{$this->Package->StorePath}/{$this->File}");
                     $this->Size	 = @filesize($filepath);
-                    $this->Package->set_status(DUP_PackageStatus::ARCDONE);
+                    $this->Package->setStatus(DUP_PackageStatus::ARCDONE);
                     DUP_LOG::Trace("Done building archive");
                 }
             } else {

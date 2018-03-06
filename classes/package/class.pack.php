@@ -485,8 +485,8 @@ class DUP_Package
              DUP_Log::Trace('f');
        
             // Note: Duparchive builds installer within the main build flow not here
-            $this->Installer->build($this);
-            $this->update();
+          //  $this->Installer->build($this);
+           // $this->update();
 
             if ($this->BuildProgress->failed) {
                 $this->Status = DUP_PackageStatus::ERROR;

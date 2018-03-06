@@ -338,7 +338,7 @@ class DupArchiveEngine
         SnapLibIOU::fclose($archiveHandle);
 
         if (!$createState->working) {
-            DupArchiveUtil::log("compress done");
+            DupArchiveUtil::logObject("compress done", $createState);
         } else {
             DupArchiveUtil::tlog("compress not done so continuing later");
         }

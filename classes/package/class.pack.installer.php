@@ -39,9 +39,9 @@ class DUP_Installer
         }
 
         if ($success) {
-            $build_progress->installer_built = true;
+            $package->BuildProgress->installer_built = true;
         } else {
-            $build_progress->failed = true;
+            $package->BuildProgress->failed = true;
         }
 
 		return $success;

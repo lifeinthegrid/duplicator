@@ -451,9 +451,9 @@ jQuery(document).ready(function($) {
                         var installURL = pack.StoreURL + pack.Installer.File + "?get=1&file=" + pack.Installer.File;
                         var archiveURL = pack.StoreURL + pack.Archive.File   + "?get=1";
 
-                        $('#dup-btn-archive-size').append('&nbsp; (' + data.ArchiveSize + ')')
+                        $('#dup-btn-archive-size').append('&nbsp; (' + data.archiveSize + ')')
                         $('#data-name-hash').text(pack.NameHash || 'error read');
-                        $('#data-time').text(data.Runtime || 'unable to read time');
+                        $('#data-time').text(data.runtime || 'unable to read time');
 
                         //Wire Up Downloads
                         $('#dup-btn-installer').on("click", {name: installURL }, Duplicator.Pack.DownloadFile  );
