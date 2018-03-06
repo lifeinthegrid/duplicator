@@ -35,7 +35,6 @@ class DUP_DupArchive
 
 		DUP_LOG::trace("c1");
         try {
-			
 			DUP_LOG::trace("c2");
             if ($buildProgress->retries > DUPLICATOR_MAX_BUILD_RETRIES) {
 				DUP_LOG::trace("c3");
@@ -208,7 +207,8 @@ class DUP_DupArchive
 
                     $package->Installer->build($package, $buildProgress);
 
-                    DUP_Log::traceObject("INSTALLER", $package->Installer);
+                    DUP_Log::Trace("Installer has been built so running expand now");
+               //     DUP_Log::traceObject("INSTALLER", $package->Installer);
 
 					$expandState = DUP_DupArchive_Expand_State::getInstance(true);
                     

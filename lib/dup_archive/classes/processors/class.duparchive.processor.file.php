@@ -89,7 +89,7 @@ class DupArchiveFileProcessor
             // end profile ok
 
             if ($createState->currentFileIndex % 100 == 0) {
-				DupArchiveUtil::log("Source File={$sourceFilepath} Archive Offset={$createState->archiveOffset}; Current File Index={$createState->currentFileIndex}; Current File Offset={$createState->currentFileOffset}");
+                DupArchiveUtil::log("Archive Offset={$createState->archiveOffset}; Current File Index={$createState->currentFileIndex}; Current File Offset={$createState->currentFileOffset}");
             }
 
             // Only writing state after full group of files have been written - less reliable but more efficient

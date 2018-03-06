@@ -1,6 +1,7 @@
 <?php
 if (!defined('DUPLICATOR_VERSION')) exit; // Exit if accessed directly
 
+require_once (DUPLICATOR_PLUGIN_PATH.'classes/package/duparchive/class.pack.archive.duparchive.php');
 require_once (DUPLICATOR_PLUGIN_PATH.'classes/package/class.pack.archive.filters.php');
 require_once (DUPLICATOR_PLUGIN_PATH.'classes/package/class.pack.archive.zip.php');
 require_once (DUPLICATOR_PLUGIN_PATH.'lib/forceutf8/Encoding.php');
@@ -101,7 +102,7 @@ class DUP_Archive
             }
 			DUP_LOG::trace("b4");
 						
-			if($package->buildProgress === null) {
+			if($package->BuildProgress === null) {
 				DUP_LOG::trace("b5");
 				$storePath  = "{$this->Package->StorePath}/{$this->File}";
 				$this->Size = @filesize($storePath);
