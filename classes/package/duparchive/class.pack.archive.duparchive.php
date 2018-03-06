@@ -213,6 +213,8 @@ class DUP_DupArchive
 
 					$package->update();
 
+			//rsr todo need this somewhere		$package->buildCleanup();
+
                     DUP_Log::Trace("Installer has been built so running expand now");
 
 					$expandState = DUP_DupArchive_Expand_State::getInstance(true);

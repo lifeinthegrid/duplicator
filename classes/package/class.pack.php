@@ -900,7 +900,7 @@ class DUP_Package
     /**
      *  Cleans up all the tmp files as part of the package build process
      */
-    private function buildCleanup()
+    public function buildCleanup()
     {
 
         $files   = DUP_Util::listFiles(DUPLICATOR_SSDIR_PATH_TMP);
