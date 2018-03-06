@@ -12,35 +12,40 @@ class DupArchiveJsonU
     );
 
     public static function customEncode($value, $iteration = 1)
-    {       
-		if (version_compare(PHP_VERSION, '5.4.0') >= 0) {
-			$encoded = json_encode($value, JSON_PRETTY_PRINT);
-		} else {
-			$encoded = json_encode($value);
-		}
+    {
+       // if (DUP_PRO_U::PHP53()) {
+            if (version_compare(PHP_VERSION, '5.4.0') >= 0) {
+                $encoded = json_encode($value, JSON_PRETTY_PRINT);
+            } else {
+                $encoded = json_encode($value);
+            }
 
-		switch (json_last_error()) {
-			case JSON_ERROR_NONE:
-
-				return $encoded;
-			case JSON_ERROR_DEPTH:
-				throw new RuntimeException('Maximum stack depth exceeded'); // or trigger_error() or throw new Exception()
-			case JSON_ERROR_STATE_MISMATCH:
-				throw new RuntimeException('Underflow or the modes mismatch'); // or trigger_error() or throw new Exception()
-			case JSON_ERROR_CTRL_CHAR:
-				throw new RuntimeException('Unexpected control character found');
-			case JSON_ERROR_SYNTAX:
-				throw new RuntimeException('Syntax error, malformed JSON'); // or trigger_error() or throw new Exception()
-			case JSON_ERROR_UTF8:
-				if ($iteration == 1) {
-					$clean = self::makeUTF8($value);
-					return self::customEncode($clean, $iteration + 1);
-				} else {
-					throw new RuntimeException('UTF-8 error loop');
-				}
-			default:
-				throw new RuntimeException('Unknown error'); // or trigger_error() or throw new Exception()
-		}
+            switch (json_last_error()) {
+                case JSON_ERROR_NONE:
+                  //  DUP_PRO_LOG::trace("#### no json errors so returning");
+                    return $encoded;
+                case JSON_ERROR_DEPTH:
+                    throw new RuntimeException('Maximum stack depth exceeded'); // or trigger_error() or throw new Exception()
+                case JSON_ERROR_STATE_MISMATCH:
+                    throw new RuntimeException('Underflow or the modes mismatch'); // or trigger_error() or throw new Exception()
+                case JSON_ERROR_CTRL_CHAR:
+                    throw new RuntimeException('Unexpected control character found');
+                case JSON_ERROR_SYNTAX:
+                    throw new RuntimeException('Syntax error, malformed JSON'); // or trigger_error() or throw new Exception()
+                case JSON_ERROR_UTF8:
+                    if ($iteration == 1) {
+                     //   DUP_PRO_LOG::trace("#### utf8 error so redoing");
+                        $clean = self::makeUTF8($value);
+                        return self::customEncode($clean, $iteration + 1);
+                    } else {
+                        throw new RuntimeException('UTF-8 error loop');
+                    }
+                default:
+                    throw new RuntimeException('Unknown error'); // or trigger_error() or throw new Exception()
+            }
+     //   } else {
+      //      return self::oldCustomEncode($value);
+       // }
     }
 
     public static function encode($value, $options = 0)

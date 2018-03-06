@@ -87,7 +87,7 @@ class DUP_Archive
 				case 'TAR-GZIP': break;
                 case 'DAF':
 					DUP_LOG::trace("b3");
-                    $completed = DUP_DupArchive::create($this, $package->BuildProgress);
+                    $completed = DUP_DupArchive::create($this, $package->BuildProgress, $package);
                     $this->Package->Update();
                     break;
 

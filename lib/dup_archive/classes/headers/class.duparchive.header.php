@@ -65,14 +65,7 @@ class DupArchiveHeader// extends HeaderBase
     {
         $isCompressedString = DupArchiveUtil::boolToString($this->isCompressed);
 
-        //$paddedVersion = sprintf("%04d", $this->version);
-
-        //$paddedFileCount = sprintf("%09d", $this->fileCount);
-        //$paddedDirectoryCount = sprintf("%09d", $this->directoryCount);
-        //    SnapLibIOU::fwrite($archiveHandle, "?A#{$paddedVersion}#{$isCompressedString}#{$paddedDirectoryCount}#{$paddedFileCount}#A!");
-
-        //SnapLibIOU::fwrite($archiveHandle, "?A#{$paddedVersion}#{$isCompressedString}#A!");
-     //   SnapLibIOU::fwrite($archiveHandle, "<A><V>{$paddedVersion}</V><C>{$isCompressedString}</C></A>");
-           SnapLibIOU::fwrite($archiveHandle, "<A><V>{$this->version}</V><C>{$isCompressedString}</C></A>");
+        //SnapLibIOU::fwrite($archiveHandle, "<A><V>{$this->version}</V><C>{$isCompressedString}</C></A>");
+		SnapLibIOU::fwrite($archiveHandle, '<A><V>'.$this->version.'</V><C>'.$isCompressedString.'</C></A>');
     }
 }

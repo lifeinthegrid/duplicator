@@ -661,6 +661,8 @@ class DUP_Package
     {
         global $wpdb;
 
+		//DUP_Log::TraceObject('Backtrace', debug_backtrace());
+		
         $packageObj = serialize($this);
 
         if (!$packageObj) {

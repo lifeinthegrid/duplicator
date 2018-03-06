@@ -56,7 +56,7 @@ class DUP_DupArchive_Create_State extends DupArchiveCreateState
 
     public static function createNew($archivePath, $basePath, $timeSliceInSecs, $isCompressed, $setArchiveOffsetToEndOfArchive)
     {
-        $instance = new DUP_Dup_Archive_Create_State();
+        $instance = new DUP_DupArchive_Create_State();
 
      //   $instance->setPackage($package);
 
