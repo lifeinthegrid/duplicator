@@ -92,7 +92,7 @@ class DUP_DupArchive_Expand_State extends DupArchiveExpandState
 
         SnapLibIOU::flock($stateHandle, LOCK_EX);
 
-        DupArchiveUtil::tlog("saving state");
+        DupArchiveUtil::tlogObject("saving expand state", $this);
         SnapLibIOU::fwrite($stateHandle, json_encode($this));
 
         SnapLibIOU::fclose($stateHandle);

@@ -233,18 +233,24 @@ class DUP_DupArchive
 					$expandState->expectedDirectoryCount = count($scanReport->ARC->Dirs) - $createState->skippedDirectoryCount + $package->Installer->numDirsAdded;
 					$expandState->expectedFileCount      = count($scanReport->ARC->Files) + 1 - $createState->skippedFileCount + $package->Installer->numFilesAdded;    // database.sql will be in there
 
-					DUP_LOG::traceObject("EXPAND STATE", $expandState);
+					DUP_LOG::traceObject("EXPAND STATE BEFORE SAVE", $expandState);
 
 					$expandState->save();
+
+					DUP_LOG::traceObject("EXPAND STATE AFTER SAVE", $expandState);
                 }
                 else {
 
 					DUP_LOG::trace("c18");
                     try {
-                     
+
+						
                        // $expandState = new DUP_DupArchive_Expand_State($expandStateEntity);
 						$expandState = DUP_DupArchive_Expand_State::getInstance();
 
+						DUP_LOG::traceObject("EXPAND STATE AFTER GET INSTANCE", $expandState);
+											
+						
                         if($buildProgress->retries > 1) {
 
                             // Indicates it had problems before so move into robustness mode
