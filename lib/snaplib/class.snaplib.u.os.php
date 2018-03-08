@@ -5,6 +5,7 @@
  * and open the template in the editor.
  */
 
+if(!class_exists('SnapLibOSU')) {
 class SnapLibOSU
 {
     const WindowsMaxPathLength = 259;
@@ -14,6 +15,7 @@ class SnapLibOSU
 
         self::$isWindows = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
     }
+}
 }
 
 SnapLibOSU::init();

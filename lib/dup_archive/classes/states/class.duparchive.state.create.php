@@ -7,6 +7,7 @@
 
 require_once(dirname(__FILE__).'/class.duparchive.state.base.php');
 
+if (!class_exists('DupArchiveCreateState')) {
 abstract class DupArchiveCreateState extends DupArchiveStateBase
 {
     //const DEFAULT_GLOB_SIZE = 4180000; //512000;
@@ -18,4 +19,5 @@ abstract class DupArchiveCreateState extends DupArchiveStateBase
     public $newBasePath = null;
     public $skippedFileCount = 0;
     public $skippedDirectoryCount = 0;
+}
 }

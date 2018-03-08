@@ -5,6 +5,7 @@
  * and open the template in the editor.
  */
 
+if(!class_exists('SnapLibUIU')) {
 class SnapLibUIU
 {
     public static function echoBoolean($val)
@@ -31,4 +32,6 @@ class SnapLibUIU
     {
         return ($val ? 'selected' : '');
     }
+}
+
 }

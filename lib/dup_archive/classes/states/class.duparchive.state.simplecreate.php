@@ -7,6 +7,7 @@
 
 require_once(dirname(__FILE__).'/class.duparchive.state.create.php');
 
+if (!class_exists('DupArchiveSimpleCreateState')) {
 class DupArchiveSimpleCreateState extends DupArchiveCreateState
 {
     function __construct()
@@ -20,4 +21,5 @@ class DupArchiveSimpleCreateState extends DupArchiveCreateState
     {
 
     }
+}
 }

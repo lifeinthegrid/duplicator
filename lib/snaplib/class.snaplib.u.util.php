@@ -5,6 +5,7 @@
  * and open the template in the editor.
  */
 
+if(!class_exists('SnapLibUtil')) {
 class SnapLibUtil
 {
     public static function getArrayValue(&$array, $key, $required=true, $default=null)
@@ -159,4 +160,5 @@ class SnapLibUtil
     {
         return filter_var($input, FILTER_SANITIZE_STRING);
     }
+}
 }

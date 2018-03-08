@@ -5,6 +5,7 @@
  * and open the template in the editor.
  */
 
+if(!class_exists('SnapLibNetU')) {
 class SnapLibNetU
 {
     public static function postWithoutWait($url, $params)
@@ -51,4 +52,5 @@ class SnapLibNetU
             return $default;
         }
     }
+}
 }

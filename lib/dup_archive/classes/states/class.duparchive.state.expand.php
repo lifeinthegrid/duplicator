@@ -7,35 +7,38 @@
 
 require_once(dirname(__FILE__).'/class.duparchive.state.base.php');
 
+if (!class_exists('DupArchiveExpandState')) {
+
 class DupArchiveValidationTypes
 {
-    const None     = 0;
-    const Standard = 1;
-    const Full     = 2;
+	const None	 = 0;
+	const Standard = 1;
+	const Full	 = 2;
 
 }
 
-abstract class DupArchiveExpandState extends DupArchiveStateBase
-{
-    public $archiveHeader          = null;
-    public $currentFileHeader      = null;
-    public $validateOnly           = false;
-    public $validationType         = DupArchiveValidationTypes::Full;
-    public $fileWriteCount         = 0;
-    public $directoryWriteCount    = 0;
-    public $expectedFileCount      = -1;
-    public $expectedDirectoryCount = -1;
-    public $filteredDirectories    = array();
-    public $filteredFiles          = array();
-    public $includedFiles          = array();
-    public $fileRenames            = array();
-    public $directoryModeOverride  = -1;
-    public $fileModeOverride       = -1;
-    public $lastHeaderOffset  = -1;
+	abstract class DupArchiveExpandState extends DupArchiveStateBase
+	{
+		public $archiveHeader			 = null;
+		public $currentFileHeader		 = null;
+		public $validateOnly			 = false;
+		public $validationType			 = DupArchiveValidationTypes::Full;
+		public $fileWriteCount			 = 0;
+		public $directoryWriteCount		 = 0;
+		public $expectedFileCount		 = -1;
+		public $expectedDirectoryCount	 = -1;
+		public $filteredDirectories		 = array();
+		public $filteredFiles			 = array();
+		public $includedFiles			 = array();
+		public $fileRenames				 = array();
+		public $directoryModeOverride	 = -1;
+		public $fileModeOverride		 = -1;
+		public $lastHeaderOffset		 = -1;
 
-    public function resetForFile()
-    {
-        $this->currentFileHeader = null;
-        $this->currentFileOffset = 0;
-    }
+		public function resetForFile()
+		{
+			$this->currentFileHeader = null;
+			$this->currentFileOffset = 0;
+		}
+	}
 }

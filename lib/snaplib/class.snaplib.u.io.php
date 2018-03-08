@@ -8,6 +8,7 @@
 require_once(dirname(__FILE__).'/class.snaplib.u.string.php');
 require_once(dirname(__FILE__).'/class.snaplib.u.os.php');
 
+if(!class_exists('SnapLibIOU')) {
 class SnapLibIOU
 {
     public static function rmPattern($filePathPattern)
@@ -227,26 +228,23 @@ class SnapLibIOU
 
     static function rrmdir($dir)
     {
-		if(!file_exists("{$dir}/wp-config.php"))
-        {
-			if (is_dir($dir)) {
-				$objects = scandir($dir);
-				foreach ($objects as $object) {
-					if ($object != "." && $object != "..") {
-						if (is_dir($dir."/".$object))
-						{
-							SnapLibIOU::rrmdir($dir."/".$object);
-						}
-						else
-						{
-							//unlink($dir."/".$object);
-							self::rm($dir."/".$object);
-						}
-					}
-				}
-				rmdir($dir);
-			}
-		}
+        if (is_dir($dir)) {
+            $objects = scandir($dir);
+            foreach ($objects as $object) {
+                if ($object != "." && $object != "..") {
+                    if (is_dir($dir."/".$object))
+                    {
+                        SnapLibIOU::rrmdir($dir."/".$object);
+                    }
+                    else
+                    {
+                        //unlink($dir."/".$object);
+                        self::rm($dir."/".$object);
+                    }
+                }
+            }
+            rmdir($dir);
+        }
     }
 
     public static function filesize($filename)
@@ -309,4 +307,5 @@ class SnapLibIOU
             throw new Exception("Couldn't write data to {$filename}");
         }
     }
+}
 }

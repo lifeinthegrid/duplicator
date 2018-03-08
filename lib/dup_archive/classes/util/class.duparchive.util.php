@@ -14,6 +14,7 @@
 require_once(dirname(__FILE__).'/../class.duparchive.constants.php');
 require_once(DupArchiveConstants::$LibRoot.'/snaplib/class.snaplib.u.util.php');
 
+if(!class_exists('DupArchiveUtil')) {
 class DupArchiveUtil
 {
     public static $TRACE_ON = false;    //rodo rework this
@@ -184,4 +185,5 @@ class DupArchiveUtil
         self::log($s, $flush, $callingFunctionName);
         self::log($ostring, $flush, $callingFunctionName);
     }
+}
 }

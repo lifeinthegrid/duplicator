@@ -2,6 +2,7 @@
 require_once(dirname(__FILE__).'/../util/class.duparchive.util.php');
 require_once(dirname(__FILE__).'/class.duparchive.header.u.php');
 
+if(!class_exists('DupArchiveFileHeader')) {
 // Format
 class DupArchiveFileHeader// extends HeaderBase
 {
@@ -139,4 +140,5 @@ class DupArchiveFileHeader// extends HeaderBase
             return $bytes_written;
         }
     }
+}
 }

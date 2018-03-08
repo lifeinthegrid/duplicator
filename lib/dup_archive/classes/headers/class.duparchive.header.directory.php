@@ -2,6 +2,7 @@
 require_once(dirname(__FILE__).'/../util/class.duparchive.util.php');
 require_once(dirname(__FILE__).'/class.duparchive.header.u.php');
 
+if(!class_exists('DupArchiveDirectoryHeader')) {
 // Format
 class DupArchiveDirectoryHeader// extends HeaderBase
 {
@@ -94,4 +95,5 @@ class DupArchiveDirectoryHeader// extends HeaderBase
         }
     }
 
+}
 }

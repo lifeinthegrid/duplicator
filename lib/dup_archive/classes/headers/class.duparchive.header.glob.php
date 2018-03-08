@@ -2,6 +2,7 @@
 require_once(dirname(__FILE__).'/../util/class.duparchive.util.php');
 require_once(dirname(__FILE__).'/class.duparchive.header.u.php');
 
+if(!class_exists('DupArchiveGlobHeader')) {
 // Format
 // #C#{$originalSize}#{$storedSize}!
 class DupArchiveGlobHeader //extends HeaderBase
@@ -60,4 +61,5 @@ class DupArchiveGlobHeader //extends HeaderBase
             return $bytes_written;
         }
     }
+}
 }

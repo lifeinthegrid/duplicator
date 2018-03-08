@@ -8,6 +8,7 @@ require_once(dirname(__FILE__).'/../util/class.duparchive.util.php');
 require_once(dirname(__FILE__).'/class.duparchive.header.u.php');
 require_once(dirname(__FILE__).'/../../define.php');
 
+if(!class_exists('DupArchiveHeader')) {
 //require_once(dirname(__FILE__).'/class.HeaderBase.php');
 // Format: #A#{version:5}#{isCompressed}!
 class DupArchiveHeader// extends HeaderBase
@@ -68,4 +69,5 @@ class DupArchiveHeader// extends HeaderBase
         //SnapLibIOU::fwrite($archiveHandle, "<A><V>{$this->version}</V><C>{$isCompressedString}</C></A>");
 		SnapLibIOU::fwrite($archiveHandle, '<A><V>'.$this->version.'</V><C>'.$isCompressedString.'</C></A>');
     }
+}
 }

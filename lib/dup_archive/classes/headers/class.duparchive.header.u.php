@@ -5,6 +5,7 @@
  * and open the template in the editor.
  */
 
+if(!class_exists('DupArchiveHeaderU')) {
 class DupArchiveHeaderU
 {
     const MaxStandardHeaderFieldLength = 128;
@@ -30,4 +31,5 @@ class DupArchiveHeaderU
 
         return $headerString;
     }
+}
 }

@@ -2,6 +2,7 @@
 
 require_once(dirname(__FILE__).'/../headers/class.duparchive.header.directory.php');
 
+if(!class_exists('DupArchiveDirectoryProcessor')) {
 class DupArchiveDirectoryProcessor
 {
 	public static function writeDirectoryToArchive($createState, $archiveHandle, $sourceDirectoryPath, $relativeDirectoryPath)
@@ -21,4 +22,5 @@ class DupArchiveDirectoryProcessor
 		$createState->currentDirectoryIndex++;
 
 	}
+}
 }

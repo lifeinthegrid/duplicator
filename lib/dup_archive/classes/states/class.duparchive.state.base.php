@@ -7,6 +7,7 @@
 
 require_once(dirname(__FILE__).'/../class.duparchive.processing.failure.php');
 
+if(!class_exists('DupArchiveStateBase')) {
 abstract class DupArchiveStateBase
 {
     public $basePath          = '';
@@ -119,4 +120,5 @@ abstract class DupArchiveStateBase
         }
     }
     //   abstract public function save();
+}
 }

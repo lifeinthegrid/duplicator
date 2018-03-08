@@ -5,6 +5,7 @@
  * and open the template in the editor.
  */
 
+if(!class_exists('DupArchiveProcessingFailure')) {
 abstract class DupArchiveFailureTypes
 {
     const Unknown = 0;
@@ -18,4 +19,6 @@ class DupArchiveProcessingFailure
     public $description = '';
     public $subject = '';
     public $isCritical = false;  
+}
+
 }

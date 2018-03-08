@@ -1,5 +1,6 @@
 <?php
 
+if(!class_exists('DupArchiveJsonU')) {
 class DupArchiveJsonU
 {
     protected static $_messages = array(
@@ -22,7 +23,7 @@ class DupArchiveJsonU
 
             switch (json_last_error()) {
                 case JSON_ERROR_NONE:
-                  //  DUP_Log::Trace("#### no json errors so returning");
+                  //  DUP_PRO_LOG::trace("#### no json errors so returning");
                     return $encoded;
                 case JSON_ERROR_DEPTH:
                     throw new RuntimeException('Maximum stack depth exceeded'); // or trigger_error() or throw new Exception()
@@ -34,7 +35,7 @@ class DupArchiveJsonU
                     throw new RuntimeException('Syntax error, malformed JSON'); // or trigger_error() or throw new Exception()
                 case JSON_ERROR_UTF8:
                     if ($iteration == 1) {
-                     //   DUP_Log::Trace("#### utf8 error so redoing");
+                     //   DUP_PRO_LOG::trace("#### utf8 error so redoing");
                         $clean = self::makeUTF8($value);
                         return self::customEncode($clean, $iteration + 1);
                     } else {
@@ -170,4 +171,5 @@ class DupArchiveJsonU
 
         return $val;
     }
+}
 }

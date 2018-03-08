@@ -5,6 +5,7 @@
  * and open the template in the editor.
  */
 
+if(!class_exists('DupArchiveConstants')) {
 class DupArchiveConstants
 {
     public static $DARoot;
@@ -18,11 +19,13 @@ class DupArchiveConstants
 		self::$MaxFilesizeForHashing = 1000000000;
     }
 }
+}
 
+if(!class_exists('DupArchiveExceptionCodes')) {
 class DupArchiveExceptionCodes
 {
     const NonFatal = 0;
     const Fatal = 1;
 }
-
+}
 DupArchiveConstants::init();

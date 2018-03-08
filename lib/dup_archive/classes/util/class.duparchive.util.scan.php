@@ -7,6 +7,7 @@
 
 require_once(dirname(__FILE__).'/class.duparchive.u.json.php');
 
+if(!class_exists('DupArchiveScanUtil')) {
 /**
  * Description of class
  *
@@ -78,4 +79,5 @@ class DupArchiveScanUtil
 
         return $scan;
     }
+}
 }

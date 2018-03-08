@@ -4,7 +4,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+if(!class_exists('SnapLibStringU')) {
 class SnapLibStringU
 {
     public static function boolToString($b)
@@ -57,4 +57,5 @@ class SnapLibStringU
             throw new Exception("Error decoding JSON");
         }
     }
+}
 }

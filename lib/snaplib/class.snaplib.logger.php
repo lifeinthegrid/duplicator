@@ -5,6 +5,7 @@
  * and open the template in the editor.
  */
 
+if(!class_exists('SnapLibLogger')) {
 class SnapLibLogger
 {
     public static $logFilepath = null;
@@ -108,4 +109,5 @@ class SnapLibLogger
 
         self::log("  {$dPrev}  :  {$dSame}  :  {$currentTime}  :     {$s}");
     }
+}
 }
