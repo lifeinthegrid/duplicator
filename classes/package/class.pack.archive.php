@@ -88,7 +88,7 @@ class DUP_Archive
 				case 'TAR-GZIP': break;
                 case 'DAF':
 					DUP_LOG::trace("b3");
-                    $completed = DUP_DupArchive::create($this, $package->BuildProgress, $package);
+                    $completed = DUP_DupArchive::create($this, $this->Package->BuildProgress, $this->Package);
                     $this->Package->Update();
                     break;
 
@@ -102,14 +102,14 @@ class DUP_Archive
             }
 			DUP_LOG::Trace("b4");
 						
-			if($package->BuildProgress === null) {
+			if($this->Package->BuildProgress === null) {
 				DUP_LOG::Trace("b5");
 				$storePath  = "{$this->Package->StorePath}/{$this->File}";
 				$this->Size = @filesize($storePath);
 				$this->Package->setStatus(DUP_PackageStatus::ARCDONE);
 			} else if($completed) {
 				DUP_LOG::Trace("b6");
-                if ($package->BuildProgress->failed) {
+                if ($this->Package->BuildProgress->failed) {
 					DUP_LOG::Trace("b7");
                     DUP_LOG::Trace("Error building DupArchive");
                     $this->Package->setStatus(DUP_PackageStatus::ERROR);
@@ -119,7 +119,7 @@ class DUP_Archive
                     $this->Size	 = @filesize($filepath);
                     $this->Package->setStatus(DUP_PackageStatus::ARCDONE);
                     DUP_LOG::Trace("Done building archive");
-					if($package->BuildProgress->failed) {
+					if($this->Package->BuildProgress->failed) {
 						DUP_LOG::Trace("Already failed when done building archive");
 					} else {
 						DUP_LOG::Trace("Not yet failed after done building archive");
