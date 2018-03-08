@@ -493,7 +493,7 @@ class DUP_Package
 
                 $message = "Package creation failed.";
 
-                DUP_Log::error($message);
+                DUP_Log::error($message, $message);
                 DUP_Log::Trace($message);
             } else {
 

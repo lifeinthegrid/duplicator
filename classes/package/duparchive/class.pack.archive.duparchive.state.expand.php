@@ -9,43 +9,21 @@ require_once (DUPLICATOR_PLUGIN_PATH.'lib/dup_archive/classes/states/class.dupar
 
 class DUP_DupArchive_Expand_State extends DupArchiveExpandState
 {
-    public static $instance = null;
-
-    const StateFilename = 'expandstate.json';
-
     public static function getInstance($reset = false)
-    {
-        if ((self::$instance == null) && (!$reset)) {
-            $stateFilepath = DUPLICATOR_SSDIR_PATH.'/'.self::StateFilename;
-
-            self::$instance = new DUP_DupArchive_Expand_State();
-
-            if (file_exists($stateFilepath)) {
-                $stateHandle = SnapLibIOU::fopen($stateFilepath, 'r');
-
-                SnapLibIOU::flock($stateHandle, LOCK_EX);
-
-                $stateString = fread($stateHandle, filesize($stateFilepath));
-
-                $data = json_decode($stateString);
-
-                self::$instance->setFromData($data);
-
-                SnapLibIOU::flock($stateHandle, LOCK_UN);
-
-                SnapLibIOU::fclose($stateHandle);
-            } else {
-                $reset = true;
-            }
-        }
-
+    {   
+        $instance = new DUP_DupArchive_Expand_State();
+        
         if ($reset) {
-            self::$instance = new DUP_DupArchive_Expand_State();
-
-            self::$instance->reset();
+         
+            $instance->initMembers();
+        } else {
+            $data = DUP_Settings::Get('duparchive_expand_state');
+        
+            DUP_LOG::traceObject("****RAW EXPAND STATE LOADED****", $data);
+            DUP_Util::objectCopy($data, $instance);
         }
 
-        return self::$instance;
+        return $instance;
     }
 
     private function setFromData($data)
@@ -69,33 +47,11 @@ class DUP_DupArchive_Expand_State extends DupArchiveExpandState
         $this->throttleDelayInUs     = $data->throttleDelayInUs;
     }
 
-    public function reset()
-    {
-        $stateFilepath = dirname(__FILE__).'/'.self::StateFilename;
-
-        $stateHandle = SnapLibIOU::fopen($stateFilepath, 'w');
-
-        SnapLibIOU::flock($stateHandle, LOCK_EX);
-
-        $this->initMembers();
-
-        SnapLibIOU::fwrite($stateHandle, json_encode($this));
-
-        SnapLibIOU::fclose($stateHandle);
-    }
-
     public function save()
     {
-        $stateFilepath = dirname(__FILE__).'/'.self::StateFilename;
-
-        $stateHandle = SnapLibIOU::fopen($stateFilepath, 'w');
-
-        SnapLibIOU::flock($stateHandle, LOCK_EX);
-
-        DupArchiveUtil::tlogObject("saving expand state", $this);
-        SnapLibIOU::fwrite($stateHandle, json_encode($this));
-
-        SnapLibIOU::fclose($stateHandle);
+        DUP_LOG::trace("****SAVING EXPAND STATE****");
+        DUP_Settings::Set('duparchive_expand_state', $this);
+        DUP_Settings::Save();
     }
 
     private function initMembers()

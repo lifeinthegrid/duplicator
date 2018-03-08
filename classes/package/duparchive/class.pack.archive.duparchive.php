@@ -238,6 +238,10 @@ class DUP_DupArchive
 					$expandState->save();
 
 					DUP_LOG::traceObject("EXPAND STATE AFTER SAVE", $expandState);
+                    
+                    $te = DUP_DupArchive_Expand_State::getInstance();
+                    
+                    DUP_Log::traceObject("TEST LOAD EXPAND STATE", $te);
                 }
                 else {
 
