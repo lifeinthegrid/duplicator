@@ -281,6 +281,6 @@ $(document).ready(function ()
 
 
 <!-- Used for integrity check do not remove:
-DUPLICATOR_PRO_INSTALLER_EOF -->
+DUPLICATOR_INSTALLER_EOF -->
 </body>
 </html>

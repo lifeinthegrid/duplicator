@@ -335,7 +335,7 @@ EOT;
 		$dbdelete_count1 = 0;
 		$dbdelete_count2 = 0;
 
-		@mysqli_query($this->dbh, "DELETE FROM `{$GLOBALS['DUPX_AC']->wp_tableprefix}duplicator_pro_packages`");
+		@mysqli_query($this->dbh, "DELETE FROM `{$GLOBALS['DUPX_AC']->wp_tableprefix}duplicator_packages`");
 		$dbdelete_count1 = @mysqli_affected_rows($this->dbh);
 
 		@mysqli_query($this->dbh, "DELETE FROM `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` WHERE `option_name` LIKE ('_transient%') OR `option_name` LIKE ('_site_transient%')");

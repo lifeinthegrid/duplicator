@@ -40,6 +40,7 @@ class DUP_Log {
 	 *	@fwrite(self::$logFileHandle, "{$results} \n"); 
 	 */
 	static public function Info($msg) {
+        error_log($msg); // temp
 		@fwrite(self::$logFileHandle, "{$msg} \n"); 
 		//$results = DUP_Util::byteSize(memory_get_usage(true)) . "\t" . $msg;
 		//@fwrite(self::$logFileHandle, "{$results} \n"); 
@@ -64,6 +65,7 @@ class DUP_Log {
 	*/
 	static public function Error($msg, $detail) {
 		
+        error_log($msg . $detail); // rsr temp
 		$source = self::getStack(debug_backtrace());
 		
 		$err_msg  = "\n==================================================================================\n";

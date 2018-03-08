@@ -50,6 +50,7 @@ if (function_exists('plugin_dir_url'))
 	define('DUPLICATOR_MAX_BUILD_RETRIES', 10);			// Max times to try a part of progressive build work
 	define('DUPLICATOR_HTACCESS_ORIG_FILENAME', 'htaccess.orig');
 	define('DUPLICATOR_WPCONFIG_ARK_FILENAME', 'wp-config-arc.txt');
+    define('DUPLICATOR_EMBEDDED_SCAN_FILENAME', 'scan.json');
 	define("DUPLICATOR_ENHANCED_INSTALLER_DIRECTORY", DUPLICATOR_WPROOTPATH.'dup-installer');
 	
     $GLOBALS['DUPLICATOR_SERVER_LIST'] = array('Apache','LiteSpeed', 'Nginx', 'Lighttpd', 'IIS', 'WebServerX', 'uWSGI');

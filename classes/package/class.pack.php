@@ -262,27 +262,30 @@ class DUP_Package
 
         //------------------------
         //SQL CHECK:  File should be at minimum 5K.  A base WP install with only Create tables is about 9K
-        $sql_temp_path = DUP_Util::safePath(DUPLICATOR_PRO_SSDIR_PATH_TMP . '/' . $this->Database->File);
+        $sql_temp_path = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP . '/' . $this->Database->File);
         $sql_temp_size = @filesize($sql_temp_path);
         $sql_easy_size = DUP_Util::byteSize($sql_temp_size);
         $sql_done_txt = DUP_Util::tailFile($sql_temp_path, 3);
+        DUP_Log::Trace('rundupa1');
         if (!strstr($sql_done_txt, 'DUPLICATOR_MYSQLDUMP_EOF') || $sql_temp_size < 5120) {
+            DUP_Log::Trace('rundupa2');
             $this->BuildProgress->failed = true;
             $this->update();
             $this->setStatus(DUP_PackageStatus::ERROR);
 
-            $error_text = "ERROR: SQL file not complete.  The file looks too small ($sql_temp_size bytes) or the end of file marker was not found.";
+            $error_text = "ERROR: SQL file not complete.  The file {$sql_temp_path} looks too small ($sql_temp_size bytes) or the end of file marker was not found.";
 
-            DUP_Log::Error("$error_text  **RECOMMENDATION: $fix_text", '', false);
+            DUP_Log::Error("$error_text", '', false);
 
             return;
         }
 
+        DUP_Log::Trace('rundupa3');
         DUP_Log::Info("SQL FILE: {$sql_easy_size}");
 
         //------------------------
         //INSTALLER CHECK:
-        $exe_temp_path = DUP_Util::safePath(DUPLICATOR_PRO_SSDIR_PATH_TMP . '/' . $this->Installer->File);
+        $exe_temp_path = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP . '/' . $this->Installer->File);
         $exe_temp_size = @filesize($exe_temp_path);
         $exe_easy_size = DUP_Util::byteSize($exe_temp_size);
         $exe_done_txt = DUP_Util::tailFile($exe_temp_path, 10);
@@ -685,7 +688,7 @@ class DUP_Package
 	//	DUP_Log::TraceObject('package object', $this);
         DUP_Log::Trace("status = {$this->Status}");
         DUP_Log::Trace("ID = {$this->ID}");
-        DUP_Log::Trace($sql);
+      //  DUP_Log::Trace($sql);
         DUP_Log::Trace('-------------------------');
         
         $wpdb->query($sql);

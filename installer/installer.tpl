@@ -826,5 +826,5 @@ $auto_refresh = isset($_POST['auto-fresh']) ? true : false;
 @@DUPARCHIVE_MINI_EXPANDER@@
 <!--
 Used for integrity check do not remove:
-DUPLICATOR_PRO_INSTALLER_EOF  -->
+DUPLICATOR_INSTALLER_EOF  -->
 </html>

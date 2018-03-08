@@ -86,7 +86,7 @@ class DUP_Installer
 		$search_array  = array('@@ARCHIVE@@', '@@VERSION@@', '@@ARCHIVE_SIZE@@');
 
 // rsr uncomment when duparchive $replace_array = array($this->Package->Archive->File, DUPLICATOR_PRO_VERSION, @filesize($archive_filepath), $mini_expander_string);
-		$replace_array = array($this->Package->Archive->File, DUPLICATOR_PRO_VERSION, @filesize($archive_filepath));
+		$replace_array = array($this->Package->Archive->File, DUPLICATOR_VERSION, @filesize($archive_filepath));
 
         $installer_contents = str_replace($search_array, $replace_array, $installer_contents);
 
@@ -240,20 +240,20 @@ class DUP_Installer
         $success = false;
 
         try {
-			$htaccess_filepath = DUPLICATOR_PRO_WPROOTPATH . '.htaccess';
-			$wpconfig_filepath = DUPLICATOR_PRO_WPROOTPATH . 'wp-config.php';
+			$htaccess_filepath = DUPLICATOR_WPROOTPATH . '.htaccess';
+			$wpconfig_filepath = DUPLICATOR_WPROOTPATH . 'wp-config.php';
 
             $logger = new DUP_DupArchive_Logger();
 
             DupArchiveEngine::init($logger, 'DUP_Log::profile');
 
-            DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $scan_filepath, DUPLICATOR_PRO_EMBEDDED_SCAN_FILENAME);
+            DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $scan_filepath, DUPLICATOR_EMBEDDED_SCAN_FILENAME);
             $this->numFilesAdded++;
 
 			if(file_exists($htaccess_filepath)) {
 				try
 				{
-					DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $htaccess_filepath, DUPLICATOR_PRO_HTACCESS_ORIG_FILENAME);
+					DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $htaccess_filepath, DUPLICATOR_HTACCESS_ORIG_FILENAME);
 					$this->numFilesAdded++;
 				}
 				catch (Exception $ex)
@@ -263,7 +263,7 @@ class DUP_Installer
 			}
 
 			if(file_exists($wpconfig_filepath)) {
-				DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $wpconfig_filepath, DUPLICATOR_PRO_WPCONFIG_ARK_FILENAME);
+				DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $wpconfig_filepath, DUPLICATOR_WPCONFIG_ARK_FILENAME);
 				$this->numFilesAdded++;
 			}
 
