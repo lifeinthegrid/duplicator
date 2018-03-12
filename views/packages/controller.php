@@ -19,15 +19,15 @@ $nonce = wp_create_nonce('DUP_PRO_CTRL_Package_getPackageFile');
          *	METHOD: Triggers the download of an installer/package file
          *	@param name		Window name to open
          *	@param button	Button to change color */
-        Duplicator.Pack.DownloadFile = function(event, button) {
-            if (event.data != undefined) {
-                window.open(event.data.name, '_self');
-            } else {
-                $(button).addClass('dup-button-selected');
-                window.open(event, '_self');
-            }
-            return false;
-        }
+//        Duplicator.Pack.DownloadFile = function(event, button) {
+//            if (event.data != undefined) {
+//                window.open(event.data.name, '_self');
+//            } else {
+//                $(button).addClass('dup-button-selected');
+//                window.open(event, '_self');
+//            }
+//            return false;
+//        }
 
         /*	----------------------------------------
          * METHOD: Toggle links with sub-details */

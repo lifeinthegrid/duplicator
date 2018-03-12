@@ -111,13 +111,18 @@ GENERAL -->
 				<div id="dup-downloads-area">
 					<?php if  (!$err_found) :?>
 					
-						<button class="button" onclick="Duplicator.Pack.DownloadFile('<?php echo $link_installer; ?>', this);return false;"><i class="fa fa-bolt"></i> Installer</button>						
+<!--						<button class="button" onclick="Duplicator.Pack.DownloadFile('<?php echo $link_installer; ?>', this);return false;"><i class="fa fa-bolt"></i> Installer</button>
 						<button class="button" onclick="Duplicator.Pack.DownloadFile('<?php echo $link_archive; ?>', this);return false;"><i class="fa fa-file-archive-o"></i> Archive - <?php echo $package->ZipSize ?></button>
 						<button class="button" onclick="Duplicator.Pack.DownloadFile('<?php echo $link_sql; ?>', this);return false;"><i class="fa fa-table"></i> &nbsp; SQL - <?php echo DUP_Util::byteSize($package->Database->Size)  ?></button>
-						<button class="button" onclick="Duplicator.Pack.DownloadFile('<?php echo $link_log; ?>', this);return false;"><i class="fa fa-list-alt"></i> &nbsp; Log </button>
+						<button class="button" onclick="Duplicator.Pack.DownloadFile('<?php echo $link_log; ?>', this);return false;"><i class="fa fa-list-alt"></i> &nbsp; Log </button>-->
+                        <button class="button" onclick="DupPro.Pack.DownloadPackageFile(0, <?php echo $package->ID ?>);return false;"><i class="fa fa-bolt"></i> Installer</button>
+                        <button class="button" onclick="DupPro.Pack.DownloadPackageFile(1, <?php echo $package->ID ?>);return false;"><i class="fa fa-file-archive-o"></i> Archive - <?php echo $package->ZipSize ?></button>
+                        <button class="button" onclick="DupPro.Pack.DownloadPackageFile(2, <?php echo $package->ID ?>);return false;"><i class="fa fa-table"></i> &nbsp; SQL - <?php echo DUP_PRO_U::byteSize($package->Database->Size)  ?></button>
+                        <button class="button" onclick="DupPro.Pack.DownloadPackageFile(3, <?php echo $package->ID ?>);return false;"><i class="fa fa-table"></i> &nbsp; Log </button>
 						<button class="button" onclick="Duplicator.Pack.ShowLinksDialog(<?php echo "'{$link_sql}','{$link_archive}','{$link_installer}','{$link_log}'" ;?>);" class="thickbox"><i class="fa fa-lock"></i> &nbsp; <?php _e("Share", 'duplicator')?></button>
 					<?php else: ?>
-							<button class="button" onclick="Duplicator.Pack.DownloadFile('<?php echo $link_log; ?>', this);return false;"><i class="fa fa-list-alt"></i> &nbsp; Log </button>
+<!--						<button class="button" onclick="Duplicator.Pack.DownloadFile('<?php echo $link_log; ?>', this);return false;"><i class="fa fa-list-alt"></i> &nbsp; Log </button>-->
+                        <button class="button" onclick="DupPro.Pack.DownloadPackageFile(3, <?php echo $package->ID ?>);return false;"><i class="fa fa-table"></i> &nbsp; Log </button>
 					<?php endif; ?>
 				</div>		
 				<?php if (!$err_found) :?>

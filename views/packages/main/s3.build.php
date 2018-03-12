@@ -365,8 +365,8 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                     $('#data-time').text(data.Runtime || 'unable to read time');
 
                     //Wire Up Downloads
-                    $('#dup-btn-installer').on("click", {name: InstallURL}, Duplicator.Pack.DownloadFile);
-                    $('#dup-btn-archive').on("click", {name: ArchiveURL}, Duplicator.Pack.DownloadFile);
+                    $('#dup-btn-installer').on("click", {name: InstallURL}, function() { Duplicator.Pack.DownloadPackageFile(0, Pack.ID); });
+                    $('#dup-btn-archive').on("click", {name: ArchiveURL}, function() { Duplicator.Pack.DownloadPackageFile(1, Pack.ID); });
 
                     $('#dup-link-download-both').on("click", function () {
                         window.open(InstallURL);
@@ -471,8 +471,8 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                                 $('#data-time').text(data.runtime || 'unable to read time');
 
                                 //Wire Up Downloads
-                                $('#dup-btn-installer').on("click", {name: installURL}, Duplicator.Pack.DownloadFile);
-                                $('#dup-btn-archive').on("click", {name: archiveURL}, Duplicator.Pack.DownloadFile);
+                                $('#dup-btn-installer').on("click", {name: installURL}, function() { Duplicator.Pack.DownloadPackageFile(0, pack.ID);});
+                                $('#dup-btn-archive').on("click", {name: archiveURL}, function() { Duplicator.Pack.DownloadPackageFile(1, pack.ID);});
 
                                 $('#dup-link-download-both').on("click", function () {
                                     window.open(installURL);

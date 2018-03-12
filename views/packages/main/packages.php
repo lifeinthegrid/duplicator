@@ -148,10 +148,10 @@ TOOL-BAR -->
 						<?php	echo ($pack_dbonly) ? "{$pack_name} <sup title='{$txt_dbonly}'>DB</sup>" : $pack_name ; ?>
 					</td>
 					<td class="get-btns">
-						<button id="<?php echo "{$uniqueid}_installer.php" ?>" class="button no-select" onclick="Duplicator.Pack.DownloadFile('<?php echo $installfilelink; ?>', this); return false;">
+						<button id="<?php echo "{$uniqueid}_installer.php" ?>" class="button no-select" onclick="Duplicator.Pack.DownloadPackageFile(0, <?php echo $package->ID ?>); return false;">
 							<i class="fa fa-bolt"></i> <?php _e("Installer", 'duplicator') ?>
 						</button> 
-						<button id="<?php echo "{$uniqueid}_archive.zip" ?>" class="button no-select" onclick="Duplicator.Pack.DownloadFile('<?php echo $packagepath; ?>', this); return false;">
+						<button id="<?php echo "{$uniqueid}_archive.zip" ?>" class="button no-select" onclick="Duplicator.Pack.DownloadPackageFile(1, <?php echo $package->ID ?>); return false;">
 							<i class="fa fa-file-archive-o"></i> <?php _e("Archive", 'duplicator') ?>
 						</button>
 						<button type="button" class="button no-select" title="<?php _e("Package Details", 'duplicator') ?>" onclick="Duplicator.Pack.OpenPackageDetails(<?php echo "{$row['id']}"; ?>);">
