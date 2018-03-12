@@ -573,6 +573,7 @@ class DUP_Package
                 DUP_Log::Trace($message);
             } else {
 
+                $this->setStatus(DUP_PackageStatus::COMPLETE);
 				DUP_LOG::Trace("Cleaning up duparchive temp files");
                 //File Cleanup
                 $this->buildCleanup();
