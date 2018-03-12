@@ -70,6 +70,17 @@ final class DUP_PackageType
 
 }
 
+abstract class DUP_PackageFileType
+{
+
+    const Installer = 0;
+    const Archive = 1;
+    const SQL = 2;
+    const Log = 3;
+    //const Dump = 4;
+
+}
+
 /**
  * Class used to store and process all Package logic
  *
@@ -377,7 +388,69 @@ class DUP_Package
         }
     }
 
-	public static function safeTmpCleanup($purge_temp_archives = false)
+     public function getLocalPackageFile($file_type, $only_default = false)
+    {
+        DUP_Log::TraceObject('getting local file for', $this);
+        $file_path = null;
+
+        if ($file_type == DUP_PackageFileType::Installer) {
+            DUP_Log::Trace("Installer requested");
+            $file_name = $this->get_installer_filename();
+        } else if ($file_type == DUP_PackageFileType::Archive) {
+            DUP_Log::Trace("Archive requested");
+            $file_name = $this->get_archive_filename();
+        } else if ($file_type == DUP_PackageFileType::SQL) {
+            DUP_Log::Trace("SQL requested");
+            $file_name = $this->get_database_filename();        
+        } else {
+            DUP_Log::Trace("Log requested");
+            $file_name = $this->get_log_filename();
+        }
+
+        $file_path = Dup_Util::safePath(DUPLICATOR_SSDIR_PATH) . "/$file_name";
+
+        DUP_Log::Trace("File path $file_path");
+
+        if (file_exists($file_path)) {
+            return $file_path;
+        } else {
+            return null;
+        }
+    }
+
+    public function get_scan_filename()
+    {
+        return $this->NameHash . '_scan.json';
+    }
+
+    public function get_log_filename()
+    {
+        return $this->NameHash . '.log';
+    }
+
+    public function get_dump_filename()
+    {
+        return $this->NameHash . '_dump.txt';
+    }
+
+    public function get_archive_filename()
+    {
+        $extension = strtolower($this->Archive->Format);
+
+        return "{$this->NameHash}_archive.{$extension}";
+    }
+
+    public function get_installer_filename()
+    {
+        return "{$this->NameHash}_installer.php";
+    }
+
+    public function get_database_filename()
+    {
+        return $this->NameHash . '_database.sql';
+    }
+
+    public static function safeTmpCleanup($purge_temp_archives = false)
     {
         if ($purge_temp_archives) {
             $dir = DUPLICATOR_SSDIR_PATH_TMP . "/*_archive.zip.*";

@@ -128,16 +128,17 @@ if (is_admin() == true)
      * =====================================================  */
     add_action('plugins_loaded',	'duplicator_update');
     add_action('plugins_loaded',	'duplicator_wpfront_integrate');
-	add_action('admin_init',		'duplicator_init');
+    add_action('admin_init',		'duplicator_init');
     add_action('admin_menu',		'duplicator_menu');
-	add_action('admin_notices',		array('DUP_UI_Notice', 'showReservedFilesNotice'));
+    add_action('admin_notices',		array('DUP_UI_Notice', 'showReservedFilesNotice'));
 	
 	//CTRL ACTIONS
     add_action('wp_ajax_duplicator_package_scan',				'duplicator_package_scan');
     add_action('wp_ajax_duplicator_package_build',				'duplicator_package_build');
     add_action('wp_ajax_duplicator_package_delete',				'duplicator_package_delete');
-	add_action('wp_ajax_duplicator_duparchive_package_build',	'duplicator_duparchive_package_build');
+    add_action('wp_ajax_duplicator_duparchive_package_build',	'duplicator_duparchive_package_build');
     add_action('wp_ajax_nopriv_duplicator_duparchive_package_build',	'duplicator_duparchive_package_build');
+
 
 	$GLOBALS['CTRLS_DUP_CTRL_UI']		= new DUP_CTRL_UI();
 	$GLOBALS['CTRLS_DUP_CTRL_Tools']	= new DUP_CTRL_Tools();
