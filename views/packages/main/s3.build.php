@@ -365,8 +365,8 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                     $('#data-time').text(data.Runtime || 'unable to read time');
 
                     //Wire Up Downloads
-                    $('#dup-btn-installer').on("click", {name: InstallURL}, function() { Duplicator.Pack.DownloadPackageFile(0, Pack.ID); });
-                    $('#dup-btn-archive').on("click", {name: ArchiveURL}, function() { Duplicator.Pack.DownloadPackageFile(1, Pack.ID); });
+                    $('#dup-btn-installer').click(function() { Duplicator.Pack.DownloadPackageFile(0, pack.ID);});
+                    $('#dup-btn-archive').click(function() { Duplicator.Pack.DownloadPackageFile(1, pack.ID);});
 
                     $('#dup-link-download-both').on("click", function () {
                         window.open(InstallURL);
@@ -471,12 +471,15 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                                 $('#data-time').text(data.runtime || 'unable to read time');
 
                                 //Wire Up Downloads
-                                $('#dup-btn-installer').on("click", {name: installURL}, function() { Duplicator.Pack.DownloadPackageFile(0, pack.ID);});
-                                $('#dup-btn-archive').on("click", {name: archiveURL}, function() { Duplicator.Pack.DownloadPackageFile(1, pack.ID);});
+                                console.log(pack);
+                                $('#dup-btn-installer').click(function() { Duplicator.Pack.DownloadPackageFile(0, pack.ID); return false});                               
+                                $('#dup-btn-archive').click(function() { Duplicator.Pack.DownloadPackageFile(1, pack.ID); return false});
 
                                 $('#dup-link-download-both').on("click", function () {
-                                    window.open(installURL);
-                                    window.open(archiveURL);
+//                                    window.open(installURL);//
+//                                    window.open(archiveURL);
+                                        Duplicator.Pack.DownloadPackageFile(0, pack.ID);
+                                        Duplicator.Pack.DownloadPackageFile(1, pack.ID);
 
                                 });
 

@@ -10,24 +10,31 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 
 $current_view =  (isset($_REQUEST['action']) && $_REQUEST['action'] == 'detail') ? 'detail' : 'main';
 
-$nonce = wp_create_nonce('DUP_PRO_CTRL_Package_getPackageFile');
+$get_package_file_nonce = wp_create_nonce('DUP_CTRL_Package_getPackageFile');
 ?>
 
 <script>
+
+</script>
+
+<script>
     jQuery(document).ready(function($) {
-        /*	----------------------------------------
-         *	METHOD: Triggers the download of an installer/package file
-         *	@param name		Window name to open
-         *	@param button	Button to change color */
-//        Duplicator.Pack.DownloadFile = function(event, button) {
-//            if (event.data != undefined) {
-//                window.open(event.data.name, '_self');
-//            } else {
-//                $(button).addClass('dup-button-selected');
-//                window.open(event, '_self');
-//            }
-//            return false;
-//        }
+
+        // which: 0=installer, 1=archive, 2=sql file, 3=log
+        Duplicator.Pack.DownloadPackageFile = function (which, packageID)
+		{
+            var actionLocation = ajaxurl + '?action=DUP_CTRL_Package_getPackageFile&which=' + which + '&package_id=' + packageID + '&nonce=' + '<?php echo $get_package_file_nonce; ?>';
+
+            if(which == 3) {
+                var win = window.open(actionLocation, '_blank');
+                win.focus();
+            }
+            else {
+                location.href = actionLocation;
+            }
+			return false;
+        };
+
 
         /*	----------------------------------------
          * METHOD: Toggle links with sub-details */

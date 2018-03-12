@@ -1,8 +1,6 @@
 <?php
 require_once(DUPLICATOR_PLUGIN_PATH . '/classes/ui/class.ui.dialog.php');
 $current_tab = isset($_REQUEST['tab']) ? esc_html($_REQUEST['tab']) : 'list';
-
-$get_package_file_nonce = wp_create_nonce('DUP_CTRL_Package_getPackageFile');
 ?>
 
 <style>
@@ -28,27 +26,6 @@ $get_package_file_nonce = wp_create_nonce('DUP_CTRL_Package_getPackageFile');
     div.dup-button-footer input {min-width: 105px}
     div.dup-button-footer {padding: 1px 10px 0px 0px; text-align: right}
 </style>
-
-
-<script>
-    jQuery(document).ready(function($)
-	{
-        // which: 0=installer, 1=archive, 2=sql file, 3=log
-        Duplicator.Pack.DownloadPackageFile = function (which, packageID)
-		{
-            var actionLocation = ajaxurl + '?action=DUP_PRO_CTRL_Package_getPackageFile&which=' + which + '&package_id=' + packageID + '&nonce=' + '<?php echo $get_package_file_nonce; ?>';
-
-            if(which == 3) {
-                var win = window.open(actionLocation, '_blank');
-                win.focus();
-            }
-            else {
-                location.href = actionLocation;
-            }
-			return false;
-        }
-    });
-</script>
 
 <?php
 	switch ($current_tab) {
