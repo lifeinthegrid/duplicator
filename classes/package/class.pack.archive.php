@@ -315,6 +315,11 @@ class DUP_Archive
         $this->FilterDirsAll  = array_merge($this->FilterInfo->Dirs->Instance, $this->FilterInfo->Dirs->Core);
         $this->FilterExtsAll  = array_merge($this->FilterInfo->Exts->Instance, $this->FilterInfo->Exts->Core);
 		$this->FilterFilesAll = array_merge($this->FilterInfo->Files->Instance);
+        
+        $this->FilterFilesAll[] = DUPLICATOR_WPROOTPATH . '.htaccess';
+		$this->FilterFilesAll[] = DUPLICATOR_WPROOTPATH . 'wp-config.php';
+
+        DUP_Log::traceObject("########## filter files all", $this->FilterFilesAll);
 		$this->tmpFilterDirsAll = $this->FilterDirsAll;
 
 		//PHP 5 on windows decode patch
