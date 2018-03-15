@@ -70,23 +70,20 @@ class DUP_Installer
         // Replace the @@ARCHIVE@@ token
         $installer_contents = file_get_contents($template_filepath);
 
-		// RSR TODO: uncomment once duparchive integrated
-//        if ($this->Package->BuildProgress->current_build_mode == DUP_Archive_Build_Mode::DupArchive) {
-//            $mini_expander_string = file_get_contents($mini_expander_filepath);
-//
-//            if ($mini_expander_string === false) {
-//                DUP_Log::error(DUP_U::__('Error reading DupArchive mini expander'), DUP_U::__('Error reading DupArchive mini expander'), false);
-//                return false;
-//            }
-//        } else {
+        if (DUP_Settings::Get('archive_build_mode') == DUP_Archive_Build_Mode::DupArchive) {
+            $mini_expander_string = file_get_contents($mini_expander_filepath);
+
+            if ($mini_expander_string === false) {
+                DUP_Log::error(DUP_U::__('Error reading DupArchive mini expander'), DUP_U::__('Error reading DupArchive mini expander'), false);
+                return false;
+            }
+        } else {
             $mini_expander_string = '';
-   //     }
+        }
 
-    //  RSR uncomment when duparchive integrated  $search_array  = array('@@ARCHIVE@@', '@@VERSION@@', '@@ARCHIVE_SIZE@@', '@@DUPARCHIVE_MINI_EXPANDER@@');
-		$search_array  = array('@@ARCHIVE@@', '@@VERSION@@', '@@ARCHIVE_SIZE@@');
+        $search_array  = array('@@ARCHIVE@@', '@@VERSION@@', '@@ARCHIVE_SIZE@@', '@@DUPARCHIVE_MINI_EXPANDER@@');
 
-// rsr uncomment when duparchive $replace_array = array($this->Package->Archive->File, DUPLICATOR_PRO_VERSION, @filesize($archive_filepath), $mini_expander_string);
-		$replace_array = array($this->Package->Archive->File, DUPLICATOR_VERSION, @filesize($archive_filepath));
+        $replace_array = array($this->Package->Archive->File, DUPLICATOR_PRO_VERSION, @filesize($archive_filepath), $mini_expander_string);
 
         $installer_contents = str_replace($search_array, $replace_array, $installer_contents);
 

@@ -89,7 +89,7 @@ function duplicator_duparchive_package_build()
 {
 
     DUP_Util::hasCapability('export');
-    check_ajax_referer( 'duplicator_duparchive_package_build', 'nonce');
+    check_ajax_referer('duplicator_duparchive_package_build', 'nonce');
 
     DUP_LOG::Trace("call to duplicator_duparchive_package_build");
     header('Content-Type: application/json');
@@ -293,91 +293,94 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
     }
 
     /**
-    * Download the requested package file
-    *
-    * @param string $_POST['which']
-    * @param string $_POST['package_id']
-    *
-    * @return downloadable file
-    */
-   function getPackageFile($post)
-   {
-       $params = $this->postParamMerge($post);
-       $params = $this->getParamMerge($params);
+     * Download the requested package file
+     *
+     * @param string $_POST['which']
+     * @param string $_POST['package_id']
+     *
+     * @return downloadable file
+     */
+    function getPackageFile($post)
+    {
+        $params = $this->postParamMerge($post);
+        $params = $this->getParamMerge($params);
 //       check_ajax_referer($post['action'], 'nonce');
 
-       $result = new DUP_CTRL_Result($this);
+        $result = new DUP_CTRL_Result($this);
 
-       try {
-           //CONTROLLER LOGIC
+        try {
+            //CONTROLLER LOGIC
 
-           DUP_Util::hasCapability('export');
+            DUP_Util::hasCapability('export');
 
-           $request   = stripslashes_deep($_REQUEST);
-           $which     = (int) $request['which'];
-           $packageId = (int) $request['package_id'];
-           $package   = DUP_Package::getByID($packageId);
-           $isBinary  = ($which != DUP_PackageFileType::Log);
-           $filePath  = $package->getLocalPackageFile($which);
+            $request   = stripslashes_deep($_REQUEST);
+            $which     = (int) $request['which'];
+            $packageId = (int) $request['package_id'];
+            $package   = DUP_Package::getByID($packageId);
+            $isBinary  = ($which != DUP_PackageFileType::Log);
+            $filePath  = $package->getLocalPackageFile($which);
 
-           //OUTPUT: Installer, Archive, SQL File
-           if ($isBinary) {
-               header("Pragma: public");
-               header("Expires: 0");
-               header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-               header("Cache-Control: private", false);
-               header("Content-Transfer-Encoding: binary");
+            //OUTPUT: Installer, Archive, SQL File
+            if ($isBinary) {
+                header("Pragma: public");
+                header("Expires: 0");
+                header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+                header("Cache-Control: private", false);
+                header("Content-Transfer-Encoding: binary");
 
-               if ($filePath != null) {
-                   $fp = fopen($filePath, 'rb');
-                   if ($fp !== false) {
+                if ($filePath != null) {
+                    $fp = fopen($filePath, 'rb');
+                    if ($fp !== false) {
 
-                       $fileName = basename($filePath);
+                        if ($which == DUP_PackageFileType::Installer) {
+                            $fileName = 'installer.php';
+                        } else {
+                            $fileName = basename($filePath);
+                        }
 
-                       header("Content-Type: application/octet-stream");
-                       header("Content-Disposition: attachment; filename=\"{$fileName}\";");
+                        header("Content-Type: application/octet-stream");
+                        header("Content-Disposition: attachment; filename=\"{$fileName}\";");
 
-                       @ob_end_clean(); // required or large files wont work
-                       DUP_Log::Trace("streaming $filePath");
+                        @ob_end_clean(); // required or large files wont work
+                        DUP_Log::Trace("streaming $filePath");
 
-                       if (fpassthru($fp) === false) {
-                           DUP_Log::Trace("Error with fpassthru for {$filePath}");
-                       }
-                       fclose($fp);
-                       die(); //Supress additional ouput
-                   } else {
-                       header("Content-Type: text/plain");
-                       header("Content-Disposition: attachment; filename=\"error.txt\";");
-                       $message = "Couldn't open $filePath.";
-                       DUP_Log::Trace($message);
-                       echo $message;
-                   }
-               } else {
-                   $message = __("Couldn't find a local copy of the file requested.", 'duplicator');
+                        if (fpassthru($fp) === false) {
+                            DUP_Log::Trace("Error with fpassthru for {$filePath}");
+                        }
+                        fclose($fp);
+                        die(); //Supress additional ouput
+                    } else {
+                        header("Content-Type: text/plain");
+                        header("Content-Disposition: attachment; filename=\"error.txt\";");
+                        $message = "Couldn't open $filePath.";
+                        DUP_Log::Trace($message);
+                        echo $message;
+                    }
+                } else {
+                    $message = __("Couldn't find a local copy of the file requested.", 'duplicator');
 
-                   header("Content-Type: text/plain");
-                   header("Content-Disposition: attachment; filename=\"error.txt\";");
+                    header("Content-Type: text/plain");
+                    header("Content-Disposition: attachment; filename=\"error.txt\";");
 
-                   // Report that we couldn't find the file
-                   DUP_Log::Trace($message);
-                   echo $message;
-               }
+                    // Report that we couldn't find the file
+                    DUP_Log::Trace($message);
+                    echo $message;
+                }
 
-               //OUTPUT: Log File
-           } else {
-               if ($filePath != null) {
-                   header("Content-Type: text/plain");
-                   $text = file_get_contents($filePath);
+                //OUTPUT: Log File
+            } else {
+                if ($filePath != null) {
+                    header("Content-Type: text/plain");
+                    $text = file_get_contents($filePath);
 
-                   die($text);
-               } else {
-                   $message = __("Couldn't find a local copy of the file requested.", 'duplicator');
-                   echo $message;
-               }
-           }
-       } catch (Exception $exc) {
-           $result->processError($exc);
-       }
-}
-
+                    die($text);
+                } else {
+                    $message = __("Couldn't find a local copy of the file requested.", 'duplicator');
+                    echo $message;
+                }
+            }
+        } catch (Exception $exc) {
+            $result->processError($exc);
+        }
+    }
 }
