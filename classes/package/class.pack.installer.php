@@ -222,8 +222,12 @@ class DUP_Installer
             }
         }
 
-		$success = $this->add_extra_files_using_duparchive($installer_filepath, $scan_filepath, $sql_filepath, $archive_filepath, $archive_config_filepath);
-
+        if($this->Archive->Format == 'daf') {
+            $success = $this->add_extra_files_using_duparchive($installer_filepath, $scan_filepath, $sql_filepath, $archive_filepath, $archive_config_filepath);
+        } else {
+            $success = $this->add_extra_files_using_ziparchive($installer_filepath, $scan_filepath, $sql_filepath, $archive_filepath, $archive_config_filepath);
+        }
+		
         // No sense keeping the archive config around
         @unlink($archive_config_filepath);
 
@@ -268,7 +272,7 @@ class DUP_Installer
 
             $success = true;
         } catch (Exception $ex) {
-            DUP_Log::error("Error adding installer files to archive. ".$ex->getMessage());
+            DUP_Log::Error("Error adding installer files to archive. ", $ex->getMessage());
         }
 
         return $success;
@@ -327,7 +331,7 @@ class DUP_Installer
         return $success;
     }
 
-    private function add_extra_files_using_ziparchive($installer_filepath, $scan_filepath, $sql_filepath, $zip_filepath, $archive_config_filepath, $is_compressed)
+    private function add_extra_files_using_ziparchive($installer_filepath, $scan_filepath, $sql_filepath, $zip_filepath, $archive_config_filepath)
     {
 		$htaccess_filepath = DUPLICATOR_WPROOTPATH . '.htaccess';
 		$wpconfig_filepath = DUPLICATOR_WPROOTPATH . 'wp-config.php';
@@ -340,16 +344,16 @@ class DUP_Installer
             DUP_Log::Info("Successfully opened zip $zip_filepath");
 
 			if(file_exists($htaccess_filepath)) {
-				DUP_Zip_U::addFileToZipArchive($zipArchive, $htaccess_filepath, DUPLICATOR_HTACCESS_ORIG_FILENAME, $is_compressed);
+				DUP_Zip_U::addFileToZipArchive($zipArchive, $htaccess_filepath, DUPLICATOR_HTACCESS_ORIG_FILENAME, true);
 			}
 
 			if(file_exists($wpconfig_filepath)) {
-				DUP_Zip_U::addFileToZipArchive($zipArchive, $wpconfig_filepath, DUPLICATOR_WPCONFIG_ARK_FILENAME, $is_compressed);
+				DUP_Zip_U::addFileToZipArchive($zipArchive, $wpconfig_filepath, DUPLICATOR_WPCONFIG_ARK_FILENAME, true);
 			}
 
             //  if ($zipArchive->addFile($scan_filepath, DUPLICATOR_PRO_EMBEDDED_SCAN_FILENAME)) {
-            if (DUP_Zip_U::addFileToZipArchive($zipArchive, $scan_filepath, DUPLICATOR_EMBEDDED_SCAN_FILENAME, $is_compressed)) {
-                if ($this->add_installer_files_using_zip_archive($zipArchive, $installer_filepath, $archive_config_filepath, $is_compressed)) {
+            if (DUP_Zip_U::addFileToZipArchive($zipArchive, $scan_filepath, DUPLICATOR_EMBEDDED_SCAN_FILENAME, true)) {
+                if ($this->add_installer_files_using_zip_archive($zipArchive, $installer_filepath, $archive_config_filepath, true)) {
                     DUP_Log::info("Installer files added to archive");
                     DUP_Log::info("Added to archive");
 
@@ -567,7 +571,7 @@ class DUP_Installer
         DUP_Log::Info('Adding enhanced installer files to archive using ZipArchive');
 
         //   if ($zip_archive->addFile($installer_filepath, $installer_backup_filename)) {
-        if (DUP_Zip_U::addFileToZipArchive($zip_archive, $installer_filepath, $installer_backup_filename, $is_compressed)) {
+        if (DUP_Zip_U::addFileToZipArchive($zip_archive, $installer_filepath, $installer_backup_filename, true)) {
             DUPLICATOR_PLUGIN_PATH.'installer/';
 
             $installer_directory = DUPLICATOR_PLUGIN_PATH.'installer/dup-installer';
@@ -577,7 +581,7 @@ class DUP_Installer
                 $archive_config_local_name = 'dup-installer/archive.cfg';
 
                 // if ($zip_archive->addFile($archive_config_filepath, $archive_config_local_name)) {
-                if (DUP_Zip_U::addFileToZipArchive($zip_archive, $archive_config_filepath, $archive_config_local_name, $is_compressed)) {
+                if (DUP_Zip_U::addFileToZipArchive($zip_archive, $archive_config_filepath, $archive_config_local_name, true)) {
 
                     $snaplib_directory = DUPLICATOR_PLUGIN_PATH . 'lib/snaplib';
                  //   $fileops_directory = DUPLICATOR_PLUGIN_PATH . 'lib/fileops';

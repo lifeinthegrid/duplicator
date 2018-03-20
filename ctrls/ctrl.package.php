@@ -55,6 +55,8 @@ function duplicator_package_build()
     DUP_Util::initSnapshotDirectory();
 
     $Package = DUP_Package::getActive();
+    
+    $Package->save('zip');
 
     if (!is_readable(DUPLICATOR_SSDIR_PATH_TMP."/{$Package->ScanFile}")) {
         die("The scan result file was not found.  Please run the scan step before building the package.");

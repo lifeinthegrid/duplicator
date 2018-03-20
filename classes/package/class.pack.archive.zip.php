@@ -103,6 +103,7 @@ class DUP_Zip extends DUP_Archive
             if (self::$networkFlush) {
                 foreach (self::$scanReport->ARC->Files as $file) {
                     if (is_readable($file) && self::$zipArchive->addFile($file, ltrim(str_replace(self::$compressDir, '', $file), '/'))) {
+                        Dup_Log::Info("Adding {$file} to zip");
                         self::$limitItems++;
                         self::$countFiles++;
                     } else {
