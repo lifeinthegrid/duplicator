@@ -365,13 +365,12 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                     $('#data-time').text(data.Runtime || 'unable to read time');
 
                     //Wire Up Downloads
-                    $('#dup-btn-installer').click(function() { Duplicator.Pack.DownloadPackageFile(0, pack.ID);});
-                    $('#dup-btn-archive').click(function() { Duplicator.Pack.DownloadPackageFile(1, pack.ID);});
+                    $('#dup-btn-installer').click(function() { Duplicator.Pack.DownloadPackageFile(0, Pack.ID); return false});                               
+                    $('#dup-btn-archive').click(function() { Duplicator.Pack.DownloadPackageFile(1, Pack.ID); return false});
 
                     $('#dup-link-download-both').on("click", function () {
-                        window.open(InstallURL);
-                        window.open(ArchiveURL);
-
+                        $('#dup-btn-installer').click(function() { Duplicator.Pack.DownloadPackageFile(0, Pack.ID); return false});                               
+                        $('#dup-btn-archive').click(function() { Duplicator.Pack.DownloadPackageFile(1, Pack.ID); return false});
                     });
 
 

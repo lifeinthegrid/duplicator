@@ -96,7 +96,8 @@ class DUP_Archive
 					  DUP_LOG::trace("b3-1");
                     if (class_exists(ZipArchive)) {
                         $this->Format = 'ZIP';
-                        DUP_Zip::create($this);
+                        DUP_Zip::create($this, $this->Package->BuildProgress);
+                        $completed = true;
                     }
                     break;
             }

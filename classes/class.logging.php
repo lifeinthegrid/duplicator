@@ -63,7 +63,7 @@ class DUP_Log {
 	*  @param string $msg The message to log
 	*  @param string $details Additional details to help resolve the issue if possible
 	*/
-	static public function Error($msg, $detail) {
+	static public function Error($msg, $detail, $shouldDie = true) {
 		
         error_log($msg . $detail); // rsr temp
 		$source = self::getStack(debug_backtrace());
@@ -79,7 +79,10 @@ class DUP_Log {
 		$err_msg .= "TRACE:\n{$source}";
 		$err_msg .= "==================================================================================\n\n";
 		@fwrite(self::$logFileHandle, "{$err_msg}"); 
-		die("DUPLICATOR ERROR: Please see the 'Package Log' file link below.");
+        
+        if($shouldDie) {
+            die("DUPLICATOR ERROR: Please see the 'Package Log' file link below.");
+        }
 	}
 	
 	
