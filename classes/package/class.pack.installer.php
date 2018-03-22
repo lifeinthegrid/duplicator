@@ -36,12 +36,17 @@ class DUP_Installer
 
         if ($this->create_enhanced_installer_files()) {
             $success = $this->add_extra_files($package);
+        } else {
+            DUP_Log::Info("error creating enhanced installer files");
         }
+
 
         if ($success) {
             $package->BuildProgress->installer_built = true;
         } else {
+            DUP_Log::error("ERROR ADDING INSTALLER", "Marking build progress as failed because couldn't add installer files", false);
             $package->BuildProgress->failed = true;
+            $package->setStatus(DUP_PackageStatus::ERROR);
         }
 
 		return $success;
@@ -196,35 +201,46 @@ class DUP_Installer
         $archive_filepath        = DUP_Util::safePath("{$this->Package->StorePath}/{$this->Package->Archive->File}");
         $archive_config_filepath = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP)."/{$this->Package->NameHash}_archive.cfg";
 
+        DUP_Log::Info("add_extra_files1");
+
         if (file_exists($installer_filepath) == false) {
             DUP_Log::error("Installer $installer_filepath not present", '', false);
             return false;
         }
 
+        DUP_Log::Info("add_extra_files2");
         if (file_exists($sql_filepath) == false) {
             DUP_Log::error("Database SQL file $sql_filepath not present", '', false);
             return false;
         }
 
+        DUP_Log::Info("add_extra_files3");
         if (file_exists($archive_config_filepath) == false) {
             DUP_Log::error("Archive configuration file $archive_config_filepath not present", '', false);
             return false;
         }
 
+        DUP_Log::Info("add_extra_files4");
         if ($package->Archive->file_count != 2) {
             DUP_Log::Info("Doing archive file check");
             // Only way it's 2 is if the root was part of the filter in which case the archive won't be there
+            DUP_Log::Info("add_extra_files5");
             if (file_exists($archive_filepath) == false) {
 
                 DUP_Log::error("$error_text. **RECOMMENDATION: $fix_text", '', false);
 
                 return false;
             }
+            DUP_Log::Info("add_extra_files6");
         }
 
-        if($this->Archive->Format == 'daf') {
+        DUP_Log::TraceObject("archive format", $package->Archive->Format);
+
+        if($package->Archive->Format == 'DAF') {
+            DUP_Log::Info("add_extra_files7");
             $success = $this->add_extra_files_using_duparchive($installer_filepath, $scan_filepath, $sql_filepath, $archive_filepath, $archive_config_filepath);
         } else {
+            DUP_Log::Info("add_extra_files8");
             $success = $this->add_extra_files_using_ziparchive($installer_filepath, $scan_filepath, $sql_filepath, $archive_filepath, $archive_config_filepath);
         }
 		
@@ -241,6 +257,7 @@ class DUP_Installer
         $success = false;
 
         try {
+            DUP_Log::Info("add_extra_files_using_da1");
 			$htaccess_filepath = DUPLICATOR_WPROOTPATH . '.htaccess';
 			$wpconfig_filepath = DUPLICATOR_WPROOTPATH . 'wp-config.php';
 
@@ -275,6 +292,7 @@ class DUP_Installer
             DUP_Log::Error("Error adding installer files to archive. ", $ex->getMessage());
         }
 
+        DUP_Log::TraceObject("add_extra_files_using_da99:success",$success);
         return $success;
     }
 

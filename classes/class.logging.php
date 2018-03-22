@@ -65,7 +65,7 @@ class DUP_Log {
 	*/
 	static public function Error($msg, $detail, $shouldDie = true) {
 		
-        error_log($msg . $detail); // rsr temp
+        error_log($msg . 'DETAIL:'. $detail); // rsr temp
 		$source = self::getStack(debug_backtrace());
 		
 		$err_msg  = "\n==================================================================================\n";
