@@ -167,7 +167,7 @@ $not_yet_logged = (isset($_POST['first_chunk']) && $_POST['first_chunk']) || (!i
 
 if($not_yet_logged){
     DUPX_Log::info("\n\n\n********************************************************************************");
-    DUPX_Log::info('* DUPLICATOR INSTALL-LOG');
+    DUPX_Log::info('* DUPLICATOR PRO INSTALL-LOG');
     DUPX_Log::info('* STEP-2 START @ '.@date('h:i:s'));
     DUPX_Log::info('* NOTICE: Do NOT post to public sites or forums!!');
     DUPX_Log::info("********************************************************************************");
@@ -207,8 +207,8 @@ if($not_yet_logged) {
 if ($_POST['dbaction'] == 'manual') {
 
 	DUPX_Log::info("\n** SQL EXECUTION IS IN MANUAL MODE **");
-	DUPX_Log::info("- No SQL script has been ran -");
-
+	DUPX_Log::info("- No SQL script has been executed -");
+	$JSON['pass'] = 1;
 } elseif(isset($_POST['continue_chunking']) && $_POST['continue_chunking'] === 'true') {
     print_r(json_encode($dbinstall->writeInChunks()));
     die();

@@ -9,29 +9,30 @@ $is_standard_mode = $state->mode == DUPX_InstallerMode::StandardInstall;
 $is_import_mode   = $state->mode == DUPX_InstallerMode::OverwriteInstall;
 
 if($is_standard_mode) {
+
+    $ovr_dbhost = NULL;
+    $ovr_dbname = NULL;
+    $ovr_dbuser = NULL;
+    $ovr_dbpass = NULL;
+
     $dbhost = $GLOBALS['DUPX_AC']->dbhost;
     $dbname = $GLOBALS['DUPX_AC']->dbname;
     $dbuser = $GLOBALS['DUPX_AC']->dbuser;
     $dbpass = $GLOBALS['DUPX_AC']->dbpass;
+
     $dbFormDisabledString = '';
 } else {
-
 	$wpConfigPath	= "{$GLOBALS['DUPX_ROOT']}/wp-config.php";
-
-	// RSR TODO: parse and save the overwrite values in javascript variables for population on confirm
 	$defines = DUPX_WPConfig::parseDefines($wpConfigPath);
 
 	$ovr_dbhost = htmlspecialchars(SnapLibUtil::getArrayValue($defines, 'DB_HOST'));
 	$ovr_dbname = htmlspecialchars(SnapLibUtil::getArrayValue($defines, 'DB_NAME'));
 	$ovr_dbuser = htmlspecialchars(SnapLibUtil::getArrayValue($defines, 'DB_USER'));
 	$ovr_dbpass = htmlspecialchars(SnapLibUtil::getArrayValue($defines, 'DB_PASSWORD'));
-
     $dbhost = '';
     $dbname = '';
     $dbuser = '';
     $dbpass = '';
-    //$dbFormDisabledString = 'disabled';
-	$dbFormDisabledString = '';
 }
 ?>
 
@@ -41,6 +42,20 @@ BASIC PANEL -->
 	<a href="javascript:void(0)"><i class="fa fa-minus-square"></i>Setup</a>
 </div>
 <div id="s2-db-basic">
+	<?php if($is_import_mode) : ?>
+		<div id="s2-db-basic-overwrite">
+			<b>Installing on top of a existing site! Click apply to use that site's database.</b><br/>
+			<div class="warn-text">
+				<i class="fa fa-warning"></i> Warning: Reusing the existing site's database will <u>overwrite</u> all of its data when using the action 'Connect and Remove All Data'.
+				<i>If you're not sure about using this database then contact your web host or create a new database and use those credentials instead.</i>
+			</div>
+
+			<div class="btn-area">
+				<input type="button" value="Apply" class="overwrite-btn" onclick="DUPX.checkOverwriteParameters()">
+				<input type="button" value="Reset" class="overwrite-btn" onclick="DUPX.resetParameters()">
+			</div>
+		</div>
+	<?php endif; ?>
 	<table class="dupx-opts">
 		<tr>
 			<td>Action:</td>
@@ -57,12 +72,12 @@ BASIC PANEL -->
 		</tr>
 		<tr>
 			<td>Host:</td>
-			<td><input type="text" name="dbhost" id="dbhost" required="true" value="<?php echo htmlspecialchars($dbhost); ?>" placeholder="localhost" <?php echo $dbFormDisabledString; ?> /></td>
+			<td><input type="text" name="dbhost" id="dbhost" required="true" value="<?php echo htmlspecialchars($dbhost); ?>" placeholder="localhost" /></td>
 		</tr>
 		<tr>
 			<td>Database:</td>
 			<td>
-				<input type="text" name="dbname" id="dbname" required="true" value="<?php echo htmlspecialchars($dbname); ?>"  placeholder="new or existing database name" <?php echo $dbFormDisabledString; ?>  />
+				<input type="text" name="dbname" id="dbname" required="true" value="<?php echo htmlspecialchars($dbname); ?>"  placeholder="new or existing database name"  />
 				<div class="s2-warning-emptydb">
 					Warning: The selected 'Action' above will remove <u>all data</u> from this database!
 				</div>
@@ -76,9 +91,8 @@ BASIC PANEL -->
 				</div>
 			</td>
 		</tr>
-		<tr><td>User:</td><td><input type="text" name="dbuser" id="dbuser" required="true" value="<?php echo htmlspecialchars($dbuser); ?>" placeholder="valid database username" <?php echo $dbFormDisabledString; ?> /></td></tr>
-		<tr><td>Password:</td><td><input type="text" name="dbpass" id="dbpass" value="<?php echo htmlspecialchars($dbpass); ?>"  placeholder="valid database user password"  <?php echo $dbFormDisabledString; ?> /></td></tr>
-		<tr id="s2-db-basic-setup" style="display:none"><td colspan="2" style="text-align:right"><a href="javascript:void(0)" onclick="DUPX.basicDBToggleImportMode('toggle')">Edit Setup</a></td></tr>
+		<tr><td>User:</td><td><input type="text" name="dbuser" id="dbuser" required="true" value="<?php echo htmlspecialchars($dbuser); ?>" placeholder="valid database username" /></td></tr>
+		<tr><td>Password:</td><td><input type="text" name="dbpass" id="dbpass" value="<?php echo htmlspecialchars($dbpass); ?>"  placeholder="valid database user password"  /></td></tr>
 	</table>
 </div>
 <br/><br/>
@@ -158,15 +172,13 @@ BASIC: DB VALIDATION -->
 <br/><br/><br/>
 <br/><br/><br/>
 
-
 <div class="footer-buttons">
 	<button id="s2-dbtest-btn-basic" type="button" onclick="DUPX.testDBConnect()" class="default-btn" /><i class="fa fa-database"></i> Test Database</button>
 	<button id="s2-next-btn-basic" type="button" onclick="DUPX.confirmDeployment()" class="default-btn disabled" disabled="true"
-			title="The 'Test Database' connectivity requirments must pass to continue with install!">
+			title="The 'Test Database' connectivity requirements must pass to continue with install!">
 		Next <i class="fa fa-caret-right"></i>
 	</button>
 </div>
-
 
 <script>
 /**
@@ -224,21 +236,21 @@ $(document).ready(function ()
 
 	DUPX.checkOverwriteParameters = function(dbhost, dbname, dbuser, dbpass)
 	{
-		if(confirm("An existing site was detected. Would you like to use it's database for this install? Warning: If yes, then {" + dbhost + "will be erased and overwritten.) ")) {
-
-			$("#dbhost").val(dbhost);
-			$("#dbname").val(dbname);
-			$("#dbuser").val(dbuser);
-			$("#dbpass").val(dbpass);
-
-			DUPX.basicDBToggleImportMode('readonly');
-			$("#s2-db-basic-setup").show();
-		}
+		$("#dbhost").val(<?php echo "'{$ovr_dbhost}'" ?>);
+		$("#dbname").val(<?php echo "'{$ovr_dbname}'" ?>);
+		$("#dbuser").val(<?php echo "'{$ovr_dbuser}'" ?>);
+		$("#dbpass").val(<?php echo "'{$ovr_dbpass}'" ?>);
+		DUPX.basicDBToggleImportMode('readonly');
+		$("#s2-db-basic-setup").show();
 	}
 
-	<?php if($is_import_mode) : ?>
-		DUPX.checkOverwriteParameters(<?php echo "'{$ovr_dbhost}', '{$ovr_dbname}', '{$ovr_dbuser}', '{$ovr_dbpass}'"; ?>);
-	<?php endif; ?>
-
+	DUPX.resetParameters = function()
+	{
+		$("#dbhost").val('');
+		$("#dbname").val('');
+		$("#dbuser").val('');
+		$("#dbpass").val('');
+		DUPX.basicDBToggleImportMode('toggle');
+	}
 });
 </script>

@@ -250,7 +250,7 @@ class DaTester
 
                 try {
                     DupArchiveMiniExpander::init("$this->logger->log");
-                    DupArchiveMiniExpander::expandDirectory($this->paths->archiveFilepath, 'dpro-installer', $this->paths->restoreDirectory);
+                    DupArchiveMiniExpander::expandDirectory($this->paths->archiveFilepath, 'dup-installer', $this->paths->restoreDirectory);
                 } catch (Exception $ex) {
                     $message = $ex->getMessage();
 

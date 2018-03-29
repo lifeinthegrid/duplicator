@@ -63,13 +63,10 @@ class DUPX_UpdateEngine
             $srchnum = 0;
             foreach ($GLOBALS['REPLACE_LIST'] as $item) {
                 $srchnum++;
-                $stats .= sprintf("Search{$srchnum}:\t'%s' \nChange{$srchnum}:\t'%s' \n", $item['search'],
-                    $item['replace']);
+                $stats .= sprintf("Search{$srchnum}:\t'%s' \nChange{$srchnum}:\t'%s' \n", $item['search'], $item['replace']);
             }
-            $stats .= sprintf("SCANNED:\tTables:%d \t|\t Rows:%d \t|\t Cells:%d \n", $report['scan_tables'],
-                $report['scan_rows'], $report['scan_cells']);
-            $stats .= sprintf("UPDATED:\tTables:%d \t|\t Rows:%d \t|\t Cells:%d \n", $report['updt_tables'],
-                $report['updt_rows'], $report['updt_cells']);
+            $stats .= sprintf("SCANNED:\tTables:%d \t|\t Rows:%d \t|\t Cells:%d \n", $report['scan_tables'], $report['scan_rows'], $report['scan_cells']);
+            $stats .= sprintf("UPDATED:\tTables:%d \t|\t Rows:%d \t|\t Cells:%d \n", $report['updt_tables'], $report['updt_rows'], $report['updt_cells']);
             $stats .= sprintf("ERRORS:\t\t%d \nRUNTIME:\t%f sec", $report['err_all'], $report['time']);
             DUPX_Log::info($stats);
         }
@@ -134,7 +131,7 @@ class DUPX_UpdateEngine
     public static function load($conn, $list = array(), $tables = array(), $fullsearch = false)
     {
 
-        @mysqli_autocommit($dbh, false);
+        @mysqli_autocommit($conn, false);
 
         $report = array(
             'scan_tables' => 0,
@@ -153,7 +150,9 @@ class DUPX_UpdateEngine
             'err_all' => 0
         );
 
-        $walk_function = create_function('&$str', '$str = "`$str`";');
+		function set_sql_column_safe(&$str) {
+			$str = "`$str`";
+		}
 
         $profile_start = DUPX_U::getMicrotime();
         if (is_array($tables) && !empty($tables)) {
@@ -189,7 +188,7 @@ class DUPX_UpdateEngine
                 if (!$fullsearch) {
                     $colList = self::getTextColumns($conn, $table);
                     if ($colList != null && is_array($colList)) {
-                        array_walk($colList, $walk_function);
+                        array_walk($colList, set_sql_column_safe);
                         $colList = implode(',', $colList);
                     }
                     $colMsg = (empty($colList)) ? '*' : '~';
@@ -265,10 +264,12 @@ class DUPX_UpdateEngine
                                     continue;
                                 }
 
+                                $objArr = array();
+
                                 //Replace logic - level 1: simple check on any string or serlized strings
                                 foreach ($list as $item) {
                                     $edited_data = self::recursiveUnserializeReplace($item['search'], $item['replace'],
-                                        $edited_data);
+                                        $edited_data, false, $objArr);
                                 }
 
                                 //Replace logic - level 2: repair serialized strings that have become broken
@@ -321,7 +322,7 @@ class DUPX_UpdateEngine
                             $report['errkey'][] = sprintf("Row [%s] on Table [%s] requires a manual update.", $current_row, $table);
                         }
                     }
-                    DUPX_U::fcgiFlush();
+                    //DUPX_U::fcgiFlush();
                     @mysqli_free_result($data);
                 }
 
@@ -331,8 +332,8 @@ class DUPX_UpdateEngine
             }
         }
 
-        @mysqli_commit($dbh);
-        @mysqli_autocommit($dbh, true);
+        @mysqli_commit($conn);
+        @mysqli_autocommit($conn, true);
 
         $profile_end = DUPX_U::getMicrotime();
         $report['time'] = DUPX_U::elapsedTime($profile_end, $profile_start);
@@ -354,44 +355,33 @@ class DUPX_UpdateEngine
      *
      * @return array    The original array with all elements replaced as needed.
      */
-    public static function recursiveUnserializeReplace($from = '', $to = '', $data = '', $serialised = false)
+    public static function recursiveUnserializeReplace($from = '', $to = '', $data = '', $serialised = false, &$objArr)
     {
         // some unseriliased data cannot be re-serialised eg. SimpleXMLElements
         try {
             if (is_string($data) && ($unserialized = @unserialize($data)) !== false) {
-                $data = self::recursiveUnserializeReplace($from, $to, $unserialized, true);
+                $data = self::recursiveUnserializeReplace($from, $to, $unserialized, true, $objArr);
             } elseif (is_array($data)) {
                 $_tmp = array();
                 foreach ($data as $key => $value) {
-                    $_tmp[$key] = self::recursiveUnserializeReplace($from, $to, $value, false);
+                    $_tmp[$key] = self::recursiveUnserializeReplace($from, $to, $value, false, $objArr);
                 }
                 $data = $_tmp;
                 unset($_tmp);
-
-                /* CJL
-                  Check for an update to the key of an array e.g.   [http://localhost/projects/wpplugins/] => 1.41
-                  This could have unintended consequences would need to enable with full-search needs more testing
-                  if (array_key_exists($from, $data))
-                  {
-                  $data[$to] = $data[$from];
-                  unset($data[$from]);
-                  } */
             } elseif (is_object($data)) {
-                /* RSR Old logic that didn't work with Beaver Builder - they didn't want to create a brand new
-                  object instead reused the existing one...
-                  $dataClass = get_class($data);
-                  $_tmp = new $dataClass();
-                  foreach ($data as $key => $value) {
-                  $_tmp->$key = self::recursiveUnserializeReplace($from, $to, $value, false);
-                  }
-                  $data = $_tmp;
-                  unset($_tmp); */
+                foreach ($objArr as $obj){
+                    if($obj === spl_object_hash($data)){
+                        DUPX_Log::info("Recursion detected.");
+                        return $data;
+                    }
+                }
 
+                $objArr[] = spl_object_hash($data);
                 // RSR NEW LOGIC
                 $_tmp = $data;
                 $props = get_object_vars($data);
                 foreach ($props as $key => $value) {
-                    $_tmp->$key = self::recursiveUnserializeReplace($from, $to, $value, false);
+                    $_tmp->$key = self::recursiveUnserializeReplace($from, $to, $value, false, $objArr);
                 }
                 $data = $_tmp;
                 unset($_tmp);

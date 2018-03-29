@@ -52,7 +52,7 @@ $date = @date('h:i:s');
 $log  = <<<LOG
 \n\n
 ********************************************************************************
-DUPLICATOR INSTALL-LOG
+DUPLICATOR PRO INSTALL-LOG
 STEP-3 START @ {$date}
 NOTICE: Do NOT post to public sites or forums
 ********************************************************************************
@@ -94,8 +94,6 @@ $log .= "[^] no searchable columns\n";
 $log .= "--------------------------------------";
 DUPX_Log::info($log);
 
-
-
 //CUSTOM REPLACE -> REPLACE LIST
 if (isset($_POST['search'])) {
 	$search_count = count($_POST['search']);
@@ -115,7 +113,6 @@ if (isset($_POST['search'])) {
 		}
 	}
 }
-
 
 //MULTI-SITE SEARCH AND REPLACE LIST
 // -1: Means network install so skip this
@@ -363,7 +360,6 @@ if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
 	}
 }
 
-
 //===============================================
 //CONFIGURATION FILE UPDATES
 //===============================================
@@ -473,7 +469,6 @@ file_put_contents($wpconfig_ark_path, $wpconfig_ark_contents);
 
 DUPX_Log::info("UPDATED WP-CONFIG ARK FILE:\n - '{$wpconfig_ark_path}'");
 
-
 if($_POST['retain_config']) {
 	$new_htaccess_name = '.htaccess';
 } else {
@@ -503,16 +498,41 @@ DUPX_Log::info("====================================\n");
 
 $blog_name   = mysqli_real_escape_string($dbh, $_POST['blogname']);
 $plugin_list = (isset($_POST['plugins'])) ? $_POST['plugins'] : array();
-// Force Duplicator active so we the security cleanup will be available
-if (!in_array('duplicator-pro/duplicator-pro.php', $plugin_list)) {
-	$plugin_list[] = 'duplicator-pro/duplicator-pro.php';
+// Force Duplicator Pro active so we the security cleanup will be available
+if(($GLOBALS['DUPX_AC']->mu_mode > 0) && ($subsite_id == -1))
+{
+	$multisite_plugin_list=array();
+	foreach($plugin_list as $get_plugin)
+	{
+		$multisite_plugin_list[time()]=$get_plugin;
+	}
+
+	if (!in_array('duplicator-pro/duplicator-pro.php', $multisite_plugin_list)) {
+		$multisite_plugin_list[time()] = 'duplicator-pro/duplicator-pro.php';
+	}
+
+	$multisite_plugin_list = array_flip($multisite_plugin_list);
+	$serial_plugin_list	 = @serialize($multisite_plugin_list);
 }
-$serial_plugin_list	 = @serialize($plugin_list);
+else
+{
+	if (!in_array('duplicator-pro/duplicator-pro.php', $plugin_list)) {
+		$plugin_list[] = 'duplicator-pro/duplicator-pro.php';
+	}
+	$serial_plugin_list	 = @serialize($plugin_list);
+}
 
 /** FINAL UPDATES: Must happen after the global replace to prevent double pathing
   http://xyz.com/abc01 will become http://xyz.com/abc0101  with trailing data */
 mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` SET option_value = '{$blog_name}' WHERE option_name = 'blogname' ");
-mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` SET option_value = '{$serial_plugin_list}'  WHERE option_name = 'active_plugins' ");
+if(($GLOBALS['DUPX_AC']->mu_mode > 0) && ($subsite_id == -1))
+{
+	mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}sitemeta` SET meta_value = '{$serial_plugin_list}'  WHERE meta_key = 'active_sitewide_plugins' ");
+}
+else
+{
+	mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` SET option_value = '{$serial_plugin_list}'  WHERE option_name = 'active_plugins' ");
+}
 mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` SET option_value = '{$_POST['url_new']}'  WHERE option_name = 'home' ");
 mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` SET option_value = '{$_POST['siteurl']}'  WHERE option_name = 'siteurl' ");
 mysqli_query($dbh, "INSERT INTO `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` (option_value, option_name) VALUES('{$_POST['exe_safe_mode']}','duplicator_pro_exe_safe_mode')");
@@ -537,12 +557,30 @@ if ($GLOBALS['DUPX_AC']->mu_mode == 2) {
 	}
 }
 
+
 if (($GLOBALS['DUPX_AC']->mu_mode == 1) || ($GLOBALS['DUPX_AC']->mu_mode == 2)) {
 	// _site update path column to replace /oldpath/ with /newpath/ */
 	$result = @mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}site` SET path = CONCAT('$mu_newUrlPath', SUBSTRING(path, LENGTH('$mu_oldUrlPath') + 1)), domain = '$mu_newDomainHost'");
 	if ($result === false) {
 		DUPX_Log::error("Update to site table failed\n".mysqli_error($dbh));
 	}
+}
+
+//SCHEDULE STORAGE CLEANUP
+if (($_POST['empty_schedule_storage']) == true || (DUPX_U::$on_php_53_plus == false)) {
+
+	$dbdelete_count	 = 0;
+	$dbdelete_count1 = 0;
+	$dbdelete_count2 = 0;
+
+	@mysqli_query($dbh, "DELETE FROM `{$GLOBALS['DUPX_AC']->wp_tableprefix}duplicator_pro_entities` WHERE `type` = 'DUP_PRO_Storage_Entity'");
+	$dbdelete_count1 = @mysqli_affected_rows($dbh);
+
+	@mysqli_query($dbh, "DELETE FROM `{$GLOBALS['DUPX_AC']->wp_tableprefix}duplicator_pro_entities` WHERE `type` = 'DUP_PRO_Schedule_Entity'");
+	$dbdelete_count2 = @mysqli_affected_rows($dbh);
+
+	$dbdelete_count = (abs($dbdelete_count1) + abs($dbdelete_count2));
+	DUPX_Log::info("- Removed '{$dbdelete_count}' schedule storage items");
 }
 
 //===============================================
@@ -604,7 +642,7 @@ if(file_exists($wpconfig_path)) {
 	}
 }
 
-if(rename($wpconfig_ark_path, $wpconfig_path) === false) {
+if(copy($wpconfig_ark_path, $wpconfig_path) === false) {
 
 	if(file_exists($wpconfig_orig_path)) {
 
@@ -614,7 +652,7 @@ if(rename($wpconfig_ark_path, $wpconfig_path) === false) {
 		}
 	}
 
-	DUPX_Log::error("Unable to rename {$wpconfig_ark_path} to {$wpconfig_path}");
+	DUPX_Log::error("Unable to copy {$wpconfig_ark_path} to {$wpconfig_path}");
 }
 
 $ajax3_sum = DUPX_U::elapsedTime(DUPX_U::getMicrotime(), $ajax3_start);

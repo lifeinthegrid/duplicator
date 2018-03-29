@@ -5,7 +5,7 @@ defined("ABSPATH") or die("");
 ?>
 
 <script id="s2-dbtest-hb-template" type="text/x-handlebars-template">
-	<!-- REQUIRMENTS -->
+	<!-- REQUIREMENTS -->
 	<div class="hdr-sub4 s2-reqs-hdr" data-type="toggle" data-target="#s2-reqs-all" >
 		<i class="fa fa-caret-right"></i> Requirements <small class='db-check'>(must pass)</small>
 		<div class="{{reqStyle payload.reqsPass}}">{{reqText payload.reqsPass}}</div>
@@ -29,7 +29,7 @@ defined("ABSPATH") or die("");
 				<div class="sub-title">TROUBLESHOOT</div>
 				<ul>
 					<li>Contact your host to make sure they support the cPanel API.</li>
-					<li>Check with your host to make sure the user name provided meets the cPanel requirments.</li>
+					<li>Check with your host to make sure the user name provided meets the cPanel requirements.</li>
 				</ul>
 			</div>
 		{{/if}}
@@ -41,7 +41,7 @@ defined("ABSPATH") or die("");
 		<div class="info s2-reqs10" id="s2-reqs10">
 			<div class="sub-title">STATUS</div>
 			{{{getInfo payload.reqs.10.pass payload.reqs.10.info}}}<br/>
-		
+
 			<div class="sub-title">DETAILS</div>
 			This test checks that the database user is allowed to connect to the database server.  It validates on the user name, password and host values.
 			The check does not take into account the database name or the user permissions. A database user must first exist and have access to the host
@@ -90,7 +90,7 @@ defined("ABSPATH") or die("");
 
 			<div class="sub-title">DETAILS</div>
 			The minimum supported database server is MySQL Server 5.0 or the <a href="https://mariadb.com/kb/en/mariadb/mariadb-vs-mysql-compatibility/" target="_blank">MariaDB equivalent</a>.
-			Versions prior to MySQL 5.0 are over 10 years old and will not be compatible with Duplicator.  If your host is using a legacy version, please ask them
+			Versions prior to MySQL 5.0 are over 10 years old and will not be compatible with Duplicator Pro.  If your host is using a legacy version, please ask them
 			to upgrade the MySQL database engine to a more recent version.
 			<br/><br/>
 
@@ -201,7 +201,7 @@ defined("ABSPATH") or die("");
 
 			<div class="sub-title">DETAILS</div>
 			This test checks the privileges a user has when working with tables.  Below is a list of all the privileges that the user can currently view.  In order
-			to successfully use Duplicator all of the privileges are required.
+			to successfully use Duplicator Pro all of the privileges are required.
 			<br/><br/>
 
 			<div class="sub-title">TABLE PRIVLEDGES ON [{{payload.in.dbname}}]</div>
@@ -228,50 +228,13 @@ defined("ABSPATH") or die("");
 			</ul>
 		</div>
 
-	</div>
-
-
-
-	<!-- ==================================
-	NOTICES
-	================================== -->
-	<div class="hdr-sub4 s2-notices-hdr" data-type="toggle" data-target="#s2-notices-all">
-		<i class="fa fa-caret-right"></i> Notices <small class='db-check'>(optional)</small>
-		<div class="{{noticeStyle payload.noticesPass}}">{{noticeText payload.noticesPass}}</div>
-	</div>
-	<div class="s2-reqs" id="s2-notices-all">
-		
 		<!-- ==================================
-		NOTICE 10: TABLE CASE CHECK-->
-		<div class="status {{noticeStyle payload.notices.10.pass}}">{{noticeText payload.notices.10.pass}}</div>
-		<div class="title" data-type="toggle" data-target="#s2-notice10" style="border-top:none"><i class="fa fa-caret-right"></i> {{payload.notices.10.title}}</div>
-		<div class="info" id="s2-notice10">
+		REQ 70: CHECK COLLATION CAPABILITY -->
+		<div class="status {{noticeStyle payload.reqs.70.pass}}">{{reqText payload.reqs.70.pass}}</div>
+		<div class="title" data-type="toggle" data-target="#s2-reqs70"><i class="fa fa-caret-right"></i> {{payload.reqs.70.title}}</div>
+		<div class="info s2-reqs70" id="s2-reqs70">
 			<div class="sub-title">STATUS</div>
-			{{{getInfo payload.notices.10.pass payload.notices.10.info}}}<br/>
-
-			<div class="sub-title">DETAILS</div>
-			This test checks if any tables have upper case characters as part of the name.   On some systems creating tables with upper case can cause issues if the server
-			setting for <a href="https://dev.mysql.com/doc/refman/5.7/en/identifier-case-sensitivity.html" target="_help">lower_case_table_names</a> is set to zero and upper case
-			table names exist.
-			<br/><br/>
-
-			<div class="sub-title">TROUBLESHOOT</div>
-			<ul>
-				<li>
-					In the my.cnf (my.ini) file set the <a href="https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_lower_case_table_names" target="_help">lower_case_table_names</a>
-					to 1 or 2 and restart the server.
-				</li>
-				<li><i class="fa fa-external-link"></i> <a href='http://www.inmotionhosting.com/support/website/general-server-setup/edit-mysql-my-cnf' target='_help'>How to edit MySQL config files my.cnf (linux) or my.ini (windows) files</a></li>
-			</ul>
-		</div>
-
-		<!-- ==================================
-		NOTICE 20: CHECK COLLATION CAPABILITY -->
-		<div class="status {{noticeStyle payload.notices.20.pass}}">{{noticeText payload.notices.20.pass}}</div>
-		<div class="title" data-type="toggle" data-target="#s2-notice20"><i class="fa fa-caret-right"></i> {{payload.notices.20.title}}</div>
-		<div class="info s2-notice20" id="s2-notice20">
-			<div class="sub-title">STATUS</div>
-			{{{getInfo payload.notices.20.pass payload.notices.20.info}}}<br/>
+			{{{getInfo payload.reqs.70.pass payload.reqs.70.info}}}<br/>
 
 			<div class="sub-title">DETAILS</div>
 			This test checks to make sure this database can support the collations found in the database.sql script.
@@ -301,7 +264,44 @@ defined("ABSPATH") or die("");
 			</ul>
 
 		</div>
-		
+
+	</div>
+
+
+
+	<!-- ==================================
+	NOTICES
+	================================== -->
+	<div class="hdr-sub4 s2-notices-hdr" data-type="toggle" data-target="#s2-notices-all">
+		<i class="fa fa-caret-right"></i> Notices <small class='db-check'>(optional)</small>
+		<div class="{{noticeStyle payload.noticesPass}}">{{noticeText payload.noticesPass}}</div>
+	</div>
+	<div class="s2-reqs" id="s2-notices-all">
+
+		<!-- ==================================
+		NOTICE 10: TABLE CASE CHECK-->
+		<div class="status {{noticeStyle payload.notices.10.pass}}">{{noticeText payload.notices.10.pass}}</div>
+		<div class="title" data-type="toggle" data-target="#s2-notice10" style="border-top:none"><i class="fa fa-caret-right"></i> {{payload.notices.10.title}}</div>
+		<div class="info" id="s2-notice10">
+			<div class="sub-title">STATUS</div>
+			{{{getInfo payload.notices.10.pass payload.notices.10.info}}}<br/>
+
+			<div class="sub-title">DETAILS</div>
+			This test checks if any tables have upper case characters as part of the name.   On some systems creating tables with upper case can cause issues if the server
+			setting for <a href="https://dev.mysql.com/doc/refman/5.7/en/identifier-case-sensitivity.html" target="_help">lower_case_table_names</a> is set to zero and upper case
+			table names exist.
+			<br/><br/>
+
+			<div class="sub-title">TROUBLESHOOT</div>
+			<ul>
+				<li>
+					In the my.cnf (my.ini) file set the <a href="https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_lower_case_table_names" target="_help">lower_case_table_names</a>
+					to 1 or 2 and restart the server.
+				</li>
+				<li><i class="fa fa-external-link"></i> <a href='http://www.inmotionhosting.com/support/website/general-server-setup/edit-mysql-my-cnf' target='_help'>How to edit MySQL config files my.cnf (linux) or my.ini (windows) files</a></li>
+			</ul>
+		</div>
+
 	</div>
 </script>
 
@@ -372,7 +372,7 @@ DUPX.testDBConnect = function ()
 		error: function (data) {
 			console.log(data);
 			var msg  = "<b>Error Processing Request</b> <br/> An error occurred while testing the database connection! Please Try Again...<br/> ";
-			msg		+= "<small>If the error persists contact your host for database connection requirments.</small><br/> ";
+			msg		+= "<small>If the error persists contact your host for database connection requirements.</small><br/> ";
 			msg		+= "<small>Status details: " + data.statusText + "</small>";
 			$dbResult.html("<div class='message dupx-fail'>" + msg + "</div>");
 			<?php if ($GLOBALS['DUPX_DEBUG']) : ?>
@@ -419,7 +419,7 @@ DUPX.intTestDBResults = function(data, result)
 	});
 
 	$("div#" + resultID + " *[data-type='toggle']").on('click', DUPX.toggleClick);
-	
+
 
 	var $divReqsAll		= $('div#s2-reqs-all' + mode);
 	var $divNoticeAll	= $('div#s2-notices-all' + mode);
@@ -430,8 +430,7 @@ DUPX.intTestDBResults = function(data, result)
 	$divRetry.show();
 	$btnTestDB.removeAttr('disabled').removeClass('disabled');
 	$btnNext.removeAttr('disabled').removeClass('disabled');
-	
-	
+
 	if (data.payload.reqsPass == 1) {
 		$btnTestDB.addClass('disabled').attr('disabled', 'true');
 		$divReqsAll.hide()
@@ -439,7 +438,7 @@ DUPX.intTestDBResults = function(data, result)
 		$btnNext.addClass('disabled').attr('disabled', 'true');
 		$divReqsAll.show();
 	}
-		
+
 	data.payload.noticesPass ? $divNoticeAll.hide() : $divNoticeAll.show();
 
 	if (data.payload.reqsPass == 1 && data.payload.noticesPass == 1) {

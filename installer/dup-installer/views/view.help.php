@@ -24,7 +24,7 @@ STEP 1
 <a class="help-target" name="help-s1"></a>
 <h2>Step <span class="step">1</span> of 4: Deployment</h2>
 <div id="dup-help-scanner" class="help-page">
-	There are currently several modes that the installer can be in.  The mode will be shown at the top of each screen. Below is an overview of the various modes.
+	There are currently several modes that the installer can be in.  The mode will be shown at the top of each screen. Below is an overview of the various modes. <sup>pro</sup>
 
 	<table class="help-opt">
 	<tr>
@@ -48,13 +48,15 @@ STEP 1
 	<tr>
 		<td>Overwrite Install</td>
 		<td>
-			This mode indicates that the installer was started in a location that contains an existing site -or- the archive file was imported into an existing site using Duplicator Pro on the destination site (see Duplicator Pro &gt; Tools &gt; Import). In both cases <b>the existing site will be overwritten.</b>
+			This mode indicates that the installer was started in a location that contains an existing site -or- the archive file was imported into an existing site using
+			Duplicator Pro on the destination site (see Duplicator Pro &gt; Tools &gt; Import). In both cases <b>the existing site will be overwritten.</b>
 		</td>
 	</tr>
 	<tr>
 		<td>Overwrite Install <br/> Database Only</td>
 		<td>
-			This mode indicates that the installer was started in a location that contains an existing site -or- the archive file was imported into an existing site using Duplicator Pro on the destination site (see Duplicator Pro &gt; Tools &gt; Import).  In both cases <b>the existing site's database will be overwritten.</b>
+			This mode indicates that the installer was started in a location that contains an existing site -or- the archive file was imported into an existing site using
+			Duplicator Pro on the destination site (see Duplicator Pro &gt; Tools &gt; Import).  In both cases <b>the existing site's database will be overwritten.</b>
 		</td>
 	</tr>
 	</table>

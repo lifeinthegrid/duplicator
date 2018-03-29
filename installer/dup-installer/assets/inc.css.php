@@ -26,6 +26,7 @@
 	div.dupx-debug-hdr {padding:5px 0 5px 0; font-size:16px; font-weight:bold}
 	div.dupx-branding-header {font-size:26px; padding: 10px 0 7px 15px;}
 
+	.dupx-overwrite {color:#AF0000;}
 	.dupx-pass {display:inline-block; color:green;}
 	.dupx-fail {display:inline-block; color:#AF0000;}
 	.dupx-warn {display:inline-block; color:#555;}
@@ -141,10 +142,6 @@
 	textarea#debug-dbtest-json {width:98%; height:200px}
 
 	/*Toggle Buttons */
-	<?php if($GLOBALS['DUPX_AC']->type == 0): ?>
-	div.s2-btngrp {display:none;}
-
-	<?php else: ?>
 	div.s2-btngrp {text-align:center; margin:0 auto 10px auto}
 	div.s2-btngrp input[type=button] {font-size:14px; padding:6px; width:120px; border:1px solid silver;  cursor:pointer}
 	div.s2-btngrp input[type=button]:first-child {border-radius:5px 0 0 5px; margin-right:-2px}
@@ -152,12 +149,19 @@
 	div.s2-btngrp input[type=button].active {background-color:#13659C; color:#fff;}
 	div.s2-btngrp input[type=button].in-active {background-color:#E4E4E4; }
 	div.s2-btngrp input[type=button]:hover {border:1px solid #999}
-	<?php endif; ?>
 
 	/*Basic DB */
 	select#dbname-select {width:100%; border-radius:3px; height:20px; font-size:12px; border:1px solid silver;}
 	div#s2-dbrefresh-basic {float:right; font-size:12px; display:none;  font-weight:bold; margin:5px 5px 1px 0}
 	div#s2-dbrefresh-cpnl {float:right; font-size:12px; display:none; font-weight:bold; margin:5px 5px 1px 0}
+	div#s2-db-basic-overwrite {border: 1px solid silver; margin:5px 0 5px 0; padding:10px; background:#f2f2f2; border-radius:5px}
+	div#s2-db-basic-overwrite div.warn-text {font-style:italic; font-size:11px; padding:5px 0 5px 0; color:maroon}
+	div#s2-db-basic-overwrite div.btn-area {text-align: right; margin:5px 0}
+
+	input.overwrite-btn {
+		cursor:pointer; color:#fff; font-size:13px; border-radius:5px;	padding:5px 20px 4px 20px;
+	    background-color:#989898; border:1px solid #777;
+	}
 
 	/*cPanel DB */
 	div.s2-cpnl-pane {margin-top:5px}

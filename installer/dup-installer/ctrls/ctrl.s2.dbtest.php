@@ -86,10 +86,9 @@ class DUPX_DBTest
 		$this->reqs[40]	 = array('title' => "Confirm Database Visibility", 'info' => "{$default_msg}", 'pass' => -1);
 		$this->reqs[50]	 = array('title' => "Manual Table Check", 'info' => "{$default_msg}", 'pass' => -1);
 		$this->reqs[60]	 = array('title' => "Test User Table Privileges", 'info' => "{$default_msg}", 'pass' => -1);
-                
+        $this->reqs[70]	 = array('title' => "Check Collation Capability", 'info' => "{$default_msg}", 'pass' => -1);
 		//NOTICES
 		$this->notices[10]	 = array('title' => "Table Case Sensitivity", 'info' => "{$default_msg}", 'pass' => -1);
-		$this->notices[20]	 = array('title' => "Check Collation Capability", 'info' => "{$default_msg}", 'pass' => -1);               
        }
 
 	public function run()
@@ -128,8 +127,8 @@ class DUPX_DBTest
 		//[40]	 = "Confirm Database Visibility"
 		//[50]	 = "Manual Table Check"
 		//[60]	 = "Test User Table Privileges"
-             
-            
+
+
 		$this->r10All($this->reqs[10]);
 		$this->r20All($this->reqs[20]);
 
@@ -154,7 +153,7 @@ class DUPX_DBTest
 
 		//NOTICES
 		$this->n10All($this->notices[10]);
-		$this->n20All($this->notices[20]);        
+		$this->r70All($this->reqs[70]);
 		$this->basicCleanup();
 	}
 
@@ -204,7 +203,7 @@ class DUPX_DBTest
 
 		//NOTICES
 		$this->n10All($this->notices[10]);
-		$this->n20All($this->notices[20]);
+		$this->r70All($this->reqs[70]);
 		$this->cpnlCleanup();
 	}
 
@@ -219,8 +218,8 @@ class DUPX_DBTest
 
 			if ($this->isFailedState($test)) {
 				return;
-			}			
-			
+			}
+
 			$result	= $this->cpnlAPI->create_db_user($this->cpnlToken, $this->in->dbuser, $this->in->dbpass);
 			if ($result['status'] !== true) {
 				//$err		 = print_r($result['cpnl_api'], true);
@@ -541,7 +540,97 @@ class DUPX_DBTest
 			$test['info']	 = "Failure in attempt to read the users table priveleges.<br/>" . $this->formatError($ex);
 		}
 	}
-  
+
+	/**
+	 * Check Collation Capability
+	 *
+	 * @return null
+	 */
+	private function r70All(&$test)
+	{
+		try {
+			if ($this->isFailedState($test)) {
+				return;
+			}
+
+			$this->collationStatus = DUPX_DB::getCollationStatus($this->dbh, $this->ac->dbInfo->collationList);
+
+            $collation_arr = array(
+                'utf8mb4_unicode_520_ci',
+                'utf8mb4_unicode_520',
+                'utf8mb4_unicode_ci',
+                'utf8mb4',
+                'utf8_unicode_520_ci',
+                'utf8_unicode_520',
+                'utf8_unicode_ci',
+                'utf8',
+            );
+			$invalid = 0;
+			$collation_arr_max = count($collation_arr);
+			$invalid_match = 0;
+
+			foreach($this->collationStatus as $key => $val) {
+
+				if ($this->collationStatus[$key]['found'] == 0) {
+				    if($this->in->dbcollatefb){
+				        $not_supported_col = $this->collationStatus[$key]['name'];
+                        //returns false or key
+                        $i = array_search($not_supported_col,$collation_arr);
+
+                        if($i !== false){
+                            ++$i;
+                            for($i; $i < $collation_arr_max; $i++) {
+
+                                $col_status = DUPX_DB::getCollationStatus($this->dbh, array($collation_arr[$i]));
+                                $cur_col_is_supported = $col_status[0]['found'];
+                                if($cur_col_is_supported){
+                                    $this->collationReplaceList[] = array(
+                                        'search'    => $not_supported_col,
+                                        'replace'   => $collation_arr[$i]
+                                    );
+									++$invalid_match;
+									break;
+                                }
+                            }
+                        } else {
+                            $invalid = 1;
+                            break;
+                        }
+                    } else {
+                        $invalid = 1;
+                        break;
+                    }
+				}
+			}
+
+			if($invalid_match > 0) {
+				$invalid = -1;
+			}
+
+			if ($invalid === 1) {
+				$test['pass']	 = 0;
+				$test['info']	 = "Please check the 'Legacy' checkbox above under options and then click the 'Retry Test' link.<br/>"
+								 . "<small>Details: The database where the package was created has a collation that is not supported on this server.  This issue happens "
+								 . "when a site is moved from an older version of MySQL to a newer version of MySQL. The recommended fix is to update MySQL on this server to support "
+								 . "the collation that is failing below.  If that is not an option for your host then continue by clicking the 'Legacy' checkbox above.  For more "
+								 . "details about this issue and other details regarding this issue see the FAQ link below. </small>";
+			} else if($invalid === -1) {
+                $test['pass']	 = 1;
+                $test['info']	 = "There is at least one collation that is not supported, however a replacement collation is possible.  Please continue by clicking the next button and the "
+								 . "installer will attempt to use a legacy/fallback collation type to create the database table.  For more details about this issue see the FAQ link below.";
+            } else {
+				$test['pass']	 = 1;
+				$test['info']	 = "Collation test passed! This database supports the required table collations.";
+			}
+
+		} catch (Exception $ex) {
+			//Return '1' to allow user to continue
+			$test['pass']	 = 1;
+			$test['info']	 = "Failure in attempt to check collation capability status.<br/>" . $this->formatError($ex);
+		}
+
+	}
+
 	/**
 	 * Table Case Compatibility
 	 *
@@ -581,91 +670,6 @@ class DUPX_DBTest
 			$test['pass']	 = 1;
 			$test['info']	 = "Failure in attempt to read the upper case table status.<br/>" . $this->formatError($ex);
 		}
-	}
-
-	/**
-	 * Check Collation Capability
-	 *
-	 * @return null
-	 */
-	private function n20All(&$test)
-	{
-		try {
-
-			if ($this->isFailedState($test)) {
-				return;
-			}
-
-			$this->collationStatus = DUPX_DB::getCollationStatus($this->dbh, $this->ac->dbInfo->collationList);
-
-            $collation_arr = array(
-                'utf8mb4_unicode_520_ci',
-                'utf8mb4_unicode_520',
-                'utf8mb4_unicode_ci',
-                'utf8mb4',
-                'utf8_unicode_520_ci',
-                'utf8_unicode_520',
-                'utf8_unicode_ci',
-                'utf8'
-            );
-			$invalid = 0;
-
-			foreach($this->collationStatus as $key => $val) {
-
-				if ($this->collationStatus[$key]['found'] == 0) {
-				    if($this->in->dbcollatefb){
-				        $not_supported_col = $this->collationStatus[$key]['name'];
-                        //returns false or key
-                        $i = array_search($not_supported_col,$collation_arr);
-
-                        if($i !== false){
-                            $i++;
-                            for($i; $i < count($collation_arr); $i++) {
-
-                                $col_status = DUPX_DB::getCollationStatus($this->dbh, array($collation_arr[$i]));
-                                $cur_col_is_supported = $col_status[0]['found'];
-                                if($cur_col_is_supported){
-                                    $this->collationReplaceList[] = array(
-                                        'search'    => $not_supported_col,
-                                        'replace'   => $collation_arr[$i]
-                                    );
-                                    $invalid = -1;
-                                    break;
-                                }
-                            }
-                        } else {
-                            $invalid = 1;
-                            break;
-                        }
-                    } else {
-                        $invalid = 1;
-                        break;
-                    }
-				}
-			}
-
-			if ($invalid === 1) {
-				$test['pass']	 = 0;
-				$test['info']	 = "Please check the 'Legacy' checkbox above under options and then click the 'Retry Test' link.<br/>"
-								 . "<small>Details: The database where the package was created has a collation that is not supported on this server.  This issue happens "
-								 . "when a site is moved from an older version of MySQL to a newer version of MySQL. The recommended fix is to update MySQL on this server to support "
-								 . "the collation that is failing below.  If that is not an option for your host then continue by clicking the 'Legacy' checkbox above.  For more "
-								 . "details about this issue and other details regarding this issue see the FAQ link below. </small>";
-			} else if($invalid === -1) {
-                $test['pass']	 = 1;
-                $test['info']	 = "There is at least one collation that is not supported, however a replacement collation is possible.  Please continue by clicking the next button and the "
-								 . "installer will attempt to use a legacy/fallback collation type to create the database table.  For more details about this issue see the FAQ link below.";
-            } else {
-				$test['pass']	 = 1;
-				$test['info']	 = "Collation test passed! This database supports the required table collations.";
-			}
-		
-		} catch (Exception $ex) {
-			//Return '1' to allow user to continue
-			$test['pass']	 = 1;
-			$test['info']	 = "Failure in attempt to check collation capability status.<br/>" . $this->formatError($ex);
-		}
-
 	}
 
 	/**
@@ -730,7 +734,7 @@ class DUPX_DBTest
 		$this->tblPerms['create'] = ($qry_create) ? 1 : 0;
 
 		if ($qry_create) {
-			$qry_insert	 = @mysqli_query($this->dbh, "INSERT INTO `{$tmp_table}` (`text`) VALUES ('Duplicator Test: Please Remove this Table')");
+			$qry_insert	 = @mysqli_query($this->dbh, "INSERT INTO `{$tmp_table}` (`text`) VALUES ('Duplicator Pro Test: Please Remove this Table')");
 			$qry_insert	 = @mysqli_query($this->dbh, "INSERT INTO `{$tmp_table}` (`text`) VALUES ('TEXT-1')");
 			$qry_select	 = @mysqli_query($this->dbh, "SELECT COUNT(*) FROM `{$tmp_table}`");
 			$qry_update	 = @mysqli_query($this->dbh, "UPDATE `{$tmp_table}` SET text = 'TEXT-2' WHERE text = 'TEXT-1'");
@@ -770,11 +774,11 @@ class DUPX_DBTest
             } else {
                 $this->sql_modes ="query failed <br/>".@mysqli_error($this->dbh);
             }
-            
+
         }else{
            $this->sql_modes ="query failed <br/>".@mysqli_error($this->dbh);
         }
-                
+
 		$this->sqlmodeChecked = true;
         return $this->sql_modes;
 	}
@@ -792,7 +796,7 @@ class DUPX_DBTest
 		}
 
 		mysqli_select_db($this->dbh, $this->in->dbname);
-        
+
         $tmp_table	 = '__dpro_temp_'.rand(1000, 9999).'_'.date("ymdHis");
 
 		$qry_create	 = @mysqli_query($this->dbh, "CREATE TABLE `{$tmp_table}` (
@@ -808,7 +812,7 @@ class DUPX_DBTest
 		}
 
 		$this->dateInsertChecked = true;
-                
+
         return $this->queryDateInserted;
 	}
 	/**

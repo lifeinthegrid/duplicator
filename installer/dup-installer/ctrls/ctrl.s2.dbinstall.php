@@ -309,7 +309,6 @@ EOT;
 						DUPX_DB::setCharset($this->dbh, $this->post['dbcharset'], $this->post['dbcollate']);
 					}
 					DUPX_Log::info("**ERROR** database error write '{$err}' - [sql=".substr($this->sql_result_data[$counter], 0, 75)."...]");
-					DUPX_Log::info($this->sql_result_data[$counter]);
 
 					if (DUPX_U::contains($err, 'Unknown collation')) {
 						DUPX_Log::info('RECOMMENDATION: Try resolutions found at https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-110-q');
@@ -335,7 +334,7 @@ EOT;
 		$dbdelete_count1 = 0;
 		$dbdelete_count2 = 0;
 
-		@mysqli_query($this->dbh, "DELETE FROM `{$GLOBALS['DUPX_AC']->wp_tableprefix}duplicator_packages`");
+		@mysqli_query($this->dbh, "DELETE FROM `{$GLOBALS['DUPX_AC']->wp_tableprefix}duplicator_pro_packages`");
 		$dbdelete_count1 = @mysqli_affected_rows($this->dbh);
 
 		@mysqli_query($this->dbh, "DELETE FROM `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` WHERE `option_name` LIKE ('_transient%') OR `option_name` LIKE ('_site_transient%')");
@@ -497,17 +496,16 @@ EOT;
 	}
 
 	private function delimiterFix($counter){
-	    $firstQuery = $this->sql_result_data[$counter];
+	    $firstQuery =  trim(preg_replace('/\s\s+/', ' ',$this->sql_result_data[$counter]));
 	    $start = $counter;
 	    $end = 0;
-	    if(strpos($firstQuery,'DELIMITER') === 0){
+	    if(strpos($firstQuery,"DELIMITER") === 0){
 	        $this->sql_result_data[$start] = "";
             $continueSearch = true;
             while($continueSearch){
                 $counter++;
                 if(strpos($this->sql_result_data[$counter],'DELIMITER') === 0){
                     $continueSearch = false;
-                    //$this->sql_result_data[$start] .= $this->sql_result_data[$counter].";\n";
                     unset($this->sql_result_data[$counter]);
                     $this->sql_result_data = array_values($this->sql_result_data);
                 }else{

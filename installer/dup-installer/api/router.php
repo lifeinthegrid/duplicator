@@ -30,11 +30,6 @@ $API_Server = new DUPX_API_Server();
 $API_Server->add_controller(new DUPX_cPanel_Controller());
 $API_Server->process_request(false);
 
-if($GLOBALS['DUPX_AC']->type == 0) {
-	$brand_text = 'Duplicator';
-} else {
-	$brand_text = 'Duplicator Pro';
-}
 ?>
 
 <!DOCTYPE html>
@@ -84,7 +79,7 @@ if($GLOBALS['DUPX_AC']->type == 0) {
 <table cellspacing="0" class="header-wizard">
 	<tr>
 		<td style="width:100%;">
-			<div style="font-size:22px; padding:5px 0px 0px 0px">&nbsp; <?php echo "{$brand_text} - Installer - API"?></div>
+			<div style="font-size:22px; padding:5px 0px 0px 0px">&nbsp; Duplicator Pro - Installer - API</div>
 		</td>
 		<td style="white-space:nowrap; text-align:right"></td>
 	</tr>

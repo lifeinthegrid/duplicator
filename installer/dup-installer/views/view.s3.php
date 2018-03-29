@@ -145,6 +145,13 @@ VIEW: STEP 3- INPUT -->
 		<!-- SCAN OPTIONS -->
 		<div class="hdr-sub3">Scan Options</div>
 		<table  class="s3-opts">
+			<tr style="display: <?php echo $empty_schedule_display; ?>">
+				<td>Cleanup:</td>
+				<td>
+					<input type="checkbox" name="empty_schedule_storage" id="empty_schedule_storage" value="1" checked />
+					<label for="empty_schedule_storage" style="font-weight: normal">Remove schedules and storage endpoints</label>
+				</td>
+			</tr>
 			<tr>
 				<td style="width:105px">Site URL:</td>
 				<td style="white-space: nowrap">
@@ -186,7 +193,7 @@ VIEW: STEP 3- INPUT -->
 
 				</td>
 				<td valign="top">
-                    <b>Activate Plugins:</b>
+                    <b>Activate<?php echo ((($GLOBALS['DUPX_AC']->mu_mode > 0) && ($subsite_id == -1)) ? ' Network ' : ' ')?>Plugins:</b>
 					<?php echo ($_POST['exe_safe_mode'] > 0) ? '<small class="s3-warn">Safe Mode Enabled</small>' : '' ; ?>
 					<div class="s3-allnonelinks" style="<?php echo ($_POST['exe_safe_mode']>0)? 'display:none':''; ?>">
 						<a href="javascript:void(0)" onclick="$('#plugins option').prop('selected',true);">[All]</a>

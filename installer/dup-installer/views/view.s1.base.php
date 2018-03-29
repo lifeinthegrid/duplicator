@@ -15,6 +15,9 @@ $arcCheck = (file_exists($GLOBALS['FW_PACKAGE_PATH'])) ? 'Pass' : 'Fail';
 $arcSize = @filesize($GLOBALS['FW_PACKAGE_PATH']);
 $arcSize = is_numeric($arcSize) ? $arcSize : 0;
 
+$root_path		= $GLOBALS['DUPX_ROOT'];
+$wpconfig_arc_present = file_exists("{$root_path}/wp-config-arc.txt");
+
 //REQUIRMENTS
 $req = array();
 $req['01'] = DUPX_Server::is_dir_writable($GLOBALS['DUPX_ROOT']) ? 'Pass' : 'Fail';
@@ -34,7 +37,7 @@ $fulldays	= round(abs(strtotime($datetime1) - strtotime($datetime2))/86400);
 $root_path	= SnapLibIOU::safePath($GLOBALS['DUPX_ROOT'], true);
 $archive_path = SnapLibIOU::safePath($GLOBALS['FW_PACKAGE_PATH'], true);
 $wpconf_path = "{$root_path}/wp-config.php";
-$max_time_zero = set_time_limit(0);
+$max_time_zero = @set_time_limit(0);
 $max_time_size = 314572800;  //300MB
 $max_time_ini = ini_get('max_execution_time');
 $max_time_warn = (is_numeric($max_time_ini) && $max_time_ini < 31 && $max_time_ini > 0) && $arcSize > $max_time_size;
@@ -82,6 +85,14 @@ $multisite_disabled = ($archive_config->getLicenseType() != DUPX_LicenseType::Bu
 <input type="hidden" id="s1-input-form-extra-data" name="extra_data" />
 
 <div class="hdr-main">
+    
+    <?php echo $GLOBALS['DUPX_AC']->plugin_type; if($GLOBALS['DUPX_AC']->plugin_type == 0): ?>
+    DUPLICATOR LITE MODE
+    <?php else: ?>
+    DUPLICATOR PRO MODE
+    <?php endif;?>
+    <br/>
+    
 	Step <span class="step">1</span> of 4: Deployment
 	<!--div style="float:right; font-size:14px"><a href="javascript:void(0)">One-Click Install</a></div-->
 </div><br/>
@@ -113,7 +124,7 @@ SETUP TYPE: @todo implement
 	<label for="setup-type-overwrite"><b>Overwrite Install</b></label>
 	<i class="fa fa-question-circle"
 		data-tooltip-title="Overwrite Install"
-		data-tooltip="An Overwrite Install allows Duplicator to overwrite an existing WordPress Site."></i><br/>
+		data-tooltip="An Overwrite Install allows Duplicator Pro to overwrite an existing WordPress Site."></i><br/>
 	<div class="s1-setup-type-sub" id="s1-setup-type-sub-2">
 		<input type="checkbox" name="setup-backup-files" id="setup-backup-files-overwrite" />
 		<label for="setup-backup-files-overwrite">Backup Existing Files</label><br/>
@@ -307,7 +318,7 @@ VALIDATION
 			<div class="status <?php echo ($notice['01'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['01']; ?></div>
 			<div class="title" data-type="toggle" data-target="#s1-notice01"><i class="fa fa-caret-right"></i> Configuration File</div>
 			<div class="info" id="s1-notice01">
-				Duplicator works best by placing the installer and archive files into an empty directory.  If a wp-config.php file is found in the extraction
+				Duplicator Pro works best by placing the installer and archive files into an empty directory.  If a wp-config.php file is found in the extraction
 				directory it might indicate that a pre-existing WordPress site exists which can lead to a bad install.  <i>If this archive was manually extracted or the mode
 				is set to "Overwrite Install" then	this notice can be ignored.</i>
 				<br/><br/>
@@ -405,7 +416,7 @@ VALIDATION
 			time to finish running before the process is killed causing a timeout.
 			<br/><br/>
 
-			Duplicator attempts to turn off the timeout by using the
+			Duplicator Pro attempts to turn off the timeout by using the
 			<a href="http://php.net/manual/en/function.set-time-limit.php" target="_blank">set_time_limit</a> setting.   If this notice shows as a warning then it is
 			still safe to continue with the install.  However, if a timeout occurs then you will need to consider working with the max_execution_time setting or extracting the
 			archive file using the 'Manual Archive Extraction' method.
@@ -492,7 +503,7 @@ OPTIONS
             <td>
                 <?php $num_selections = ($archive_config->isZipArchive() ? 3 : 2); ?>
                 <select id="archive_engine" name="archive_engine" size="<?php echo $num_selections; ?>">
-                    <option value="manual">Manual Archive Extraction</option>
+					<option <?php echo ($wpconfig_arc_present ? '' : 'disabled'); ?> value="manual">Manual Archive Extraction <?php echo ($wpconfig_arc_present ? '' : '*'); ?></option>
                     <?php
                         if($archive_config->isZipArchive()){
 
@@ -517,8 +528,21 @@ OPTIONS
                     }
                     ?>
                 </select>
+
             </td>
         </tr>
+
+		<?php if(!$wpconfig_arc_present) :?>
+
+		<tr>
+			<td>
+			</td>
+			<td style="padding-bottom:8px">
+				<i>*Option available when archive has been pre-extracted.</i>
+			</td>
+		<tr/>
+		<?php endif ?>
+
 		<tr>
 			<td>Permissions:</td>
 			<td>
@@ -719,7 +743,7 @@ DUPX.updateProgressPercent = function (percent)
 {
 	var percentString = '';
 	if (percent > 0) {
-		percentString = ' (' + percent + '%)';
+		percentString = ' ' + percent + '%';
 	}
 	$("#progress-pct").text(percentString);
 };
@@ -784,7 +808,7 @@ DUPX.handleDAWSProcessingProblem = function(errorText, pingDAWS) {
 };
 
 
-DUPX.handleDAWSCommunicationProblem = function(xHr, pingDAWS)
+DUPX.handleDAWSCommunicationProblem = function(xHr, pingDAWS, textStatus, page)
 {
 	DUPX.DAWS.FailureCount++;
 
@@ -805,7 +829,7 @@ DUPX.handleDAWSCommunicationProblem = function(xHr, pingDAWS)
 	}
 	else {
 		console.log('Too many failures.');
-		DUPX.ajaxCommunicationFailed(xHr);
+		DUPX.ajaxCommunicationFailed(xHr, textStatus, page);
 	}
 };
 
@@ -933,7 +957,7 @@ DUPX.pingDAWS = function ()
 		error: function (xHr, textStatus) {
 			console.log('AJAX error. textStatus=');
 			console.log(textStatus);
-			DUPX.handleDAWSCommunicationProblem(xHr, true);
+			DUPX.handleDAWSCommunicationProblem(xHr, true, textStatus, 'ping');
 		}
 	});
 };
@@ -1035,9 +1059,8 @@ DUPX.kickOffDupArchiveExtract = function ()
 		},
 		error: function (xHr, textStatus) {
 
-			console.log('kickOffDupArchiveExtract:AJAX error. textStatus=');
-			console.log(textStatus);
-			DUPX.handleDAWSCommunicationProblem(xHr, false);
+			console.log('kickOffDupArchiveExtract:AJAX error. textStatus=', textStatus);
+			DUPX.handleDAWSCommunicationProblem(xHr, false, textStatus);
 		}
 	});
 };
@@ -1149,18 +1172,59 @@ DUPX.runStandardExtraction = function ()
 		},
 		error: function (xHr) {
 
-			DUPX.ajaxCommunicationFailed(xHr);
+			DUPX.ajaxCommunicationFailed(xHr, textstatus, 'extract');
 		}
 	});
 };
 
-DUPX.ajaxCommunicationFailed = function (xhr)
+DUPX.ajaxCommunicationFailed = function (xhr, textstatus, page)
 {
 	var status = "<b>Server Code:</b> " + xhr.status + "<br/>";
 	status += "<b>Status:</b> " + xhr.statusText + "<br/>";
 	status += "<b>Response:</b> " + xhr.responseText + "<hr/>";
 
-	if ((xhr.status == 403) || (xhr.status == 500)) {
+	if(textstatus && textstatus.toLowerCase() == "timeout" || textstatus.toLowerCase() == "service unavailable") {
+
+		var default_timeout_message = "<b>Recommendation:</b><br/>";
+			default_timeout_message += "See <a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/?180116102141#faq-trouble-100-q'>this FAQ item</a> for possible resolutions.";
+			default_timeout_message += "<hr>";
+			default_timeout_message += "<b>Additional Resources...</b><br/>";
+			default_timeout_message += "With thousands of different permutations it's difficult to try and debug/diagnose a server. If you're running into timeout issues and need help we suggest you follow these steps:<br/><br/>";
+			default_timeout_message += "<ol>";
+				default_timeout_message += "<li><strong>Contact Host:</strong> Tell your host that you're running into PHP/Web Server timeout issues and ask them if they have any recommendations</li>";
+				default_timeout_message += "<li><strong>Dedicated Help:</strong> If you're in a time-crunch we suggest that you contact <a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/?180116150030#faq-resource-030-q'>professional server administrator</a>. A dedicated resource like this will be able to work with you around the clock to the solve the issue much faster than we can in most cases.</li>";
+				default_timeout_message += "<li><strong>Consider Upgrading:</strong> If you're on a budget host then you may run into constraints. If you're running a larger or more complex site it might be worth upgrading to a <a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/?180116150030#faq-resource-040-q'>managed VPS server</a>. These systems will pretty much give you full control to use the software without constraints and come with excellent support from the hosting company.</li>";
+				default_timeout_message += "<li><strong>Contact SnapCreek:</strong> We will try our best to help configure and point users in the right direction, however these types of issues can be time-consuming and can take time from our support staff.</li>";
+			default_timeout_message += "</ol>";
+
+		if(page)
+		{
+			switch(page)
+			{
+				default:
+					status += default_timeout_message;
+					break;
+				case 'extract':
+					status += "<b>Recommendation:</b><br/>";
+					status += "See <a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q'>this FAQ item</a> for possible resolutions.<br/><br/>";
+					break;
+				case 'ping':
+					status += "<b>Recommendation:</b><br/>";
+					status += "See <a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/?180116152758#faq-trouble-030-q'>this FAQ item</a> for possible resolutions.<br/><br/>";
+					break;
+                case 'delete-site':
+                    status += "<b>Recommendation:</b><br/>";
+					status += "See <a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/?180116153643#faq-installer-120-q'>this FAQ item</a> for possible resolutions.<br/><br/>";
+					break;
+			}
+		}
+		else
+		{
+			status += default_timeout_message;
+		}
+
+	}
+	else if ((xhr.status == 403) || (xhr.status == 500)) {
 		status += "<b>Recommendation:</b><br/>";
 		status += "See <a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-120-q'>this FAQ item</a> for possible resolutions.<br/><br/>"
 	} else if ((xhr.status == 0) || (xhr.status == 200)) {

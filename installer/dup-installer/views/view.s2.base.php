@@ -12,7 +12,7 @@ $_POST['dbcollate'] = isset($_POST['dbcollate']) ? trim($_POST['dbcollate']) : $
 $_POST['exe_safe_mode'] = (isset($_POST['exe_safe_mode'])) ? DUPX_U::sanitize($_POST['exe_safe_mode']) : 0;
 
 $_POST['logging'] = isset($_POST['logging']) ? trim(DUPX_U::sanitize($_POST['logging'])) : 1;
-$cpnl_supported =  (DUPX_U::$on_php_53_plus && ($GLOBALS['DUPX_AC']->type == 1));
+$cpnl_supported =  DUPX_U::$on_php_53_plus ? true : false;
 ?>
 
 <form id='s2-input-form' method="post" class="content-form"  data-parsley-validate="true" data-parsley-excluded="input[type=hidden], [disabled], :hidden">
@@ -51,11 +51,7 @@ $cpnl_supported =  (DUPX_U::$on_php_53_plus && ($GLOBALS['DUPX_AC']->type == 1))
 
 	<!-- CPANEL TAB -->
 	<div id="s2-cpnl-pane">
-		<?php
-			if($cpnl_supported) {
-				require_once('view.s2.cpnl.php');
-			}
-		?>
+		<?php require_once('view.s2.cpnl.php'); ?>
 	</div>
 </form>
 
@@ -180,9 +176,7 @@ Auto Posts to view.step3.php  -->
 	 * Open an in-line confirm dialog*/
 	DUPX.confirmDeployment= function ()
 	{
-		<?php if($GLOBALS['DUPX_AC']->type == 1): ?>
 		DUPX.cpnlSetResults();
-		<?php endif; ?>
 		var dbhost = $("#dbhost").val();
 		var dbname = $("#dbname").val();
 		var dbuser = $("#dbuser").val();
@@ -303,7 +297,7 @@ Auto Posts to view.step3.php  -->
 					DUPX.hideProgressBar();
 				}
 			},
-			error: function (xhr) {
+			error: function (xhr, textstatus) {
 				var status  = "<b>Server Code:</b> "	+ xhr.status		+ "<br/>";
 				status += "<b>Status:</b> "			+ xhr.statusText	+ "<br/>";
 				status += "<b>Response:</b> "		+ xhr.responseText  + "<hr/>";
@@ -317,7 +311,12 @@ Auto Posts to view.step3.php  -->
 //				    DUPX.runDeployment();
 //				    return;
 //                }
-				if((xhr.status == 403) || (xhr.status == 500)) {
+
+				if(textstatus && textstatus.toLowerCase() == "timeout" || textstatus.toLowerCase() == "service unavailable") {
+					status += "<b>Recommendation:</b><br/>";
+					status += "To resolve this problem please follow the instructions showing <a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-100-q'>in the FAQ</a>.<br/><br/>";
+				}
+				else if((xhr.status == 403) || (xhr.status == 500)) {
 					status += "<b>Recommendation</b><br/>";
 					status += "See <a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-120-q'>this section</a> of the Technical FAQ for possible resolutions.<br/><br/>"
 				}

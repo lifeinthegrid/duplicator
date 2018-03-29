@@ -92,10 +92,19 @@ class DUP_Installer
 
         $installer_contents = str_replace($search_array, $replace_array, $installer_contents);
 
+        DUP_Log::Info("#### writing installer contents to $installer_filepath");
+      //  DUP_Log::Info("#### contents:" . $installer_contents);
+        
         if (@file_put_contents($installer_filepath, $installer_contents) === false) {
             DUP_Log::error(__('Error writing installer contents', 'duplicator'), __("Couldn't write to $installer_filepath", 'duplicator'));
             $success = false;
         }
+
+        DUP_Log::Info("#### test");
+
+        $yn = file_exists($installer_filepath) ? 'yes' : 'no';
+        DUP_Log::Info("#### installer wrote. Does it exist? " . $yn);
+        
 
         if ($success) {
             $storePath  = "{$this->Package->StorePath}/{$this->File}";
@@ -174,7 +183,7 @@ class DUP_Installer
         //LICENSING
         $ac->license_limit = -2;
 
-		$ac->type = 0;
+		$ac->plugin_type = 0;
 
         $json = json_encode($ac);
 

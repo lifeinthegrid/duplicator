@@ -160,7 +160,7 @@ VIEW: STEP 4- INPUT -->
 			<div class="s4-err-title">STEP 2 - INSTALL NOTICES:</div>
 			<b data-bind="with: status.step1">ERRORS (<span data-bind="text: query_errs"></span>)</b><br/>
 			<div class="info-error">
-				Queries that error during the deploy step are logged to the <a href="../installer-log.txt" target="dup-installer">install-log.txt</a> file and 
+				Queries that error during the deploy step are logged to the <a href="../installer-log.txt" target="dup-installer">install-log.txt</a> file and
 				and marked with an **ERROR** status.   If you experience a few errors (under 5), in many cases they can be ignored as long as your site is working correctly.
 				However if you see a large amount of errors or you experience an issue with your site then the error messages in the log file will need to be investigated.
 				<br/><br/>
@@ -252,14 +252,31 @@ VIEW: STEP 4- INPUT -->
 	</div><br/>
 </form>
 
+<?php
+	//Sanitize
+	$json_result = true;
+	$json_data   = utf8_decode(urldecode($_POST['json']));
+	$json_decode = json_decode($json_data);
+	if ($json_decode == NULL || $json_decode == FALSE) {
+		$json_data  = "{'json reset invalid form value sent.  Possible site script attempt'}";
+		$json_result = false;
+	}
+?>
+
 <script>
+<?php if ($json_result) : ?>
 	MyViewModel = function() {
-		this.status = <?php echo urldecode($_POST['json']); ?>;
+		this.status = <?php echo $json_data; ?>;
 		var errorCount =  this.status.step1.query_errs || 0;
 		(errorCount >= 1 )
 			? $('#s4-install-report-count').css('color', '#BE2323')
 			: $('#s4-install-report-count').css('color', '#197713')
 	};
 	ko.applyBindings(new MyViewModel());
+<?php else: ?>
+	console.log("Cross site script attempt detected, unable to create final report!");
+<?php endif; ?>
 </script>
+
+
 

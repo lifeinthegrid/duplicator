@@ -240,7 +240,7 @@ C-PANEL PANEL -->
 	<div class="footer-buttons">
 		<button id="s2-dbtest-btn-cpnl" type="button" onclick="DUPX.testDBConnect()" class="default-btn" /><i class="fa fa-database"></i> Test Database</button>
 		<button id="s2-next-btn-cpnl" type="button" onclick="DUPX.confirmDeployment()" class="default-btn disabled" disabled="true"
-				title="The 'Test Database' connectivity requirments must pass to continue with install!">
+				title="The 'Test Database' connectivity requirements must pass to continue with install!">
 			Next <i class="fa fa-caret-right"></i>
 		</button>
 	</div>

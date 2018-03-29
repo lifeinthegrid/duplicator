@@ -297,9 +297,13 @@ class DUP_Package
         //------------------------
         //INSTALLER CHECK:
         $exe_temp_path = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP . '/' . $this->Installer->File);
+
+        DUP_Log::info("#### exe temp path $exe_temp_path");
         $exe_temp_size = @filesize($exe_temp_path);
         $exe_easy_size = DUP_Util::byteSize($exe_temp_size);
         $exe_done_txt = DUP_Util::tailFile($exe_temp_path, 10);
+
+        DUP_Log::info("#### exe done text $exe_done_text");
 
         if (!strstr($exe_done_txt, 'DUPLICATOR_INSTALLER_EOF') && !$this->BuildProgress->failed) {
             $this->BuildProgress->failed = true;

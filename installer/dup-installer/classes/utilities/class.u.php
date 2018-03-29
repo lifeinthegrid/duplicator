@@ -233,10 +233,29 @@ class DUPX_U
 	 */
 	public static function getActivePlugins($dbh)
 	{
-		$query = @mysqli_query($dbh, "SELECT option_value FROM `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` WHERE option_name = 'active_plugins' ");
+		// Standard WP installation
+		$select = "option_value";
+		$table  = "options";
+		$where  = "option_name = 'active_plugins'";
+
+		// Multisite setup
+		if( $GLOBALS['DUPX_AC']->mu_mode > 0 )
+		{
+			$select = "meta_value";
+			$table  = "sitemeta";
+			$where  = "meta_key = 'active_sitewide_plugins'";
+		}
+
+		$query = @mysqli_query($dbh, "SELECT {$select} FROM `{$GLOBALS['DUPX_AC']->wp_tableprefix}{$table}` WHERE {$where} ");
 		if ($query) {
 			$row		 = @mysqli_fetch_array($query);
 			$all_plugins = unserialize($row[0]);
+
+			// Multisite array use plugin data like key and timestamp like value. We must flip to can display properly.
+			if( $GLOBALS['DUPX_AC']->mu_mode > 0 )
+				$all_plugins = array_flip($all_plugins);
+
+			// Return data properly
 			if (is_array($all_plugins)) {
 				return $all_plugins;
 			}
@@ -442,6 +461,18 @@ class DUPX_U
     public static function sanitize($input)
     {
         return filter_var($input, FILTER_SANITIZE_STRING);
+    }
+	
+	     /**
+     *  Check PHP version
+     *
+     *  @param string $version		PHP version we looking for
+     *
+     *  @return boolean Returns true if version is same or above.
+     */
+    public static function isVersion($version)
+    {
+        return (version_compare(PHP_VERSION, $version) >= 0);
     }
 }
 DUPX_U::init();

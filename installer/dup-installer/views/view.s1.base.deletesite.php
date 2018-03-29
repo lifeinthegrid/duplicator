@@ -141,7 +141,7 @@ DUPX.deleteSite = function (newRequest)
 			console.log('deleteSite:AJAX error. textStatus=');
 			console.log(textStatus);
 
-			DUPX.handleDeleteSiteCommunicationProblem(xHr, false);
+			DUPX.handleDeleteSiteCommunicationProblem(xHr, false, textStatus, 'delete-site');
 		}
 	});
 };
@@ -185,7 +185,7 @@ DUPX.handleDeleteSiteProcessingProblem = function(errorText, pingDAWS) {
 	}
 };
 
-DUPX.handleDeleteSiteCommunicationProblem = function(xHr, pingDAWS)
+DUPX.handleDeleteSiteCommunicationProblem = function(xHr, pingDAWS, textstatus, page)
 {
 	DUPX.FILEOPS.deleteSiteFailureCount++;
 
@@ -206,7 +206,7 @@ DUPX.handleDeleteSiteCommunicationProblem = function(xHr, pingDAWS)
 	}
 	else {
 		console.log('Too many failures when deleting site.');
-		DUPX.ajaxCommunicationFailed(xHr);
+		DUPX.ajaxCommunicationFailed(xHr, textstatus, page);
 	}
 };
 </script>

@@ -1,10 +1,10 @@
 <?php
 /*
- * Duplicator Website Installer
+ * Duplicator Pro Website Installer
  * Copyright (C) 2016, Snap Creek LLC
  * website: snapcreek.com
  *
- * Duplicator Plugin is distributed under the GNU General Public License, Version 3,
+ * Duplicator Pro Plugin is distributed under the GNU General Public License, Version 3,
  * June 2007. Copyright (C) 2007 Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110, USA
  *
@@ -79,13 +79,6 @@ require_once($GLOBALS['DUPX_INIT'] . '/classes/config/class.conf.srv.php');
 require_once($GLOBALS['DUPX_INIT'] . '/classes/config/class.conf.wp.php');
 require_once($GLOBALS['DUPX_INIT'] . '/classes/class.engine.php');
 
-if($init_state) {
-	DUPX_Log::info("**** init state");
-	DUPX_Log::info("**** globals:" . print_r($GLOBALS, true));
-} else {
-	DUPX_Log::info("**** no init state");
-}
-
 $GLOBALS['_CURRENT_URL_PATH'] = $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
 $GLOBALS['_HELP_URL_PATH']    = "?view=help&archive={$GLOBALS['FW_PACKAGE_NAME']}&bootloader={$GLOBALS['BOOTLOADER_NAME']}&basic";
 $GLOBALS['NOW_TIME']		  = @date("His");
@@ -145,7 +138,7 @@ if (isset($_POST['ctrl_action'])) {
                 <?php if(isset($GLOBALS['DUPX_AC']->brand) && isset($GLOBALS['DUPX_AC']->brand->logo) && !empty($GLOBALS['DUPX_AC']->brand->logo)) : ?>
                     <?php echo $GLOBALS['DUPX_AC']->brand->logo; ?>
                 <?php else: ?>
-					<i class="fa fa-bolt"></i> Duplicator<?php if($GLOBALS['DUPX_AC']->type == 1) { echo 'Pro'; }; ?>
+                    <i class="fa fa-bolt"></i> Duplicator Pro
                 <?php endif; ?>
 			</div>
 		</td>
@@ -159,12 +152,11 @@ if (isset($_POST['ctrl_action'])) {
 </table>
 
 <div class="dupx-modes">
-	Mode:
 	<?php
 		$db_only_txt = ($GLOBALS['DUPX_AC']->exportOnlyDB) ? ' - Database Only' : '';
 		echo  ($GLOBALS['DUPX_STATE']->mode === DUPX_InstallerMode::OverwriteInstall)
-			? "Overwrite Install {$db_only_txt}"
-			: "Standard Install {$db_only_txt}";
+			? "<span class='dupx-overwrite'>Mode: Overwrite Install {$db_only_txt}</span>"
+			: "Mode: Standard Install {$db_only_txt}";
 	?>
 </div>
 

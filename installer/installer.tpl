@@ -1,10 +1,10 @@
 <?php
 /*
-  Duplicator Website Installer Bootstrap
+  Duplicator Pro Website Installer Bootstrap
   Copyright (C) 2017, Snap Creek LLC
   website: snapcreek.com
 
-  Duplicator Plugin is distributed under the GNU General Public License, Version 3,
+  Duplicator Pro Plugin is distributed under the GNU General Public License, Version 3,
   June 2007. Copyright (C) 2007 Free Software Foundation, Inc., 51 Franklin
   St, Fifth Floor, Boston, MA 02110, USA
 
@@ -90,7 +90,7 @@ class DUPX_Bootstrap
         } else {
             $this->archiveRatio			= 100;
         }
-        
+
         $this->overwriteMode = (isset($_GET['mode']) && ($_GET['mode'] == 'overwrite'));
 	}
 
@@ -104,7 +104,7 @@ class DUPX_Bootstrap
 	{
 		date_default_timezone_set('UTC'); // Some machines don't have this set so just do it here
 		@unlink(self::BOOTSTRAP_LOG);
-		self::log('== DUPLICATOR INSTALLER BOOTSTRAP v@@VERSION@@==');
+		self::log('== DUPLICATOR PRO INSTALLER BOOTSTRAP v@@VERSION@@==');
 		self::log('----------------------------------------------------');
 		self::log('Installer bootstrap start');
 
@@ -244,9 +244,28 @@ class DUPX_Bootstrap
 			self::log("Didn't need to extract the installer.");
 		}
 
-		$current_url  = $this->getCurrentURL();
-		$current_url .= $_SERVER['SERVER_NAME'];
-		$current_url  = $current_url.':'.$_SERVER['SERVER_PORT'];
+		$is_https = $this->isHttps();
+
+		if($is_https) {
+			$current_url = 'https://';
+		} else {
+			$current_url = 'http://';
+		}
+
+		if(($_SERVER['SERVER_PORT'] == 80) && ($is_https)) {
+			// Fixing what appears to be a bad server setting
+			$server_port = 443;
+		} else {
+			$server_port = $_SERVER['SERVER_PORT'];
+		}
+
+
+		//$current_url .= $_SERVER['HTTP_HOST'];//WAS SERVER_NAME and caused problems on some boxes
+		$current_url .= isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];//WAS SERVER_NAME and caused problems on some boxes
+		if(strpos($current_url,':') === false) {
+                   $current_url = $current_url.':'.$server_port;
+                }
+                
 		$current_url .= $_SERVER['REQUEST_URI'];
 		$uri_start    = dirname($current_url);
 
@@ -289,21 +308,23 @@ class DUPX_Bootstrap
 			}
 		}
 	}
-	
+
 	/**
-     * Gets the current URL protocol portion http(s)
+     * Indicates if site is running https or not
      *
-     * @return string  Returns the 'http(s)' state of the current URL
+     * @return bool  Returns true if https, false if not
      */
-	public function getCurrentURL()
+	public function isHttps()
 	{
-		$url = null;
+		$retVal = true;
+
 		if (isset($_SERVER['HTTPS'])) {
-			$url = ($_SERVER['HTTPS'] !== 'off') ? 'https://'  : 'http://';
+			$retVal = ($_SERVER['HTTPS'] !== 'off');
 		} else {
-			$url = ($_SERVER['SERVER_PORT'] == 443) ? 'https://' : 'http://';
-		}
-		return $url;
+			$retVal = ($_SERVER['SERVER_PORT'] == 443);
+            }
+
+		return $retVal;
 	}
 
 	/**
@@ -735,7 +756,7 @@ $auto_refresh = isset($_POST['auto-fresh']) ? true : false;
 
 		<table cellspacing="0" class="header-wizard">
 			<tr>
-				<td class="header"> &nbsp; Duplicator - Bootloader</div</td>
+				<td class="header"> &nbsp; Duplicator Pro - Bootloader</div</td>
 				<td class="dupx-version">
 					version: <?php echo DUPX_Bootstrap::VERSION ?> <br/>
 					&raquo; <a target='_blank' href='installer-bootlog.txt'>installer-bootlog.txt</a>

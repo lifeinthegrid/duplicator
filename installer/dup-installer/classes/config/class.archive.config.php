@@ -73,6 +73,9 @@ class DUPX_ArchiveConfig
 	//LICENSING
 	public $license_limit;
 	public $debug_mode = false;
+    
+    public $plugin_type = -1;
+
 	private static $instance = null;
 
 	/**
