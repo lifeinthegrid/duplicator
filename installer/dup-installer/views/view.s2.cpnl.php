@@ -12,7 +12,6 @@ C-PANEL PANEL -->
 		Please contact your host to upgrade this server.
 	</div>
 <?php else: ?>
-
 	<div class="hdr-sub1 toggle-hdr" data-type="toggle" data-target="#s2-cpnl-area">
 		<a href="javascript:void(0)"><i class="fa fa-minus-square"></i> cPanel Login: </a>
 		<a id="s2-cpnl-status-msg" href="javascript:void(0)" onclick="$('#s2-cpnl-status-details').toggle()"></a>

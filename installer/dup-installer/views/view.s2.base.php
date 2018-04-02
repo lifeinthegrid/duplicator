@@ -51,7 +51,13 @@ $cpnl_supported =  DUPX_U::$on_php_53_plus ? true : false;
 
 	<!-- CPANEL TAB -->
 	<div id="s2-cpnl-pane">
-		<?php require_once('view.s2.cpnl.php'); ?>
+        <?php 
+            if($GLOBALS['DUPX_AC']->plugin_type == 0) {
+              require_once('view.s2.cpnl.lite.php');  
+            } else {
+              require_once('view.s2.cpnl.php');  
+            }
+         ?>
 	</div>
 </form>
 
@@ -176,18 +182,23 @@ Auto Posts to view.step3.php  -->
 	 * Open an in-line confirm dialog*/
 	DUPX.confirmDeployment= function ()
 	{
+        <?php if($GLOBALS['DUPX_AC']->plugin_type == 1): ?>
 		DUPX.cpnlSetResults();
+        <?php endif; ?>
+        
 		var dbhost = $("#dbhost").val();
 		var dbname = $("#dbname").val();
 		var dbuser = $("#dbuser").val();
 		var dbchunk = $("#dbchunk").val();
 
+        <?php if($GLOBALS['DUPX_AC']->plugin_type == 1): ?>
 		if ($('#s2-input-form-mode').val() == 'cpnl')  {
 			dbhost = $("#cpnl-dbhost").val();
 			dbname = $("#cpnl-dbname-result").val();
 			dbuser = $("#cpnl-dbuser-result").val();
 			dbchunk = $("#cpnl-dbchunk").val();
 		}
+        <?php endif;?>
 
 		var $formInput = $('#s2-input-form');
 		$formInput.parsley().validate();

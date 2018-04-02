@@ -94,6 +94,32 @@ class DUPX_U
 		return $success;
 	}
 
+     /**
+     *  Check to see if the internet is accessible
+     *
+     *  Note: fsocketopen on windows doesn't seem to honor $timeout setting.
+     *
+     *  @param string $url		A url e.g without prefix "ajax.googleapis.com"
+     *  @param string $port		A valid port number
+     *
+     *  @return bool	Returns true PHP can request the URL
+     */
+    public static function isURLActive($url, $port, $timeout = 5)
+    {
+        if (function_exists('fsockopen')) {
+            @ini_set("default_socket_timeout", 5);
+            $port      = isset($port) && is_integer($port) ? $port : 80;
+            $connected = @fsockopen($url, $port, $errno, $errstr, $timeout); //website and port
+            if ($connected) {
+                @fclose($connected);
+                return true;
+            }
+            return false;
+        } else {
+            return false;
+        }
+    }
+    
 	/**
 	 *  A safe method used to copy larger files
 	 *
