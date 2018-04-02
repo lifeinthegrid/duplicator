@@ -1,10 +1,10 @@
 <?php
 /*
- * Duplicator Pro Website Installer
- * Copyright (C) 2016, Snap Creek LLC
+ * Duplicator Website Installer
+ * Copyright (C) 2018, Snap Creek LLC
  * website: snapcreek.com
  *
- * Duplicator Pro Plugin is distributed under the GNU General Public License, Version 3,
+ * Duplicator (Pro) Plugin is distributed under the GNU General Public License, Version 3,
  * June 2007. Copyright (C) 2007 Free Software Foundation, Inc., 51 Franklin
  * St, Fifth Floor, Boston, MA 02110, USA
  *
@@ -117,7 +117,7 @@ if (isset($_POST['ctrl_action'])) {
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="robots" content="noindex,nofollow">
-	<title>Duplicator Professional</title>
+	<title><?php echo $GLOBALS['DUPX_AC']->plugin_name?> </title>
 	<link rel='stylesheet' href='assets/font-awesome/css/font-awesome.min.css' type='text/css' media='all' />
 	<?php
 		require_once($GLOBALS['DUPX_INIT'] . '/assets/inc.libs.css.php');
@@ -138,7 +138,7 @@ if (isset($_POST['ctrl_action'])) {
                 <?php if(isset($GLOBALS['DUPX_AC']->brand) && isset($GLOBALS['DUPX_AC']->brand->logo) && !empty($GLOBALS['DUPX_AC']->brand->logo)) : ?>
                     <?php echo $GLOBALS['DUPX_AC']->brand->logo; ?>
                 <?php else: ?>
-                    <i class="fa fa-bolt"></i> Duplicator Pro
+                    <i class="fa fa-bolt"></i> <?php echo $GLOBALS['DUPX_AC']->plugin_name ?>
                 <?php endif; ?>
 			</div>
 		</td>

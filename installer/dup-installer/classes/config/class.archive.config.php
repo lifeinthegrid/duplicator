@@ -75,6 +75,8 @@ class DUPX_ArchiveConfig
 	public $debug_mode = false;
     
     public $plugin_type = -1;
+    
+    public $plugin_name = "Duplicator";
 
 	private static $instance = null;
 
@@ -103,7 +105,8 @@ class DUPX_ArchiveConfig
 				if (isset($_GET['debug']) && ($_GET['debug'] == 1)) {
 					self::$instance->debug_mode = true;
 				}
-			} else {
+                
+ 			} else {
 				echo "$config_filepath doesn't exist<br/>";
 			}
 		}

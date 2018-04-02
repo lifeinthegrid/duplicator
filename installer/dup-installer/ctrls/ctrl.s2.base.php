@@ -167,7 +167,7 @@ $not_yet_logged = (isset($_POST['first_chunk']) && $_POST['first_chunk']) || (!i
 
 if($not_yet_logged){
     DUPX_Log::info("\n\n\n********************************************************************************");
-    DUPX_Log::info('* DUPLICATOR PRO INSTALL-LOG');
+    DUPX_Log::info('* '. strtoupper($GLOBALS['DUPX_AC']->plugin_name) . ' INSTALL-LOG');
     DUPX_Log::info('* STEP-2 START @ '.@date('h:i:s'));
     DUPX_Log::info('* NOTICE: Do NOT post to public sites or forums!!');
     DUPX_Log::info("********************************************************************************");

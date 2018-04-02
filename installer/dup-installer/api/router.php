@@ -37,7 +37,7 @@ $API_Server->process_request(false);
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="robots" content="noindex,nofollow">
-	<title>WordPress Duplicator</title>
+	<title><?php echo $GLOBALS['DUPX_AC']->plugin_name;?></title>
 	<style>
 		div#content {width:950px !important}
 		div#api-area {margin:auto; line-height:21px }
@@ -79,7 +79,7 @@ $API_Server->process_request(false);
 <table cellspacing="0" class="header-wizard">
 	<tr>
 		<td style="width:100%;">
-			<div style="font-size:22px; padding:5px 0px 0px 0px">&nbsp; Duplicator Pro - Installer - API</div>
+			<div style="font-size:22px; padding:5px 0px 0px 0px">&nbsp; <?php echo $GLOBALS['DUPX_AC']->plugin_name; ?> - Installer - API</div>
 		</td>
 		<td style="white-space:nowrap; text-align:right"></td>
 	</tr>

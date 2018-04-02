@@ -1,10 +1,10 @@
 <?php
 /*
-  Duplicator Pro Website Installer Bootstrap
+  Duplicator Website Installer Bootstrap
   Copyright (C) 2017, Snap Creek LLC
   website: snapcreek.com
 
-  Duplicator Pro Plugin is distributed under the GNU General Public License, Version 3,
+  Duplicator (Pro) Plugin is distributed under the GNU General Public License, Version 3,
   June 2007. Copyright (C) 2007 Free Software Foundation, Inc., 51 Franklin
   St, Fifth Floor, Boston, MA 02110, USA
 
@@ -104,7 +104,7 @@ class DUPX_Bootstrap
 	{
 		date_default_timezone_set('UTC'); // Some machines don't have this set so just do it here
 		@unlink(self::BOOTSTRAP_LOG);
-		self::log('== DUPLICATOR PRO INSTALLER BOOTSTRAP v@@VERSION@@==');
+		self::log('==DUPLICATOR INSTALLER BOOTSTRAP v@@VERSION@@==');
 		self::log('----------------------------------------------------');
 		self::log('Installer bootstrap start');
 
@@ -756,7 +756,7 @@ $auto_refresh = isset($_POST['auto-fresh']) ? true : false;
 
 		<table cellspacing="0" class="header-wizard">
 			<tr>
-				<td class="header"> &nbsp; Duplicator Pro - Bootloader</div</td>
+				<td class="header"> &nbsp; Duplicator - Bootloader</div</td>
 				<td class="dupx-version">
 					version: <?php echo DUPX_Bootstrap::VERSION ?> <br/>
 					&raquo; <a target='_blank' href='installer-bootlog.txt'>installer-bootlog.txt</a>

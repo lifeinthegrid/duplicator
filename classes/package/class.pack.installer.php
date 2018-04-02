@@ -184,6 +184,7 @@ class DUP_Installer
         $ac->license_limit = -2;
 
 		$ac->plugin_type = 0;
+        $ac->plugin_name = 'Duplicator';
 
         $json = json_encode($ac);
 

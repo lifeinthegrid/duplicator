@@ -86,13 +86,6 @@ $multisite_disabled = ($archive_config->getLicenseType() != DUPX_LicenseType::Bu
 
 <div class="hdr-main">
     
-    <?php echo $GLOBALS['DUPX_AC']->plugin_type; if($GLOBALS['DUPX_AC']->plugin_type == 0): ?>
-    DUPLICATOR LITE MODE
-    <?php else: ?>
-    DUPLICATOR PRO MODE
-    <?php endif;?>
-    <br/>
-    
 	Step <span class="step">1</span> of 4: Deployment
 	<!--div style="float:right; font-size:14px"><a href="javascript:void(0)">One-Click Install</a></div-->
 </div><br/>
@@ -124,7 +117,7 @@ SETUP TYPE: @todo implement
 	<label for="setup-type-overwrite"><b>Overwrite Install</b></label>
 	<i class="fa fa-question-circle"
 		data-tooltip-title="Overwrite Install"
-		data-tooltip="An Overwrite Install allows Duplicator Pro to overwrite an existing WordPress Site."></i><br/>
+		data-tooltip="An Overwrite Install allows <?php echo $GLOBALS['DUPX_AC']->plugin_name; ?> to overwrite an existing WordPress Site."></i><br/>
 	<div class="s1-setup-type-sub" id="s1-setup-type-sub-2">
 		<input type="checkbox" name="setup-backup-files" id="setup-backup-files-overwrite" />
 		<label for="setup-backup-files-overwrite">Backup Existing Files</label><br/>
@@ -139,7 +132,7 @@ SETUP TYPE: @todo implement
 	<label for="setup-type-db"><b>Database Only Install</b></label>
 	<i class="fa fa-question-circle"
 		data-tooltip-title="Database Only"
-		data-tooltip="A database only intall allows Duplicator to connect to a database and install only the database."></i><br/>
+		data-tooltip="A database only install allows <?php echo $GLOBALS['DUPX_AC']->plugin_name; ?> to connect to a database and install only the database."></i><br/>
 	<div class="s1-setup-type-sub" id="s1-setup-type-sub-3">
 		<input type="checkbox" name="setup-backup-database" id="setup-backup-database-db" />
 		<label for="setup-backup-database-db">Backup Existing Database</label> <br/>
@@ -318,7 +311,7 @@ VALIDATION
 			<div class="status <?php echo ($notice['01'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['01']; ?></div>
 			<div class="title" data-type="toggle" data-target="#s1-notice01"><i class="fa fa-caret-right"></i> Configuration File</div>
 			<div class="info" id="s1-notice01">
-				Duplicator Pro works best by placing the installer and archive files into an empty directory.  If a wp-config.php file is found in the extraction
+				<?php echo $GLOBALS['DUPX_AC']->plugin_name ?> works best by placing the installer and archive files into an empty directory.  If a wp-config.php file is found in the extraction
 				directory it might indicate that a pre-existing WordPress site exists which can lead to a bad install.  <i>If this archive was manually extracted or the mode
 				is set to "Overwrite Install" then	this notice can be ignored.</i>
 				<br/><br/>
@@ -372,12 +365,12 @@ VALIDATION
 				$currentPHP = DUPX_Server::$php_version;
 				$cssStyle   = DUPX_Server::$php_version_53_plus	 ? 'color:green' : 'color:red';
 				echo "<b style='{$cssStyle}'>This server is currently running PHP version [{$currentPHP}]</b>.<br/>"
-				. "Duplicator allows PHP 5.2 to be used during install but does not officially support it.  If you're using PHP 5.2 we strongly recommend NOT using it and having your "
+				. $GLOBALS['DUPX_AC']->plugin_name . " allows PHP 5.2 to be used during install but does not officially support it.  If you're using PHP 5.2 we strongly recommend NOT using it and having your "
 				. "host upgrade to a newer more stable, secure and widely supported version.  The <a href='http://php.net/eol.php' target='_blank'>end of life for PHP 5.2</a> "
 				. "was in January of 2011 and is not recommended for use.<br/><br/>";
 
 				echo "Many plugin and theme authors are no longer supporting PHP 5.2 and trying to use it can result in site wide problems and compatibility warnings and errors.  "
-				. "Please note if you continue with the install using PHP 5.2 the Duplicator support team will not be able to help with issues or troubleshoot your site.  "
+				. "Please note if you continue with the install using PHP 5.2 the " . $GLOBALS['DUPX_AC']->plugin_name . " support team will not be able to help with issues or troubleshoot your site.  "
 				. "If your server is running <b>PHP 5.3+</b> please feel free to reach out for help if you run into issues with your migration/install.";
 			?>
 		</div>
@@ -416,7 +409,7 @@ VALIDATION
 			time to finish running before the process is killed causing a timeout.
 			<br/><br/>
 
-			Duplicator Pro attempts to turn off the timeout by using the
+			<?php echo $GLOBALS['DUPX_AC']->plugin_name; ?> attempts to turn off the timeout by using the
 			<a href="http://php.net/manual/en/function.set-time-limit.php" target="_blank">set_time_limit</a> setting.   If this notice shows as a warning then it is
 			still safe to continue with the install.  However, if a timeout occurs then you will need to consider working with the max_execution_time setting or extracting the
 			archive file using the 'Manual Archive Extraction' method.

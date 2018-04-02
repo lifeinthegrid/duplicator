@@ -52,7 +52,7 @@ $date = @date('h:i:s');
 $log  = <<<LOG
 \n\n
 ********************************************************************************
-DUPLICATOR PRO INSTALL-LOG
+DUPLICATOR INSTALL-LOG
 STEP-3 START @ {$date}
 NOTICE: Do NOT post to public sites or forums
 ********************************************************************************
@@ -498,7 +498,7 @@ DUPX_Log::info("====================================\n");
 
 $blog_name   = mysqli_real_escape_string($dbh, $_POST['blogname']);
 $plugin_list = (isset($_POST['plugins'])) ? $_POST['plugins'] : array();
-// Force Duplicator Pro active so we the security cleanup will be available
+// Force Duplicator active so we the security cleanup will be available
 if(($GLOBALS['DUPX_AC']->mu_mode > 0) && ($subsite_id == -1))
 {
 	$multisite_plugin_list=array();
