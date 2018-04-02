@@ -86,6 +86,7 @@ VIEW: STEP 3- INPUT -->
     </div>
     <br/><br/>
 
+    <?php if($GLOBALS['DUPX_AC']->plugin_type == 1): ?>
 	<!-- =========================
 	SEARCH AND REPLACE -->
 	<div class="hdr-sub1 toggle-hdr" data-type="toggle" data-target="#s3-custom-replace">
@@ -107,7 +108,8 @@ VIEW: STEP 3- INPUT -->
 		<button type="button" onclick="DUPX.addSearchReplace();return false;" style="font-size:12px;display: block; margin: 10px 0 0 0; " class="default-btn">Add More</button>
 	</div>
 	<br/><br/>
-
+    <?php endif; ?>
+    
 	<!-- ==========================
     OPTIONS -->
 	<div class="hdr-sub1 toggle-hdr" data-type="toggle" data-target="#s3-adv-opts">
