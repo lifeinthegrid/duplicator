@@ -53,7 +53,7 @@ class DUPX_InstallerState
 
 				$wpConfigPath	= "{$GLOBALS['DUPX_ROOT']}/wp-config.php";
 
-				if(file_exists($wpConfigPath)) {
+				if(($GLOBALS['DUPX_AC']->plugin_type == 1) && file_exists($wpConfigPath)) {
 					$defines = DUPX_WPConfig::parseDefines($wpConfigPath);
 					
 					self::$instance->mode = DUPX_InstallerMode::OverwriteInstall;

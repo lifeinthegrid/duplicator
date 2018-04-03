@@ -43,6 +43,12 @@ if (!isset($_GET['bootloader'])) {
 	die("Bootloader parameter not specified");
 }
 
+require_once($GLOBALS['DUPX_INIT'].'/classes/class.event.manager.php');
+
+if(file_exists($GLOBALS['DUPX_INIT'].'/enhancements/')) {
+    require_once($GLOBALS['DUPX_INIT'].'/enhancements/includes.php');
+}
+
 require_once($GLOBALS['DUPX_INIT'].'/lib/snaplib/snaplib.all.php');
 require_once($GLOBALS['DUPX_INIT'].'/main.download.php');
 require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.constants.php');

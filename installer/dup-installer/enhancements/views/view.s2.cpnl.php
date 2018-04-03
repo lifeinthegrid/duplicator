@@ -6,7 +6,7 @@ defined("ABSPATH") or die("");
 
 <!-- =========================================
 C-PANEL PANEL -->
-<?php if (! $cpnl_supported) :?>	
+<?php if (! $cpnl_supported) :?>
 	<div class='s2-cpnl-panel-no-support'>
 		cPanel Requires PHP 5.3+ <br/>
 		Please contact your host to upgrade this server.
@@ -51,7 +51,7 @@ C-PANEL PANEL -->
 			</div>
 		</div>
 	</div><br/><br/>
-			
+
 	<!-- =========================================
 	CPNL DB SETUP -->
 	<div class="hdr-sub1 toggle-hdr" data-type="toggle" data-target="#s2-cpnl-db-opts">
@@ -550,6 +550,6 @@ $(document).ready(function ()
 			? $('#cpnl-dbmysqlmode_3_view').show()
 			: $('#cpnl-dbmysqlmode_3_view').hide();
 	});
-	
+
 });
 </script>

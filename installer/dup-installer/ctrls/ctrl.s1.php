@@ -44,6 +44,16 @@ error_reporting(E_ERROR);
 ($GLOBALS['LOG_FILE_HANDLE'] != false) or DUPX_Log::error(ERR_MAKELOG);
 
 if (! $GLOBALS['DUPX_AC']->exportOnlyDB) {
+
+	$wpConfigPath	= "{$GLOBALS['DUPX_ROOT']}/wp-config.php";
+
+	// TODO Remove
+	if($GLOBALS['DUPX_AC']->plugin_type == 0) {
+		if(file_exists($wpConfigPath)) {
+			DUPX_Log::error(ERR_CONFIG_FOUND);
+		}
+	}
+
 	if (($_POST['archive_engine'] == 'manual') || $_POST['archive_engine'] == 'duparchive'){
 		if (!file_exists($wpconfig_ark_path) && !file_exists("database.sql")) {
 			DUPX_Log::error(ERR_ZIPMANUAL);
@@ -59,7 +69,8 @@ if (! $GLOBALS['DUPX_AC']->exportOnlyDB) {
 }
 
 DUPX_Log::info("********************************************************************************");
-DUPX_Log::info('* DUPLICATOR-PRO: Install-Log');
+
+DUPX_Log::info('* ' . strtoupper($GLOBALS['DUPX_AC']->plugin_name) . ': Install-Log');
 DUPX_Log::info('* STEP-1 START @ ' . @date('h:i:s'));
 DUPX_Log::info("* VERSION: {$GLOBALS['DUPX_AC']->version_dup}");
 DUPX_Log::info('* NOTICE: Do NOT post to public sites or forums!!');

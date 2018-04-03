@@ -51,11 +51,11 @@ $cpnl_supported =  DUPX_U::$on_php_53_plus ? true : false;
 
 	<!-- CPANEL TAB -->
 	<div id="s2-cpnl-pane">
-        <?php 
-            if($GLOBALS['DUPX_AC']->plugin_type == 0) {
-              require_once('view.s2.cpnl.lite.php');  
+        <?php
+            if(DUPX_EventManager::isRegistered('display_cpanel_tab')) {
+                DUPX_EventManager::triggerEvent('display_cpanel_tab', array('cpnl_supported' => $cpnl_supported));
             } else {
-              require_once('view.s2.cpnl.php');  
+              require_once('view.s2.cpnl.lite.php');
             }
          ?>
 	</div>
@@ -111,7 +111,7 @@ Auto Posts to view.step3.php  -->
 		<input type="hidden" name="dbuser" id="ajax-dbuser" />
 		<input type="hidden" name="dbpass" id="ajax-dbpass" />
 		<input type="hidden" name="dbcharset" id="ajax-dbcharset" />
-		<input type="hidden" name="dbcollate" id="ajax-dbcollate" />		
+		<input type="hidden" name="dbcollate" id="ajax-dbcollate" />
 		<input type="hidden" name="exe_safe_mode" id="ajax-exe-safe-mode" />
 		<input type="hidden" name="subsite-id" id="ajax-subsite-id" />
 		<input type="hidden" name="retain_config" value="<?php echo $_POST['retain_config']; ?>" />
@@ -185,7 +185,7 @@ Auto Posts to view.step3.php  -->
         <?php if($GLOBALS['DUPX_AC']->plugin_type == 1): ?>
 		DUPX.cpnlSetResults();
         <?php endif; ?>
-        
+
 		var dbhost = $("#dbhost").val();
 		var dbname = $("#dbname").val();
 		var dbuser = $("#dbuser").val();
@@ -299,7 +299,7 @@ Auto Posts to view.step3.php  -->
 					$("#ajax-subsite-id").val($("#subsite-id").val());
 					$("#ajax-exe-safe-mode").val($("#exe-safe-mode").val());
 					$("#ajax-json").val(escape(JSON.stringify(data)));
-                                        
+
 					<?php if (! $GLOBALS['DUPX_DEBUG']) : ?>
 						setTimeout(function () {$formResult.submit();}, 1000);
 					<?php endif; ?>
