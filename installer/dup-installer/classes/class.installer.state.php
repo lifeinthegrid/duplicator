@@ -53,6 +53,7 @@ class DUPX_InstallerState
 
 				$wpConfigPath	= "{$GLOBALS['DUPX_ROOT']}/wp-config.php";
 
+                // TODO: remove plugin_type check later
 				if(($GLOBALS['DUPX_AC']->plugin_type == 1) && file_exists($wpConfigPath)) {
 					$defines = DUPX_WPConfig::parseDefines($wpConfigPath);
 					
