@@ -4,8 +4,14 @@ class DUPX_ViewEvents {
 
     public static function init()
     {
-        DUPX_EventManager::registerEvent('display_cpanel_tab', 'DUPX_ViewEvents::displaycPanelTab');
-        DUPX_EventManager::registerEvent('deployment_triggered', 'DUPX_ViewEvents::displaycPanelDeployJS');
+        DUPX_EventManager::registerEvent('view_s2_display_alternate_cpanel_tab', 'DUPX_ViewEvents::displaycPanelTab');
+        DUPX_EventManager::registerEvent('view_s2_deployment_triggered', 'DUPX_ViewEvents::displaycPanelDeployJS');
+        DUPX_EventManager::registerEvent('view_s3_extra_settings', 'DUPX_ViewEvents::displayS3ExtraSettings');
+    }
+
+    public static function displayS3ExtraSettings($params)
+    {
+        require_once(dirname(__FILE__) . '/view.s3.search.replace.php');
     }
 
     public static function displaycPanelTab($params)

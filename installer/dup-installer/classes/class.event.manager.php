@@ -13,9 +13,11 @@ class DUPX_EventManager
 
     public static function triggerEvent($name, $params = array())
     {
-        foreach (self::$events[$name] as $callback) {
+        if(isset(self::$events[$name])) {
+            foreach (self::$events[$name] as $callback) {
 
-            $callback($params);
+                $callback($params);
+            }
         }
     }
 
