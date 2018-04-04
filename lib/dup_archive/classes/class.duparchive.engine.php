@@ -316,9 +316,9 @@ class DupArchiveEngine
                 }
 
                 // Uncomment when testing error handling
-//                if(rand(0, 300) == 1) {
-//                    throw new Exception('intentional file error');
-//                }
+            //    if(rand(0, 50) == 1) {
+          //          throw new Exception('intentional file error');
+        //        }
 
                 DupArchiveFileProcessor::writeFilePortionToArchive($createState, $archiveHandle, $filepath, $relativeFilePath);
 

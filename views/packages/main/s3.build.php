@@ -502,7 +502,8 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                         var errorString = 'Error Processing Step 1<br/>';
                         errorString += data.error;
 
-                        Duplicator.Pack.HandleDupArchiveProblem(null, null, errorString, false);
+                        //Duplicator.Pack.HandleDupArchiveProblem(null, null, errorString, false);
+                        DupArchiveProcessingFailed(errorString);
                     }
                 },
                 error: function (xHr, textStatus) {

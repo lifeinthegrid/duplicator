@@ -523,23 +523,15 @@ class DUP_Package
             $this->update();
         } else if (!$this->BuildProgress->installer_built) {
 
-//			$this->Runtime = -1;
-//			$this->ExeSize = DUP_Util::byteSize($this->Installer->Size);
-//			$this->ZipSize = DUP_Util::byteSize($this->Archive->Size);
-
-             DUP_Log::Trace('f');
-       
-            // Note: Duparchive builds installer within the main build flow not here
-          //  $this->Installer->build($this);
-           // $this->update();
+             DUP_Log::Trace('f');       
 
             if ($this->BuildProgress->failed) {
                 $this->Status = DUP_PackageStatus::ERROR;
                 $this->update();
-                DUP_Log::error('ERROR: Problem adding installer to archive.');
+                DUP_Log::error('ERROR: Problem adding installer to archive.', '', false);
             }
         }
-// Note: Think that by putting has_completed() at top of check will prevent archive from continuing to build after a failure has hit.
+
         if ($this->BuildProgress->has_completed()) {
 
             DUP_Log::Trace('c');
@@ -573,7 +565,7 @@ class DUP_Package
 
                 $message = "Package creation failed.";
 
-                DUP_Log::error($message, $message);
+                DUP_Log::error($message, $message, false);
                 DUP_Log::Trace($message);
             } else {
 
