@@ -233,15 +233,15 @@ class DUP_DupArchive
 					$expandState->expectedDirectoryCount = count($scanReport->ARC->Dirs) - $createState->skippedDirectoryCount + $package->Installer->numDirsAdded;
 					$expandState->expectedFileCount      = count($scanReport->ARC->Files) + 1 - $createState->skippedFileCount + $package->Installer->numFilesAdded;    // database.sql will be in there
 
-					DUP_LOG::traceObject("EXPAND STATE BEFORE SAVE", $expandState);
+				//	DUP_LOG::traceObject("EXPAND STATE BEFORE SAVE", $expandState);
 
 					$expandState->save();
 
 					DUP_LOG::traceObject("EXPAND STATE AFTER SAVE", $expandState);
                     
-                    $te = DUP_DupArchive_Expand_State::getInstance();
+                 //   $te = DUP_DupArchive_Expand_State::getInstance();
                     
-                    DUP_Log::traceObject("TEST LOAD EXPAND STATE", $te);
+                   // DUP_Log::traceObject("TEST LOAD EXPAND STATE", $te);
                 }
                 else {
 
@@ -250,10 +250,7 @@ class DUP_DupArchive
 
 						
                        // $expandState = new DUP_DupArchive_Expand_State($expandStateEntity);
-						$expandState = DUP_DupArchive_Expand_State::getInstance();
-
-						DUP_LOG::traceObject("EXPAND STATE AFTER GET INSTANCE", $expandState);
-											
+						$expandState = DUP_DupArchive_Expand_State::getInstance();					
 						
                         if($buildProgress->retries > 1) {
 
@@ -272,8 +269,9 @@ class DUP_DupArchive
 
                         $package->Status = SnapLibUtil::getWorkPercent(DUP_PackageStatus::ARCVALIDATION, DUP_PackageStatus::ARCDONE, $archiveSize,
                                 $expandState->archiveOffset);
-						DUP_LOG::TraceObject("package status after expand=", $package->Status);
+                        DUP_LOG::TraceObject("package status after expand=", $package->Status);
                         DUP_LOG::Trace("archive size:{$archiveSize} archive offset:{$expandState->archiveOffset}");
+                 
                     } catch (Exception $ex) {
                         DUP_Log::Trace('Exception:'.$ex->getMessage().':'.$ex->getTraceAsString());
                         $buildProgress->failed = true;
@@ -295,6 +293,7 @@ class DUP_DupArchive
                         $buildProgress->archive_built = true;
                         $buildProgress->retries       = 0;
 
+                        // rsr todo is this required?
                         $package->update();
 
                         $timerAllEnd = DUP_Util::getMicrotime();

@@ -89,6 +89,9 @@ class DUP_Archive
                 case 'DAF':
 					DUP_LOG::trace("b3");
                     $completed = DUP_DupArchive::create($this, $this->Package->BuildProgress, $this->Package);
+                    if($this->Package->BuildProcess->failed) {
+                        $this->Package->Status = DUP_PackageStatus::ERROR;
+                    }
                     $this->Package->Update();
                     break;
 
