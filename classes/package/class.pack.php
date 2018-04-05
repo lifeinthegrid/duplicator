@@ -16,13 +16,10 @@ class DUP_Build_Progress
     public $archive_built = false;
     public $database_script_built = false;
     public $failed = false;
-   // public $next_archive_file_index = 0;
-   // public $next_archive_dir_index = 0;
     public $retries = 0;
-    //public $current_build_mode = -1;
-	//public $current_build_compression = true;
-   // public $custom_data = null;
-    public $warnings = array();
+   // public $warnings = array();
+    public $build_failures = array();
+    public $validation_failures = array();
 
     public function has_completed()
     {
@@ -500,8 +497,6 @@ class DUP_Package
         if ($this->BuildProgress->initialized == false) {
 
             DUP_Log::Trace('b');
-       
-            $timerStart = DUP_Util::getMicrotime();
 
             $this->BuildProgress->initialized = true;
 			
@@ -524,12 +519,7 @@ class DUP_Package
         } else if (!$this->BuildProgress->installer_built) {
 
              DUP_Log::Trace('f');       
-
-            if ($this->BuildProgress->failed) {
-                $this->Status = DUP_PackageStatus::ERROR;
-                $this->update();
-                DUP_Log::error('ERROR: Problem adding installer to archive.', '', false);
-            }
+             // Installer being built is stuffed into the archive build phase
         }
 
         if ($this->BuildProgress->has_completed()) {
@@ -560,7 +550,7 @@ class DUP_Package
 
             if ($this->BuildProgress->failed) {
 
-				DUP_LOG::Trace("build progress failed");
+				DUP_LOG::Trace("build progress failed so setting package to failed");
                 $this->setStatus(DUP_PackageStatus::ERROR);
 
                 $message = "Package creation failed.";
@@ -755,10 +745,8 @@ class DUP_Package
         $sql   = "UPDATE `{$table}` SET  status = {$this->Status}, package = '{$packageObj}'	WHERE ID = {$this->ID}";
      
         DUP_Log::Trace('-------------------------');
-	//	DUP_Log::TraceObject('package object', $this);
         DUP_Log::Trace("status = {$this->Status}");
         DUP_Log::Trace("ID = {$this->ID}");
-      //  DUP_Log::Trace($sql);
         DUP_Log::Trace('-------------------------');
         
         $wpdb->query($sql);

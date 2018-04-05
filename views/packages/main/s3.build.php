@@ -444,7 +444,7 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                                 if (data.failures.length > 0) {
 
                                     console.log(data.failures);
-                                    var errorMessage = "CreateDupArchive:Problems during extract. These may be non-critical so continue with install.\n------\n";
+                                    var errorMessage = "CreateDupArchive:Problems during package creation. These may be non-critical so continue with install.\n------\n";
                                     var len = data.failures.length;
 
                                     for (var j = 0; j < len; j++) {
@@ -503,7 +503,7 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                         errorString += data.error;
 
                         //Duplicator.Pack.HandleDupArchiveProblem(null, null, errorString, false);
-                        DupArchiveProcessingFailed(errorString);
+                        Duplicator.Pack.DupArchiveProcessingFailed(errorString);
                     }
                 },
                 error: function (xHr, textStatus) {

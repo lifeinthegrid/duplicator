@@ -99,7 +99,6 @@ function duplicator_duparchive_package_build()
     @set_time_limit(0);
     $errLevel = error_reporting();
     error_reporting(E_ERROR);
-    DUP_Util::initSnapshotDirectory();
 
     // The DupArchive build process always works on a saved package so the first time through save the active package to the package table. 
     // After that, just retrieve it.
@@ -130,15 +129,19 @@ function duplicator_duparchive_package_build()
         die("There is no active package.");
     }
 
-    $hasCompleted = $package->runDupArchiveBuild();
-
+    if($package->Status == DUP_PackageStatus::ERROR) {
+        $hasCompleted = true;
+    } else {
+        $hasCompleted = $package->runDupArchiveBuild();
+    }
     
     $json = array();
 
-    $createState      = DUP_DupArchive_Create_State::get_instance();
-    $json['failures'] = ($createState->failures == null) ? array() : $createState->failures; // ?or just do package->buildprogress->warnings?
+    //$createState      = DUP_DupArchive_Create_State::get_instance();
+    //$json['failures'] = ($createState->failures == null) ? array() : $createState->failures; // ?or just do package->buildprogress->warnings?
+ 
+    $json['failures'] = array_merge($package->BuildProgress->build_failures, $package->BuildProgress->validation_failures);
 
-   
     //JSON:Debug Response
     //Pass = 1, Warn = 2, Fail = 3, 4 = Not Done
     if ($hasCompleted) {

@@ -23,50 +23,12 @@ class DUP_DupArchive_Create_State extends DupArchiveCreateState
    // public static function createFromPackage(&$package)
     public static function get_instance()
     {
-         $instance = new DUP_DupArchive_Create_State();
+        $instance = new DUP_DupArchive_Create_State();
 
+        $data = DUP_Settings::Get('duparchive_create_state');
         
-        // RSR TODO: get from options table
-//        $instance->setPackage($package);
-//
-//        $buildProgress = $package->BuildProgress;
-//
-//        $instance->archiveOffset         = $buildProgress->custom_data->archive_offset;
-//        $instance->archivePath           = $buildProgress->custom_data->archive_path;
-//        $instance->basePath              = $buildProgress->custom_data->base_path;
-//        $instance->currentDirectoryIndex = $buildProgress->next_archive_dir_index;
-//        $instance->currentFileIndex      = $buildProgress->next_archive_file_index;
-//        $instance->failures              = $buildProgress->custom_data->failures;
-//        $instance->globSize              = $buildProgress->custom_data->glob_size;
-//        $instance->isCompressed          = $buildProgress->custom_data->is_compressed;
-//        $instance->currentFileOffset     = $buildProgress->custom_data->current_file_offset;
-//        $instance->timerEnabled          = true;
-//        $instance->timeSliceInSecs       = $buildProgress->custom_data->time_slice_in_secs;
-//        $instance->working               = $buildProgress->custom_data->working;
-//        $instance->throttleDelayInUs     = $buildProgress->custom_data->throttle_delay_in_us;
-//        $instance->skippedDirectoryCount = $buildProgress->custom_data->skipped_directory_count;
-//        $instance->skippedFileCount      = $buildProgress->custom_data->skipped_file_count;
-
-          $data = DUP_Settings::Get('duparchive_create_state');
-        
-          DUP_Util::objectCopy($data, $instance);
-        
-//        $instance->archiveOffset         = $buildProgress->custom_data->archive_offset;
-//        $instance->archivePath           = $buildProgress->custom_data->archive_path;
-//        $instance->basePath              = $buildProgress->custom_data->base_path;
-//        $instance->currentDirectoryIndex = $buildProgress->next_archive_dir_index;
-//        $instance->currentFileIndex      = $buildProgress->next_archive_file_index;
-//        $instance->failures              = $buildProgress->custom_data->failures;
-//        $instance->globSize              = $buildProgress->custom_data->glob_size;
-//        $instance->isCompressed          = $buildProgress->custom_data->is_compressed;
-//        $instance->currentFileOffset     = $buildProgress->custom_data->current_file_offset;
-//        $instance->timerEnabled          = true;
-//        $instance->timeSliceInSecs       = $buildProgress->custom_data->time_slice_in_secs;
-//        $instance->working               = $buildProgress->custom_data->working;
-//        $instance->throttleDelayInUs     = $buildProgress->custom_data->throttle_delay_in_us;
-//        $instance->skippedDirectoryCount = $buildProgress->custom_data->skipped_directory_count;
-//        $instance->skippedFileCount      = $buildProgress->custom_data->skipped_file_count;
-        
+        DUP_Util::objectCopy($data, $instance);
+       
         $instance->startTimestamp = time();
 
         DUP_Log::TraceObject("retrieving create state", $instance);
@@ -113,14 +75,14 @@ class DUP_DupArchive_Create_State extends DupArchiveCreateState
     {
         $failure = parent::addFailure($type, $subject, $description, $isCritical);
 
-        /* @var $buildProgress DUP_Build_Progress */
-        $buildProgress = &$this->package->BuildProgress;
-
-        if ($isCritical) {
-            $buildProgress->failed = true;
-        } else {
-            $buildProgress->warnings[] = $this->getFailureString($failure);
-        }
+//        /* @var $buildProgress DUP_Build_Progress */
+//        $buildProgress = &$this->package->BuildProgress;
+//
+//        if ($isCritical) {
+//            $buildProgress->failed = true;
+//        } else {
+//            $buildProgress->warnings[] = $this->getFailureString($failure);
+//        }
     }
 
     public function save()

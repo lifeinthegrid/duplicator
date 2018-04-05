@@ -61,11 +61,6 @@ class DUP_DupArchive
             $sqlPath     = DUP_Util::safePath("{$package->StorePath}/{$package->Database->File}");
             $archivePath = DUP_Util::safePath("{$package->StorePath}/{$archive->File}");
 
-            $filterDirs  = empty($archive->FilterDirs) ? 'not set' : $archive->FilterDirs;
-            $filterExts  = empty($archive->FilterExts) ? 'not set' : $archive->FilterExts;
-            $filterFiles = empty($archive->FilterFiles) ? 'not set' : $archive->FilterFiles;
-            $filterOn    = ($archive->FilterOn) ? 'ON' : 'OFF';
-
             $scanFilepath = DUPLICATOR_SSDIR_PATH_TMP."/{$package->NameHash}_scan.json";
 
 			DUP_LOG::trace("c7");
@@ -104,6 +99,11 @@ class DUP_DupArchive
             $scanReport = json_decode($json);
 
             if ($buildProgress->archive_started == false) {
+
+                $filterDirs  = empty($archive->FilterDirs) ? 'not set' : $archive->FilterDirs;
+                $filterExts  = empty($archive->FilterExts) ? 'not set' : $archive->FilterExts;
+                $filterFiles = empty($archive->FilterFiles) ? 'not set' : $archive->FilterFiles;
+                $filterOn    = ($archive->FilterOn) ? 'ON' : 'OFF';
 
 				DUP_LOG::trace("c13");
                 DUP_Log::info("\n********************************************************************************");
@@ -157,13 +157,15 @@ class DUP_DupArchive
                 if($buildProgress->retries > 1) {
                     // Indicates it had problems before so move into robustness mode
                     $createState->isRobust = true;
-                    //$createState->timeSliceInSecs = self::WorkerTimeInSec / 2;
+                    
                     $createState->save();
                 }
 
                 if ($createState->working) {
 					DUP_LOG::Trace("Create state is working");
                     DupArchiveEngine::addItemsToArchive($createState, $scanReport->ARC);
+
+                    $buildProgress->build_failures = $createState->failures;
 
                     if($createState->isCriticalFailurePresent()) {
 
@@ -233,30 +235,22 @@ class DUP_DupArchive
 					$expandState->expectedDirectoryCount = count($scanReport->ARC->Dirs) - $createState->skippedDirectoryCount + $package->Installer->numDirsAdded;
 					$expandState->expectedFileCount      = count($scanReport->ARC->Files) + 1 - $createState->skippedFileCount + $package->Installer->numFilesAdded;    // database.sql will be in there
 
-				//	DUP_LOG::traceObject("EXPAND STATE BEFORE SAVE", $expandState);
-
 					$expandState->save();
 
-					DUP_LOG::traceObject("EXPAND STATE AFTER SAVE", $expandState);
-                    
-                 //   $te = DUP_DupArchive_Expand_State::getInstance();
-                    
-                   // DUP_Log::traceObject("TEST LOAD EXPAND STATE", $te);
+					DUP_LOG::traceObject("EXPAND STATE AFTER SAVE", $expandState);                    
                 }
                 else {
 
 					DUP_LOG::trace("c18");
-                    try {
+                    try {						
 
-						
-                       // $expandState = new DUP_DupArchive_Expand_State($expandStateEntity);
 						$expandState = DUP_DupArchive_Expand_State::getInstance();					
 						
                         if($buildProgress->retries > 1) {
 
                             // Indicates it had problems before so move into robustness mode
                             $expandState->isRobust = true;
-                            //$expandState->timeSliceInSecs = self::WorkerTimeInSec / 2;
+                    
                             $expandState->save();
                         }
 
@@ -264,6 +258,8 @@ class DUP_DupArchive
 
                         DupArchiveEngine::expandArchive($expandState);
 
+                        $buildProgress->validation_failures = $expandState->failures;
+                        
                         $totalFileCount = count($scanReport->ARC->Files);
                         $archiveSize    = @filesize($expandState->archivePath);
 
