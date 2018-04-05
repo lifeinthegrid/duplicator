@@ -165,7 +165,7 @@ class DUP_DupArchive
 					DUP_LOG::Trace("Create state is working");
                     DupArchiveEngine::addItemsToArchive($createState, $scanReport->ARC);
 
-                    $buildProgress->build_failures = $createState->failures;
+                    $buildProgress->set_build_failures($createState->failures);
 
                     if($createState->isCriticalFailurePresent()) {
 
@@ -258,7 +258,7 @@ class DUP_DupArchive
 
                         DupArchiveEngine::expandArchive($expandState);
 
-                        $buildProgress->validation_failures = $expandState->failures;
+                        $buildProgress->set_validation_failures($expandState->failures);
                         
                         $totalFileCount = count($scanReport->ARC->Files);
                         $archiveSize    = @filesize($expandState->archivePath);
@@ -279,7 +279,7 @@ class DUP_DupArchive
 						DUP_LOG::trace("c20");
                         // Fail immediately if critical failure present - even if havent completed processing the entire archive.
 
-                        DUP_Log::Error(__('Build Failure', 'duplicator'), $expandState->getFailureSummary(), false);
+                        DUP_Log::Error(__('Critical failure present in validation', 'duplicator'), $expandState->getFailureSummary(), false);
 
                         $buildProgress->failed = true;
                         return true;

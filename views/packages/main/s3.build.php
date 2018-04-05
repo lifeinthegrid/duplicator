@@ -428,13 +428,13 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                         // Status = 1 means complete, 4 means more to process
                         console.log("CreateDupArchive:Passed");
 
-                        var criticalFailureText = Duplicator.Pack.GetCriticalFailureText(data.failures);
+                        var criticalFailureText = Duplicator.Pack.GetFailureText(data.failures, true);
 
                         if (data.failures.length > 0) {
                             console.log("CreateDupArchive:There are failures present. (" + data.failures.length) + ")";
                         }
 
-                        if (criticalFailureText === null) {
+                        if (criticalFailureText === '') {
                             console.log("CreateDupArchive:No critical failures");
                             if (data.status == 1) {
 
@@ -500,6 +500,11 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                     } else {
                         // data is null or Status is warn or fail
                         var errorString = 'Error Processing Step 1<br/>';
+
+                        if(data.failures.length > 0) {
+                            errorString = Duplicator.Pack.GetFailureText(data.failures, false);
+                        }
+
                         errorString += data.error;
 
                         //Duplicator.Pack.HandleDupArchiveProblem(null, null, errorString, false);
@@ -564,9 +569,10 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
         };
 
         console.log('f');
-        Duplicator.Pack.GetCriticalFailureText = function (failures)
+
+        Duplicator.Pack.GetFailureText = function (failures, onlyCritical)
         {
-            var retVal = null;
+            var retVal = '';
 
             if ((failures !== null) && (typeof failures !== 'undefined')) {
                 var len = failures.length;
@@ -574,9 +580,8 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                 for (var j = 0; j < len; j++) {
                     failure = failures[j];
 
-                    if (failure.isCritical) {
-                        retVal = failure.description;
-                        break;
+                    if (!onlyCritical || failure.isCritical) {
+                        retVal += failure.description;
                     }
                 }
             }

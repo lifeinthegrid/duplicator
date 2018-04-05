@@ -40,6 +40,26 @@ class DUP_Build_Progress
     {
         $this->thread_start_time = time();
     }
+
+    public function set_validation_failures($failures)
+    {
+        $this->validation_failures = array();
+
+        foreach($failure as $failure)
+        {
+            $this->validation_failures[] = $failure->description();
+        }
+    }
+
+    public function set_build_failures($failures)
+    {
+        $this->build_failures = array();
+
+        foreach($failure as $failure)
+        {
+            $this->build_failures[] = $failure->description();
+        }
+    }
 }
 
 final class DUP_PackageStatus
@@ -740,15 +760,20 @@ class DUP_Package
             DUP_Log::Error("Package SetStatus was unable to serialize package object while updating record.");
         }
 
+        DUP_Log::Trace('#### package object:' . $packageObj);
+
         $wpdb->flush();
         $table = $wpdb->prefix."duplicator_packages";
-        $sql   = "UPDATE `{$table}` SET  status = {$this->Status}, package = '{$packageObj}'	WHERE ID = {$this->ID}";
+        $sql  = "UPDATE `{$table}` SET  status = {$this->Status},";
+        $sql .= "package = '" . $packageObj . "'";
+        $sql .= "WHERE ID = {$this->ID}";
      
         DUP_Log::Trace('-------------------------');
         DUP_Log::Trace("status = {$this->Status}");
         DUP_Log::Trace("ID = {$this->ID}");
         DUP_Log::Trace('-------------------------');
-        
+
+        DUP_Log::Trace('####Executing SQL' . $sql . '-----------');
         $wpdb->query($sql);
     }
 

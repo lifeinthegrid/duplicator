@@ -141,7 +141,8 @@ function duplicator_duparchive_package_build()
     //$json['failures'] = ($createState->failures == null) ? array() : $createState->failures; // ?or just do package->buildprogress->warnings?
  
     $json['failures'] = array_merge($package->BuildProgress->build_failures, $package->BuildProgress->validation_failures);
-
+    //$json['failures'] = array();
+    
     //JSON:Debug Response
     //Pass = 1, Warn = 2, Fail = 3, 4 = Not Done
     if ($hasCompleted) {
