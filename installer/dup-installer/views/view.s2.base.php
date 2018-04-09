@@ -52,7 +52,7 @@ $cpnl_supported =  DUPX_U::$on_php_53_plus ? true : false;
 	<!-- CPANEL TAB -->
 	<div id="s2-cpnl-pane">
         <?php
-            if(DUPX_EventManager::isRegistered('view_s2_display_alternate_cpanel_tab')) {
+            if(DUPX_EventManager::isEventRegistered('view_s2_display_alternate_cpanel_tab')) {
                 DUPX_EventManager::triggerEvent('view_s2_display_alternate_cpanel_tab', array('cpnl_supported' => $cpnl_supported));
             } else {
               require_once('view.s2.cpnl.lite.php');
@@ -182,7 +182,7 @@ Auto Posts to view.step3.php  -->
 	 * Open an in-line confirm dialog*/
 	DUPX.confirmDeployment= function ()
 	{
-        <?php if(DUPX_EventManager::isRegistered('view_s2_deployment_triggered'))
+        <?php if(DUPX_EventManager::isEventRegistered('view_s2_deployment_triggered'))
                 {
                     DUPX_EventManager::triggerEvent('view_s2_deployment_triggered');
                     

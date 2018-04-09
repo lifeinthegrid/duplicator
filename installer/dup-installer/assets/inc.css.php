@@ -140,6 +140,7 @@
 	============================ */
 	div.s2-opts label {cursor:pointer}
 	textarea#debug-dbtest-json {width:98%; height:200px}
+	div.php-chuncking-warning {font-style:italic; font-size:11px; color:maroon; white-space:normal; line-height:16px; padding-left:20px}
 
 	/*Toggle Buttons */
 	div.s2-btngrp {text-align:center; margin:0 auto 10px auto}
@@ -157,7 +158,6 @@
 	div#s2-db-basic-overwrite {border: 1px solid silver; margin:5px 0 5px 0; padding:10px; background:#f2f2f2; border-radius:5px}
 	div#s2-db-basic-overwrite div.warn-text {font-style:italic; font-size:11px; padding:5px 0 5px 0; color:maroon}
 	div#s2-db-basic-overwrite div.btn-area {text-align: right; margin:5px 0}
-
 	input.overwrite-btn {
 		cursor:pointer; color:#fff; font-size:13px; border-radius:5px;	padding:5px 20px 4px 20px;
 	    background-color:#989898; border:1px solid #777;

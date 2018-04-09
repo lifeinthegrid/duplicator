@@ -21,7 +21,7 @@ class DUPX_EventManager
         }
     }
 
-    public static function isRegistered($name)
+    public static function isEventRegistered($name)
     {
         return array_key_exists($name, self::$events);
     }

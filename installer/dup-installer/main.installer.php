@@ -110,7 +110,11 @@ if (isset($_POST['ctrl_action'])) {
 			break;
 
 		case "ctrl-step3" :
-			require_once($GLOBALS['DUPX_INIT'].'/ctrls/ctrl.s3.php');
+            if(DUPX_EventManager::isEventRegistered('start_s3_controller')) {
+                DUPX_EventManager::triggerEvent('start_s3_controller');
+            } else {
+                require_once($GLOBALS['DUPX_INIT'].'/ctrls/ctrl.s3.php');
+            }
 			break;
 	}
 	@fclose($GLOBALS["LOG_FILE_HANDLE"]);
