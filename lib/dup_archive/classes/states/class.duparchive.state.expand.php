@@ -7,7 +7,7 @@
 
 require_once(dirname(__FILE__).'/class.duparchive.state.base.php');
 
-if (!class_exists('DupArchiveExpandState')) {
+if (!class_exists('DupArchiveValidationTypes')) {
 
 class DupArchiveValidationTypes
 {
@@ -16,7 +16,9 @@ class DupArchiveValidationTypes
 	const Full	 = 2;
 
 }
+}
 
+if (!class_exists('DupArchiveExpandState')) {
 	abstract class DupArchiveExpandState extends DupArchiveStateBase
 	{
 		public $archiveHeader			 = null;

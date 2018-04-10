@@ -325,8 +325,6 @@ class DupArchiveEngine
                 }
 
                 // Uncomment when testing error handling
-//                if(rand(0, 50) == 1) {
-//
 //                   if((strpos($relativeFilePath, 'dup-installer') !== false) || (strpos($relativeFilePath, 'lib') !== false)) {
 //                       Dup_Log::Trace("Was going to do intentional error to {$relativeFilePath} but skipping");
 //                   } else {

@@ -19,6 +19,8 @@ class DupArchiveConstants
 		self::$MaxFilesizeForHashing = 1000000000;
     }
 }
+
+DupArchiveConstants::init();
 }
 
 if(!class_exists('DupArchiveExceptionCodes')) {
@@ -28,4 +30,4 @@ class DupArchiveExceptionCodes
     const Fatal = 1;
 }
 }
-DupArchiveConstants::init();
+
