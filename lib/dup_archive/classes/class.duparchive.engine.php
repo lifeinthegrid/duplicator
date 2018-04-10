@@ -160,6 +160,15 @@ class DupArchiveEngine
         $retVal->numDirsAdded = $createState->currentDirectoryIndex;
         $retVal->numFilesAdded = $createState->currentFileIndex;
 
+        if($createState->skippedFileCount > 0) {
+
+            throw new Exception("One or more files were were not able to be added when adding {$directory} to {$archiveFilepath}");
+        }
+        else if($createState->skippedDirectoryCount > 0) {
+            
+            throw new Exception("One or more directories were not able to be added when adding {$directory} to {$archiveFilepath}");
+        }
+
         return $retVal;
     }
 
@@ -316,9 +325,14 @@ class DupArchiveEngine
                 }
 
                 // Uncomment when testing error handling
-         //rsr       if(rand(0, 50) == 1) {
-//rsr                    throw new Exception('intentional file error');
-//rsr                }
+//                if(rand(0, 50) == 1) {
+//
+//                   if((strpos($relativeFilePath, 'dup-installer') !== false) || (strpos($relativeFilePath, 'lib') !== false)) {
+//                       Dup_Log::Trace("Was going to do intentional error to {$relativeFilePath} but skipping");
+//                   } else {
+//                        throw new Exception("#### intentional file error when writing " . $relativeFilePath);
+//                   }
+//                }
 
                 DupArchiveFileProcessor::writeFilePortionToArchive($createState, $archiveHandle, $filepath, $relativeFilePath);
 

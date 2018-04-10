@@ -237,6 +237,9 @@ class DUP_DupArchive
 
 					$expandState->save();
 
+                    $sfc = count($scanReport->ARC->Files);
+                    $nfa = $package->Installer->numFilesAdded;
+                    Dup_Log::trace("####scan files {$sfc} skipped files {$createState->skippedFileCount} num files added {$nfa}");
 					DUP_LOG::traceObject("EXPAND STATE AFTER SAVE", $expandState);                    
                 }
                 else {

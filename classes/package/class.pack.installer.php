@@ -302,13 +302,11 @@ class DUP_Installer
             DUP_Log::Error("Error adding installer files to archive. ", $ex->getMessage());
         }
 
-        DUP_Log::TraceObject("add_extra_files_using_da99:success",$success);
         return $success;
     }
 
     private function add_installer_files_using_duparchive($archive_filepath, $installer_filepath, $archive_config_filepath)
     {
-        $success                   = false;
         /* @var $global DUP_Global_Entity */
      //   $global                    = DUP_Global_Entity::get_instance();
        // $installer_backup_filename = $global->get_installer_backup_filename();
@@ -355,8 +353,6 @@ class DUP_Installer
         $fileops_counts = DupArchiveEngine::addDirectoryToArchiveST($archive_filepath, $fileops_directory, DUPLICATOR_PLUGIN_PATH, true, 'dup-installer/');
         $this->numFilesAdded += $fileops_counts->numFilesAdded;
         $this->numDirsAdded += $fileops_counts->numDirsAdded;
-
-        return $success;
     }
 
     private function add_extra_files_using_ziparchive($installer_filepath, $scan_filepath, $sql_filepath, $zip_filepath, $archive_config_filepath)

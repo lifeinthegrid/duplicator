@@ -565,7 +565,6 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
             $('#dup-progress-bar-area').hide();
             $('#dup-progress-area, #dup-msg-error').show(200);
             $('#dup-msg-error-response-text span.data').html(errorText);
-            console.log(data);
         };
 
         console.log('f');
