@@ -5,6 +5,7 @@ defined("ABSPATH") or die("");
 
 //-- START OF ACTION STEP 3: Update the database
 require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.archive.config.php');
+require_once($GLOBALS['DUPX_INIT'].'/classes/utilities/class.u.multisite.php');
 
 /** JSON RESPONSE: Most sites have warnings turned off by default, but if they're turned on the warnings
   cause errors in the JSON data Here we hide the status so warning level is reset at it at the end */
@@ -22,11 +23,13 @@ $_POST['siteurl']				 = isset($_POST['siteurl']) ? rtrim(trim($_POST['siteurl'])
 $_POST['tables']				 = isset($_POST['tables']) && is_array($_POST['tables']) ? array_map('stripcslashes', $_POST['tables']) : array();
 $_POST['url_old']				 = isset($_POST['url_old']) ? trim($_POST['url_old']) : null;
 $_POST['url_new']				 = isset($_POST['url_new']) ? rtrim(trim($_POST['url_new']), '/') : null;
+$_POST['subsite-id']			 = isset($_POST['subsite-id']) ? $_POST['subsite-id'] : -1;
 $_POST['ssl_admin']				 = (isset($_POST['ssl_admin'])) ? true : false;
 $_POST['cache_wp']				 = (isset($_POST['cache_wp'])) ? true : false;
 $_POST['cache_path']			 = (isset($_POST['cache_path'])) ? true : false;
 $_POST['empty_schedule_storage'] = (isset($_POST['empty_schedule_storage']) && $_POST['empty_schedule_storage'] == '1') ? true : false;
 $_POST['exe_safe_mode']	= isset($_POST['exe_safe_mode']) ? $_POST['exe_safe_mode'] : 0;
+$subsite_id	 = $_POST['subsite-id'];
 
 
 //MYSQL CONNECTION
@@ -109,6 +112,98 @@ if (isset($_POST['search'])) {
 			}
 		}
 	}
+}
+
+//MULTI-SITE SEARCH AND REPLACE LIST
+// -1: Means network install so skip this
+//  1: Root subsite so don't do this swap
+DUPX_Log::info("Subsite id={$subsite_id}");
+
+if ($subsite_id > 1) {
+	DUPX_Log::info("####1");
+	$ac = DUPX_ArchiveConfig::getInstance();
+
+	foreach ($ac->subsites as $subsite) {
+		DUPX_Log::info("####2");
+		if ($subsite->id == $subsite_id) {
+			DUPX_Log::info("####3");
+			if ($GLOBALS['DUPX_AC']->mu_mode == DUPX_MultisiteMode::Subdomain) {
+
+				DUPX_Log::info("#### subdomain mode");
+				$old_subdomain = $subsite->name;
+				$newval	 = $_POST['url_new'];
+				$newval	 = preg_replace('#^https?://#', '', rtrim($newval, '/'));
+
+				array_push($GLOBALS['REPLACE_LIST'],
+					array('search' => $old_subdomain, 'replace' => $newval),
+					array('search' => urlencode($old_subdomain), 'replace' => urlencode($newval)));
+			} else if ($GLOBALS['DUPX_AC']->mu_mode == DUPX_MultisiteMode::Subdirectory) {
+
+				DUPX_Log::info("#### subdirectory mode");
+				$old_subdirectory_url = $_POST['url_old'].$subsite->name;
+
+				DUPX_Log::info("#### trying to replace $old_subdirectory_url ({$_POST['url_old']},{$subsite->name}) { with {$_POST['url_new']}");
+				array_push($GLOBALS['REPLACE_LIST'],
+					array('search' => $old_subdirectory_url, 'replace' => $_POST['url_new']),
+					array('search' => urlencode($old_subdirectory_url), 'replace' => urlencode($_POST['url_new'])));
+			} else {
+				DUPX_Log::info("#### neither mode {$GLOBALS['DUPX_AC']->mu_mode}");
+			}
+
+			// Need to swap the subsite prefix for the main table prefix
+			$subsite_uploads_dir = "/uploads/sites/{$subsite_id}";
+			$subsite_prefix		 = "{$GLOBALS['DUPX_AC']->wp_tableprefix}{$subsite_id}_";
+			array_push($GLOBALS['REPLACE_LIST'],
+				array('search' => $subsite_uploads_dir, 'replace' => '/uploads'),
+				array('search' => $subsite_prefix, 'replace' => $GLOBALS['DUPX_AC']->wp_tableprefix));
+
+			break;
+		}
+	}
+
+	DUPX_Log::info("####4");
+	$new_content_dir = "{$_POST['path_new']}/{$GLOBALS['DUPX_AC']->relative_content_dir}";
+
+	try {
+		DUPX_Log::info("####5");
+		DUPX_MU::convertSubsiteToStandalone($_POST['subsite-id'], $dbh, $GLOBALS['DUPX_AC']->wp_tableprefix, $new_content_dir);
+	} catch (Exception $ex) {
+		DUPX_Log::info("####6");
+		DUPX_Log::error("Problem with core logic of converting subsite into a standalone site.<br/>".$ex->getMessage().'<br/>'.$ex->getTraceAsString());
+	}
+
+	// Since we are converting subsite to multisite consider this a standalone site
+	$GLOBALS['DUPX_AC']->mu_mode = DUPX_MultisiteMode::Standalone;
+	DUPX_Log::info("####7");
+
+    //Replace WP 3.4.5 subsite uploads path in DB
+    if($GLOBALS['DUPX_AC']->mu_generation === 1){
+        $blogs_dir = 'blogs.dir/'.$_POST['subsite-id'].'/files';
+        $uploads_dir = 'uploads';
+        array_push($GLOBALS['REPLACE_LIST'],
+            array('search' => $blogs_dir,   'replace' => $uploads_dir)
+        );
+
+        $files_dir = "{$_POST['url_new']}/files";
+        $uploads_dir = "{$_POST['url_new']}/{$GLOBALS['DUPX_AC']->relative_content_dir}/uploads";
+        array_push($GLOBALS['REPLACE_LIST'],
+            array('search' => $files_dir,   'replace' => $uploads_dir)
+        );
+    }
+}else{
+    //MULTI-SITE -> REPLACE LIST
+    //$mu_mode:
+    //0=(no multisite);
+    //1=(multisite subdomain);
+    //2=(multisite subdirectory)
+    if ($GLOBALS['DUPX_AC']->mu_mode == 1) {
+        $mu_newDomain		 = parse_url($_POST['url_new']);
+        $mu_oldDomain		 = parse_url($_POST['url_old']);
+        $mu_newDomainHost	 = $mu_newDomain['host'];
+        $mu_oldDomainHost	 = $mu_oldDomain['host'];
+
+        array_push($GLOBALS['REPLACE_LIST'], array('search' => ('.'.$mu_oldDomainHost), 'replace' => ('.'.$mu_newDomainHost)));
+    }
 }
 
 //GENERAL -> REPLACE LIST
@@ -234,7 +329,20 @@ if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
 		@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['DUPX_AC']->wp_tableprefix}usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser1_insert_id}', 'rich_editing', 'true')");
 		@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['DUPX_AC']->wp_tableprefix}usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser1_insert_id}', 'admin_color',  'fresh')");
 		@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['DUPX_AC']->wp_tableprefix}usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser1_insert_id}', 'nickname', '{$_POST['wp_username']}')");
-	
+
+		//Add super admin permissions
+		if ($GLOBALS['DUPX_AC']->mu_mode > 0 && $subsite_id == -1){
+			$site_admins_query	 = mysqli_query($dbh,"SELECT meta_value FROM `{$GLOBALS['DUPX_AC']->wp_tableprefix}sitemeta` WHERE meta_key = 'site_admins'");
+			$site_admins		 = mysqli_fetch_row($site_admins_query);
+			$site_admins_array	 = unserialize($site_admins[0]);
+			
+			array_push($site_admins_array,$_POST['wp_username']);
+			
+			$site_admins_serialized	 = serialize($site_admins_array);
+			
+			@mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}sitemeta` SET meta_value = '{$site_admins_serialized}' WHERE meta_key = 'site_admins'");
+		}
+		
 		DUPX_Log::info("\nNEW WP-ADMIN USER:");
 		if ($newuser1 && $newuser_test2 && $newuser3) {
 			DUPX_Log::info("- New username '{$_POST['wp_username']}' was created successfully allong with MU usermeta.");
@@ -289,6 +397,26 @@ $replace = array("'WP_HOME', '{$_POST['url_new']}');",
 	"'DOMAIN_CURRENT_SITE', '{$mu_newDomainHost}');",
 	"'PATH_CURRENT_SITE', '{$mu_newUrlPath}');");
 
+if ($subsite_id != -1) {
+	DUPX_Log::info("####10");
+
+	array_push($patterns, "/('|\")WP_ALLOW_MULTISITE.*?\)\s*;/");
+	array_push($patterns, "/('|\")MULTISITE.*?\)\s*;/");
+	array_push($replace, "'ALLOW_MULTISITE', false);");
+	array_push($replace, "'MULTISITE', false);");
+
+	DUPX_Log::info('####patterns');
+	DUPX_Log::info(print_r($patterns, true));
+	DUPX_Log::info('####replace');
+	DUPX_Log::info(print_r($replace, true));
+}
+
+if ($GLOBALS['DUPX_AC']->mu_mode !== DUPX_MultisiteMode::Standalone) {
+	array_push($patterns, "/('|\")NOBLOGREDIRECT.*?\)\s*;/");
+	array_push($replace, "'NOBLOGREDIRECT', '{$_POST['url_new']}');");
+}
+
+
 DUPX_WPConfig::updateVars($patterns, $replace);
 
 //@todo: integrate all logic into DUPX_WPConfig::updateVars
@@ -297,6 +425,37 @@ $root_path		= $GLOBALS['DUPX_ROOT'];
 $wpconfig_ark_path	= "{$root_path}/wp-config-arc.txt";
 $wpconfig_ark_contents	= @file_get_contents($wpconfig_ark_path, true);
 $wpconfig_ark_contents	= preg_replace($patterns, $replace, $wpconfig_ark_contents);
+
+// Redundant - already processed in updateVars();
+////WP_CONTENT_DIR
+//if (isset($defines['WP_CONTENT_DIR'])) {
+//	$new_path = str_replace($_POST['path_old'], $_POST['path_new'], DUPX_U::setSafePath($defines['WP_CONTENT_DIR']), $count);
+//	if ($count > 0) {
+//		array_push($patterns, "/('|\")WP_CONTENT_DIR.*?\)\s*;/");
+//		array_push($replace, "'WP_CONTENT_DIR', '{$new_path}');");
+//	}
+//}
+//
+////WP_CONTENT_URL
+//// '/' added to prevent word boundary with domains that have the same root path
+//if (isset($defines['WP_CONTENT_URL'])) {
+//    $_POST['url_old']=trim($_POST['url_old'],'/');
+//    $_POST['url_new']=trim($_POST['url_new'],'/');
+//	$new_path = str_replace($_POST['url_old'], $_POST['url_new'], $defines['WP_CONTENT_URL'], $count);
+//	if ($count > 0) {
+//		array_push($patterns, "/('|\")WP_CONTENT_URL.*?\)\s*;/");
+//		array_push($replace, "'WP_CONTENT_URL', '{$new_path}');");
+//	}
+//}
+//
+////WP_TEMP_DIR
+//if (isset($defines['WP_TEMP_DIR'])) {
+//	$new_path = str_replace($_POST['path_old'], $_POST['path_new'], DUPX_U::setSafePath($defines['WP_TEMP_DIR']) , $count);
+//	if ($count > 0) {
+//		array_push($patterns, "/('|\")WP_TEMP_DIR.*?\)\s*;/");
+//		array_push($replace, "'WP_TEMP_DIR', '{$new_path}');");
+//	}
+//}
 
 if (!is_writable($wpconfig_ark_path)) {
 	$err_log = "\nWARNING: Unable to update file permissions and write to {$wpconfig_ark_path}.  ";
@@ -339,22 +498,44 @@ DUPX_Log::info("====================================\n");
 
 $blog_name   = mysqli_real_escape_string($dbh, $_POST['blogname']);
 $plugin_list = (isset($_POST['plugins'])) ? $_POST['plugins'] : array();
-// Force Duplicator active so we the security cleanup will be available
+// Force Duplicator Pro active so we the security cleanup will be available
+if(($GLOBALS['DUPX_AC']->mu_mode > 0) && ($subsite_id == -1))
+{
+	$multisite_plugin_list=array();
+	foreach($plugin_list as $get_plugin)
+	{
+		$multisite_plugin_list[time()]=$get_plugin;
+	}
 
-if (!in_array('duplicator/duplicator.php', $plugin_list)) {
-    $plugin_list[] = 'duplicator/duplicator.php';
+	if (!in_array('duplicator-pro/duplicator-pro.php', $multisite_plugin_list)) {
+		$multisite_plugin_list[time()] = 'duplicator-pro/duplicator-pro.php';
+	}
+
+	$multisite_plugin_list = array_flip($multisite_plugin_list);
+	$serial_plugin_list	 = @serialize($multisite_plugin_list);
 }
-
-$serial_plugin_list	 = @serialize($plugin_list);
+else
+{
+	if (!in_array('duplicator-pro/duplicator-pro.php', $plugin_list)) {
+		$plugin_list[] = 'duplicator-pro/duplicator-pro.php';
+	}
+	$serial_plugin_list	 = @serialize($plugin_list);
+}
 
 /** FINAL UPDATES: Must happen after the global replace to prevent double pathing
   http://xyz.com/abc01 will become http://xyz.com/abc0101  with trailing data */
 mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` SET option_value = '{$blog_name}' WHERE option_name = 'blogname' ");
-mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` SET option_value = '{$serial_plugin_list}'  WHERE option_name = 'active_plugins' ");
+if(($GLOBALS['DUPX_AC']->mu_mode > 0) && ($subsite_id == -1))
+{
+	mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}sitemeta` SET meta_value = '{$serial_plugin_list}'  WHERE meta_key = 'active_sitewide_plugins' ");
+}
+else
+{
+	mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` SET option_value = '{$serial_plugin_list}'  WHERE option_name = 'active_plugins' ");
+}
 mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` SET option_value = '{$_POST['url_new']}'  WHERE option_name = 'home' ");
 mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` SET option_value = '{$_POST['siteurl']}'  WHERE option_name = 'siteurl' ");
 mysqli_query($dbh, "INSERT INTO `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` (option_value, option_name) VALUES('{$_POST['exe_safe_mode']}','duplicator_pro_exe_safe_mode')");
-
 //Reset the postguid data
 if ($_POST['postguid']) {
 	mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}posts` SET guid = REPLACE(guid, '{$_POST['url_new']}', '{$_POST['url_old']}')");

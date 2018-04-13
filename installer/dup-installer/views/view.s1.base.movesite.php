@@ -39,14 +39,6 @@ $coreFilepaths = array(
     $GLOBALS['CURRENT_ROOT_PATH'] . '/wp-trackback.php',
     $GLOBALS['CURRENT_ROOT_PATH'] . '/xmlrpc.php');
 
-//$coreFilepaths = array(
-//$GLOBALS['CURRENT_ROOT_PATH'] . '/wp-config.php',
-//    $GLOBALS['CURRENT_ROOT_PATH'] . '/test1.txt',
-//    $GLOBALS['CURRENT_ROOT_PATH'] . '/test2.txt',
-//    $GLOBALS['CURRENT_ROOT_PATH'] . '/test3.txt',
-//    $GLOBALS['CURRENT_ROOT_PATH'] . '/test4.txt'
-//);
-
 $backupDirectory = '';
 
 do

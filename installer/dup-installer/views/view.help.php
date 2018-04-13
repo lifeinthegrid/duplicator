@@ -85,7 +85,7 @@ STEP 1
 	<br/><br/>
 
 	<h3>MultiSite <sup>pro</sup></h3>
-	The multisite option allows users with a pro Business or Gold license to perform additional multi-site tasks.  All licenses can backup & migrate standalone sites
+	The multisite option allows users with a Pro Business or Gold license to perform additional multi-site tasks.  All licenses can backup & migrate standalone sites
 	and full multisite networks. Multisite Plus+ (business and above) adds the  ability to install a subsite as a standalone site.
 	<br/><br/>
 

@@ -126,7 +126,7 @@
 	div.s1-reqs div.info a {color:#485AA3;}
 	select#archive_engine {width:80%; cursor:pointer}
 
-	div#s1-multisite {margin-top:10px; line-height:28px;}
+  	div#s1-multisite {margin-top:10px; line-height:28px;}
 	div#s1-multisite p.note {font-size:10px; font-style:italic; text-align:center; color:#777; margin:0}
 
 	/*Terms and Notices*/

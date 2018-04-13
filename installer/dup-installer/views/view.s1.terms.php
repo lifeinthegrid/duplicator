@@ -6,7 +6,7 @@ TERMS & NOTICES DIALOG
 		<b>TERMS &amp; NOTICES</b> <br/><br/>
 
 		<b>Disclaimer:</b>
-		The <?php echo $GLOBALS['DUPX_AC']->plugin_name; ?> software and installer should be used at your own risk.  Users should always back up or have backups of your database and files before running this installer.
+		The Duplicator Pro software and installer should be used at your own risk.  Users should always back up or have backups of your database and files before running this installer.
 		If you're not sure about how to use this tool then please enlist the guidance of a technical professional.  <u>Always</u> test this installer in a sandbox environment
 		before trying to deploy into a production environment.  Be sure that if anything happens during the install that you have a backup recovery plan in place.   By accepting
 		this agreement the users of this software do not hold liable Snapcreek LLC or any of its affiliates liable for any issues that might occur during use of this software.
@@ -39,7 +39,7 @@ TERMS & NOTICES DIALOG
 		<br/><br/>
 
 		<b>License Overview</b><br/>
-		<?php echo $GLOBALS['DUPX_AC']->plugin_name; ?> is licensed under the GPL v3 https://www.gnu.org/licenses/gpl-3.0.en.html including the following disclaimers and limitation of liability.
+		Duplicator Pro is licensed under the GPL v3 https://www.gnu.org/licenses/gpl-3.0.en.html including the following disclaimers and limitation of liability.
 		<br/><br/>
 
 		<b>Disclaimer of Warranty</b><br/>

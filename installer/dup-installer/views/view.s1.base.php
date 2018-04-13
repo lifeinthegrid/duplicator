@@ -6,8 +6,6 @@ defined("ABSPATH") or die("");
 /* @var $installer_state DUPX_InstallerState */
 
 require_once($GLOBALS['DUPX_INIT'] . '/classes/config/class.archive.config.php');
-/* require_once(dirname(__FILE__) . '/view.s1.base.deletesite.php');*/
-
 require_once(dirname(__FILE__) . '/view.s1.base.movesite.php');
 
 //ARCHIVE FILE
@@ -37,7 +35,7 @@ $fulldays	= round(abs(strtotime($datetime1) - strtotime($datetime2))/86400);
 $root_path	= SnapLibIOU::safePath($GLOBALS['DUPX_ROOT'], true);
 $archive_path = SnapLibIOU::safePath($GLOBALS['FW_PACKAGE_PATH'], true);
 $wpconf_path = "{$root_path}/wp-config.php";
-$max_time_zero = @set_time_limit(0);
+$max_time_zero = ($GLOBALS['DUPX_ENFORCE_PHP_INI']) ? false : @set_time_limit(0);
 $max_time_size = 314572800;  //300MB
 $max_time_ini = ini_get('max_execution_time');
 $max_time_warn = (is_numeric($max_time_ini) && $max_time_ini < 31 && $max_time_ini > 0) && $arcSize > $max_time_size;
@@ -85,7 +83,6 @@ $multisite_disabled = ($archive_config->getLicenseType() != DUPX_LicenseType::Bu
 <input type="hidden" id="s1-input-form-extra-data" name="extra_data" />
 
 <div class="hdr-main">
-    
 	Step <span class="step">1</span> of 4: Deployment
 	<!--div style="float:right; font-size:14px"><a href="javascript:void(0)">One-Click Install</a></div-->
 </div><br/>
@@ -117,7 +114,7 @@ SETUP TYPE: @todo implement
 	<label for="setup-type-overwrite"><b>Overwrite Install</b></label>
 	<i class="fa fa-question-circle"
 		data-tooltip-title="Overwrite Install"
-		data-tooltip="An Overwrite Install allows <?php echo $GLOBALS['DUPX_AC']->plugin_name; ?> to overwrite an existing WordPress Site."></i><br/>
+		data-tooltip="An Overwrite Install allows Duplicator Pro to overwrite an existing WordPress Site."></i><br/>
 	<div class="s1-setup-type-sub" id="s1-setup-type-sub-2">
 		<input type="checkbox" name="setup-backup-files" id="setup-backup-files-overwrite" />
 		<label for="setup-backup-files-overwrite">Backup Existing Files</label><br/>
@@ -132,7 +129,7 @@ SETUP TYPE: @todo implement
 	<label for="setup-type-db"><b>Database Only Install</b></label>
 	<i class="fa fa-question-circle"
 		data-tooltip-title="Database Only"
-		data-tooltip="A database only install allows <?php echo $GLOBALS['DUPX_AC']->plugin_name; ?> to connect to a database and install only the database."></i><br/>
+		data-tooltip="A database only install allows Duplicator Pro to connect to a database and install only the database."></i><br/>
 	<div class="s1-setup-type-sub" id="s1-setup-type-sub-3">
 		<input type="checkbox" name="setup-backup-database" id="setup-backup-database-db" />
 		<label for="setup-backup-database-db">Backup Existing Database</label> <br/>
@@ -311,7 +308,7 @@ VALIDATION
 			<div class="status <?php echo ($notice['01'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['01']; ?></div>
 			<div class="title" data-type="toggle" data-target="#s1-notice01"><i class="fa fa-caret-right"></i> Configuration File</div>
 			<div class="info" id="s1-notice01">
-				<?php echo $GLOBALS['DUPX_AC']->plugin_name ?> works best by placing the installer and archive files into an empty directory.  If a wp-config.php file is found in the extraction
+				Duplicator Pro works best by placing the installer and archive files into an empty directory.  If a wp-config.php file is found in the extraction
 				directory it might indicate that a pre-existing WordPress site exists which can lead to a bad install.  <i>If this archive was manually extracted or the mode
 				is set to "Overwrite Install" then	this notice can be ignored.</i>
 				<br/><br/>
@@ -365,12 +362,12 @@ VALIDATION
 				$currentPHP = DUPX_Server::$php_version;
 				$cssStyle   = DUPX_Server::$php_version_53_plus	 ? 'color:green' : 'color:red';
 				echo "<b style='{$cssStyle}'>This server is currently running PHP version [{$currentPHP}]</b>.<br/>"
-				. $GLOBALS['DUPX_AC']->plugin_name . " allows PHP 5.2 to be used during install but does not officially support it.  If you're using PHP 5.2 we strongly recommend NOT using it and having your "
+				. "Duplicator Pro allows PHP 5.2 to be used during install but does not officially support it.  If you're using PHP 5.2 we strongly recommend NOT using it and having your "
 				. "host upgrade to a newer more stable, secure and widely supported version.  The <a href='http://php.net/eol.php' target='_blank'>end of life for PHP 5.2</a> "
 				. "was in January of 2011 and is not recommended for use.<br/><br/>";
 
 				echo "Many plugin and theme authors are no longer supporting PHP 5.2 and trying to use it can result in site wide problems and compatibility warnings and errors.  "
-				. "Please note if you continue with the install using PHP 5.2 the " . $GLOBALS['DUPX_AC']->plugin_name . " support team will not be able to help with issues or troubleshoot your site.  "
+				. "Please note if you continue with the install using PHP 5.2 the Duplicator Pro support team will not be able to help with issues or troubleshoot your site.  "
 				. "If your server is running <b>PHP 5.3+</b> please feel free to reach out for help if you run into issues with your migration/install.";
 			?>
 		</div>
@@ -409,7 +406,7 @@ VALIDATION
 			time to finish running before the process is killed causing a timeout.
 			<br/><br/>
 
-			<?php echo $GLOBALS['DUPX_AC']->plugin_name; ?> attempts to turn off the timeout by using the
+			Duplicator Pro attempts to turn off the timeout by using the
 			<a href="http://php.net/manual/en/function.set-time-limit.php" target="_blank">set_time_limit</a> setting.   If this notice shows as a warning then it is
 			still safe to continue with the install.  However, if a timeout occurs then you will need to consider working with the max_execution_time setting or extracting the
 			archive file using the 'Manual Archive Extraction' method.
@@ -909,13 +906,13 @@ DUPX.pingDAWS = function ()
 						$("#ajax-retain-config").val($("#retain_config").is(":checked") ? 1 : 0);
 						$("#ajax-json").val(escape(dataJSON));
 
-						<?php if($show_multisite) : ?>
-						if ($("#full-network").is(":checked")) {
-							$("#ajax-subsite-id").val(-1);
-						} else {
-							$("#ajax-subsite-id").val($('#subsite-id').val());
-						}
-						<?php endif; ?>
+                        <?php if($show_multisite) : ?>
+                        if ($("#full-network").is(":checked")) {
+                            $("#ajax-subsite-id").val(-1);
+                        } else {
+                            $("#ajax-subsite-id").val($('#subsite-id').val());
+                        }
+                        <?php endif; ?>
 
 						<?php if (!$GLOBALS['DUPX_DEBUG']) : ?>
 						setTimeout(function () {
@@ -1073,44 +1070,16 @@ DUPX.finalizeDupArchiveExtraction = function(dawsStatus)
 		url: window.location.href,
 		data: formData,
 		beforeSend: function () {
-		//    DUPX.showProgressBar();
-		//    $form.hide();
-		//    $('#s1-result-form').show();
+
 		},
 		success: function (data) {
 			console.log("finalizeDupArchiveExtraction:success");
-//                var dataJSON = JSON.stringify(data);
-//                $("#ajax-json-debug").val(dataJSON);
-//                if (typeof (data) != 'undefined' && data.pass == 1) {
-//                    $("#ajax-logging").val($("input:radio[name=logging]:checked").val());
-//                    $("#ajax-retain-config").val($("#retain_config").is(":checked") ? 1 : 0);
-//                    $("#ajax-json").val(escape(dataJSON));
-//
-//                    <?php if($show_multisite) : ?>
-//                    if ($("#full-network").is(":checked")) {
-//                        $("#ajax-subsite-id").val(-1);
-//                    } else {
-//                        $("#ajax-subsite-id").val($('#subsite-id').val());
-//                    }
-//                    <?php endif; ?>
-//
-//                    <?php if (!$GLOBALS['DUPX_DEBUG']) : ?>
-//                    setTimeout(function () {
-//                        $('#s1-result-form').submit();
-//                    }, 500);
-//                    <?php endif; ?>
-//                    $('#progress-area').fadeOut(1000);
-//                } else {
-//                    $('#ajaxerr-data').html('Error Processing Step 1');
-//                    DUPX.hideProgressBar();
-//                }
 		},
 		error: function (xHr) {
 			console.log("finalizeDupArchiveExtraction:error");
 			console.log(xHr.statusText);
 			console.log(xHr.getAllResponseHeaders());
 			console.log(xHr.responseText);
-		   // DUPX.ajaxCommunicationFailed(xHr);
 		}
 	});
 };
@@ -1144,13 +1113,13 @@ DUPX.runStandardExtraction = function ()
 				$("#ajax-retain-config").val($("#retain_config").is(":checked") ? 1 : 0);
 				$("#ajax-json").val(escape(dataJSON));
 
-				<?php if($show_multisite) : ?>
-				if ($("#full-network").is(":checked")) {
-					$("#ajax-subsite-id").val(-1);
-				} else {
-					$("#ajax-subsite-id").val($('#subsite-id').val());
-				}
-				<?php endif; ?>
+                <?php if($show_multisite) : ?>
+                if ($("#full-network").is(":checked")) {
+                    $("#ajax-subsite-id").val(-1);
+                } else {
+                    $("#ajax-subsite-id").val($('#subsite-id').val());
+                }
+                <?php endif; ?>
 
 				<?php if (!$GLOBALS['DUPX_DEBUG']) : ?>
 				setTimeout(function () {

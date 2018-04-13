@@ -32,6 +32,7 @@ date_default_timezone_set('UTC'); // Some machines don’t have this set so just
 $GLOBALS['DUPX_DEBUG'] = (isset($_GET['debug']) && $_GET['debug'] == 1) ? true : false;
 $GLOBALS['DUPX_ROOT']  = str_replace("\\", '/', (realpath(dirname(__FILE__) . '/..')));
 $GLOBALS['DUPX_INIT']  = "{$GLOBALS['DUPX_ROOT']}/dup-installer";
+$GLOBALS['DUPX_ENFORCE_PHP_INI']  = false;
 
 if (!isset($_GET['archive'])) {
 	// RSR TODO: Fail gracefully
@@ -43,14 +44,7 @@ if (!isset($_GET['bootloader'])) {
 	die("Bootloader parameter not specified");
 }
 
-require_once($GLOBALS['DUPX_INIT'].'/classes/class.event.manager.php');
-
-if(file_exists($GLOBALS['DUPX_INIT'].'/enhance/')) {
-    require_once($GLOBALS['DUPX_INIT'].'/enhance/enhancements.php');
-}
-
 require_once($GLOBALS['DUPX_INIT'].'/lib/snaplib/snaplib.all.php');
-require_once($GLOBALS['DUPX_INIT'].'/main.download.php');
 require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.constants.php');
 require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.archive.config.php');
 require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.conf.wp.php');
@@ -110,11 +104,7 @@ if (isset($_POST['ctrl_action'])) {
 			break;
 
 		case "ctrl-step3" :
-            if(DUPX_EventManager::isEventRegistered('start_s3_controller')) {
-                DUPX_EventManager::triggerEvent('start_s3_controller');
-            } else {
-                require_once($GLOBALS['DUPX_INIT'].'/ctrls/ctrl.s3.php');
-            }
+            require_once($GLOBALS['DUPX_INIT'].'/ctrls/ctrl.s3.php');            
 			break;
 	}
 	@fclose($GLOBALS["LOG_FILE_HANDLE"]);
@@ -127,7 +117,7 @@ if (isset($_POST['ctrl_action'])) {
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="robots" content="noindex,nofollow">
-	<title><?php echo $GLOBALS['DUPX_AC']->plugin_name?> </title>
+	<title>Duplicator Professional</title>
 	<link rel='stylesheet' href='assets/font-awesome/css/font-awesome.min.css' type='text/css' media='all' />
 	<?php
 		require_once($GLOBALS['DUPX_INIT'] . '/assets/inc.libs.css.php');
@@ -148,7 +138,7 @@ if (isset($_POST['ctrl_action'])) {
                 <?php if(isset($GLOBALS['DUPX_AC']->brand) && isset($GLOBALS['DUPX_AC']->brand->logo) && !empty($GLOBALS['DUPX_AC']->brand->logo)) : ?>
                     <?php echo $GLOBALS['DUPX_AC']->brand->logo; ?>
                 <?php else: ?>
-                    <i class="fa fa-bolt"></i> <?php echo $GLOBALS['DUPX_AC']->plugin_name ?>
+                    <i class="fa fa-bolt"></i> Duplicator Pro
                 <?php endif; ?>
 			</div>
 		</td>
@@ -163,7 +153,10 @@ if (isset($_POST['ctrl_action'])) {
 
 <div class="dupx-modes">
 	<?php
+		$php_enforced_txt = ($GLOBALS['DUPX_ENFORCE_PHP_INI']) ? '<i style="color:red"><br/>*PHP ini enforced*</i>' : '';
 		$db_only_txt = ($GLOBALS['DUPX_AC']->exportOnlyDB) ? ' - Database Only' : '';
+		$db_only_txt = $db_only_txt . $php_enforced_txt;
+
 		echo  ($GLOBALS['DUPX_STATE']->mode === DUPX_InstallerMode::OverwriteInstall)
 			? "<span class='dupx-overwrite'>Mode: Overwrite Install {$db_only_txt}</span>"
 			: "Mode: Standard Install {$db_only_txt}";
@@ -176,7 +169,7 @@ FORM DATA: User-Interface views -->
 	<?php
 		switch ($GLOBALS["VIEW"]) {
 			case "secure" :
-				require_once($GLOBALS['DUPX_INIT'] . '/views/view.init1.php');
+                require_once($GLOBALS['DUPX_INIT'] . '/views/view.init1.php');
 				break;
 
 			case "step1"   :

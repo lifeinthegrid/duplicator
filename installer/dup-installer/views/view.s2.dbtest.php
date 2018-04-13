@@ -90,7 +90,7 @@ defined("ABSPATH") or die("");
 
 			<div class="sub-title">DETAILS</div>
 			The minimum supported database server is MySQL Server 5.0 or the <a href="https://mariadb.com/kb/en/mariadb/mariadb-vs-mysql-compatibility/" target="_blank">MariaDB equivalent</a>.
-			Versions prior to MySQL 5.0 are over 10 years old and will not be compatible with <?php echo $GLOBALS['DUPX_AC']->plugin_name; ?>.  If your host is using a legacy version, please ask them
+			Versions prior to MySQL 5.0 are over 10 years old and will not be compatible with Duplicator Pro.  If your host is using a legacy version, please ask them
 			to upgrade the MySQL database engine to a more recent version.
 			<br/><br/>
 
@@ -201,7 +201,7 @@ defined("ABSPATH") or die("");
 
 			<div class="sub-title">DETAILS</div>
 			This test checks the privileges a user has when working with tables.  Below is a list of all the privileges that the user can currently view.  In order
-			to successfully use <?php echo $GLOBALS['DUPX_AC']->plugin_name; ?> all of the privileges are required.
+			to successfully use Duplicator Pro all of the privileges are required.
 			<br/><br/>
 
 			<div class="sub-title">TABLE PRIVILEDGES ON [{{payload.in.dbname}}]</div>

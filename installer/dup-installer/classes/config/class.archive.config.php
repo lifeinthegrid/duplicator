@@ -9,6 +9,7 @@ defined("ABSPATH") or die("");
  * @package SC\DUPX\ArchiveConfig
  *
  */
+
 abstract class DUPX_LicenseType
 {
 	const Unlicensed	 = 0;
@@ -73,10 +74,6 @@ class DUPX_ArchiveConfig
 	//LICENSING
 	public $license_limit;
 	public $debug_mode = false;
-    
-    public $plugin_type = -1;
-    
-    public $plugin_name = "Duplicator";
 
 	private static $instance = null;
 
@@ -120,6 +117,7 @@ class DUPX_ArchiveConfig
 
 		return self::$instance;
 	}
+
 
 	/**
 	 * Returns the license type this installer file is made of.

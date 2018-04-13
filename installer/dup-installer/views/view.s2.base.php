@@ -51,13 +51,7 @@ $cpnl_supported =  DUPX_U::$on_php_53_plus ? true : false;
 
 	<!-- CPANEL TAB -->
 	<div id="s2-cpnl-pane">
-        <?php
-            if(DUPX_EventManager::isEventRegistered('view_s2_display_alternate_cpanel_tab')) {
-                DUPX_EventManager::triggerEvent('view_s2_display_alternate_cpanel_tab', array('cpnl_supported' => $cpnl_supported));
-            } else {
-              require_once('view.s2.cpnl.lite.php');
-            }
-         ?>
+		<?php require_once('view.s2.cpnl.php'); ?>
 	</div>
 </form>
 
@@ -182,16 +176,19 @@ Auto Posts to view.step3.php  -->
 	 * Open an in-line confirm dialog*/
 	DUPX.confirmDeployment= function ()
 	{
-        <?php if(DUPX_EventManager::isEventRegistered('view_s2_deployment_triggered'))
-                {
-                    DUPX_EventManager::triggerEvent('view_s2_deployment_triggered');
-                    
-                } else { ?>
-                    var dbhost = $("#dbhost").val();
-                    var dbname = $("#dbname").val();
-                    var dbuser = $("#dbuser").val();
-                    var dbchunk = $("#dbchunk").val();
-                <?php } ?>
+        DUPX.cpnlSetResults();
+
+        var dbhost = $("#dbhost").val();
+		var dbname = $("#dbname").val();
+		var dbuser = $("#dbuser").val();
+		var dbchunk = $("#dbchunk").val();
+
+		if ($('#s2-input-form-mode').val() == 'cpnl')  {
+			dbhost = $("#cpnl-dbhost").val();
+			dbname = $("#cpnl-dbname-result").val();
+			dbuser = $("#cpnl-dbuser-result").val();
+			dbchunk = $("#cpnl-dbchunk").val();
+		}
 
 		var $formInput = $('#s2-input-form');
 		$formInput.parsley().validate();

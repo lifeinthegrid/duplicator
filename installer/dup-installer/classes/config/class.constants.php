@@ -34,8 +34,7 @@ class DUPX_Constants
 		$GLOBALS['FAQ_URL'] = 'https://snapcreek.com/duplicator/docs/faqs-tech';
 
 		//DATABASE SETUP: all time in seconds
-		//max_allowed_packet: max value 1073741824 (1268MB)
-		@ini_set('mysql.connect_timeout', '5000');
+		//max_allowed_packet: max value 1073741824 (1268MB) see my.ini
 		$GLOBALS['DB_MAX_TIME'] = 5000;
 		$GLOBALS['DB_MAX_PACKETS'] = 268435456;
 		$GLOBALS['DBCHARSET_DEFAULT'] = 'utf8';
@@ -46,16 +45,19 @@ class DUPX_Constants
 		$GLOBALS['REPLACE_LIST'] = array();
 		$GLOBALS['DEBUG_JS'] = false;
 
-		//PHP SETUP: all time in seconds
-		@ini_set('memory_limit', '5000M');
-		@ini_set("max_execution_time", '5000');
-		@ini_set("max_input_time", '5000');
-		@ini_set('default_socket_timeout', '5000');
-		@set_time_limit(0);
+		//PHP INI SETUP: all time in seconds
+		if (!$GLOBALS['DUPX_ENFORCE_PHP_INI']) {
+			@ini_set('mysql.connect_timeout', '5000');
+			@ini_set('memory_limit', '5000M');
+			@ini_set("max_execution_time", '5000');
+			@ini_set("max_input_time", '5000');
+			@ini_set('default_socket_timeout', '5000');
+			@set_time_limit(0);
+		}
 
 		//CONSTANTS
-		define("DUPLICATOR_PRO_INIT", 1);
-		define("DUPLICATOR_PRO_SSDIR_NAME", 'wp-snapshots-dup-pro');  //This should match DUPLICATOR_PRO_SSDIR_NAME in duplicator.php
+		define("DUPLICATOR_INIT", 1);
+		define("DUPLICATOR_SSDIR_NAME", 'wp-snapshots-dup-pro');  //This should match DUPLICATOR_SSDIR_NAME in duplicator.php
 
 		//SHARED POST PARMS
 		$_GET['debug'] = isset($_GET['debug']) ? true : false;
