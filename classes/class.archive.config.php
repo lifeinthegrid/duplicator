@@ -47,11 +47,6 @@ class DUP_Archive_Config
     public $wp_tableprefix;
 
     //MISC
-    public $license_limit;
-	public $plugin_type;
-    public $plugin_name;
-    //BRAND
-    public $brand;
 
     function __construct()
     {

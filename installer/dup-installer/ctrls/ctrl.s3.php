@@ -188,19 +188,6 @@ DUPX_UpdateEngine::logStats($report);
 DUPX_UpdateEngine::logErrors($report);
 
 //===============================================
-//REMOVE LICENSE KEY
-//===============================================
-if(isset($GLOBALS['DUPX_AC']->brand) && isset($GLOBALS['DUPX_AC']->brand->enabled) && $GLOBALS['DUPX_AC']->brand->enabled)
-{
-    $license_check	 = mysqli_query($dbh, "SELECT COUNT(1) AS count FROM `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` WHERE `option_name` LIKE 'duplicator_pro_license_key' ");
-	$license_row	 = mysqli_fetch_row($license_check);
-	$license_count	 = is_null($license_row) ? 0 : $license_row[0];
-    if ($license_count > 0) {
-        mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` SET `option_value` = '' WHERE `option_name` LIKE 'duplicator_pro_license_key'");
-    }
-}
-
-//===============================================
 //CREATE NEW ADMIN USER
 //===============================================
 if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {

@@ -172,15 +172,6 @@ class DUP_Installer
 
         $ac->subsites = array();
 
-        //BRAND
-        $ac->brand   = null;
-
-        //LICENSING
-        $ac->license_limit = -2;
-
-		$ac->plugin_type = 0;
-        $ac->plugin_name = 'Duplicator';
-
         $json = json_encode($ac);
 
         DUP_Log::TraceObject('json', $json);

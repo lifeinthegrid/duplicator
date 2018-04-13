@@ -10,14 +10,6 @@ defined("ABSPATH") or die("");
  *
  */
 
-abstract class DUPX_LicenseType
-{
-	const Unlicensed	 = 0;
-	const Personal	 = 1;
-	const Freelancer	 = 2;
-	const BusinessGold = 3;
-}
-
 class DUPX_ArchiveConfig
 {
 	const Config_Filename = 'archive.cfg';
@@ -67,8 +59,6 @@ class DUPX_ArchiveConfig
 	public $url_old;
 	public $opts_delete;
 
-	//LICENSING
-	public $license_limit;
 	public $debug_mode = false;
 
 	private static $instance = null;
@@ -112,29 +102,6 @@ class DUPX_ArchiveConfig
 		self::$instance->cpnl_dbname	= strlen(self::$instance->cpnl_dbname) ? self::$instance->cpnl_dbname : '';
 
 		return self::$instance;
-	}
-
-
-	/**
-	 * Returns the license type this installer file is made of.
-	 *
-	 * @return obj	Returns an enum type of DUPX_LicenseType
-	 */
-	public function getLicenseType()
-	{
-		$license_type = DUPX_LicenseType::Personal;
-
-		if ($this->license_limit < 0) {
-			$license_type = DUPX_LicenseType::Unlicensed;
-		} else if ($this->license_limit < 15) {
-			$license_type = DUPX_LicenseType::Personal;
-		} else if ($this->license_limit < 500) {
-			$license_type = DUPX_LicenseType::Freelancer;
-		} else if ($this->license_limit >= 500) {
-			$license_type = DUPX_LicenseType::BusinessGold;
-		}
-
-		return $license_type;
 	}
 
     public function isZipArchive()
