@@ -42,7 +42,7 @@ class DUPX_ServerConfig
 
 		//Apache
 		if (self::runReset($path, '.htaccess')) {
-			file_put_contents("{$path}/.htaccess", "#This file has been reset by Duplicator Pro. See .htaccess-{$time}.orig for the original file");
+			file_put_contents("{$path}/.htaccess", "#This file has been reset by Duplicator. See .htaccess-{$time}.orig for the original file");
 			@chmod("{$path}/.htaccess", 0644);
 		}
 		
@@ -83,28 +83,22 @@ class DUPX_ServerConfig
 	/**
 	 * Sets up the web config file based on the inputs from the installer forms.
 	 *
-	 * @param int $mu_mode		Is this site a specific multi-site mode
 	 * @param object $dbh		The database connection handle for this request
 	 * @param string $path		The path to the config file
 	 *
 	 * @return null
 	 */
-	public static function setup($mu_mode, $mu_generation, $dbh, $path)
+	public static function setup($dbh, $path)
 	{
 		DUPX_Log::info("\nWEB SERVER CONFIGURATION FILE UPDATED:");
 
 		$timestamp = date("Y-m-d H:i:s");
 		$newdata = parse_url($_POST['url_new']);
 		$newpath = DUPX_U::addSlash(isset($newdata['path']) ? $newdata['path'] : "");
-		$update_msg  = "# This file was updated by Duplicator Pro on {$timestamp}.\n";
+		$update_msg  = "# This file was updated by Duplicator on {$timestamp}.\n";
 		$update_msg .= (file_exists("{$path}/.htaccess")) ? "# See htaccess.orig for the .htaccess original file."	: "";
 
 
-		//===============================================
-		//BASIC SITE NO MU
-		//===============================================
-		if ($mu_mode == 0) {
-			// no multisite
         $empty_htaccess	 = false;
         $query_result	 = @mysqli_query($dbh, "SELECT option_value FROM `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` WHERE option_name = 'permalink_structure' ");
 
@@ -136,109 +130,6 @@ HTACCESS;
             DUPX_Log::info("- Preparing .htaccess file with basic setup.");
         }
 
-
-		//===============================================
-		//MULTISITE WITH MU
-		//===============================================
-		} else if ($mu_mode == 1) {
-
-			// multisite subdomain
-if($mu_generation == 1) {
-    // Pre-3.5
-    $tmp_htaccess = <<<HTACCESS
-{$update_msg}
-# BEGIN WordPress (Pre 3.5 Multisite Subdomain)
-RewriteEngine On
-RewriteBase {$newpath}
-RewriteRule ^index\.php$ - [L]
-
-# uploaded files
-RewriteRule ^files/(.+) wp-includes/ms-files.php?file=$1 [L]
-
-RewriteCond %{REQUEST_FILENAME} -f [OR]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^ - [L]
-RewriteRule . index.php [L]
-# END WordPress
-HTACCESS;
-} else
-{
-    // 3.5+
-			$tmp_htaccess = <<<HTACCESS
-{$update_msg}
-# BEGIN WordPress (3.5+ Multisite Subdomain)
-RewriteEngine On
-RewriteBase {$newpath}
-RewriteRule ^index\.php$ - [L]
-
-# add a trailing slash to /wp-admin
-RewriteRule ^wp-admin$ wp-admin/ [R=301,L]
-
-RewriteCond %{REQUEST_FILENAME} -f [OR]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^ - [L]
-RewriteRule ^(wp-(content|admin|includes).*) $1 [L]
-RewriteRule ^(.*\.php)$ $1 [L]
-RewriteRule . index.php [L]
-# END WordPress
-HTACCESS;
-}
-
-                DUPX_Log::info("- Preparing .htaccess file with multisite subdomain setup.");
-
-		} else {
-
-			// multisite subdirectory
-if($mu_generation == 1)
-{
-    // Pre 3.5
-    $tmp_htaccess = <<<HTACCESS
-{$update_msg}
-# BEGIN WordPress (Pre 3.5 Multisite Subdirectory)
-RewriteEngine On
-RewriteBase {$newpath}
-RewriteRule ^index\.php$ - [L]
-
-# uploaded files
-RewriteRule ^([_0-9a-zA-Z-]+/)?files/(.+) wp-includes/ms-files.php?file=$2 [L]
-
-# add a trailing slash to /wp-admin
-RewriteRule ^([_0-9a-zA-Z-]+/)?wp-admin$ $1wp-admin/ [R=301,L]
-
-RewriteCond %{REQUEST_FILENAME} -f [OR]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^ - [L]
-RewriteRule ^[_0-9a-zA-Z-]+/(wp-(content|admin|includes).*) $1 [L]
-RewriteRule ^[_0-9a-zA-Z-]+/(.*\.php)$ $1 [L]
-RewriteRule . index.php [L]
-# END WordPress
-HTACCESS;
-}
-else {
-    // 3.5+
-
-			$tmp_htaccess = <<<HTACCESS
-{$update_msg}
-# BEGIN WordPress (3.5+ Multisite Subdirectory)
-RewriteEngine On
-RewriteBase {$newpath}
-RewriteRule ^index\.php$ - [L]
-
-# add a trailing slash to /wp-admin
-RewriteRule ^([_0-9a-zA-Z-]+/)?wp-admin$ $1wp-admin/ [R=301,L]
-
-RewriteCond %{REQUEST_FILENAME} -f [OR]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^ - [L]
-RewriteRule ^([_0-9a-zA-Z-]+/)?(wp-(content|admin|includes).*) $2 [L]
-RewriteRule ^([_0-9a-zA-Z-]+/)?(.*\.php)$ $2 [L]
-RewriteRule . index.php [L]
-# END WordPress
-HTACCESS;
-}
-			DUPX_Log::info("- Preparing .htaccess file with multisite subdirectory setup.");
-
-		}
 
 		if (@file_put_contents("{$path}/.htaccess", $tmp_htaccess) === FALSE) {
 			DUPX_Log::info("WARNING: Unable to update the .htaccess file! Please check the permission on the root directory and make sure the .htaccess exists.");

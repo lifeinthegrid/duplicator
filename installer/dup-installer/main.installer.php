@@ -117,7 +117,7 @@ if (isset($_POST['ctrl_action'])) {
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="robots" content="noindex,nofollow">
-	<title>Duplicator Professional</title>
+	<title>Duplicator</title>
 	<link rel='stylesheet' href='assets/font-awesome/css/font-awesome.min.css' type='text/css' media='all' />
 	<?php
 		require_once($GLOBALS['DUPX_INIT'] . '/assets/inc.libs.css.php');
@@ -138,7 +138,7 @@ if (isset($_POST['ctrl_action'])) {
                 <?php if(isset($GLOBALS['DUPX_AC']->brand) && isset($GLOBALS['DUPX_AC']->brand->logo) && !empty($GLOBALS['DUPX_AC']->brand->logo)) : ?>
                     <?php echo $GLOBALS['DUPX_AC']->brand->logo; ?>
                 <?php else: ?>
-                    <i class="fa fa-bolt"></i> Duplicator Pro
+                    <i class="fa fa-bolt"></i> Duplicator
                 <?php endif; ?>
 			</div>
 		</td>

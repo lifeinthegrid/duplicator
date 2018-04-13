@@ -168,11 +168,6 @@ class DUP_Installer
         $ac->cpnl_dbname   = '';
         $ac->cpnl_dbuser   = '';
 
-        //MULTISITE
-        $ac->mu_mode = 0;
-        $ac->mu_generation = 0;
-        $ac->mu_is_filtered = false;
-
 		$ac->wp_tableprefix = $wpdb->base_prefix;
 
         $ac->subsites = array();

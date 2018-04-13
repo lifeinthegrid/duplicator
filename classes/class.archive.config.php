@@ -43,12 +43,9 @@ class DUP_Archive_Config
     public $cpnl_dbaction;
     public $cpnl_dbhost;
     public $cpnl_dbuser;
-    //MULTI-SITE
+    
     public $wp_tableprefix;
-    public $mu_mode;
-    public $mu_generation;
-    public $subsites;
-    public $mu_is_filtered;
+
     //MISC
     public $license_limit;
 	public $plugin_type;

@@ -10,13 +10,6 @@ defined("ABSPATH") or die("");
  * @package SC\DUPX\Constants
  *
  */
-class DUPX_MultisiteMode
-{
-	const Standalone = 0;
-	const Subdomain = 1;
-	const Subdirectory = 2;
-}
-
 class DUPX_Constants
 {
 	/**

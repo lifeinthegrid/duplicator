@@ -11,7 +11,6 @@ defined("ABSPATH") or die("");
 	$_POST['dbpass']		= isset($_POST['dbpass']) ? trim($_POST['dbpass']) : null;
 	$_POST['dbport']		= isset($_POST['dbhost']) ? parse_url($_POST['dbhost'], PHP_URL_PORT) : 3306;
 	$_POST['dbport']		= (! empty($_POST['dbport'])) ? $_POST['dbport'] : 3306;
-	$_POST['subsite-id']	= isset($_POST['subsite-id']) ? $_POST['subsite-id'] : -1;
 	$_POST['exe_safe_mode']	= isset($_POST['exe_safe_mode']) ? $_POST['exe_safe_mode'] : 0;
 
 	$dbh = DUPX_DB::connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname'], $_POST['dbport']);
@@ -21,7 +20,6 @@ defined("ABSPATH") or die("");
 	$old_path = $GLOBALS['DUPX_AC']->wproot;
 
 	// RSR TODO: need to do the path too?
-	$subsite_id = $_POST['subsite-id'];
 	$new_path = $GLOBALS['DUPX_ROOT'];
 	$new_path = ((strrpos($old_path, '/') + 1) == strlen($old_path)) ? DUPX_U::addSlash($new_path) : $new_path;
 	$empty_schedule_display = (DUPX_U::$on_php_53_plus) ? 'table-row' : 'none';
@@ -58,7 +56,6 @@ VIEW: STEP 3- INPUT -->
 		<input type="hidden" name="dbcollate" 	  value="<?php echo $_POST['dbcollate'] ?>" />
 		<input type="hidden" name="retain_config" value="<?php echo $_POST['retain_config'] ?>" />
 		<input type="hidden" name="exe_safe_mode" id="exe-safe-mode" value="<?php echo $_POST['exe_safe_mode'] ?>" />
-		<input type="hidden" name="subsite-id"    id="subsite-id" value="<?php echo $_POST['subsite-id'] ?>" />
 		<input type="hidden" name="json"		  value="<?php echo $_POST['json']; ?>" />
 	</div>
 
@@ -122,11 +119,6 @@ VIEW: STEP 3- INPUT -->
 		<div class="hdr-sub3">New Admin Account</div>
 		<div style="text-align: center">
 			<i style="color:gray;font-size: 11px">This feature is optional.  If the username already exists the account will NOT be created or updated.</i>
-			<?php
-				if($GLOBALS['DUPX_AC']->mu_mode > 0 && $subsite_id == -1){
-					echo '<br><i style="color:gray;font-size: 11px">You will create Network Administrator account</i>';
-				}
-			?>
 		</div>
 
 		<table class="s3-opts" style="margin-top:7px">
@@ -193,7 +185,7 @@ VIEW: STEP 3- INPUT -->
 
 				</td>
 				<td valign="top">
-                    <b>Activate<?php echo ((($GLOBALS['DUPX_AC']->mu_mode > 0) && ($subsite_id == -1)) ? ' Network ' : ' ')?>Plugins:</b>
+                    <b>Activate Plugins:</b>
 					<?php echo ($_POST['exe_safe_mode'] > 0) ? '<small class="s3-warn">Safe Mode Enabled</small>' : '' ; ?>
 					<div class="s3-allnonelinks" style="<?php echo ($_POST['exe_safe_mode']>0)? 'display:none':''; ?>">
 						<a href="javascript:void(0)" onclick="$('#plugins option').prop('selected',true);">[All]</a>
@@ -201,7 +193,7 @@ VIEW: STEP 3- INPUT -->
 					</div><br style="clear:both" />
 					<select id="plugins" name="plugins[]" multiple="multiple" style="width:315px; height:100px" <?php echo ($_POST['exe_safe_mode'] > 0) ? 'disabled="true"' : ''; ?>>
 						<?php
-						$selected_string = ($_POST['exe_safe_mode'] > 0 || $subsite_id > 0) ? '' : 'selected="selected"';
+						$selected_string = ($_POST['exe_safe_mode'] > 0) ? '' : 'selected="selected"';
 						foreach ($active_plugins as $plugin) {
 							echo "<option {$selected_string} value='" . DUPX_U::escapeHTML( $plugin ) . "'>" . dirname($plugin) . '</option>';
 						}
@@ -258,7 +250,6 @@ VIEW: STEP 3 - AJAX RESULT  -->
 		<input type="hidden" name="logging" id="logging" value="<?php echo $_POST['logging']; ?>" />
 		<input type="hidden" name="url_new" id="ajax-url_new"  />
 		<input type="hidden" name="exe_safe_mode" id="ajax-exe-safe-mode" />
-		<input type="hidden" name="subsite-id" id="ajax-subsite-id" />
 		<input type="hidden" name="json"    id="ajax-json" />
 		<input type='submit' value='manual submit'>
 	</div>
@@ -354,7 +345,6 @@ DUPX.runUpdate = function()
 		success: function(data){
 			if (typeof(data) != 'undefined' && data.step3.pass == 1) {
 				$("#ajax-url_new").val($("#url_new").val());
-				$("#ajax-subsite-id").val($("#subsite-id").val());
 				$("#ajax-exe-safe-mode").val($("#exe-safe-mode").val());
 				$("#ajax-json").val(escape(JSON.stringify(data)));
 				<?php if (! $GLOBALS['DUPX_DEBUG']) : ?>

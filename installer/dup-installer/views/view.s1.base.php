@@ -65,10 +65,6 @@ $archive_config  = DUPX_ArchiveConfig::getInstance();
 $installer_state = DUPX_InstallerState::getInstance();
 $is_import_mode  =  ($installer_state->mode === DUPX_InstallerMode::OverwriteInstall);
 
-//MULTISITE
-$show_multisite = ($archive_config->mu_mode !== 0) && (count($archive_config->subsites) > 0);
-$multisite_disabled = ($archive_config->getLicenseType() != DUPX_LicenseType::BusinessGold);
-
 /** FORWARD: To one-click installer
   $oneclick = ($GLOBALS['FW_ONECLICK'] && $req_success) && (! isset($_GET['view']));
   if ($oneclick && ! $_GET['debug']) {
@@ -114,7 +110,7 @@ SETUP TYPE: @todo implement
 	<label for="setup-type-overwrite"><b>Overwrite Install</b></label>
 	<i class="fa fa-question-circle"
 		data-tooltip-title="Overwrite Install"
-		data-tooltip="An Overwrite Install allows Duplicator Pro to overwrite an existing WordPress Site."></i><br/>
+		data-tooltip="An Overwrite Install allows Duplicator to overwrite an existing WordPress Site."></i><br/>
 	<div class="s1-setup-type-sub" id="s1-setup-type-sub-2">
 		<input type="checkbox" name="setup-backup-files" id="setup-backup-files-overwrite" />
 		<label for="setup-backup-files-overwrite">Backup Existing Files</label><br/>
@@ -129,7 +125,7 @@ SETUP TYPE: @todo implement
 	<label for="setup-type-db"><b>Database Only Install</b></label>
 	<i class="fa fa-question-circle"
 		data-tooltip-title="Database Only"
-		data-tooltip="A database only install allows Duplicator Pro to connect to a database and install only the database."></i><br/>
+		data-tooltip="A database only install allows Duplicator to connect to a database and install only the database."></i><br/>
 	<div class="s1-setup-type-sub" id="s1-setup-type-sub-3">
 		<input type="checkbox" name="setup-backup-database" id="setup-backup-database-db" />
 		<label for="setup-backup-database-db">Backup Existing Database</label> <br/>
@@ -308,7 +304,7 @@ VALIDATION
 			<div class="status <?php echo ($notice['01'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['01']; ?></div>
 			<div class="title" data-type="toggle" data-target="#s1-notice01"><i class="fa fa-caret-right"></i> Configuration File</div>
 			<div class="info" id="s1-notice01">
-				Duplicator Pro works best by placing the installer and archive files into an empty directory.  If a wp-config.php file is found in the extraction
+				Duplicator works best by placing the installer and archive files into an empty directory.  If a wp-config.php file is found in the extraction
 				directory it might indicate that a pre-existing WordPress site exists which can lead to a bad install.  <i>If this archive was manually extracted or the mode
 				is set to "Overwrite Install" then	this notice can be ignored.</i>
 				<br/><br/>
@@ -362,12 +358,12 @@ VALIDATION
 				$currentPHP = DUPX_Server::$php_version;
 				$cssStyle   = DUPX_Server::$php_version_53_plus	 ? 'color:green' : 'color:red';
 				echo "<b style='{$cssStyle}'>This server is currently running PHP version [{$currentPHP}]</b>.<br/>"
-				. "Duplicator Pro allows PHP 5.2 to be used during install but does not officially support it.  If you're using PHP 5.2 we strongly recommend NOT using it and having your "
+				. "Duplicator allows PHP 5.2 to be used during install but does not officially support it.  If you're using PHP 5.2 we strongly recommend NOT using it and having your "
 				. "host upgrade to a newer more stable, secure and widely supported version.  The <a href='http://php.net/eol.php' target='_blank'>end of life for PHP 5.2</a> "
 				. "was in January of 2011 and is not recommended for use.<br/><br/>";
 
 				echo "Many plugin and theme authors are no longer supporting PHP 5.2 and trying to use it can result in site wide problems and compatibility warnings and errors.  "
-				. "Please note if you continue with the install using PHP 5.2 the Duplicator Pro support team will not be able to help with issues or troubleshoot your site.  "
+				. "Please note if you continue with the install using PHP 5.2 the Duplicator support team will not be able to help with issues or troubleshoot your site.  "
 				. "If your server is running <b>PHP 5.3+</b> please feel free to reach out for help if you run into issues with your migration/install.";
 			?>
 		</div>
@@ -406,7 +402,7 @@ VALIDATION
 			time to finish running before the process is killed causing a timeout.
 			<br/><br/>
 
-			Duplicator Pro attempts to turn off the timeout by using the
+			Duplicator attempts to turn off the timeout by using the
 			<a href="http://php.net/manual/en/function.set-time-limit.php" target="_blank">set_time_limit</a> setting.   If this notice shows as a warning then it is
 			still safe to continue with the install.  However, if a timeout occurs then you will need to consider working with the max_execution_time setting or extracting the
 			archive file using the 'Manual Archive Extraction' method.
@@ -415,66 +411,6 @@ VALIDATION
 	</div>
 </div>
 <br/><br/>
-
-<!-- ====================================
-MULTISITE PANEL
-==================================== -->
-<?php if($show_multisite) : ?>
-	<div class="hdr-sub1 toggle-hdr" data-type="toggle" data-target="#s1-multisite">
-		<a href="javascript:void(0)"><i class="fa fa-minus-square"></i>Multisite</a>
-	</div>
-	<div id="s1-multisite">
-        <?php if(!$archive_config->mu_is_filtered): ?>
-            <input id="full-network" onclick="DUPX.enableSubsiteList(false);" type="radio" name="multisite-install-type" value="0" checked>
-            <label for="full-network">Restore entire multisite network</label><br/>
-            <input <?php if($multisite_disabled) {echo 'disabled';} ?> id="multisite-install-type" onclick="DUPX.enableSubsiteList(true);" type="radio" name="multisite-install-type" value="1">
-            <label for="multisite-install-type">Convert subsite
-                <select id="subsite-id" name="subsite-id" style="width:200px" disabled>
-                    <?php foreach($archive_config->subsites as $subsite) : ?>
-                        <option value="<?php echo $subsite->id; ?>"><?php echo "{$subsite->name}" ?></option>
-                    <?php endforeach; ?>
-                </select>
-                into a standalone site<?php if($multisite_disabled) { echo '*';} ?>
-            </label>
-        <?php else: ?>
-            Convert subsite
-                <select id="subsite-id" name="subsite-id" style="width:200px" <?php if($multisite_disabled) { echo 'disabled';}?>>
-                    <?php foreach($archive_config->subsites as $subsite) : ?>
-                        <option value="<?php echo $subsite->id; ?>"><?php echo "{$subsite->name}" ?></option>
-                    <?php endforeach; ?>
-                </select>
-                into a standalone site<?php if($multisite_disabled) { echo '*';} ?>
-				<p style="line-height:17px; margin-top:27px">
-				<b>Note:</b> You can't restore the entire multisite network because one or more subsites were filtered when this package was created.
-				</p>
-        <?php endif; ?>
-		<?php
-		if($multisite_disabled) {
-			$license_string = ' This installer was created with ';
-
-			switch($archive_config->getLicenseType()) {
-				case DUPX_LicenseType::Unlicensed:
-				$license_string .= "an Unlicensed copy of Duplicator Pro.";
-				break;
-
-				case DUPX_LicenseType::Personal:
-				$license_string .= "a Personal license of Duplicator Pro.";
-				break;
-
-				case DUPX_LicenseType::Freelancer:
-				$license_string .= "a Freelancer license of Duplicator Pro.";
-				break;
-
-				default:
-				$license_string = '';
-			}
-			echo "<p class='note'>*Requires Business or Gold license. $license_string</p>";
-		}
-		?>
-	</div>
-	<br/><br/>
-<?php endif; ?>
-
 <!-- ====================================
 OPTIONS
 ==================================== -->
@@ -641,7 +577,6 @@ Auto Posts to view.step2.php
         <input type="hidden" name="archive_name" value="<?php echo $GLOBALS['FW_PACKAGE_NAME'] ?>" />
         <input type="hidden" name="retain_config" id="ajax-retain-config" />
         <input type="hidden" name="exe_safe_mode" id="exe-safe-mode"  value="0" />
-        <input type="hidden" name="subsite-id" id="ajax-subsite-id" value="-1" />
 		<input type="hidden" name="json" id="ajax-json" />
         <textarea id='ajax-json-debug' name='json_debug_view'></textarea>
         <input type='submit' value='manual submit'>
@@ -685,15 +620,6 @@ DUPX.getManaualArchiveOpt = function ()
 	$("a[data-target='#s1-area-adv-opts']").find('i.fa').removeClass('fa-plus-square').addClass('fa-minus-square');
 	$('#s1-area-adv-opts').show(1000);
 	$('select#archive_engine').val('manual').focus();
-};
-
-DUPX.enableSubsiteList = function (enable)
-{
-	if (enable) {
-		$("#subsite-id").prop('disabled', false);
-	} else {
-		$("#subsite-id").prop('disabled', 'disabled');
-	}
 };
 
 DUPX.startExtraction = function()
@@ -906,14 +832,6 @@ DUPX.pingDAWS = function ()
 						$("#ajax-retain-config").val($("#retain_config").is(":checked") ? 1 : 0);
 						$("#ajax-json").val(escape(dataJSON));
 
-                        <?php if($show_multisite) : ?>
-                        if ($("#full-network").is(":checked")) {
-                            $("#ajax-subsite-id").val(-1);
-                        } else {
-                            $("#ajax-subsite-id").val($('#subsite-id').val());
-                        }
-                        <?php endif; ?>
-
 						<?php if (!$GLOBALS['DUPX_DEBUG']) : ?>
 						setTimeout(function () {
 							$('#s1-result-form').submit();
@@ -1112,14 +1030,6 @@ DUPX.runStandardExtraction = function ()
 				$("#ajax-logging").val($("input:radio[name=logging]:checked").val());
 				$("#ajax-retain-config").val($("#retain_config").is(":checked") ? 1 : 0);
 				$("#ajax-json").val(escape(dataJSON));
-
-                <?php if($show_multisite) : ?>
-                if ($("#full-network").is(":checked")) {
-                    $("#ajax-subsite-id").val(-1);
-                } else {
-                    $("#ajax-subsite-id").val($('#subsite-id').val());
-                }
-                <?php endif; ?>
 
 				<?php if (!$GLOBALS['DUPX_DEBUG']) : ?>
 				setTimeout(function () {

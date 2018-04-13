@@ -3,21 +3,17 @@ defined("ABSPATH") or die("");
 /** IDE HELPERS */
 /* @var $GLOBALS['DUPX_AC'] DUPX_ArchiveConfig */
 
-$_POST['subsite-id']	= isset($_POST['subsite-id']) ? $_POST['subsite-id'] : -1;
 $_POST['exe_safe_mode']	= isset($_POST['exe_safe_mode']) ? $_POST['exe_safe_mode'] : 0;
 
 $url_new_rtrim  = rtrim(DUPX_U::sanitize($_POST['url_new']), "/");
 $admin_base		= basename($GLOBALS['DUPX_AC']->wplogin_url);
-$admin_redirect = (($GLOBALS['DUPX_AC']->mu_mode > 0) && ($_POST['subsite-id'] == -1))
-	? "{$url_new_rtrim}/wp-admin/network/admin.php?page=duplicator-pro-tools&tab=diagnostics"
-	: "{$url_new_rtrim}/wp-admin/admin.php?page=duplicator-pro-tools&tab=diagnostics";
+$admin_redirect ="{$url_new_rtrim}/wp-admin/admin.php?page=duplicator-pro-tools&tab=diagnostics";
 
 $safe_mode		= $_POST['exe_safe_mode'];
 $admin_redirect = "{$admin_redirect}&package={$GLOBALS['DUPX_AC']->package_name}&installer_name={$GLOBALS['BOOTLOADER_NAME']}&safe_mode={$safe_mode}" ;
 $admin_redirect = urlencode($admin_redirect);
 $admin_url_qry  = (strpos($admin_base, '?') === false) ? '?' : '&';
 $admin_login	= "{$url_new_rtrim}/{$admin_base}{$admin_url_qry}redirect_to={$admin_redirect}";
-$subsite_id		= $_POST['subsite-id'];
 ?>
 
 <script>
@@ -47,7 +43,6 @@ VIEW: STEP 4- INPUT -->
 		<i>Step 4 - Page Load</i>
 		<input type="hidden" name="view"		  value="step4" />
 		<input type="hidden" name="exe_safe_mode" id="exe-safe-mode" value="<?php echo $_POST['exe_safe_mode'] ?>" />
-		<input type="hidden" name="subsite-id"    id="subsite-id" value="<?php echo $_POST['subsite-id'] ?>" />
 	</div>
 
 <!--	<div class="hdr-sub3">
@@ -62,16 +57,7 @@ VIEW: STEP 4- INPUT -->
 				<input type="checkbox" name="auto-delete" id="auto-delete" checked="true"/>
 				<label for="auto-delete">Auto delete installer files after login <small>(recommended)</small></label>
 				<br/><br/>
-
-				<!-- WARN: MU MESSAGES -->
-				<div class="s4-warn" style="display:<?php echo ($subsite_id > 0 ? 'block' : 'none')?>">
-					<b>Multisite</b><br/>
-					Some plugins may exhibit quirks when switching from subsite to standalone mode, so all plugins have been disabled. Re-activate each plugin one-by-one and test 
-					the site after each activation.  If you experience issues please see the
-					<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-mu" target="_blank">Multisite Network FAQs</a> online.
-					<br/><br/>
-				</div>
-				
+								
 				<!-- WARN: SAFE MODE MESSAGES -->
 				<div class="s4-warn" style="display:<?php echo ($safe_mode > 0 ? 'block' : 'none')?>">
 					<b>Safe Mode</b><br/>

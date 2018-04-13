@@ -79,7 +79,7 @@ $API_Server->process_request(false);
 <table cellspacing="0" class="header-wizard">
 	<tr>
 		<td style="width:100%;">
-			<div style="font-size:22px; padding:5px 0px 0px 0px">&nbsp; Duplicator Pro - Installer - API</div>
+			<div style="font-size:22px; padding:5px 0px 0px 0px">&nbsp; Duplicator - Installer - API</div>
 		</td>
 		<td style="white-space:nowrap; text-align:right"></td>
 	</tr>

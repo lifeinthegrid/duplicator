@@ -66,11 +66,7 @@ class DUPX_ArchiveConfig
 	public $wproot;
 	public $url_old;
 	public $opts_delete;
-	//MULTISITE
-	public $mu_mode;
-    public $mu_generation;
-	public $subsites;
-	public $mu_is_filtered;
+
 	//LICENSING
 	public $license_limit;
 	public $debug_mode = false;

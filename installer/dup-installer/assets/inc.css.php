@@ -126,9 +126,6 @@
 	div.s1-reqs div.info a {color:#485AA3;}
 	select#archive_engine {width:80%; cursor:pointer}
 
-  	div#s1-multisite {margin-top:10px; line-height:28px;}
-	div#s1-multisite p.note {font-size:10px; font-style:italic; text-align:center; color:#777; margin:0}
-
 	/*Terms and Notices*/
 	div#s1-warning-check label{cursor:pointer;}
     div#s1-warning-msg {padding:5px;font-size:12px; color:#333; line-height:14px;font-style:italic; overflow-y:scroll; height:460px; border:1px solid #dfdfdf; background:#fff; border-radius:3px}

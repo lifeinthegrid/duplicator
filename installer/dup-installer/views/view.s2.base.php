@@ -37,7 +37,6 @@ $cpnl_supported =  DUPX_U::$on_php_53_plus ? true : false;
 		<input type="hidden" name="ctrl_action" value="ctrl-step2" />
 		<input type="hidden" name="view_mode" id="s2-input-form-mode" />
 		<input type="hidden" name="exe_safe_mode" id="exe-safe-mode"  value="<?php echo $_POST['exe_safe_mode'] ?>"/>
-		<input type="hidden" name="subsite-id" id="subsite-id" value="<?php echo $_POST['subsite-id']; ?>" />
 		<textarea name="dbtest-response" id="debug-dbtest-json"></textarea>
 	</div>
 
@@ -107,7 +106,6 @@ Auto Posts to view.step3.php  -->
 		<input type="hidden" name="dbcharset" id="ajax-dbcharset" />
 		<input type="hidden" name="dbcollate" id="ajax-dbcollate" />
 		<input type="hidden" name="exe_safe_mode" id="ajax-exe-safe-mode" />
-		<input type="hidden" name="subsite-id" id="ajax-subsite-id" />
 		<input type="hidden" name="retain_config" value="<?php echo $_POST['retain_config']; ?>" />
 		<input type="hidden" name="json"   id="ajax-json" />
 		<input type='submit' value='manual submit'>
@@ -286,7 +284,6 @@ Auto Posts to view.step3.php  -->
 					$("#ajax-dbcharset").val($("#dbcharset").val());
 					$("#ajax-dbcollate").val($("#dbcollate").val());
 					$("#ajax-logging").val($("#logging").val());
-					$("#ajax-subsite-id").val($("#subsite-id").val());
 					$("#ajax-exe-safe-mode").val($("#exe-safe-mode").val());
 					$("#ajax-json").val(escape(JSON.stringify(data)));
 

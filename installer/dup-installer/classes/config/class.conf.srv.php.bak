@@ -42,7 +42,7 @@ class DUPX_ServerConfig
 
 		//Apache
 		if (self::runReset($path, '.htaccess')) {
-			file_put_contents("{$path}/.htaccess", "# This file has been reset by Duplicator Pro. See .htaccess-{$time}.orig for the original file");
+			file_put_contents("{$path}/.htaccess", "# This file has been reset by Duplicator. See .htaccess-{$time}.orig for the original file");
 			@chmod("{$path}/.htaccess", 0644);
 		}
 		
@@ -95,7 +95,7 @@ class DUPX_ServerConfig
 		$timestamp = date("Y-m-d H:i:s");
 		$newdata = parse_url($_POST['url_new']);
 		$newpath = DUPX_U::addSlash(isset($newdata['path']) ? $newdata['path'] : "");
-		$update_msg  = "# This file was updated by Duplicator Pro on {$timestamp}.\n";
+		$update_msg  = "# This file was updated by Duplicator on {$timestamp}.\n";
 		$update_msg .= (file_exists("{$path}/.htaccess")) ? "# See htaccess.orig for the .htaccess original file."	: "";
 
 
