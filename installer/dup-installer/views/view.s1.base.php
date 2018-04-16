@@ -624,34 +624,31 @@ DUPX.getManaualArchiveOpt = function ()
 
 DUPX.startExtraction = function()
 {
-	var isManualExtraction = ($("#archive_engine").val() == "manual");
-	var zipEnabled = <?php echo SnapLibStringU::boolToString($archive_config->isZipArchive()); ?>;
+    // TODO: Temporary check for wp-config. Remove once site overwrite is cleared for Lite
+    <?php
+		$wpConfigPath	= "{$GLOBALS['DUPX_ROOT']}/wp-config.php";
 
-	$("#operation-text").text("Extracting Archive Files");
+		if(file_exists($wpConfigPath)): ?>
+			$('#s1-input-form').hide();
+            $('#s1-result-form').show();
+			$('#ajaxerr-data').html("A wp-config.php already exists in this location. This may indicate that you are attempting to overwrite an existing site which functionality not supported by Duplicator Lite at this time. To resolve this, remove all files other than the installer and package and retry the install.");
+			DUPX.hideProgressBar();
+		<?php else : ?>
+			var isManualExtraction = ($("#archive_engine").val() == "manual");
+			var zipEnabled = <?php echo SnapLibStringU::boolToString($archive_config->isZipArchive()); ?>;
 
-	if (zipEnabled || isManualExtraction) {
-		DUPX.runStandardExtraction();
-	} else {
-		DUPX.kickOffDupArchiveExtract();
-	}
+			$("#operation-text").text("Extracting Archive Files");
+
+			if (zipEnabled || isManualExtraction) {
+				DUPX.runStandardExtraction();
+			} else {
+				DUPX.kickOffDupArchiveExtract();
+			}
+		<?php endif;?>
 }
 
 DUPX.processNext = function ()
 {
-   // var deleteBeforeExtract = $("#delete_before_extract").prop("checked");
-   //moving files is only enabled in overwrite install if is NOT only DB
-//   var moveCoreFiles = <?php echo ($GLOBALS['DUPX_AC']->exportOnlyDB ? 'false' : ($installer_state->mode === DUPX_InstallerMode::OverwriteInstall ? 'true' : 'false')); ?>;
-//   var isManualExtraction = ($("#archive_engine").val() == "manual");
-//
-//   moveCoreFiles = moveCoreFiles && (!isManualExtraction);
-//
-//   if(moveCoreFiles) {
-//       DUPX.moveCoreFiles(true);
-//   } else {
-//       DUPX.startExtraction();
-//   }
-
-	// No longer moving core files - just plop down on top of existing site
 	DUPX.startExtraction();
 };
 
@@ -1044,7 +1041,7 @@ DUPX.runStandardExtraction = function ()
 		},
 		error: function (xHr) {
 
-			DUPX.ajaxCommunicationFailed(xHr, textstatus, 'extract');
+			DUPX.ajaxCommunicationFailed(xHr, '', 'extract');
 		}
 	});
 };

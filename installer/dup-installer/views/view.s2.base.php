@@ -50,7 +50,7 @@ $cpnl_supported =  DUPX_U::$on_php_53_plus ? true : false;
 
 	<!-- CPANEL TAB -->
 	<div id="s2-cpnl-pane">
-		<?php require_once('view.s2.cpnl.php'); ?>
+		<?php require_once('view.s2.cpnl.lite.php'); ?>
 	</div>
 </form>
 
@@ -174,19 +174,10 @@ Auto Posts to view.step3.php  -->
 	 * Open an in-line confirm dialog*/
 	DUPX.confirmDeployment= function ()
 	{
-        DUPX.cpnlSetResults();
-
         var dbhost = $("#dbhost").val();
 		var dbname = $("#dbname").val();
 		var dbuser = $("#dbuser").val();
 		var dbchunk = $("#dbchunk").val();
-
-		if ($('#s2-input-form-mode').val() == 'cpnl')  {
-			dbhost = $("#cpnl-dbhost").val();
-			dbname = $("#cpnl-dbname-result").val();
-			dbuser = $("#cpnl-dbuser-result").val();
-			dbchunk = $("#cpnl-dbchunk").val();
-		}
 
 		var $formInput = $('#s2-input-form');
 		$formInput.parsley().validate();
@@ -229,13 +220,6 @@ Auto Posts to view.step3.php  -->
         var dbuser = $("#dbuser").val();
         var dbchunk = $("#dbchunk").is(':checked');
 
-        if ($('#s2-input-form-mode').val() == 'cpnl')
-        {
-            dbhost = $("#cpnl-dbhost").val();
-            dbname = $("#cpnl-dbname-result").val();
-            dbuser = $("#cpnl-dbuser-result").val();
-            dbchunk = $("#cpnl-dbchunk").is(':checked');
-        }
 		if(local_data === undefined && dbchunk == true){
 		    local_data = {
 		        continue_chunking: dbchunk == true,
@@ -299,16 +283,6 @@ Auto Posts to view.step3.php  -->
 				var status  = "<b>Server Code:</b> "	+ xhr.status		+ "<br/>";
 				status += "<b>Status:</b> "			+ xhr.statusText	+ "<br/>";
 				status += "<b>Response:</b> "		+ xhr.responseText  + "<hr/>";
-//				if(xhr.responseText.indexOf('Allowed memory size') !== -1){
-//                    if ($('#s2-input-form-mode').val() == 'cpnl'){
-//                        $formInput.find('#Scpnl-dbchunk').attr('checked',true);
-//                    }else{
-//                        $formInput.find('#dbchunk').attr('checked',true);
-//                    }
-//
-//				    DUPX.runDeployment();
-//				    return;
-//                }
 
 				if(textstatus && textstatus.toLowerCase() == "timeout" || textstatus.toLowerCase() == "service unavailable") {
 					status += "<b>Recommendation:</b><br/>";

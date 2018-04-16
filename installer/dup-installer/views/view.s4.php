@@ -236,6 +236,30 @@ VIEW: STEP 4- INPUT -->
 		<a href='http://snapcreek.com/support/docs/faqs/' target='_blank'>FAQs</a> |
 		<a href='https://snapcreek.com' target='_blank'>Support</a>
 	</div><br/>
+
+    <?php
+		$num = rand(1,2);
+		switch ($num) {
+			case 1:
+				$key = 'free_inst_s3btn1';
+				$txt = 'Want More Power?';
+				break;
+			case 2:
+				$key = 'free_inst_s3btn2';
+				$txt = 'Go Pro Today!';
+				break;
+			default :
+				$key = 'free_inst_s3btn2';
+				$txt = 'Go Pro Today!';
+		}
+	?>
+
+	<div class="s4-gopro-btn">
+		<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=duplicator_pro&utm_content=<?php echo $key;?>" target="_blank">
+			<?php echo $txt;?>
+		</a>
+	</div>
+	<br/><br/><br/>
 </form>
 
 <?php

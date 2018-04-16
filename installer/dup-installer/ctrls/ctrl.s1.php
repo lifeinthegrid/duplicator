@@ -48,10 +48,10 @@ if (! $GLOBALS['DUPX_AC']->exportOnlyDB) {
 	$wpConfigPath	= "{$GLOBALS['DUPX_ROOT']}/wp-config.php";
 
 	//  Remove after overwrite enabled rename 
-
-    if(file_exists($wpConfigPath)) {
-        DUPX_Log::error(ERR_CONFIG_FOUND);
-    }
+//
+//    if(file_exists($wpConfigPath)) {
+//        DUPX_Log::error(ERR_CONFIG_FOUND);
+//    }
 	
 
 	if (($_POST['archive_engine'] == 'manual') || $_POST['archive_engine'] == 'duparchive'){
@@ -59,10 +59,8 @@ if (! $GLOBALS['DUPX_AC']->exportOnlyDB) {
 			DUPX_Log::error(ERR_ZIPMANUAL);
 		}
 	} else {
-//		(!file_exists($wpconfig_ark_path))
-	//		or DUPX_Log::error(ERR_CONFIG_FOUND);
 
-		if (!is_readable("{$archive_path}")) {
+        if (!is_readable("{$archive_path}")) {
 			DUPX_Log::error("archive path:{$archive_path}<br/>" . ERR_ZIPNOTFOUND);
 		}
 	}
