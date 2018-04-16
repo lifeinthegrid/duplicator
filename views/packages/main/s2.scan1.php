@@ -98,7 +98,7 @@
 	div#dup-scan-db-info {margin-top:5px}
 	div#data-db-tablelist {max-height:250px; overflow-y:scroll; border:1px solid silver; padding:8px; background: #efefef; border-radius: 4px}
 	div#data-db-tablelist td{padding:0 5px 3px 20px; min-width:100px}
-	div#data-db-size1 {display:inline-block; font-size:11px; margin-right:1px;}
+	div#data-db-size1, div#data-ll-totalsize {display:inline-block; font-size:11px; margin-right:1px;}
 	
 	/*WARNING-CONTINUE*/
 	div#dup-scan-warning-continue {display:none; text-align:center; padding:0 0 15px 0}
@@ -274,6 +274,7 @@ jQuery(document).ready(function($)
 		Duplicator.Pack.intServerData(data);
 		Duplicator.Pack.initArchiveFilesData(data);
 		Duplicator.Pack.initArchiveDBData(data);
+        Duplicator.Pack.initLiteLimitData(data);
 
 		//Addon Sites
 		$('#data-arc-status-addonsites').html(Duplicator.Pack.setScanStatus(data.ARC.Status.AddonSites));
@@ -354,6 +355,7 @@ jQuery(document).ready(function($)
 			case 'Warn' :   result = '<div class="badge badge-warn"><?php _e("Notice", 'duplicator') ?></div>'; break;
 			case true :     result = '<div class="scan-good"><i class="fa fa-check"></i></div>'; break;
 			case 'Good' :   result = '<div class="badge badge-pass"><?php _e("Good", 'duplicator') ?></div>'; break;
+            case 'Fail' :   result = '<div class="badge badge-warn"><?php _e("Fail", 'duplicator') ?></div>'; break;
 			default :
 				result = 'unable to read';
 		}

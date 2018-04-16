@@ -355,6 +355,55 @@ DATABASE -->
 			?>
 		</div>
 	</div>
+    
+<!-- ============
+TOTAL SIZE -->
+    <div class="data-ll-section scan-header" style="display:none">
+		<i class="fa fa-table"></i>
+		<?php _e("Total Size", 'duplicator');	?>
+		<div class="scan-header-details">
+
+			<div id="data-ll-totalsize"></div>
+			<i class="fa fa-question-circle data-size-help"
+				data-tooltip-title="<?php _e("Total Size:", 'duplicator'); ?>"
+				data-tooltip="<?php _e('The total size of the site (files plus  database).', 'duplicator'); ?>"></i>
+
+			<div class="dup-data-size-uncompressed"><?php _e("uncompressed"); ?></div>
+
+		</div>
+	</div>
+
+	<div class="data-ll-section scan-item scan-item-last" style="display:none">
+		<div class="title" onclick="Duplicator.Pack.toggleScanItem(this);">
+			<div class="text"><i class="fa fa-caret-right"></i> <?php _e('Overview', 'duplicator');?></div>
+			<div id="data-ll-status-totalsize"></div>
+		</div>
+		<div class="info">
+            <?php echo '<b>' . __('TOTAL SIZE', 'duplicator') . ":{$totalSiteSize}"; ?>
+
+			<?php
+				printf(__('The total size of this site exceeds the maximum size the DupArchive engine will process on Duplicator Lite (1 GB).', 'duplicator'));
+
+				echo '<br/><br/><hr size="1" />';
+
+				
+				echo '<b>' . __('RECOMMENDATIONS:', 'duplicator') . '</b><br/>';
+
+				echo '<div style="padding:5px">';
+				$lnk = '<a href="maint/repair.php" target="_blank">' . __('repair and optimization', 'duplicator') . '</a>';
+				printf(__('1. Filter unnecessary directories or files, if possible.', 'duplicator'), $lnk);
+				echo '<br/><br/>';
+                $lnk = '<a href="#" target="_blank">' . __('Enable mysqldump', 'duplicator') . '</a>';
+				_e("2. If #1 isn't an option, perform a two part install as described here.", 'duplicator');
+				echo '<br/><br/>';
+				$lnk = '<a href="#" target="_blank">' . $a.  __('Duplicator Pro', 'duplicator') . '</a>';
+				printf(__("3. If #1 and #2 aren't viable consider upgrading to %1$s.", 'duplicator'), $lnk);
+				echo '</div>';
+
+			?>
+		</div>
+	</div>
+
 	<?php
         echo '<div class="dup-pro-support">&nbsp;';
         _e('Migrate large, multi-gig sites with', 'duplicator');
@@ -679,7 +728,6 @@ jQuery(document).ready(function($)
 		Duplicator.UI.loadQtip();
 	}
 
-
 	Duplicator.Pack.initArchiveDBData = function(data)
 	{
 		var errMsg = "unable to read";
@@ -727,6 +775,15 @@ jQuery(document).ready(function($)
 			html = '<?php _e("Unable to report on database stats", 'duplicator') ?>';
 			$('#dup-scan-db').html(html);
 		}
+	}
+
+    Duplicator.Pack.initLiteLimitData = function(data)
+	{
+        if(data.LL.Status.TotalSize == 'Fail') {
+            $('.data-ll-section').css('display', 'block');
+            $('#data-ll-status-totalsize').html(Duplicator.Pack.setScanStatus(data.LL.Status.TotalSize));
+            $('#data-ll-totalsize').text(data.LL.TotalSize || errMsg);
+        }
 	}
 
 	<?php

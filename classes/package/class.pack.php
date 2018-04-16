@@ -198,11 +198,16 @@ class DUP_Package
         $report['ARC']['Files'] = $this->Archive->Files;
 		$report['ARC']['Status']['AddonSites'] = count($this->Archive->FilterInfo->Dirs->AddonSites) ? 'Warn' : 'Good';
             
-
-
         //DATABASE
         $db  = $this->Database->getScannerData();
         $report['DB'] = $db;
+
+        //Lite Limits
+        $rawTotalSize = $this->Archive->Size + $report['DB']['RawSize'];
+        $report['LL']['TotalSize'] = DUP_Util::byteSize($rawTotalSize);
+        $report['LL']['Status']['TotalSize'] = ($rawTotalSize > DUPLICATOR_MAX_DUPARCHIVE_SIZE) ? 'Fail' : 'Good';
+
+        DUP_Log::traceObject("#### report ll", $report['LL']);
 
         $warnings = array(
             $report['SRV']['PHP']['ALL'],

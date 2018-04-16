@@ -187,6 +187,7 @@ class DUP_Database
         $info['Status']['TBL_Rows'] = ($tblRowsFound) ? 'Warn' : 'Good';
         $info['Status']['TBL_Size'] = ($tblSizeFound) ? 'Warn' : 'Good';
 
+        $info['RawSize']    = $info['Size'];
         $info['Size']       = DUP_Util::byteSize($info['Size']) or "unknown";
         $info['Rows']       = number_format($info['Rows']) or "unknown";
         $info['TableList']  = $info['TableList'] or "unknown";
