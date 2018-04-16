@@ -302,7 +302,7 @@ class DUP_DupArchive
                         $package->update();
 
                         $timerAllEnd = DUP_Util::getMicrotime();
-                        $timerAllSum = DUP_Util::elapsedTime($timerAllEnd, $package->timer_start);
+                        $timerAllSum = DUP_Util::elapsedTime($timerAllEnd, $package->TimerStart);
 
                         DUP_LOG::traceObject("create state", $createState);
 
