@@ -274,8 +274,7 @@ jQuery(document).ready(function($)
 		Duplicator.Pack.intServerData(data);
 		Duplicator.Pack.initArchiveFilesData(data);
 		Duplicator.Pack.initArchiveDBData(data);
-        Duplicator.Pack.initLiteLimitData(data);
-
+        
 		//Addon Sites
 		$('#data-arc-status-addonsites').html(Duplicator.Pack.setScanStatus(data.ARC.Status.AddonSites));
 		if (data.ARC.FilterInfo.Dirs.AddonSites !== undefined && data.ARC.FilterInfo.Dirs.AddonSites.length > 0) {
@@ -296,6 +295,8 @@ jQuery(document).ready(function($)
 			$('#dup-scan-warning-continue').hide();
 			$('#dup-build-button').prop("disabled",false).addClass('button-primary');
 		}
+
+        Duplicator.Pack.initLiteLimitData(data);
 	}
 	
 	//Toggles each scan item to hide/show details

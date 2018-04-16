@@ -378,11 +378,11 @@ TOTAL SIZE -->
 			<div class="text"><i class="fa fa-caret-right"></i> <?php _e('Overview', 'duplicator');?></div>
 			<div id="data-ll-status-totalsize"></div>
 		</div>
-		<div class="info">
-            <?php echo '<b>' . __('TOTAL SIZE', 'duplicator') . ":{$totalSiteSize}"; ?>
-
+		<div class="info">          
 			<?php
-				printf(__('The total size of this site exceeds the maximum size the DupArchive engine will process on Duplicator Lite (1 GB).', 'duplicator'));
+                echo '<b>';
+				printf(__('The total site size (files and database) exceeds the maximum Duplicator Lite can process with the DupArchive engine (1 GB).', 'duplicator'));
+                echo '</b>';
 
 				echo '<br/><br/><hr size="1" />';
 
@@ -391,13 +391,17 @@ TOTAL SIZE -->
 
 				echo '<div style="padding:5px">';
 				$lnk = '<a href="maint/repair.php" target="_blank">' . __('repair and optimization', 'duplicator') . '</a>';
-				printf(__('1. Filter unnecessary directories or files, if possible.', 'duplicator'), $lnk);
+				printf(__('1. Add unnecessary files and directories to the build filter.', 'duplicator'), $lnk);
 				echo '<br/><br/>';
-                $lnk = '<a href="#" target="_blank">' . __('Enable mysqldump', 'duplicator') . '</a>';
-				_e("2. If #1 isn't an option, perform a two part install as described here.", 'duplicator');
+                _e('-or-', 'duplicator');
+                echo '<br/><br/>';
+                $lnk = '<a href="#" target="_blank">' . __('here.', 'duplicator') . '</a>';
+				echo __("2. Perform a two part install as described", 'duplicator') . ' ' . $lnk;
 				echo '<br/><br/>';
-				$lnk = '<a href="#" target="_blank">' . $a.  __('Duplicator Pro', 'duplicator') . '</a>';
-				printf(__("3. If #1 and #2 aren't viable consider upgrading to %1$s.", 'duplicator'), $lnk);
+                _e('-or-', 'duplicator');
+                echo '<br/><br/>';
+				$lnk = '<a href="#" target="_blank">' . $a.  __('Duplicator Pro.', 'duplicator') . '</a>';
+				echo __('3. Consider upgrading to', 'duplicator') . ' ' . $lnk;
 				echo '</div>';
 
 			?>
@@ -778,11 +782,16 @@ jQuery(document).ready(function($)
 	}
 
     Duplicator.Pack.initLiteLimitData = function(data)
-	{
+	{       
         if(data.LL.Status.TotalSize == 'Fail') {
-            $('.data-ll-section').css('display', 'block');
+            $('.data-ll-section').show();
+            $('#dup-build-button').prop("disabled",true);
             $('#data-ll-status-totalsize').html(Duplicator.Pack.setScanStatus(data.LL.Status.TotalSize));
             $('#data-ll-totalsize').text(data.LL.TotalSize || errMsg);
+            $('.dup-pro-support').hide();
+        } else {
+            $('#dup-build-button').prop("disabled",false);
+            $('.data-ll-section').hide();
         }
 	}
 
