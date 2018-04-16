@@ -40,12 +40,8 @@ class DUP_DupArchive_Create_State extends DupArchiveCreateState
     {
         $instance = new DUP_DupArchive_Create_State();
 
-     //   $instance->setPackage($package);
-
         /* @var $buildProgress DUP_Build_Progress */
         $buildProgress = &$package->BuildProgress;
-
-        //$buildProgress->custom_data = new stdClass();
 
         if ($setArchiveOffsetToEndOfArchive) {
             $instance->archiveOffset = filesize($archivePath);
@@ -74,39 +70,10 @@ class DUP_DupArchive_Create_State extends DupArchiveCreateState
     public function addFailure($type, $subject, $description, $isCritical = false)
     {
         $failure = parent::addFailure($type, $subject, $description, $isCritical);
-
-//        /* @var $buildProgress DUP_Build_Progress */
-//        $buildProgress = &$this->package->BuildProgress;
-//
-//        if ($isCritical) {
-//            $buildProgress->failed = true;
-//        } else {
-//            $buildProgress->warnings[] = $this->getFailureString($failure);
-//        }
     }
 
     public function save()
-    {
-//        $this->package->BuildProgress->custom_data->archive_path            = $this->archivePath;
-//        $this->package->BuildProgress->custom_data->time_slice_in_secs      = $this->timeSliceInSecs;
-//        $this->package->BuildProgress->custom_data->base_path               = $this->basePath;
-//        $this->package->BuildProgress->custom_data->glob_size               = $this->globSize;
-//        $this->package->BuildProgress->custom_data->archive_offset          = $this->archiveOffset;
-//        $this->package->BuildProgress->custom_data->failures                = $this->failures;
-//        $this->package->BuildProgress->custom_data->working                 = $this->working;
-//        $this->package->BuildProgress->custom_data->is_compressed           = $this->isCompressed;
-//        $this->package->BuildProgress->custom_data->current_file_offset     = $this->currentFileOffset;
-//        $this->package->BuildProgress->custom_data->throttle_delay_in_us    = $this->throttleDelayInUs;
-//        $this->package->BuildProgress->custom_data->skipped_directory_count = $this->skippedDirectoryCount;
-//        $this->package->BuildProgress->custom_data->skipped_file_count      = $this->skippedFileCount;
-//
-//        $this->package->BuildProgress->next_archive_dir_index  = $this->currentDirectoryIndex;
-//        $this->package->BuildProgress->next_archive_file_index = $this->currentFileIndex;
-
-//        $this->package->save();
-        
-        // RSR TODO: Save to options table
-        
+    {              
         DUP_Log::TraceObject("Saving create state", $this);
         DUP_Settings::Set('duparchive_create_state', $this);
         

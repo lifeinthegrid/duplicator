@@ -134,7 +134,7 @@ class DUP_DupArchive
                 }
 
                 try {
-					DupArchiveEngine::createArchive($archivePath, $buildProgress->current_build_compression);
+					DupArchiveEngine::createArchive($archivePath, true);
                     
                     DupArchiveEngine::addRelativeFileToArchiveST($archivePath, $sqlPath, 'database.sql');
                 } catch (Exception $ex) {
