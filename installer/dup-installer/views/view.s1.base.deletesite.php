@@ -42,7 +42,7 @@ DUPX.deleteSite = function (newRequest)
 	console.log("FILEOPS url=" + DUPX.FILEOPS.url);
 	console.log("requeststring=" + requestString);
 
-    $("#operation-text").text("<?php DUP_PRO_U::_e('Deleting Existing Site')?>");
+    $("#operation-text").text("Deleting Existing Site");
 
     $.ajax({
 		type: "POST",

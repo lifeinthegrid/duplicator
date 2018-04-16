@@ -91,20 +91,13 @@ class DUP_Installer
         $replace_array = array($this->Package->Archive->File, DUPLICATOR_PRO_VERSION, @filesize($archive_filepath), $mini_expander_string);
 
         $installer_contents = str_replace($search_array, $replace_array, $installer_contents);
-
-        DUP_Log::Info("#### writing installer contents to $installer_filepath");
-      //  DUP_Log::Info("#### contents:" . $installer_contents);
         
         if (@file_put_contents($installer_filepath, $installer_contents) === false) {
             DUP_Log::error(__('Error writing installer contents', 'duplicator'), __("Couldn't write to $installer_filepath", 'duplicator'));
             $success = false;
         }
-
-        DUP_Log::Info("#### test");
-
-        $yn = file_exists($installer_filepath) ? 'yes' : 'no';
-        DUP_Log::Info("#### installer wrote. Does it exist? " . $yn);
         
+        $yn = file_exists($installer_filepath) ? 'yes' : 'no';        
 
         if ($success) {
             $storePath  = "{$this->Package->StorePath}/{$this->File}";

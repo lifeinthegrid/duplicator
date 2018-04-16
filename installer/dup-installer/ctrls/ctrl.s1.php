@@ -47,13 +47,6 @@ if (! $GLOBALS['DUPX_AC']->exportOnlyDB) {
 
 	$wpConfigPath	= "{$GLOBALS['DUPX_ROOT']}/wp-config.php";
 
-	//  Remove after overwrite enabled rename 
-//
-//    if(file_exists($wpConfigPath)) {
-//        DUPX_Log::error(ERR_CONFIG_FOUND);
-//    }
-	
-
 	if (($_POST['archive_engine'] == 'manual') || $_POST['archive_engine'] == 'duparchive'){
 		if (!file_exists($wpconfig_ark_path) && !file_exists("database.sql")) {
 			DUPX_Log::error(ERR_ZIPMANUAL);

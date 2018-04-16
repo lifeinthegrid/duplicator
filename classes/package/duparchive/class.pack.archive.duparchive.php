@@ -35,6 +35,10 @@ class DUP_DupArchive
 
 		DUP_LOG::trace("c1");
         try {
+            if(DUP_Log::$logFileHandle == null) {
+                DUP_Log::Open($package->NameHash);
+            }
+
 			DUP_LOG::trace("c2");
             if ($buildProgress->retries > DUPLICATOR_MAX_BUILD_RETRIES) {
 				DUP_LOG::trace("c3");
@@ -96,6 +100,8 @@ class DUP_DupArchive
             }
 
 			DUP_LOG::trace("c12");
+            Dup_Log::TraceObject("buildprogress object", $buildProgress);
+
             $scanReport = json_decode($json);
 
             if ($buildProgress->archive_started == false) {

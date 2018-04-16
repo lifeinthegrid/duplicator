@@ -13,7 +13,7 @@ class DUP_Log {
 	 * The file handle used to write to the log file
 	 * @var file resource 
 	 */
-	private static $logFileHandle;
+	public static $logFileHandle = null;
 	
 	/**
 	 *  Open a log file connection for writing
@@ -21,7 +21,8 @@ class DUP_Log {
 	 */
 	static public function Open($name) {
 		if (! isset($name)) throw new Exception("A name value is required to open a file log.");
-		self::$logFileHandle = @fopen(DUPLICATOR_SSDIR_PATH . "/{$name}.log", "c+");	
+		//self::$logFileHandle = @fopen(DUPLICATOR_SSDIR_PATH . "/{$name}.log", "c+");
+        self::$logFileHandle = @fopen(DUPLICATOR_SSDIR_PATH . "/{$name}.log", "a+");
 	}
 	
 	/**
@@ -42,8 +43,6 @@ class DUP_Log {
 	static public function Info($msg) {
         error_log($msg); // temp
 		@fwrite(self::$logFileHandle, "{$msg} \n"); 
-		//$results = DUP_Util::byteSize(memory_get_usage(true)) . "\t" . $msg;
-		//@fwrite(self::$logFileHandle, "{$results} \n"); 
 	}
     
     // RSR TODO: Swap trace logic out for real trace later
