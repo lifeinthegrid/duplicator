@@ -161,7 +161,7 @@ function duplicator_duparchive_package_build()
         $json['exeSize']     = $package->ExeSize;
         $json['archiveSize'] = $package->ZipSize;
 
-        DUP_Log::TraceObject('has completed. Package=', $package);
+    //    DUP_Log::TraceObject('has completed. Package=', $package);
     } else {
         Dup_Log::Info("sending back continue status");
         $json['status'] = 4;

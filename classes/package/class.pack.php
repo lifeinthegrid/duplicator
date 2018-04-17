@@ -368,8 +368,21 @@ class DUP_Package
 
             $scanReport = json_decode($json);
 			//RSR TODO: rework/simplify the validateion of duparchive
-            $expected_filecount = $scanReport->ARC->UDirCount + $scanReport->ARC->UFileCount;
+//            $expected_filecount = $scanReport->ARC->UDirCount + $scanReport->ARC->UFileCount;
 
+            $dirCount = count($scanReport->ARC->Dirs);
+            $numInstallerDirs = $this->Installer->numDirsAdded;
+            $fileCount = count($scanReport->ARC->Files);
+            $numInstallerFiles = $this->Installer->numFilesAdded;
+
+            $expected_filecount = $dirCount + $numInstallerDirs + $fileCount + $numInstallerFiles + 1 -1;   // Adding database.sql but subtracting the root dir
+
+        //    Dup_Log::trace("#### a:{$dirCount} b:{$numInstallerDirs} c:{$fileCount} d:{$numInstallerFiles} = {$expected_filecount}");
+            
+
+         //   Dup_Log::traceObject('####scan report', $scanReport);
+      //      Dup_Log::traceObject('####package', $this);
+            //DUP_Log::traceObject("#### scan report", $scanReport);
             DUP_Log::info("ARCHIVE FILE: {$zip_easy_size} ");
             DUP_Log::info(sprintf(__('EXPECTED FILE/DIRECTORY COUNT: %1$s', 'duplicator'), number_format($expected_filecount)));
             DUP_Log::info(sprintf(__('ACTUAL FILE/DIRECTORY COUNT: %1$s', 'duplicator'), number_format($this->Archive->file_count)));
@@ -765,7 +778,7 @@ class DUP_Package
             DUP_Log::Error("Package SetStatus was unable to serialize package object while updating record.");
         }
 
-        DUP_Log::Trace('#### package object:' . $packageObj);
+//        DUP_Log::Trace('#### package object:' . $packageObj);
 
         $wpdb->flush();
         $table = $wpdb->prefix."duplicator_packages";
@@ -778,7 +791,7 @@ class DUP_Package
         DUP_Log::Trace("ID = {$this->ID}");
         DUP_Log::Trace('-------------------------');
 
-        DUP_Log::Trace('####Executing SQL' . $sql . '-----------');
+        //DUP_Log::Trace('####Executing SQL' . $sql . '-----------');
         $wpdb->query($sql);
     }
 
