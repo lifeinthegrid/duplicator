@@ -54,6 +54,7 @@ if (function_exists('plugin_dir_url'))
 	define('DUPLICATOR_WPCONFIG_ARK_FILENAME', 'wp-config-arc.txt');
     define('DUPLICATOR_EMBEDDED_SCAN_FILENAME', 'scan.json');
 	define("DUPLICATOR_ENHANCED_INSTALLER_DIRECTORY", DUPLICATOR_WPROOTPATH.'dup-installer');
+    define('DUPLICATOR_MAX_LOG_SIZE', 400000);    // The higher this is the more overhead
 	
     $GLOBALS['DUPLICATOR_SERVER_LIST'] = array('Apache','LiteSpeed', 'Nginx', 'Lighttpd', 'IIS', 'WebServerX', 'uWSGI');
 	$GLOBALS['DUPLICATOR_OPTS_DELETE'] = array('duplicator_ui_view_state', 'duplicator_package_active', 'duplicator_settings');

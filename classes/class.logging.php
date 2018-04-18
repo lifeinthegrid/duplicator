@@ -9,12 +9,22 @@ class DUP_Log {
 
 	static $debugging = true;
 
+    private static $traceEnabled;
+
 	/**
 	 * The file handle used to write to the log file
 	 * @var file resource 
 	 */
 	public static $logFileHandle = null;
-	
+
+    /**
+     * Init this static object
+     */
+    public static function Init()
+    {
+        self::$traceEnabled = DUP_Settings::Get('trace_log_enabled') == 1;
+    }
+
 	/**
 	 *  Open a log file connection for writing
 	 *  @param string $name Name of the log file to create
@@ -46,8 +56,43 @@ class DUP_Log {
 	}
     
     // RSR TODO: Swap trace logic out for real trace later
-    static public function Trace($msg) {
-        error_log($msg);
+    static public function Trace($message, $calling_function_override = null) {
+        //error_log($msg);
+      //  error_log('is trace enabled');
+      //  error_log(print_r(self::$traceEnabled, true));
+        if (self::$traceEnabled) {
+            $unique_id               = sprintf("%08x", abs(crc32($_SERVER['REMOTE_ADDR'].$_SERVER['REQUEST_TIME'].$_SERVER['REMOTE_PORT'])));
+
+            if ($calling_function_override == null) {
+				$calling_function = SnapLibUtil::getCallingFunctionName();
+			} else {
+				$calling_function = $calling_function_override;
+			}
+
+			if (is_object($message)) {
+				$ov = get_object_vars($message);
+				$message = print_r($ov, true);
+			} else if (is_array($message)) {
+				$message = print_r($message, true);
+			}
+
+			$logging_message           = "{$unique_id}|{$calling_function} | {$message}";
+            $ticks                     = time() + ((int) get_option('gmt_offset') * 3600);
+            $formatted_time            = date('d-m-H:i:s', $ticks);
+			$formatted_logging_message = "{$formatted_time}|DUP|{$logging_message} \r\n";
+
+            // Always write to error log - if they don't want the info they can turn off WordPress error logging or tracing
+            self::ErrLog($logging_message);
+
+            // Everything goes to the plugin log, whether it's part of package generation or not.
+            self::WriteToTrace($formatted_logging_message);
+        }
+    }
+
+    public static function errLog($message)
+    {
+        $message = 'DUP:'. $message;
+        error_log($message);
     }
         
 
@@ -150,5 +195,34 @@ class DUP_Log {
 		return $output;
     } 
 
+    /**
+     * Manages writing the active or backup log based on the size setting
+     *
+     * @return null
+     */
+    private static function WriteToTrace($formatted_logging_message)
+    {
+        $log_filepath = self::GetTraceFilepath();
+
+        if (@filesize($log_filepath) > DUPLICATOR_MAX_LOG_SIZE) {
+            $backup_log_filepath = self::GetBackupTraceFilepath();
+
+            if (file_exists($backup_log_filepath)) {
+                if (@unlink($backup_log_filepath) === false) {
+                    DUP_PRO_Low_U::errLog("Couldn't delete backup log $backup_log_filepath");
+                }
+            }
+
+            if (@rename($log_filepath, $backup_log_filepath) === false) {
+                self::errLog("Couldn't rename log $log_filepath to $backup_log_filepath");
+            }
+        }
+
+        if (@file_put_contents($log_filepath, $formatted_logging_message, FILE_APPEND) === false) {
+            // Not en error worth reporting
+        }
+    }
 }
+
+DUP_Log::Init();
 ?>
