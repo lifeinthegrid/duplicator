@@ -56,7 +56,57 @@ class DUP_Log {
 			error_log($msg . ':' . print_r($o, true));
 		//}
 	}
-	
+
+
+    public static function GetDefaultKey()
+    {
+        $auth_key = defined('AUTH_KEY') ? AUTH_KEY : 'atk';
+        $auth_key .= defined('DB_HOST') ? DB_HOST : 'dbh';
+        $auth_key .= defined('DB_NAME') ? DB_NAME : 'dbn';
+        $auth_key .= defined('DB_USER') ? DB_USER : 'dbu';
+
+        return hash('md5', $auth_key);
+    }
+
+     public static function GetBackupTraceFilepath()
+    {
+        $default_key = self::getDefaultKey();
+        $backup_log_filename = "dup_$default_key.log1";
+        $backup_path = DUPLICATOR_SSDIR_PATH."/".$backup_log_filename;
+
+        return $backup_path;
+    }
+
+    /**
+     * Gets the active trace file path
+     *
+     * @return string   Returns the full path to the active trace file (i.e. dup-pro_hash.log)
+     */
+    public static function GetTraceFilepath()
+    {
+        $default_key  = self::getDefaultKey();
+        $log_filename = "dup_$default_key.log";
+        $file_path    = DUPLICATOR_SSDIR_PATH."/".$log_filename;
+
+        return $file_path;
+    }
+
+    /**
+     * Deletes the trace log and backup trace log files
+     *
+     * @return null
+     */
+    public static function DeleteTraceLog()
+    {
+        $file_path   = self::GetTraceFilepath();
+        $backup_path = self::GetBackupTraceFilepath();
+
+        self::trace("deleting $file_path");
+        @unlink($file_path);
+        self::trace("deleting $backup_path");
+        @unlink($backup_path);
+    }
+
 	/**
 	*  Called when an error is detected and no further processing should occur
 	*  @param string $msg The message to log

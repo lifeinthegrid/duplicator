@@ -21,11 +21,30 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
 	DUP_Settings::Set('wpfront_integrate', isset($_POST['wpfront_integrate']) ? "1" : "0");
 	DUP_Settings::Set('package_debug', isset($_POST['package_debug']) ? "1" : "0");
 
-	DUP_Settings::Save();
+    if(isset($_REQUEST['trace_log_enabled'])) {
+
+        dup_log::trace("#### trace log enabled");
+        // Trace on
+
+        if (DUP_Settings::Get('trace_log_enabled') == 0) {
+            DUP_Log::DeleteTraceLog();
+        }
+
+        DUP_Settings::Set('trace_log_enabled', 1);
+
+    } else {
+        dup_log::trace("#### trace log disabled");
+
+        // Trace off
+        DUP_Settings::Set('trace_log_enabled', 0);
+    }
+
+    DUP_Settings::Save();
 	$action_updated = true;
 	DUP_Util::initSnapshotDirectory();
 }
 
+$trace_log_enabled = DUP_Settings::Get('trace_log_enabled');
 $uninstall_settings = DUP_Settings::Get('uninstall_settings');
 $uninstall_files = DUP_Settings::Get('uninstall_files');
 $uninstall_tables = DUP_Settings::Get('uninstall_tables');
@@ -116,6 +135,20 @@ $package_debug = DUP_Settings::Get('package_debug');
                 <input type="checkbox" name="package_debug" id="package_debug" <?php echo ($package_debug) ? 'checked="checked"' : ''; ?> />
                 <label for="package_debug"><?php _e("Enable debug options throughout user interface", 'duplicator'); ?></label>
 				<p class="description"><?php  _e("Refresh page after saving to show/hide Debug menu", 'duplicator'); ?></p>
+            </td>
+        </tr>
+        <tr valign="top">
+            <th scope="row"><label><?php _e("Trace Log", 'duplicator'); ?></label></th>
+            <td>
+                <input type="checkbox" name="trace_log_enabled" id="trace_log_enabled" <?php echo ($trace_log_enabled == 1) ? 'checked="checked"' : ''; ?> />
+                <label for="trace_log_enabled"><?php _e("Enabled", 'duplicator') ?> </label><br/>
+                <p class="description">
+                    <?php
+                        _e('Turning on log initially clears it out. The enhanced setting writes to both trace and PHP error logs.');
+                        echo ('<br/>');
+                        _e('WARNING: Only turn on this setting when asked to by support as tracing will impact performance.', 'duplicator');
+                    ?>
+                </p>
             </td>
         </tr>
     </table><br/>
