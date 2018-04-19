@@ -34,7 +34,7 @@ class DUP_Database
     /**
      *  Build the database script
      *
-     *  @param obj $package A reference to the package that this database object belongs in
+     *  @param DUP_Package $package A reference to the package that this database object belongs in
      *
      *  @return null
      */
@@ -87,10 +87,13 @@ class DUP_Database
             $time_end = DUP_Util::getMicrotime();
             $time_sum = DUP_Util::elapsedTime($time_end, $time_start);
 
-            //File below 10k will be incomplete
+            //File below 10k considered incomplete
             $sql_file_size = filesize($this->dbStorePath);
             DUP_Log::Info("SQL FILE SIZE: ".DUP_Util::byteSize($sql_file_size)." ({$sql_file_size})");
+            $sql_file_size = 0; // RSR temp
             if ($sql_file_size < 10000) {
+                $package->BuildProgress->failed = true;
+                $package->update();
                 DUP_Log::Error("SQL file size too low.", "File does not look complete.  Check permission on file and parent directory at [{$this->dbStorePath}]");
             }
 

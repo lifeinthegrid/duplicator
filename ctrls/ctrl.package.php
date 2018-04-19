@@ -89,13 +89,12 @@ function duplicator_package_build()
  */
 function duplicator_duparchive_package_build()
 {
+    DUP_LOG::Trace("call to duplicator_duparchive_package_build");
 
     DUP_Util::hasCapability('export');
     check_ajax_referer('duplicator_duparchive_package_build', 'nonce');
-
-    DUP_LOG::Trace("call to duplicator_duparchive_package_build");
     header('Content-Type: application/json');
-
+        
     @set_time_limit(0);
     $errLevel = error_reporting();
     error_reporting(E_ERROR);
@@ -137,11 +136,7 @@ function duplicator_duparchive_package_build()
     
     $json = array();
 
-    //$createState      = DUP_DupArchive_Create_State::get_instance();
-    //$json['failures'] = ($createState->failures == null) ? array() : $createState->failures; // ?or just do package->buildprogress->warnings?
- 
     $json['failures'] = array_merge($package->BuildProgress->build_failures, $package->BuildProgress->validation_failures);
-    //$json['failures'] = array();
     
     //JSON:Debug Response
     //Pass = 1, Warn = 2, Fail = 3, 4 = Not Done
@@ -160,8 +155,6 @@ function duplicator_duparchive_package_build()
         $json['runtime']     = $package->Runtime;
         $json['exeSize']     = $package->ExeSize;
         $json['archiveSize'] = $package->ZipSize;
-
-    //    DUP_Log::TraceObject('has completed. Package=', $package);
     } else {
         Dup_Log::Info("sending back continue status");
         $json['status'] = 4;

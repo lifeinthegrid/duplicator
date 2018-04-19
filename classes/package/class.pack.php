@@ -526,11 +526,24 @@ class DUP_Package
 		
         $this->BuildProgress->start_timer();
         
-        DUP_Log::Trace('a');
+        DUP_Log::Trace('Called');
+
+        if ($this->BuildProgress->failed) {
+
+            DUP_LOG::Trace("build progress failed so setting package to failed");
+            $this->setStatus(DUP_PackageStatus::ERROR);
+
+            $message = "Package creation failed.";
+
+          //  DUP_Log::error($message, $message, false);
+            DUP_Log::Trace($message);
+
+            return true;
+        }
         
         if ($this->BuildProgress->initialized == false) {
 
-            DUP_Log::Trace('b');
+            DUP_Log::Trace('Initializing');
 
             $this->BuildProgress->initialized = true;
 
@@ -541,12 +554,12 @@ class DUP_Package
 
         //START BUILD
         if (!$this->BuildProgress->database_script_built) {
-             DUP_Log::Trace('d');
+             DUP_Log::Trace('Bulding database script');
        
             $this->Database->build($this);
             $this->BuildProgress->database_script_built = true;
             $this->update();
-            DUP_LOG::Trace("Set db built for package");
+            DUP_LOG::Trace("Built database script");
         } else if (!$this->BuildProgress->archive_built) {
              DUP_Log::Trace('e');
        
@@ -584,17 +597,8 @@ class DUP_Package
             DUP_Log::info($info);
             DUP_LOG::trace("Done package building");
 
-            if ($this->BuildProgress->failed) {
-
-				DUP_LOG::Trace("build progress failed so setting package to failed");
-                $this->setStatus(DUP_PackageStatus::ERROR);
-
-                $message = "Package creation failed.";
-
-                DUP_Log::error($message, $message, false);
-                DUP_Log::Trace($message);
-            } else {
-
+            if (!$this->BuildProgress->failed) {
+                
                 $this->setStatus(DUP_PackageStatus::COMPLETE);
 				DUP_LOG::Trace("Cleaning up duparchive temp files");
                 //File Cleanup
@@ -621,6 +625,7 @@ class DUP_Package
         $timerStart = DUP_Util::getMicrotime();
 
 
+        DUP_Log::Trace('#### start of zip build');
         //START BUILD
         //PHPs serialze method will return the object, but the ID above is not passed
         //for one reason or another so passing the object back in seems to do the trick

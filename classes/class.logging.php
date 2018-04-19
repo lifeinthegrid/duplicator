@@ -22,7 +22,7 @@ class DUP_Log {
      */
     public static function Init()
     {
-        self::$traceEnabled = DUP_Settings::Get('trace_log_enabled') == 1;
+        self::$traceEnabled = (DUP_Settings::Get('trace_log_enabled') == 1);
     }
 
 	/**
@@ -51,7 +51,7 @@ class DUP_Log {
 	 *	@fwrite(self::$logFileHandle, "{$results} \n"); 
 	 */
 	static public function Info($msg) {
-        self::Trace($msg);
+     //   self::Trace($msg);
         
 		@fwrite(self::$logFileHandle, "{$msg} \n"); 
 	}
@@ -195,7 +195,7 @@ class DUP_Log {
 	*/
 	static public function Error($msg, $detail, $shouldDie = true) {
 		
-        error_log($msg . 'DETAIL:'. $detail);
+        error_log($msg . ' DETAIL:'. $detail);
         
 		$source = self::getStack(debug_backtrace());
 		

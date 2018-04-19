@@ -33,7 +33,7 @@ class DUP_DupArchive
     {
         /* @var $buildProgress DUP_Build_Progress */
 
-		DUP_LOG::trace("c1");
+		DUP_LOG::trace("start");
         try {
             if(DUP_Log::$logFileHandle == null) {
                 DUP_Log::Open($package->NameHash);
