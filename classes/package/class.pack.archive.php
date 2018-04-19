@@ -321,7 +321,6 @@ class DUP_Archive
         $this->FilterFilesAll[] = DUPLICATOR_WPROOTPATH . '.htaccess';
 		$this->FilterFilesAll[] = DUPLICATOR_WPROOTPATH . 'wp-config.php';
 
-        DUP_Log::traceObject("########## filter files all", $this->FilterFilesAll);
 		$this->tmpFilterDirsAll = $this->FilterDirsAll;
 
 		//PHP 5 on windows decode patch

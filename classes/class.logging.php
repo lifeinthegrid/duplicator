@@ -51,15 +51,51 @@ class DUP_Log {
 	 *	@fwrite(self::$logFileHandle, "{$results} \n"); 
 	 */
 	static public function Info($msg) {
-        error_log($msg); // temp
+        self::Trace($msg);
+        
 		@fwrite(self::$logFileHandle, "{$msg} \n"); 
 	}
+
+    /**
+     * Does the trace file exists
+     *
+     * @return bool Returns true if an active trace file exists
+     */
+    public static function TraceFileExists()
+    {
+        $file_path = self::getTraceFilepath();
+
+        return file_exists($file_path);
+    }
+
+     /**
+     * Gets the current file size of the active trace file
+     *
+     * @return string   Returns a human readable file size of the active trace file
+     */
+    public static function getTraceStatus()
+    {
+        $file_path   = DUP_Log::getTraceFilepath();
+        $backup_path = DUP_Log::getBackupTraceFilepath();
+
+        if (file_exists($file_path)) {
+            $filesize = filesize($file_path);
+
+            if (file_exists($backup_path)) {
+                $filesize += filesize($backup_path);
+            }
+
+            $message = sprintf('%1$s', DUP_Util::byteSize($filesize));
+        } else {
+            $message = __('No Log', 'duplicator');
+        }
+
+        return $message;
+    }
     
     // RSR TODO: Swap trace logic out for real trace later
     static public function Trace($message, $calling_function_override = null) {
-        //error_log($msg);
-      //  error_log('is trace enabled');
-      //  error_log(print_r(self::$traceEnabled, true));
+
         if (self::$traceEnabled) {
             $unique_id               = sprintf("%08x", abs(crc32($_SERVER['REMOTE_ADDR'].$_SERVER['REQUEST_TIME'].$_SERVER['REMOTE_PORT'])));
 
@@ -97,9 +133,9 @@ class DUP_Log {
         
 
 	static public function TraceObject($msg, $o) {
-		//if(self::$debugging) {
-			error_log($msg . ':' . print_r($o, true));
-		//}
+        if(self::$traceEnabled) {
+            self::Trace($msg . ':' . print_r($o, true));
+        }
 	}
 
 
@@ -159,7 +195,8 @@ class DUP_Log {
 	*/
 	static public function Error($msg, $detail, $shouldDie = true) {
 		
-        error_log($msg . 'DETAIL:'. $detail); // rsr temp
+        error_log($msg . 'DETAIL:'. $detail);
+        
 		$source = self::getStack(debug_backtrace());
 		
 		$err_msg  = "\n==================================================================================\n";

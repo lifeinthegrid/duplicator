@@ -144,11 +144,14 @@ $package_debug = DUP_Settings::Get('package_debug');
                 <label for="trace_log_enabled"><?php _e("Enabled", 'duplicator') ?> </label><br/>
                 <p class="description">
                     <?php
-                        _e('Turning on log initially clears it out. The enhanced setting writes to both trace and PHP error logs.');
+                        _e('Turns on detailed operation logging. Logging will occur in both PHP error and local trace logs.');
                         echo ('<br/>');
                         _e('WARNING: Only turn on this setting when asked to by support as tracing will impact performance.', 'duplicator');
                     ?>
-                </p>
+                </p><br/>
+                <button class="button" <?php if(!DUP_Log::TraceFileExists()) { echo 'disabled'; } ?> onclick="Duplicator.Pack.DownloadTraceLog(); return false">
+                    <i class="fa fa-download"></i> <?php echo __('Download Trace Log', 'duplicator') . ' (' . DUP_LOG::GetTraceStatus() . ')'; ?>
+                </button>
             </td>
         </tr>
     </table><br/>
@@ -163,5 +166,10 @@ $package_debug = DUP_Settings::Get('package_debug');
 <script>
 jQuery(document).ready(function($) 
 {
+	// which: 0=installer, 1=archive, 2=sql file, 3=log
+	Duplicator.Pack.DownloadTraceLog = function () {
+		var actionLocation = ajaxurl + '?action=DUP_CTRL_Tools_getTraceLog';
+		location.href = actionLocation;
+	};
 });
 </script>

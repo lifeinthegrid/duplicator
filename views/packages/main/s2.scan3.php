@@ -400,7 +400,7 @@ TOTAL SIZE -->
 				echo '<br/><br/>';
                 _e('-or-', 'duplicator');
                 echo '<br/><br/>';
-				$lnk = '<a href="#" target="_blank">' . $a.  __('Duplicator Pro.', 'duplicator') . '</a>';
+				$lnk = '<a href="#" target="_blank">' . __('Duplicator Pro.', 'duplicator') . '</a>';
 				echo __('3. Consider upgrading to', 'duplicator') . ' ' . $lnk;
 				echo '</div>';
 

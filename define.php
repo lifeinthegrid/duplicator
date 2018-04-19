@@ -29,6 +29,7 @@ if (function_exists('plugin_dir_url'))
     define('DUPLICATOR_INSTALL_SQL',    'installer-data.sql');
     define('DUPLICATOR_INSTALL_LOG',    'installer-log.txt');
 	define('DUPLICATOR_INSTALL_DB',     'database.sql');
+    define('DUPLICATOR_ZIPPED_LOG_FILENAME', 'duplicator_pro_log.zip');
 	
 	
 	//GENERAL CONSTRAINTS

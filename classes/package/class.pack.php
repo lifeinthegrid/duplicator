@@ -207,8 +207,6 @@ class DUP_Package
         $report['LL']['TotalSize'] = DUP_Util::byteSize($rawTotalSize);
         $report['LL']['Status']['TotalSize'] = ($rawTotalSize > DUPLICATOR_MAX_DUPARCHIVE_SIZE) ? 'Fail' : 'Good';
 
-        DUP_Log::traceObject("#### report ll", $report['LL']);
-
         $warnings = array(
             $report['SRV']['PHP']['ALL'],
             $report['SRV']['WP']['ALL'],

@@ -121,8 +121,6 @@ if (is_admin() == true)
         //Logic has been added to uninstall.php
     }
 
-    error_log('request ' . print_r($_REQUEST, true));
-
 	/** ========================================================
 	 * ACTION HOOKS
      * =====================================================  */
