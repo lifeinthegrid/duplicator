@@ -201,7 +201,7 @@ class DUP_Log {
 	*  @param string $msg The message to log
 	*  @param string $details Additional details to help resolve the issue if possible
 	*/
-	static public function Error($msg, $detail, $die = true, $behavior = Dup_ErrorBehavior::Quit) {
+	static public function Error($msg, $detail, $behavior = Dup_ErrorBehavior::Quit) {
 		
         error_log($msg . ' DETAIL:'. $detail);
         
@@ -222,10 +222,12 @@ class DUP_Log {
         switch($behavior) {
             
             case Dup_ErrorBehavior::ThrowException:
+                DUP_LOG::trace("throwing exception");
                 throw new Exception("DUPLICATOR ERROR: Please see the 'Package Log' file link below.");
                 break;
 
             case Dup_ErrorBehavior::Quit:
+                DUP_LOG::trace("quitting");
                 die("DUPLICATOR ERROR: Please see the 'Package Log' file link below.");
                 break;
 

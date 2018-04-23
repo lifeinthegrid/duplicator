@@ -493,13 +493,11 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                         }
                     } else {
                         // data is null or Status is warn or fail
-                        var errorString = 'Error Processing Step 1<br/>';
+                        var errorString = '';
 
                         if(data.failures.length > 0) {
-                            errorString = Duplicator.Pack.GetFailureText(data.failures, false);
+                            errorString += Duplicator.Pack.GetFailureText(data.failures, false);
                         }
-
-                        errorString += data.error;
 
                         Duplicator.Pack.DupArchiveProcessingFailed(errorString);
                     }
@@ -568,6 +566,7 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
 
                     if (!onlyCritical || failure.isCritical) {
                         retVal += failure.description;
+                        retVal += "<br/>";
                     }
                 }
             }

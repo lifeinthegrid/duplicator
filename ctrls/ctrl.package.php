@@ -135,10 +135,13 @@ function duplicator_duparchive_package_build()
             $hasCompleted = $package->runDupArchiveBuild();
         }
         catch(Exception $ex) {
+            Dup_Log::Trace('#### caught exception');
             Dup_Log::Error('Caught exception', $ex->getMessage(), Dup_ErrorBehavior::LogOnly);
 
-            $package->Status = DUP_PackageStatus::ERROR;
-            $package->Update();
+            Dup_Log::Trace('#### after log');
+
+            /* @var $package DUP_Package */
+            $package->setStatus(DUP_PackageStatus::ERROR);
 
             $hasCompleted = true;
         }
@@ -147,24 +150,35 @@ function duplicator_duparchive_package_build()
     $json = array();
 
     $json['failures'] = array_merge($package->BuildProgress->build_failures, $package->BuildProgress->validation_failures);
-   
+
+    DUP_LOG::traceObject("#### failures", $json['failures']);
+    
     //JSON:Debug Response
     //Pass = 1, Warn = 2, 3 = Faiure, 4 = Not Done
     if ($hasCompleted) {
+        
+        Dup_Log::Trace('#### completed');
 
         if($package->Status == DUP_PackageStatus::ERROR) {
-            
+
+            Dup_Log::Trace('#### error');
+
             $error_message = __('Error building DupArchive package') . '<br/>';
 
-            $error_message .= implode(',', $json['failures']);
+            foreach($json['failures'] as $failure) {
+                $error_message .= implode(',', $failure->description);
+            }
 
             Dup_Log::Error("Build failed so sending back error", $error_message, Dup_ErrorBehavior::LogOnly);
+            Dup_Log::Trace('#### after log 2');
 
             $json['status'] = 3;
         } else {
             Dup_Log::Info("sending back success status");
             $json['status']  = 1;
         }
+
+        Dup_Log::Trace('#### json package');
 
         $json['package']     = $package;
         $json['runtime']     = $package->Runtime;

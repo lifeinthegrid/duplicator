@@ -96,7 +96,7 @@ class DUP_Database
             //File below 10k considered incomplete
             $sql_file_size = filesize($this->dbStorePath);
             DUP_Log::Info("SQL FILE SIZE: ".DUP_Util::byteSize($sql_file_size)." ({$sql_file_size})");
-            $sql_file_size = 0; // RSR temp
+         //   $sql_file_size = 0; // RSR temp
             if ($sql_file_size < 10000) {
                 $error_message = "SQL file size too low.";
 

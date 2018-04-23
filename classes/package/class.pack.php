@@ -71,7 +71,14 @@ class DUP_Build_Progress
     {
         if($failure_message !== null) {
 
-            $this->build_failures[] = $failure_message;
+            $failure = new StdClass();
+
+            $failure->type        = 0;
+            $failure->subject     = '';
+            $failure->description = $failure_message;
+            $failure->isCritical    = true;
+
+            $this->build_failures[] = $failure;
         }
 
         $this->failed = true;
@@ -580,7 +587,7 @@ class DUP_Package
 
         //START BUILD
         if (!$this->BuildProgress->database_script_built) {
-             DUP_Log::Trace('Bulding database script');
+             DUP_Log::Trace('Building database script');
        
             $this->Database->build($this, Dup_ErrorBehavior::ThrowException);
             $this->BuildProgress->database_script_built = true;
@@ -806,8 +813,6 @@ class DUP_Package
         if (!$packageObj) {
             DUP_Log::Error("Package SetStatus was unable to serialize package object while updating record.");
         }
-
-//        DUP_Log::Trace('#### package object:' . $packageObj);
 
         $wpdb->flush();
         $table = $wpdb->prefix."duplicator_packages";
