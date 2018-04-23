@@ -40,12 +40,13 @@ class DUP_DupArchive
             }
 
 			DUP_LOG::trace("c2");
+            
             if ($buildProgress->retries > DUPLICATOR_MAX_BUILD_RETRIES) {
 				DUP_LOG::trace("c3");
                 $error_msg              = __('Package build appears stuck so marking package as failed. Is the Max Worker Time set too high?.', 'duplicator');
                 DUP_Log::error(__('Build Failure', 'duplicator'), $error_msg, Dup_ErrorBehavior::LogOnly);
                 //$buildProgress->failed = true;
-                $this->BuildProgress->set_failed($error_msg);
+                $buildProgress->set_failed($error_msg);
                 return true;
             } else {
 				DUP_LOG::trace("c4");
@@ -144,7 +145,7 @@ class DUP_DupArchive
                     
                     DupArchiveEngine::addRelativeFileToArchiveST($archivePath, $sqlPath, 'database.sql');
                 } catch (Exception $ex) {
-                    $error_message = 'Error initializing archive';
+                    $error_message = 'Error adding database.sql to archive';
 
                     DUP_Log::error($error_message, $ex->getMessage(), Dup_ErrorBehavior::LogOnly);
                     //$buildProgress->failed = true;
@@ -178,6 +179,7 @@ class DUP_DupArchive
 
                 if ($createState->working) {
 					DUP_LOG::Trace("Create state is working");
+                    die(0);//rsr
                     DupArchiveEngine::addItemsToArchive($createState, $scanReport->ARC);
 
                     $buildProgress->set_build_failures($createState->failures);
@@ -204,7 +206,8 @@ class DUP_DupArchive
                         DUP_LOG::TraceObject("Done build phase. Create State=", $createState);
                     }
                 }
-            } catch (Exception $ex) {
+            }
+            catch (Exception $ex) {
 				DUP_LOG::trace("c15");
                 $message = __('Problem adding items to archive.', 'duplicator').' '.$ex->getMessage();
 

@@ -154,7 +154,7 @@ function duplicator_duparchive_package_build()
     DUP_LOG::traceObject("#### failures", $json['failures']);
     
     //JSON:Debug Response
-    //Pass = 1, Warn = 2, 3 = Faiure, 4 = Not Done
+    //Pass = 1, Warn = 2, 3 = Failure, 4 = Not Done
     if ($hasCompleted) {
         
         Dup_Log::Trace('#### completed');

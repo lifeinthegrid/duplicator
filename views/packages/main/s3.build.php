@@ -423,7 +423,7 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                     // DATA FIELDS
                     // archive_offset, archive_size, failures, file_index, is_done, timestamp
 
-                    if ((typeof (data) != 'undefined') && ((data.status == 1) || (data.status == 4))) {
+                    if ((data != null) && (typeof (data) != 'undefined') && ((data.status == 1) || (data.status == 4))) {
 
                         // Status = 1 means complete, 4 means more to process
                         console.log("CreateDupArchive:Passed");
@@ -492,11 +492,19 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                             Duplicator.Pack.DupArchiveProcessingFailed(errorString);
                         }
                     } else {
-                        // data is null or Status is warn or fail
                         var errorString = '';
 
-                        if(data.failures.length > 0) {
-                            errorString += Duplicator.Pack.GetFailureText(data.failures, false);
+                        if(data == null) {
+
+                            Duplicator.Pack.HandleDupArchiveInterruption("Data returned from web service is null.");
+                        }
+                        else {
+                            // data is null or Status is warn or fail
+                            var errorString = '';
+
+                            if(data.failures.length > 0) {
+                                errorString += Duplicator.Pack.GetFailureText(data.failures, false);
+                            }
                         }
 
                         Duplicator.Pack.DupArchiveProcessingFailed(errorString);
@@ -508,13 +516,13 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                     console.log(jqxhr);
                     console.log("textStatus:");
                     console.log(textStatus);
-                    Duplicator.Pack.HandleDupArchiveInterruption(jqxhr);
+                    Duplicator.Pack.HandleDupArchiveInterruption(jqxhr.responseText);
                 }
             });
         };
 
         console.log('d');
-        Duplicator.Pack.HandleDupArchiveInterruption = function (jqxhr)
+        Duplicator.Pack.HandleDupArchiveInterruption = function (errorText)
         {
             Duplicator.Pack.DupArchiveFailureCount++;
 
@@ -526,21 +534,10 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                 console.log('Relaunching in ' + Duplicator.Pack.DupArchiveRetryDelayInMs);
                 setTimeout(Duplicator.Pack.CreateDupArchive, Duplicator.Pack.DupArchiveRetryDelayInMs);
             } else {
-                console.log('Too many failures.');
+                console.log('Too many failures.' + errorText);
 
-                if (isCommunicationProblem) {
-                    $('#dup-progress-bar-area').hide();
-                    $('#dup-progress-area, #dup-msg-error').show(200);
-                    var status = data.status + ' -' + jqxhr.statusText;
-                    var response = (data.responseText != undefined && jqxhr.responseText.trim().length > 1) ? jqxhr.responseText.trim() : 'No client side error - see package log file';
-                    $('#dup-msg-error-response-status span.data').html(status)
-                    $('#dup-msg-error-response-text span.data').html(response);
-                } else {
-                    // Processing problem
-                    Duplicator.Pack.DupArchiveProcessingFailed(errorText);
-                }
-
-                console.log(data);
+                // Processing problem
+                Duplicator.Pack.DupArchiveProcessingFailed("Too many retries when building DupArchive package. " + errorText);
             }
         };
 
