@@ -43,7 +43,7 @@ class DUP_DupArchive
             if ($buildProgress->retries > DUPLICATOR_MAX_BUILD_RETRIES) {
 				DUP_LOG::trace("c3");
                 $error_msg              = __('Package build appears stuck so marking package as failed. Is the Max Worker Time set too high?.', 'duplicator');
-                DUP_Log::error(__('Build Failure', 'duplicator'), $error_msg, false);
+                DUP_Log::error(__('Build Failure', 'duplicator'), $error_msg, Dup_ErrorBehavior::LogOnly);
                 //$buildProgress->failed = true;
                 $this->BuildProgress->set_failed($error_msg);
                 return true;
@@ -84,7 +84,7 @@ class DUP_DupArchive
                     $fixText = __("Click on \"Resolve This\" button to fix the JSON settings.", 'duplicator');
 
                     DUP_Log::Trace($errorText);
-                    DUP_Log::error("$errorText **RECOMMENDATION:  $fixText.", '', false);
+                    DUP_Log::error("$errorText **RECOMMENDATION:  $fixText.", '', Dup_ErrorBehavior::LogOnly);
 
                     //$buildProgress->failed = true;
                     $buildProgress->set_failed($errorText);
@@ -95,7 +95,7 @@ class DUP_DupArchive
                 DUP_Log::trace("**** scan file $scanFilepath doesn't exist!!");
                 $errorMessage = sprintf(__("ERROR: Can't find Scanfile %s. Please ensure there no non-English characters in the package or schedule name.", 'duplicator'), $scanFilepath);
 
-                DUP_Log::error($errorMessage, '', false);
+                DUP_Log::error($errorMessage, '', Dup_ErrorBehavior::LogOnly);
 
                 //$buildProgress->failed = true;
                 $buildProgress->set_failed($errorMessage);
@@ -133,7 +133,7 @@ class DUP_DupArchive
                 if (($scanReport->ARC->DirCount == '') || ($scanReport->ARC->FileCount == '') || ($scanReport->ARC->FullCount == '')) {
                     $error_message = 'Invalid Scan Report Detected';
 
-                    DUP_Log::error($error_message, 'Invalid Scan Report Detected', false);
+                    DUP_Log::error($error_message, 'Invalid Scan Report Detected', Dup_ErrorBehavior::LogOnly);
                     //$buildProgress->failed = true;
                     $buildProgress->set_failed($error_message);
                     return true;
@@ -146,7 +146,7 @@ class DUP_DupArchive
                 } catch (Exception $ex) {
                     $error_message = 'Error initializing archive';
 
-                    DUP_Log::error($error_message, $ex->getMessage(), false);
+                    DUP_Log::error($error_message, $ex->getMessage(), Dup_ErrorBehavior::LogOnly);
                     //$buildProgress->failed = true;
                     $buildProgress->set_failed($error_message);
                     return true;
@@ -208,7 +208,7 @@ class DUP_DupArchive
 				DUP_LOG::trace("c15");
                 $message = __('Problem adding items to archive.', 'duplicator').' '.$ex->getMessage();
 
-                DUP_Log::Error(__('Problems adding items to archive.', 'duplicator'), $message, false);
+                DUP_Log::Error(__('Problems adding items to archive.', 'duplicator'), $message, Dup_ErrorBehavior::LogOnly);
                 DUP_Log::TraceObject($message." EXCEPTION:", $ex);
                 //$buildProgress->failed = true;
                 $buildProgress->set_failed($message);
@@ -308,7 +308,7 @@ class DUP_DupArchive
 
                         $error_message = __('Critical failure present in validation', 'duplicator');
 
-                        DUP_Log::Error($error_message, $expandState->getFailureSummary(), false);
+                        DUP_Log::Error($error_message, $expandState->getFailureSummary(), Dup_ErrorBehavior::LogOnly);
 
                         //$buildProgress->failed = true;
                         $buildProgress->set_failed($error_message);

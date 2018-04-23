@@ -131,23 +131,34 @@ function duplicator_duparchive_package_build()
     if($package->Status == DUP_PackageStatus::ERROR) {
         $hasCompleted = true;
     } else {
-        $hasCompleted = $package->runDupArchiveBuild();
+        try {
+            $hasCompleted = $package->runDupArchiveBuild();
+        }
+        catch(Exception $ex) {
+            Dup_Log::Error('Caught exception', $ex->getMessage(), Dup_ErrorBehavior::LogOnly);
+
+            $package->Status = DUP_PackageStatus::ERROR;
+            $package->Update();
+
+            $hasCompleted = true;
+        }
     }
     
     $json = array();
 
     $json['failures'] = array_merge($package->BuildProgress->build_failures, $package->BuildProgress->validation_failures);
-    
+   
     //JSON:Debug Response
     //Pass = 1, Warn = 2, 3 = Faiure, 4 = Not Done
     if ($hasCompleted) {
 
         if($package->Status == DUP_PackageStatus::ERROR) {
-            Dup_Log::Info("Build failed so sending back error");
-
+            
             $error_message = __('Error building DupArchive package') . '<br/>';
 
             $error_message .= implode(',', $json['failures']);
+
+            Dup_Log::Error("Build failed so sending back error", $error_message, Dup_ErrorBehavior::LogOnly);
 
             $json['status'] = 3;
         } else {
@@ -166,6 +177,7 @@ function duplicator_duparchive_package_build()
 
     $json_response = json_encode($json);
 
+    Dup_Log::TraceObject('json response', $json_response);
     error_reporting($errLevel);
     die($json_response);
 }

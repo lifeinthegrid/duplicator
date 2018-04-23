@@ -38,7 +38,7 @@ class DUP_Database
      *
      *  @return null
      */
-    public function build($package, $die_on_fail = true)
+    public function build($package, $errorBehavior = Dup_ErrorBehavior::Quit)
     {
         try {
 
@@ -69,9 +69,15 @@ class DUP_Database
 
             //Reserved file found
             if (file_exists($reserved_db_filepath)) {
-                DUP_Log::Error("Reserverd SQL file detected",
+                $error_message = 'Reserved SQL file detected';
+                
+                $package->BuildProgress->set_failed($error_message);
+
+                $package->Update();
+
+                DUP_Log::Error($error_message,
                     "The file database.sql was found at [{$reserved_db_filepath}].\n"
-                    ."\tPlease remove/rename this file to continue with the package creation.");
+                    ."\tPlease remove/rename this file to continue with the package creation.", $errorBehavior);
             }
 
             switch ($mode) {
@@ -97,8 +103,8 @@ class DUP_Database
                 //$package->BuildProgress->failed = true;
                 $package->BuildProgress->set_failed($error_message);
 
-                $package->update();
-                DUP_Log::Error($error_message, "File does not look complete.  Check permission on file and parent directory at [{$this->dbStorePath}]", $die_on_fail);
+                $package->Update();
+                DUP_Log::Error($error_message, "File does not look complete.  Check permission on file and parent directory at [{$this->dbStorePath}]", $errorBehavior);
             }
 
             DUP_Log::Info("SQL FILE TIME: ".date("Y-m-d H:i:s"));
@@ -108,7 +114,7 @@ class DUP_Database
 
             $this->Package->setStatus(DUP_PackageStatus::DBDONE);
         } catch (Exception $e) {
-            DUP_Log::Error("Runtime error in DUP_Database::Build", "Exception: {$e}");
+            DUP_Log::Error("Runtime error in DUP_Database::Build", "Exception: {$e}", $errorBehavior);
         }
     }
 

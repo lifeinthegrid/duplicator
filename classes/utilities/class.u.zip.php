@@ -51,7 +51,7 @@ class DUP_Zip_U
             }
 
             if (!$added) {
-                DUP_Log::error("Couldn't add file $path to archive", '', false);
+                DUP_Log::error("Couldn't add file $path to archive", '', Dup_ErrorBehavior::LogOnly);
                 $success = false;
                 break;
             }

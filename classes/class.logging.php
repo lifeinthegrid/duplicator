@@ -5,6 +5,14 @@ if ( ! defined('DUPLICATOR_VERSION') ) exit; // Exit if accessed directly
  * Helper Class for logging
  * @package Dupicator\classes
  */
+
+abstract class Dup_ErrorBehavior
+{
+    const LogOnly = 0;
+    const ThrowException = 1;
+    const Quit = 2;
+}
+
 class DUP_Log {
 
 	static $debugging = true;
@@ -51,7 +59,7 @@ class DUP_Log {
 	 *	@fwrite(self::$logFileHandle, "{$results} \n"); 
 	 */
 	static public function Info($msg) {
-     //   self::Trace($msg);
+        self::Trace($msg);
         
 		@fwrite(self::$logFileHandle, "{$msg} \n"); 
 	}
@@ -193,7 +201,7 @@ class DUP_Log {
 	*  @param string $msg The message to log
 	*  @param string $details Additional details to help resolve the issue if possible
 	*/
-	static public function Error($msg, $detail, $shouldDie = true) {
+	static public function Error($msg, $detail, $die = true, $behavior = Dup_ErrorBehavior::Quit) {
 		
         error_log($msg . ' DETAIL:'. $detail);
         
@@ -210,9 +218,19 @@ class DUP_Log {
 		$err_msg .= "TRACE:\n{$source}";
 		$err_msg .= "==================================================================================\n\n";
 		@fwrite(self::$logFileHandle, "{$err_msg}"); 
-        
-        if($shouldDie) {
-            die("DUPLICATOR ERROR: Please see the 'Package Log' file link below.");
+
+        switch($behavior) {
+            
+            case Dup_ErrorBehavior::ThrowException:
+                throw new Exception("DUPLICATOR ERROR: Please see the 'Package Log' file link below.");
+                break;
+
+            case Dup_ErrorBehavior::Quit:
+                die("DUPLICATOR ERROR: Please see the 'Package Log' file link below.");
+                break;
+
+            default:
+                // Nothing
         }
 	}
 	

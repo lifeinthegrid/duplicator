@@ -53,10 +53,12 @@ class DUP_Zip extends DUP_Archive
             if (!$isZipOpen) {
                 $error_message = "Cannot open zip file with PHP ZipArchive.";
 
-                DUP_Log::Error($error_message, "Path location [".self::$zipPath."]", false);
+                $buildProgress->set_failed($error_message);
+
+                DUP_Log::Error($error_message, "Path location [".self::$zipPath."]", Dup_ErrorBehavior::LogOnly);
             
 //                $buildProgress->failed = true;
-                $buildProgress->set_failed($error_message);
+                
                 return;
             }
             DUP_Log::Info("ARCHIVE DIR:  ".self::$compressDir);
@@ -78,7 +80,7 @@ class DUP_Zip extends DUP_Archive
             } else {
                 $error_message = "Unable to add database.sql to archive.";
 
-                DUP_Log::Error($error_message, "SQL File Path [".self::$sqlath."]", false);
+                DUP_Log::Error($error_message, "SQL File Path [".self::$sqlath."]", Dup_ErrorBehavior::LogOnly);
             
             //    $buildProgress->failed = true;
                 $buildProgress->set_failed($error_message);
@@ -163,7 +165,7 @@ class DUP_Zip extends DUP_Archive
 
                 DUP_Log::Error($error_message,
                         "This hosted server may have a disk quota limit.\nCheck to make sure this archive file can be stored.",
-                        false);
+                        Dup_ErrorBehavior::LogOnly);
                 //$buildProgress->failed = true;
                 $buildProgress->set_failed($error_message);
                 return;
@@ -180,7 +182,7 @@ class DUP_Zip extends DUP_Archive
         } catch (Exception $e) {
             $error_message = "Runtime error in class.pack.archive.zip.php constructor.";
 
-            DUP_Log::Error($error_message, "Exception: {$e}", false);
+            DUP_Log::Error($error_message, "Exception: {$e}", Dup_ErrorBehavior::LogOnly);
         
             //$buildProgress->failed = true;
             $buildProgress->set_failed($error_message);

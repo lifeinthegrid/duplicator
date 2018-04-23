@@ -67,11 +67,11 @@ class DUP_Build_Progress
         }
     }
 
-    public function set_failed($build_failure_message = null)
+    public function set_failed($failure_message = null)
     {
-        if($build_failure_message !== null) {
+        if($failure_message !== null) {
 
-            $this->build_failures[] = $build_failure_message;
+            $this->build_failures[] = $failure_message;
         }
 
         $this->failed = true;
@@ -324,10 +324,8 @@ class DUP_Package
             $this->BuildProgress->set_failed($error_text);
             $this->update();
             //$this->setStatus(DUP_PackageStatus::ERROR);
-
-            
-
-            DUP_Log::Error("$error_text", '', false);
+           
+            DUP_Log::Error("$error_text", '', Dup_ErrorBehavior::LogOnly);
 
             return;
         }
@@ -350,7 +348,7 @@ class DUP_Package
             $this->BuildProgress->set_failed($error_message);
             $this->update();
             //$this->setStatus(DUP_PackageStatus::ERROR);
-            DUP_Log::error($error_message, '', false);
+            DUP_Log::error($error_message, '', Dup_ErrorBehavior::LogOnly);
             return;
         }
         DUP_Log::info("INSTALLER FILE: {$exe_easy_size}");
@@ -368,7 +366,7 @@ class DUP_Package
                 $this->BuildProgress->set_failed($error_message);
                 $this->update();
                 //$this->setStatus(DUP_PackageStatus::ERROR);
-                DUP_Log::error($error_message, "Archive Size: {$zip_easy_size}", false);
+                DUP_Log::error($error_message, "Archive Size: {$zip_easy_size}", Dup_ErrorBehavior::LogOnly);
                 return;
             }
 
@@ -387,7 +385,7 @@ class DUP_Package
                 $this->BuildProgress->set_failed($error_message);
                 $this->update();
 
-                DUP_Log::Error($error_message, '', false);
+                DUP_Log::Error($error_message, '', Dup_ErrorBehavior::LogOnly);
                 return;
             }
 
@@ -444,7 +442,7 @@ class DUP_Package
 
                         $archive_file_count = $this->Archive->file_count;
                        
-                        DUP_Log::error($error_message, '', false);
+                        DUP_Log::error($error_message, '', Dup_ErrorBehavior::LogOnly);
                         return;
                     }
                 }
@@ -584,7 +582,7 @@ class DUP_Package
         if (!$this->BuildProgress->database_script_built) {
              DUP_Log::Trace('Bulding database script');
        
-            $this->Database->build($this, false);
+            $this->Database->build($this, Dup_ErrorBehavior::ThrowException);
             $this->BuildProgress->database_script_built = true;
             $this->update();
             DUP_LOG::Trace("Built database script");

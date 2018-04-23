@@ -27,7 +27,7 @@ class DUP_Installer
         $this->Package = $package;
     }
 
-	 public function build($package, $die_on_fail = true)
+	 public function build($package, $error_behavior = Dup_ErrorBehavior::Quit)
     {
         DUP_Log::Info("building installer");
 
@@ -45,11 +45,13 @@ class DUP_Installer
             $package->BuildProgress->installer_built = true;
         } else {
             $error_message = 'Error adding installer';
-            DUP_Log::error($error_message, "Marking build progress as failed because couldn't add installer files", $die_on_fail);
-            //$package->BuildProgress->failed = true;
-            //$package->setStatus(DUP_PackageStatus::ERROR);
+
             $package->BuildProgress->set_failed($error_message);
             $package->Update();
+
+            DUP_Log::error($error_message, "Marking build progress as failed because couldn't add installer files", $error_behavior);
+            //$package->BuildProgress->failed = true;
+            //$package->setStatus(DUP_PackageStatus::ERROR);            
         }
 
 		return $success;
@@ -82,7 +84,7 @@ class DUP_Installer
             $mini_expander_string = file_get_contents($mini_expander_filepath);
 
             if ($mini_expander_string === false) {
-                DUP_Log::error(DUP_U::__('Error reading DupArchive mini expander'), DUP_U::__('Error reading DupArchive mini expander'), false);
+                DUP_Log::error(DUP_U::__('Error reading DupArchive mini expander'), DUP_U::__('Error reading DupArchive mini expander'), Dup_ErrorBehavior::LogOnly);
                 return false;
             }
         } else {
@@ -173,7 +175,7 @@ class DUP_Installer
         DUP_Log::TraceObject('json', $json);
 
         if (file_put_contents($archive_config_filepath, $json) === false) {
-            DUP_Log::error("Error writing archive config", "Couldn't write archive config at $archive_config_filepath", false);
+            DUP_Log::error("Error writing archive config", "Couldn't write archive config at $archive_config_filepath", Dup_ErrorBehavior::LogOnly);
             $success = false;
         }
 
@@ -196,19 +198,19 @@ class DUP_Installer
         DUP_Log::Info("add_extra_files1");
 
         if (file_exists($installer_filepath) == false) {
-            DUP_Log::error("Installer $installer_filepath not present", '', false);
+            DUP_Log::error("Installer $installer_filepath not present", '', Dup_ErrorBehavior::LogOnly);
             return false;
         }
 
         DUP_Log::Info("add_extra_files2");
         if (file_exists($sql_filepath) == false) {
-            DUP_Log::error("Database SQL file $sql_filepath not present", '', false);
+            DUP_Log::error("Database SQL file $sql_filepath not present", '', Dup_ErrorBehavior::LogOnly);
             return false;
         }
 
         DUP_Log::Info("add_extra_files3");
         if (file_exists($archive_config_filepath) == false) {
-            DUP_Log::error("Archive configuration file $archive_config_filepath not present", '', false);
+            DUP_Log::error("Archive configuration file $archive_config_filepath not present", '', Dup_ErrorBehavior::LogOnly);
             return false;
         }
 
@@ -219,7 +221,7 @@ class DUP_Installer
             DUP_Log::Info("add_extra_files5");
             if (file_exists($archive_filepath) == false) {
 
-                DUP_Log::error("$error_text. **RECOMMENDATION: $fix_text", '', false);
+                DUP_Log::error("$error_text. **RECOMMENDATION: $fix_text", '', Dup_ErrorBehavior::LogOnly);
 
                 return false;
             }
@@ -281,7 +283,7 @@ class DUP_Installer
 
             $success = true;
         } catch (Exception $ex) {
-            DUP_Log::Error("Error adding installer files to archive. ", $ex->getMessage());
+            DUP_Log::Error("Error adding installer files to archive. ", $ex->getMessage(), Dup_ErrorBehavior::ThrowException);
         }
 
         return $success;
@@ -365,10 +367,10 @@ class DUP_Installer
 
                     $success = true;
                 } else {
-                    DUP_Log::error("Unable to add enhanced enhanced installer files to archive.", '', false);
+                    DUP_Log::error("Unable to add enhanced enhanced installer files to archive.", '', Dup_ErrorBehavior::LogOnly);
                 }
             } else {
-                DUP_Log::error("Unable to add scan file to archive.", '', false);
+                DUP_Log::error("Unable to add scan file to archive.", '', Dup_ErrorBehavior::LogOnly);
             }
 
             if ($zipArchive->close() === false) {
@@ -416,16 +418,16 @@ class DUP_Installer
                         $success = true;
                     } else {
                       //  DUP_Log::error("Error adding directory {$snaplib_directory} or {$fileops_directory} to zipArchive", '', false);
-						  DUP_Log::error("Error adding directory {$snaplib_directory} to zipArchive", '', false);
+						  DUP_Log::error("Error adding directory {$snaplib_directory} to zipArchive", '', Dup_ErrorBehavior::LogOnly);
                     }
                 } else {
-                    DUP_Log::error("Error adding $archive_config_filepath to zipArchive", '', false);
+                    DUP_Log::error("Error adding $archive_config_filepath to zipArchive", '', Dup_ErrorBehavior::LogOnly);
                 }
             } else {
-                DUP_Log::error("Error adding directory $installer_directory to zipArchive", '', false);
+                DUP_Log::error("Error adding directory $installer_directory to zipArchive", '', Dup_ErrorBehavior::LogOnly);
             }
         } else {
-            DUP_Log::error("Error adding backup installer file to zipArchive", '', false);
+            DUP_Log::error("Error adding backup installer file to zipArchive", '', Dup_ErrorBehavior::LogOnly);
         }
 
         return $success;
