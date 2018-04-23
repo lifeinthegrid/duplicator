@@ -179,7 +179,8 @@ class DUP_DupArchive
 
                 if ($createState->working) {
 					DUP_LOG::Trace("Create state is working");
-                    die(0);//rsr
+            ///s        die(0);//rsr
+            
                     DupArchiveEngine::addItemsToArchive($createState, $scanReport->ARC);
 
                     $buildProgress->set_build_failures($createState->failures);

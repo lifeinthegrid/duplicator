@@ -492,14 +492,15 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                             Duplicator.Pack.DupArchiveProcessingFailed(errorString);
                         }
                     } else {
+                        // data is null or Status is warn or fail
+
                         var errorString = '';
 
                         if(data == null) {
 
-                            Duplicator.Pack.HandleDupArchiveInterruption("Data returned from web service is null.");
+                            errorString = "Data returned from web service is null.";
                         }
-                        else {
-                            // data is null or Status is warn or fail
+                        else {                            
                             var errorString = '';
 
                             if(data.failures.length > 0) {
@@ -507,7 +508,7 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                             }
                         }
 
-                        Duplicator.Pack.DupArchiveProcessingFailed(errorString);
+                        Duplicator.Pack.HandleDupArchiveInterruption(errorString);
                     }
                 },
                 error: function (jqxhr, textStatus) {
