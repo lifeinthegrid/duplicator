@@ -17,9 +17,15 @@ class DUP_Build_Progress
     public $database_script_built = false;
     public $failed = false;
     public $retries = 0;
-   // public $warnings = array();
     public $build_failures = array();
     public $validation_failures = array();
+
+    private $package;
+
+    public function __construct($package)
+    {
+        $this->package = $package;
+    }
 
     public function has_completed()
     {
@@ -59,6 +65,17 @@ class DUP_Build_Progress
         {
             $this->build_failures[] = $failure->description();
         }
+    }
+
+    public function set_failed($build_failure_message = null)
+    {
+        if($build_failure_message !== null) {
+
+            $this->build_failures[] = $build_failure_message;
+        }
+
+        $this->failed = true;
+        $this->package->Status = DUP_PackageStatus::ERROR;
     }
 }
 
@@ -153,7 +170,7 @@ class DUP_Package
         $this->Database  = new DUP_Database($this);
         $this->Archive   = new DUP_Archive($this);
         $this->Installer = new DUP_Installer($this);
-		$this->BuildProgress = new DUP_Build_Progress();
+		$this->BuildProgress = new DUP_Build_Progress($this);
 		$this->Status = DUP_PackageStatus::CREATED;
     }
 
@@ -301,11 +318,14 @@ class DUP_Package
         DUP_Log::Trace('rundupa1');
         if (!strstr($sql_done_txt, 'DUPLICATOR_MYSQLDUMP_EOF') || $sql_temp_size < 5120) {
             DUP_Log::Trace('rundupa2');
-            $this->BuildProgress->failed = true;
-            $this->update();
-            $this->setStatus(DUP_PackageStatus::ERROR);
-
+            
             $error_text = "ERROR: SQL file not complete.  The file {$sql_temp_path} looks too small ($sql_temp_size bytes) or the end of file marker was not found.";
+
+            $this->BuildProgress->set_failed($error_text);
+            $this->update();
+            //$this->setStatus(DUP_PackageStatus::ERROR);
+
+            
 
             DUP_Log::Error("$error_text", '', false);
 
@@ -324,10 +344,13 @@ class DUP_Package
         $exe_done_txt = DUP_Util::tailFile($exe_temp_path, 10);
 
         if (!strstr($exe_done_txt, 'DUPLICATOR_INSTALLER_EOF') && !$this->BuildProgress->failed) {
-            $this->BuildProgress->failed = true;
+            //$this->BuildProgress->failed = true;
+            $error_message = 'ERROR: Installer file not complete.  The end of file marker was not found.  Please try to re-create the package.';
+
+            $this->BuildProgress->set_failed($error_message);
             $this->update();
-            $this->setStatus(DUP_PackageStatus::ERROR);
-            DUP_Log::error("ERROR: Installer file not complete.  The end of file marker was not found.  Please try to re-create the package.", '', false);
+            //$this->setStatus(DUP_PackageStatus::ERROR);
+            DUP_Log::error($error_message, '', false);
             return;
         }
         DUP_Log::info("INSTALLER FILE: {$exe_easy_size}");
@@ -339,10 +362,13 @@ class DUP_Package
         if ($this->Archive->file_count != -1) {
             $zip_easy_size = DUP_Util::byteSize($this->Archive->Size);
             if (!($this->Archive->Size)) {
-                $this->BuildProgress->failed = true;
+                //$this->BuildProgress->failed = true;
+                $error_message = "ERROR: The archive file contains no size.";
+
+                $this->BuildProgress->set_failed($error_message);
                 $this->update();
-                $this->setStatus(DUP_PackageStatus::ERROR);
-                DUP_Log::error("ERROR: The archive file contains no size.", "Archive Size: {$zip_easy_size}", false);
+                //$this->setStatus(DUP_PackageStatus::ERROR);
+                DUP_Log::error($error_message, "Archive Size: {$zip_easy_size}", false);
                 return;
             }
 
@@ -356,8 +382,9 @@ class DUP_Package
             } else {
                 $error_message = sprintf(__("Can't find Scanfile %s. Please ensure there no non-English characters in the package or schedule name.", 'duplicator'), $scan_filepath);
 
-                $this->BuildProgress->failed = true;
+                //$this->BuildProgress->failed = true;
                 $this->setStatus(DUP_PackageStatus::ERROR);
+                $this->BuildProgress->set_failed($error_message);
                 $this->update();
 
                 DUP_Log::Error($error_message, '', false);
@@ -407,14 +434,16 @@ class DUP_Package
                 if (($straight_ratio < 0.90) || ($straight_ratio > 1.01)) {
                     // Has to exceed both the straight as well as the warning ratios
                     if (($warning_ratio < 0.90) || ($warning_ratio > 1.01)) {
-                        $this->BuildProgress->failed = true;
-                        $this->update();
-                        $this->setStatus(DUP_PackageStatus::ERROR);
-
-                        $archive_file_count = $this->Archive->file_count;
 
                         $error_message = sprintf('ERROR: File count in archive vs expected suggests a bad archive (%1$d vs %2$d).', $archive_file_count, $expected_filecount);
 
+                        //$this->BuildProgress->failed = true;
+                        $this->BuildProgress->set_failed($error_message);
+                        $this->update();
+                        //$this->setStatus(DUP_PackageStatus::ERROR);
+
+                        $archive_file_count = $this->Archive->file_count;
+                       
                         DUP_Log::error($error_message, '', false);
                         return;
                     }
@@ -535,7 +564,6 @@ class DUP_Package
 
             $message = "Package creation failed.";
 
-          //  DUP_Log::error($message, $message, false);
             DUP_Log::Trace($message);
 
             return true;
@@ -556,7 +584,7 @@ class DUP_Package
         if (!$this->BuildProgress->database_script_built) {
              DUP_Log::Trace('Bulding database script');
        
-            $this->Database->build($this);
+            $this->Database->build($this, false);
             $this->BuildProgress->database_script_built = true;
             $this->update();
             DUP_LOG::Trace("Built database script");

@@ -375,11 +375,11 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
 
 
                 },
-                error: function (data) {
+                error: function (jqxhr) {
                     $('#dup-progress-bar-area').hide();
                     $('#dup-progress-area, #dup-msg-error').show(200);
-                    var status = data.status + ' -' + data.statusText;
-                    var response = (data.responseText != undefined && data.responseText.trim().length > 1) ? data.responseText.trim() : 'No client side error - see package log file';
+                    var status = jqxhr.status + ' -' + data.statusText;
+                    var response = (jqxhr.responseText != undefined && jqxhr.responseText.trim().length > 1) ? jqxhr.responseText.trim() : 'No client side error - see package log file';
                     $('#dup-msg-error-response-status span.data').html(status)
                     $('#dup-msg-error-response-text span.data').html(response);
                     console.log(data);
@@ -459,11 +459,6 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                                 $('#dup-progress-area, #dup-msg-success').show(300);
 
                                 var pack = data.package;
-                                var installURL = pack.StoreURL + pack.Installer.File + "?get=1&file=" + pack.Installer.File;
-                                var archiveURL = pack.StoreURL + pack.Archive.File + "?get=1";
-
-                                console.log("installer url" + installURL);
-                                console.log("archive url" + archiveURL);
 
                                 $('#dup-btn-archive-size').append('&nbsp; (' + data.archiveSize + ')')
                                 $('#data-name-hash').text(pack.NameHash || 'error read');
@@ -475,8 +470,7 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                                 $('#dup-btn-archive').click(function() { Duplicator.Pack.DownloadPackageFile(1, pack.ID); return false});
 
                                 $('#dup-link-download-both').on("click", function () {
-//                                    window.open(installURL);//
-//                                    window.open(archiveURL);
+
                                         Duplicator.Pack.DownloadPackageFile(0, pack.ID);
                                         Duplicator.Pack.DownloadPackageFile(1, pack.ID);
 
@@ -507,35 +501,28 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
 
                         errorString += data.error;
 
-                        //Duplicator.Pack.HandleDupArchiveProblem(null, null, errorString, false);
                         Duplicator.Pack.DupArchiveProcessingFailed(errorString);
                     }
                 },
-                error: function (xHr, textStatus) {
-                    console.log('AJAX error. textStatus=');
+                error: function (jqxhr, textStatus) {
+                    console.log('DupArchive AJAX error!');
+                    console.log("jqHr:");
+                    console.log(jqxhr);
+                    console.log("textStatus:");
                     console.log(textStatus);
-                    console.log(xHr);
-                    Duplicator.Pack.HandleDupArchiveProblem(xHr, textStatus, '', true);
+                    Duplicator.Pack.HandleDupArchiveInterruption(jqxhr);
                 }
             });
         };
 
         console.log('d');
-        Duplicator.Pack.HandleDupArchiveProblem = function (xHr, textStatus, errorText, isCommunicationProblem)
+        Duplicator.Pack.HandleDupArchiveInterruption = function (jqxhr)
         {
-            console.log("HandleDupArchiveProblem:Is communication problem:" + isCommunicationProblem);
             Duplicator.Pack.DupArchiveFailureCount++;
 
             if (Duplicator.Pack.DupArchiveFailureCount <= Duplicator.Pack.DupArchiveMaxRetries) {
 
-                console.log('!!!DUPARCHIVE (COMMUNICATION) FAILURE #' + Duplicator.Pack.DupArchiveFailureCount);
-
-                if (isCommunicationProblem) {
-                    console.log("xHr");
-                    console.log(xHr);
-                } else {
-                    console.log(errorText);
-                }
+                console.log("Failure count:" + Duplicator.Pack.DupArchiveFailureCount);
 
                 // / rsr todo don’t worry about this right now Duplicator.Pack.DupArchiveThrottleDelay = 9;	// Equivalent of 'low' server throttling (ms)
                 console.log('Relaunching in ' + Duplicator.Pack.DupArchiveRetryDelayInMs);
@@ -546,8 +533,8 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                 if (isCommunicationProblem) {
                     $('#dup-progress-bar-area').hide();
                     $('#dup-progress-area, #dup-msg-error').show(200);
-                    var status = data.status + ' -' + data.statusText;
-                    var response = (data.responseText != undefined && data.responseText.trim().length > 1) ? data.responseText.trim() : 'No client side error - see package log file';
+                    var status = data.status + ' -' + jqxhr.statusText;
+                    var response = (data.responseText != undefined && jqxhr.responseText.trim().length > 1) ? jqxhr.responseText.trim() : 'No client side error - see package log file';
                     $('#dup-msg-error-response-status span.data').html(status)
                     $('#dup-msg-error-response-text span.data').html(response);
                 } else {

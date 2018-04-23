@@ -51,9 +51,12 @@ class DUP_Zip extends DUP_Archive
             DUP_Log::Info("********************************************************************************");
             $isZipOpen = (self::$zipArchive->open(self::$zipPath, ZIPARCHIVE::CREATE) === TRUE);
             if (!$isZipOpen) {
-                DUP_Log::Error("Cannot open zip file with PHP ZipArchive.", "Path location [".self::$zipPath."]", false);
+                $error_message = "Cannot open zip file with PHP ZipArchive.";
+
+                DUP_Log::Error($error_message, "Path location [".self::$zipPath."]", false);
             
-                $buildProgress->failed = true;
+//                $buildProgress->failed = true;
+                $buildProgress->set_failed($error_message);
                 return;
             }
             DUP_Log::Info("ARCHIVE DIR:  ".self::$compressDir);
@@ -73,9 +76,12 @@ class DUP_Zip extends DUP_Archive
             if ($isSQLInZip) {
                 DUP_Log::Info("SQL ADDED: ".basename(self::$sqlPath));
             } else {
-                DUP_Log::Error("Unable to add database.sql to archive.", "SQL File Path [".self::$sqlath."]", false);
+                $error_message = "Unable to add database.sql to archive.";
+
+                DUP_Log::Error($error_message, "SQL File Path [".self::$sqlath."]", false);
             
-                $buildProgress->failed = true;
+            //    $buildProgress->failed = true;
+                $buildProgress->set_failed($error_message);
                 return;
             }
             self::$zipArchive->close();
@@ -153,10 +159,13 @@ class DUP_Zip extends DUP_Archive
             if($zipCloseResult) {
                 DUP_Log::Info("COMPRESSION RESULT: '{$zipCloseResult}'");
             } else {
-                DUP_Log::Error("ZipArchive close failure.",
+                $error_message = "ZipArchive close failure.";
+
+                DUP_Log::Error($error_message,
                         "This hosted server may have a disk quota limit.\nCheck to make sure this archive file can be stored.",
                         false);
-                $buildProgress->failed = true;
+                //$buildProgress->failed = true;
+                $buildProgress->set_failed($error_message);
                 return;
             }
 
@@ -169,9 +178,12 @@ class DUP_Zip extends DUP_Archive
             DUP_Log::Info("ARCHIVE RUNTIME: {$timerAllSum}");
             DUP_Log::Info("MEMORY STACK: ".DUP_Server::getPHPMemory());
         } catch (Exception $e) {
-            DUP_Log::Error("Runtime error in class.pack.archive.zip.php constructor.", "Exception: {$e}", false);
+            $error_message = "Runtime error in class.pack.archive.zip.php constructor.";
+
+            DUP_Log::Error($error_message, "Exception: {$e}", false);
         
-            $buildProgress->failed = true;
+            //$buildProgress->failed = true;
+            $buildProgress->set_failed($error_message);
             return;    
         }
     }

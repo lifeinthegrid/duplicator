@@ -139,16 +139,20 @@ function duplicator_duparchive_package_build()
     $json['failures'] = array_merge($package->BuildProgress->build_failures, $package->BuildProgress->validation_failures);
     
     //JSON:Debug Response
-    //Pass = 1, Warn = 2, Fail = 3, 4 = Not Done
+    //Pass = 1, Warn = 2, 3 = Faiure, 4 = Not Done
     if ($hasCompleted) {
 
         if($package->Status == DUP_PackageStatus::ERROR) {
-            Dup_Log::Info("sending back error status");
-            $json['status']      = 3;
-            $json['error']       = implode(',', $json['failures']);
+            Dup_Log::Info("Build failed so sending back error");
+
+            $error_message = __('Error building DupArchive package') . '<br/>';
+
+            $error_message .= implode(',', $json['failures']);
+
+            $json['status'] = 3;
         } else {
             Dup_Log::Info("sending back success status");
-            $json['status']      = 1;
+            $json['status']  = 1;
         }
 
         $json['package']     = $package;
@@ -161,9 +165,6 @@ function duplicator_duparchive_package_build()
     }
 
     $json_response = json_encode($json);
-
-    //Simulate a Host Build Interrupt
-    //die(0);
 
     error_reporting($errLevel);
     die($json_response);

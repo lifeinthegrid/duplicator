@@ -44,7 +44,8 @@ class DUP_DupArchive
 				DUP_LOG::trace("c3");
                 $error_msg              = __('Package build appears stuck so marking package as failed. Is the Max Worker Time set too high?.', 'duplicator');
                 DUP_Log::error(__('Build Failure', 'duplicator'), $error_msg, false);
-                $buildProgress->failed = true;
+                //$buildProgress->failed = true;
+                $this->BuildProgress->set_failed($error_msg);
                 return true;
             } else {
 				DUP_LOG::trace("c4");
@@ -85,7 +86,8 @@ class DUP_DupArchive
                     DUP_Log::Trace($errorText);
                     DUP_Log::error("$errorText **RECOMMENDATION:  $fixText.", '', false);
 
-                    $buildProgress->failed = true;
+                    //$buildProgress->failed = true;
+                    $buildProgress->set_failed($errorText);
                     return true;
                 }
             } else {
@@ -95,7 +97,8 @@ class DUP_DupArchive
 
                 DUP_Log::error($errorMessage, '', false);
 
-                $buildProgress->failed = true;
+                //$buildProgress->failed = true;
+                $buildProgress->set_failed($errorMessage);
                 return true;
             }
 
@@ -128,8 +131,11 @@ class DUP_DupArchive
                 DUP_Log::info("STATS:\tDirs ".$scanReport->ARC->DirCount." | Files ".$scanReport->ARC->FileCount." | Total ".$scanReport->ARC->FullCount);
 
                 if (($scanReport->ARC->DirCount == '') || ($scanReport->ARC->FileCount == '') || ($scanReport->ARC->FullCount == '')) {
-                    DUP_Log::error('Invalid Scan Report Detected', 'Invalid Scan Report Detected', false);
-                    $buildProgress->failed = true;
+                    $error_message = 'Invalid Scan Report Detected';
+
+                    DUP_Log::error($error_message, 'Invalid Scan Report Detected', false);
+                    //$buildProgress->failed = true;
+                    $buildProgress->set_failed($error_message);
                     return true;
                 }
 
@@ -138,8 +144,11 @@ class DUP_DupArchive
                     
                     DupArchiveEngine::addRelativeFileToArchiveST($archivePath, $sqlPath, 'database.sql');
                 } catch (Exception $ex) {
-                    DUP_Log::error('Error initializing archive', $ex->getMessage(), false);
-                    $buildProgress->failed = true;
+                    $error_message = 'Error initializing archive';
+
+                    DUP_Log::error($error_message, $ex->getMessage(), false);
+                    //$buildProgress->failed = true;
+                    $buildProgress->set_failed($error_message);
                     return true;
                 }
 
@@ -201,7 +210,8 @@ class DUP_DupArchive
 
                 DUP_Log::Error(__('Problems adding items to archive.', 'duplicator'), $message, false);
                 DUP_Log::TraceObject($message." EXCEPTION:", $ex);
-                $buildProgress->failed = true;
+                //$buildProgress->failed = true;
+                $buildProgress->set_failed($message);
                 return true;
             }
 
@@ -216,13 +226,20 @@ class DUP_DupArchive
 
                 if(!$buildProgress->installer_built) {
 
-                    $package->Installer->build($package);
+                    if($package->Installer->build($package, false))
+                    {
+                        $package->Runtime = -1;
+                        $package->ExeSize = DUP_Util::byteSize($package->Installer->Size);
+                        $package->ZipSize = DUP_Util::byteSize($package->Archive->Size);
+                        $package->update();
+                    }
+                    else
+                    {
+                        $package->update();
+                        return;
+                    }
 
-					$package->Runtime = -1;
-					$package->ExeSize = DUP_Util::byteSize($package->Installer->Size);
-					$package->ZipSize = DUP_Util::byteSize($package->Archive->Size);
-
-					$package->update();
+					
 
 			//rsr todo need this somewhere		$package->buildCleanup();
 
@@ -279,7 +296,8 @@ class DUP_DupArchive
                  
                     } catch (Exception $ex) {
                         DUP_Log::Trace('Exception:'.$ex->getMessage().':'.$ex->getTraceAsString());
-                        $buildProgress->failed = true;
+                        //$buildProgress->failed = true;
+                        $buildProgress->set_failed('Error validating archive');
                         return true;
                     }
 
@@ -288,9 +306,12 @@ class DUP_DupArchive
 						DUP_LOG::trace("c20");
                         // Fail immediately if critical failure present - even if havent completed processing the entire archive.
 
-                        DUP_Log::Error(__('Critical failure present in validation', 'duplicator'), $expandState->getFailureSummary(), false);
+                        $error_message = __('Critical failure present in validation', 'duplicator');
 
-                        $buildProgress->failed = true;
+                        DUP_Log::Error($error_message, $expandState->getFailureSummary(), false);
+
+                        //$buildProgress->failed = true;
+                        $buildProgress->set_failed($error_message);
                         return true;
                     } else if (!$expandState->working) {
 						DUP_LOG::trace("c21");
@@ -329,7 +350,8 @@ class DUP_DupArchive
         } catch (Exception $ex) {
             // Have to have a catchall since the main system that calls this function is not prepared to handle exceptions
             DUP_Log::trace('Top level create Exception:'.$ex->getMessage().':'.$ex->getTraceAsString());
-            $buildProgress->failed = true;
+            //$buildProgress->failed = true;
+            $buildProgress->set_failed('Error encoundtered creating archive. See package log');
             return true;
         }
 

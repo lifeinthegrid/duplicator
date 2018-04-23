@@ -27,7 +27,7 @@ class DUP_Installer
         $this->Package = $package;
     }
 
-	 public function build($package)
+	 public function build($package, $die_on_fail = true)
     {
         DUP_Log::Info("building installer");
 
@@ -44,9 +44,12 @@ class DUP_Installer
         if ($success) {
             $package->BuildProgress->installer_built = true;
         } else {
-            DUP_Log::error("ERROR ADDING INSTALLER", "Marking build progress as failed because couldn't add installer files", false);
-            $package->BuildProgress->failed = true;
-            $package->setStatus(DUP_PackageStatus::ERROR);
+            $error_message = 'Error adding installer';
+            DUP_Log::error($error_message, "Marking build progress as failed because couldn't add installer files", $die_on_fail);
+            //$package->BuildProgress->failed = true;
+            //$package->setStatus(DUP_PackageStatus::ERROR);
+            $package->BuildProgress->set_failed($error_message);
+            $package->Update();
         }
 
 		return $success;

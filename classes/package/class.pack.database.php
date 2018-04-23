@@ -38,7 +38,7 @@ class DUP_Database
      *
      *  @return null
      */
-    public function build($package)
+    public function build($package, $die_on_fail = true)
     {
         try {
 
@@ -92,9 +92,13 @@ class DUP_Database
             DUP_Log::Info("SQL FILE SIZE: ".DUP_Util::byteSize($sql_file_size)." ({$sql_file_size})");
             $sql_file_size = 0; // RSR temp
             if ($sql_file_size < 10000) {
-                $package->BuildProgress->failed = true;
+                $error_message = "SQL file size too low.";
+
+                //$package->BuildProgress->failed = true;
+                $package->BuildProgress->set_failed($error_message);
+
                 $package->update();
-                DUP_Log::Error("SQL file size too low.", "File does not look complete.  Check permission on file and parent directory at [{$this->dbStorePath}]");
+                DUP_Log::Error($error_message, "File does not look complete.  Check permission on file and parent directory at [{$this->dbStorePath}]", $die_on_fail);
             }
 
             DUP_Log::Info("SQL FILE TIME: ".date("Y-m-d H:i:s"));
