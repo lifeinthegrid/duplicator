@@ -58,6 +58,10 @@ function duplicator_package_build()
     
     $Package->save('zip');
 
+    DUP_Settings::Set('active_package_id', $Package->ID);
+
+    DUP_Settings::Save();
+
     if (!is_readable(DUPLICATOR_SSDIR_PATH_TMP."/{$Package->ScanFile}")) {
         die("The scan result file was not found.  Please run the scan step before building the package.");
     }
@@ -67,11 +71,11 @@ function duplicator_package_build()
     //JSON:Debug Response
     //Pass = 1, Warn = 2, Fail = 3
     $json            = array();
-    $json['Status']  = 1;
-    $json['Package'] = $Package;
-    $json['Runtime'] = $Package->Runtime;
-    $json['ExeSize'] = $Package->ExeSize;
-    $json['ZipSize'] = $Package->ZipSize;
+    $json['status']  = 1;
+    $json['package'] = $Package;
+    $json['runtime'] = $Package->Runtime;
+    $json['exeSize'] = $Package->ExeSize;
+    $json['archiveSize'] = $Package->ZipSize;
     $json_response   = json_encode($json);
 
     //Simulate a Host Build Interrupt

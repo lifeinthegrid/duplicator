@@ -5,7 +5,6 @@ if (!isset($_POST['dup_form_opts_nonce_field']) || !wp_verify_nonce($_POST['dup_
 }
 require_once (DUPLICATOR_PLUGIN_PATH.'classes/package/duparchive/class.pack.archive.duparchive.php');
 
-$Package                = DUP_Package::getActive();
 $zip_build_nonce        = wp_create_nonce('duplicator_package_build');
 $duparchive_build_nonce = wp_create_nonce('duplicator_duparchive_package_build');
 
@@ -20,7 +19,7 @@ $atext1 .= __('Duplicator Pro', 'duplicator').'</a>!';
 
 $rand_txt    = array();
 $rand_txt[0] = $atext0;
-//$rand_txt[1] = $atext1;
+
 ?>
 
 <style>
@@ -353,27 +352,8 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                     $('#dup-create-area-link').show();
                 },
                 success: function (data) {
-                    $('#dup-progress-bar-area').hide();
-                    $('#dup-progress-area, #dup-msg-success').show(300);
 
-                    var Pack = data.Package;
-                    var InstallURL = Pack.StoreURL + Pack.Installer.File + "?get=1&file=" + Pack.Installer.File;
-                    var ArchiveURL = Pack.StoreURL + Pack.Archive.File + "?get=1";
-
-                    $('#dup-btn-archive-size').append('&nbsp; (' + data.ZipSize + ')')
-                    $('#data-name-hash').text(Pack.NameHash || 'error read');
-                    $('#data-time').text(data.Runtime || 'unable to read time');
-
-                    //Wire Up Downloads
-                    $('#dup-btn-installer').click(function() { Duplicator.Pack.DownloadPackageFile(0, Pack.ID); return false});                               
-                    $('#dup-btn-archive').click(function() { Duplicator.Pack.DownloadPackageFile(1, Pack.ID); return false});
-
-                    $('#dup-link-download-both').on("click", function () {
-                        $('#dup-btn-installer').click(function() { Duplicator.Pack.DownloadPackageFile(0, Pack.ID); return false});                               
-                        $('#dup-btn-archive').click(function() { Duplicator.Pack.DownloadPackageFile(1, Pack.ID); return false});
-                    });
-
-
+                    Duplicator.Pack.WireDownloadLinks(data);
                 },
                 error: function (jqxhr) {
                     $('#dup-progress-bar-area').hide();
@@ -387,7 +367,7 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
             });
             return false;
         }
-
+       
         /*	----------------------------------------
          *	METHOD: Performs Ajax post to create a new DupArchive-based package */
         Duplicator.Pack.CreateDupArchive = function () {
@@ -455,26 +435,7 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                                     alert(errorMessage);
                                 }
 
-                                $('#dup-progress-bar-area').hide();
-                                $('#dup-progress-area, #dup-msg-success').show(300);
-
-                                var pack = data.package;
-
-                                $('#dup-btn-archive-size').append('&nbsp; (' + data.archiveSize + ')')
-                                $('#data-name-hash').text(pack.NameHash || 'error read');
-                                $('#data-time').text(data.runtime || 'unable to read time');
-
-                                //Wire Up Downloads
-                                console.log(pack);
-                                $('#dup-btn-installer').click(function() { Duplicator.Pack.DownloadPackageFile(0, pack.ID); return false});                               
-                                $('#dup-btn-archive').click(function() { Duplicator.Pack.DownloadPackageFile(1, pack.ID); return false});
-
-                                $('#dup-link-download-both').on("click", function () {
-
-                                        Duplicator.Pack.DownloadPackageFile(0, pack.ID);
-                                        Duplicator.Pack.DownloadPackageFile(1, pack.ID);
-
-                                });
+                               Duplicator.Pack.WireDownloadLinks(data);
 
                             } else {
                                 // data.Status == 4
@@ -522,7 +483,34 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
             });
         };
 
-        console.log('d');
+        Duplicator.Pack.WireDownloadLinks = function(data) {
+
+            var pack = data.package;
+
+            $('#dup-progress-bar-area').hide();
+            $('#dup-progress-area, #dup-msg-success').show(300);
+
+            $('#dup-btn-archive-size').append('&nbsp; (' + data.archiveSize + ')')
+            $('#data-name-hash').text(pack.NameHash || 'error read');
+            $('#data-time').text(data.runtime || 'unable to read time');
+
+            //Wire Up Downloads
+            $('#dup-btn-installer').click(function() { Duplicator.Pack.DownloadPackageFile(0, pack.ID); return false});
+            $('#dup-btn-archive').click(function() { Duplicator.Pack.DownloadPackageFile(1, pack.ID); return false});
+
+            $('#dup-link-download-both').on("click", function () {
+
+                var archive_name = pack.Archive.File;
+                var archive_url = "<?php echo DUPLICATOR_SSDIR_URL; ?>" + "/" + archive_name;
+
+                Duplicator.Pack.DownloadFile(archive_name, archive_url);
+
+                Duplicator.Pack.DownloadPackageFile(0, pack.ID);
+
+                return false;
+            });
+        };
+
         Duplicator.Pack.HandleDupArchiveInterruption = function (errorText)
         {
             Duplicator.Pack.DupArchiveFailureCount++;

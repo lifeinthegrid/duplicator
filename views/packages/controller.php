@@ -35,6 +35,18 @@ $get_package_file_nonce = wp_create_nonce('DUP_CTRL_Package_getPackageFile');
 			return false;
         };
 
+        Duplicator.Pack.DownloadFile = function(file, url)
+        {
+            var link = document.createElement('a');        
+            link.target = "_blank";
+            link.download = file;
+            link.href= url;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            return false;
+        };
+
 
         /*	----------------------------------------
          * METHOD: Toggle links with sub-details */
