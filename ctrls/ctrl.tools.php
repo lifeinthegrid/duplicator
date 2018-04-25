@@ -17,6 +17,7 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
 	{
 		add_action('wp_ajax_DUP_CTRL_Tools_runScanValidator', array($this, 'runScanValidator'));
 		add_action('wp_ajax_DUP_CTRL_Tools_deleteInstallerFiles', array($this, 'deleteInstallerFiles'));
+        add_action('wp_ajax_DUP_CTRL_Tools_getTraceLog', array($this, 'getTraceLog'));
 	}
 	
 	/** 
@@ -71,7 +72,6 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
 		$post = $this->postParamMerge($post);
 		check_ajax_referer($post['action'], 'nonce');
 		$result = new DUP_CTRL_Result($this);
-		$payload = array();
 		try
 		{
 			//CONTROLLER LOGIC
@@ -101,6 +101,62 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
 		{
 			$result->processError($exc);
 		}
+    }
+
+    public function getTraceLog()
+    {
+        DUP_Log::Trace("enter");
+        Dup_Util::hasCapability('export');
+
+        $request     = stripslashes_deep($_REQUEST);
+        $file_path   = DUP_Log::GetTraceFilepath();
+        $backup_path = DUP_Log::GetBackupTraceFilepath();
+        $zip_path    = DUPLICATOR_SSDIR_PATH."/".DUPLICATOR_ZIPPED_LOG_FILENAME;
+        $zipped      = DUP_Zip_U::zipFile($file_path, $zip_path, true, null, true);
+
+        if ($zipped && file_exists($backup_path)) {
+            $zipped = DUP_Zip_U::zipFile($backup_path, $zip_path, false, null, true);
+        }
+
+        header("Pragma: public");
+        header("Expires: 0");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Cache-Control: private", false);
+        header("Content-Transfer-Encoding: binary");
+
+        $fp = fopen($zip_path, 'rb');
+
+        if (($fp !== false) && $zipped) {
+            $zip_filename = basename($zip_path);
+
+            header("Content-Type: application/octet-stream");
+            header("Content-Disposition: attachment; filename=\"$zip_filename\";");
+
+            // required or large files wont work
+            if (ob_get_length()) {
+                ob_end_clean();
+            }
+
+            DUP_Log::trace("streaming $zip_path");
+            if (fpassthru($fp) === false) {
+                DUP_PRO_LOG::trace("Error with fpassthru for $zip_path");
+            }
+
+            fclose($fp);
+            @unlink($zip_path);
+        } else {
+            header("Content-Type: text/plain");
+            header("Content-Disposition: attachment; filename=\"error.txt\";");
+            if ($zipped === false) {
+                $message = "Couldn't create zip file.";
+            } else {
+                $message = "Couldn't open $file_path.";
+            }
+            DUP_Log::trace($message);
+            echo $message;
+        }
+
+        exit;
     }
 	
 }

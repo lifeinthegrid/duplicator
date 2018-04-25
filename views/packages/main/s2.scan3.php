@@ -835,12 +835,16 @@ jQuery(document).ready(function($)
 	{       
         if(data.LL.Status.TotalSize == 'Fail') {
             $('.data-ll-section').show();
-            $('#dup-build-button').prop("disabled",true);
+            $('#dup-build-button').hide();
+            $('#dup-scan-warning-continue').hide();
             $('#data-ll-status-totalsize').html(Duplicator.Pack.setScanStatus(data.LL.Status.TotalSize));
             $('#data-ll-totalsize').text(data.LL.TotalSize || errMsg);
             $('.dup-pro-support').hide();
         } else {
-            $('#dup-build-button').prop("disabled",false);
+            $('#dup-scan-warning-continue').show();
+            $('#dup-build-button').show();
+            $('#dup-build-button').prop("disabled",true);
+            //$('#dup-build-button').prop("disabled",false);
             $('.data-ll-section').hide();
         }
 	}
