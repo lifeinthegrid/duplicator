@@ -56,9 +56,7 @@ class DUP_Zip extends DUP_Archive
                 $buildProgress->set_failed($error_message);
 
                 DUP_Log::Error($error_message, "Path location [".self::$zipPath."]", Dup_ErrorBehavior::LogOnly);
-            
-//                $buildProgress->failed = true;
-                
+                           
                 return;
             }
             DUP_Log::Info("ARCHIVE DIR:  ".self::$compressDir);
@@ -82,7 +80,6 @@ class DUP_Zip extends DUP_Archive
 
                 DUP_Log::Error($error_message, "SQL File Path [".self::$sqlath."]", Dup_ErrorBehavior::LogOnly);
             
-            //    $buildProgress->failed = true;
                 $buildProgress->set_failed($error_message);
                 return;
             }
@@ -113,6 +110,7 @@ class DUP_Zip extends DUP_Archive
             /* ZIP FILES: Network Flush
              *  This allows the process to not timeout on fcgi 
              *  setups that need a response every X seconds */
+            $totalFileCount = count(self::$scanReport->ARC->Files);
             $info = '';
             if (self::$networkFlush) {
                 foreach (self::$scanReport->ARC->Files as $file) {
@@ -132,6 +130,11 @@ class DUP_Zip extends DUP_Archive
                         DUP_Util::fcgiFlush();
                         DUP_Log::Info("Items archived [{$sumItems}] flushing response.");
                     }
+                    
+                    if(self::$countFiles % 500 == 0) {
+                        $archive->Package->Status = SnapLibUtil::getWorkPercent(DUP_PackageStatus::ARCSTART, DUP_PackageStatus::COMPLETE, $totalFileCount, self::$countFiles);
+                        $archive->Package->update();
+                    }
                 }
             }
             //Normal
@@ -141,6 +144,11 @@ class DUP_Zip extends DUP_Archive
                         self::$countFiles++;
                     } else {
                         $info .= "FILE: [{$file}]\n";
+                    }
+                    
+                    if(self::$countFiles % 500 == 0) {
+                        $archive->Package->Status = SnapLibUtil::getWorkPercent(DUP_PackageStatus::ARCSTART, DUP_PackageStatus::COMPLETE, $totalFileCount, self::$countFiles);
+                        $archive->Package->update();
                     }
                 }
             }
@@ -166,7 +174,7 @@ class DUP_Zip extends DUP_Archive
                 DUP_Log::Error($error_message,
                         "This hosted server may have a disk quota limit.\nCheck to make sure this archive file can be stored.",
                         Dup_ErrorBehavior::LogOnly);
-                //$buildProgress->failed = true;
+
                 $buildProgress->set_failed($error_message);
                 return;
             }
@@ -184,7 +192,6 @@ class DUP_Zip extends DUP_Archive
 
             DUP_Log::Error($error_message, "Exception: {$e}", Dup_ErrorBehavior::LogOnly);
         
-            //$buildProgress->failed = true;
             $buildProgress->set_failed($error_message);
             return;    
         }

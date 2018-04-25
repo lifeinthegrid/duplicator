@@ -97,7 +97,7 @@ TOOL BAR: STEPS -->
 
     <!--  PROGRESS BAR -->
     <div id="dup-progress-bar-area">
-        <div class="dup-progress-title"><i class="fa fa-cog fa-spin"></i> <?php _e('Building Package', 'duplicator'); ?></div>
+        <div class="dup-progress-title"><?php _e('Building Package', 'duplicator'); ?> <i class="fa fa-cog fa-spin"></i> <span id="dup-progress-percent">0%</span></div>
         <div id="dup-progress-bar"></div>
         <b><?php _e('Please Wait...', 'duplicator'); ?></b><br/><br/>
         <i><?php _e('Keep this window open during the build process.', 'duplicator'); ?></i><br/>
@@ -328,10 +328,11 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
         Duplicator.Pack.CreateZip = function () {
 
             var startTime;
-            var endTime;
 
             var data = {action: 'duplicator_package_build', nonce: '<?php echo $zip_build_nonce; ?>'}
 
+            var statusInterval = setInterval(Duplicator.Pack.GetActivePackageStatus, 1000);
+            
             $.ajax({
                 type: "POST",
                 url: ajaxurl,
@@ -342,17 +343,9 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                     startTime = new Date().getTime();
                 },
                 complete: function () {
-                    endTime = new Date().getTime();
-                    var millis = (endTime - startTime);
-                    var minutes = Math.floor(millis / 60000);
-                    var seconds = ((millis % 60000) / 1000).toFixed(0);
-                    var status = minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-                    $('#dup-msg-error-response-time span.data').html(status);
-                    $('#dup-create-area-nolink').hide();
-                    $('#dup-create-area-link').show();
+                    Duplicator.Pack.PostTransferCleanup(statusInterval, startTime);
                 },
                 success: function (data) {
-
                     Duplicator.Pack.WireDownloadLinks(data);
                 },
                 error: function (jqxhr) {
@@ -362,7 +355,7 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                     var response = (jqxhr.responseText != undefined && jqxhr.responseText.trim().length > 1) ? jqxhr.responseText.trim() : 'No client side error - see package log file';
                     $('#dup-msg-error-response-status span.data').html(status)
                     $('#dup-msg-error-response-text span.data').html(response);
-                    console.log(data);
+                    console.log(jqxhr);
                 }
             });
             return false;
@@ -372,12 +365,12 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
          *	METHOD: Performs Ajax post to create a new DupArchive-based package */
         Duplicator.Pack.CreateDupArchive = function () {
 
-            // RSR TODO: add constant calling into web service until it has completed.  Update percent along the way.
             console.log('Duplicator.Pack.CreateDupArchive');
 
             var data = {action: 'duplicator_duparchive_package_build', nonce: '<?php echo $duparchive_build_nonce; ?>'}
 
-
+            var statusInterval = setInterval(Duplicator.Pack.GetActivePackageStatus, 1000);
+            
             $.ajax({
                 type: "POST",
                 timeout: <?php echo DUP_DupArchive::WorkerTimeInSec * 2000 ?>, // Double worker time and convert to ms
@@ -385,18 +378,10 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                 url: ajaxurl,
                 data: data,
                 complete: function () {
-                    endTime = new Date().getTime();
-                    var millis = (endTime - Duplicator.Pack.DupArchiveStartTime);
-                    var minutes = Math.floor(millis / 60000);
-                    var seconds = ((millis % 60000) / 1000).toFixed(0);
-                    var status = minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-                    $('#dup-msg-error-response-time span.data').html(status);
-                    $('#dup-create-area-nolink').hide();
-                    $('#dup-create-area-link').show();
+                    Duplicator.Pack.PostTransferCleanup(statusInterval, Duplicator.Pack.DupArchiveStartTime);
                 },
                 success: function (data) {
 
-                    //	Duplicator.Pack.DupArchiveFailureCount = 0;
                     console.log("CreateDupArchive:AJAX success. Data equals:");
 
                     console.log(data);
@@ -481,6 +466,49 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                     Duplicator.Pack.HandleDupArchiveInterruption(jqxhr.responseText);
                 }
             });
+        };
+        
+        /*	----------------------------------------
+         *	METHOD: Retrieves package status and updates UI with build percentage */
+        Duplicator.Pack.GetActivePackageStatus = function () {
+
+            var data = {action: 'DUP_CTRL_Package_getActivePackageStatus'}
+
+            console.log('####Duplicator.Pack.GetActivePackageStatus');
+            
+            $.ajax({
+                type: "POST",
+                url: ajaxurl,
+                dataType: "json",
+                timeout: 10000000,
+                data: data,
+                success: function (data) {
+
+                if(data.report.status == 1) {
+                        $('#dup-progress-percent').html(data.payload.status + "%");
+                    } else {
+                        console.log('Error retrieving build status');
+                        console.log(data);
+                    }
+                },
+                error: function (jqxhr) {
+                    console.log('Error retrieving build status');
+                    console.log(jqxhr);
+                }
+            });
+            return false;
+        }
+        
+        Duplicator.Pack.PostTransferCleanup = function(statusInterval, startTime) {
+            clearInterval(statusInterval);
+            endTime = new Date().getTime();
+            var millis = (endTime - startTime);
+            var minutes = Math.floor(millis / 60000);
+            var seconds = ((millis % 60000) / 1000).toFixed(0);
+            var status = minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+            $('#dup-msg-error-response-time span.data').html(status);
+            $('#dup-create-area-nolink').hide();
+            $('#dup-create-area-link').show();
         };
 
         Duplicator.Pack.WireDownloadLinks = function(data) {

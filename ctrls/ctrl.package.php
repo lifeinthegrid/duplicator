@@ -285,6 +285,7 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
     {
         add_action('wp_ajax_DUP_CTRL_Package_addQuickFilters', array($this, 'addQuickFilters'));
         add_action('wp_ajax_DUP_CTRL_Package_getPackageFile', array($this, 'getPackageFile'));
+        add_action('wp_ajax_DUP_CTRL_Package_getActivePackageStatus', array($this, 'getActivePackageStatus'));
     }
 
     /**
@@ -423,4 +424,47 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
             $result->processError($exc);
         }
     }
+    
+    /** 
+     * Get active package status
+     * 
+	 * <code>
+	 * //JavaScript Ajax Request
+	 * Duplicator.Package.getActivePackageStatus()
+	 * </code>
+     */
+	public function getActivePackageStatus($post) 
+	{
+		$post = $this->postParamMerge($post);
+		$result = new DUP_CTRL_Result($this);
+	
+		try 
+		{
+			//CONTROLLER LOGIC
+			$post  = stripslashes_deep($_POST);
+            
+            $active_package_id = DUP_Settings::Get('active_package_id');
+           
+            $package = DUP_Package::getByID($active_package_id);
+
+            $payload = array();
+            
+            if($package != null) {
+                $test = DUP_CTRL_Status::SUCCESS;
+   
+                $payload['status']  = $package->Status;
+                $payload['update-success'] = $success;
+            } else {
+                $test = DUP_CTRL_Status::FAILED;
+            }
+			
+			//RETURN RESULT
+			return $result->process($payload, $test);
+		} 
+		catch (Exception $exc) 
+		{
+			$result->processError($exc);
+		}
+    }
+    
 }
