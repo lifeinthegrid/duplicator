@@ -96,11 +96,10 @@ class DUP_Database
             //File below 10k considered incomplete
             $sql_file_size = filesize($this->dbStorePath);
             DUP_Log::Info("SQL FILE SIZE: ".DUP_Util::byteSize($sql_file_size)." ({$sql_file_size})");
-         //   $sql_file_size = 0; // RSR temp
+       
             if ($sql_file_size < 10000) {
                 $error_message = "SQL file size too low.";
 
-                //$package->BuildProgress->failed = true;
                 $package->BuildProgress->set_failed($error_message);
 
                 $package->Update();
@@ -337,9 +336,18 @@ class DUP_Database
             @fwrite($handle, "{$create[1]};\n\n");
         }
 
+        $table_count = count($tables);
+        $table_number = 0;
+        
         //BUILD INSERTS:
         //Create Insert in 100 row increments to better handle memory
         foreach ($tables as $table) {
+
+            $table_number++;
+            if($table_number % 2 == 0) {
+                $this->Package->Status = SnapLibUtil::getWorkPercent(DUP_PackageStatus::DBSTART, DUP_PackageStatus::DBDONE, $table_count, $table_number);
+                $this->Package->update();
+            }
 
             $row_count = $wpdb->get_var("SELECT Count(*) FROM `{$table}`");
             //DUP_Log::Info("{$table} ({$row_count})");

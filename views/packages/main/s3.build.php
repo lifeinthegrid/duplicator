@@ -321,6 +321,7 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
         Duplicator.Pack.DupArchiveMaxRetries = 10;
         Duplicator.Pack.DupArchiveRetryDelayInMs = 8000;
         Duplicator.Pack.DupArchiveStartTime = new Date().getTime();
+        Duplicator.Pack.StatusFrequency = 4000;
 
         /*	----------------------------------------
          *	METHOD: Performs Ajax post to create a new package
@@ -331,7 +332,7 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
 
             var data = {action: 'duplicator_package_build', nonce: '<?php echo $zip_build_nonce; ?>'}
 
-            var statusInterval = setInterval(Duplicator.Pack.GetActivePackageStatus, 1000);
+            var statusInterval = setInterval(Duplicator.Pack.GetActivePackageStatus, Duplicator.Pack.StatusFrequency);
             
             $.ajax({
                 type: "POST",
@@ -369,7 +370,7 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
 
             var data = {action: 'duplicator_duparchive_package_build', nonce: '<?php echo $duparchive_build_nonce; ?>'}
 
-            var statusInterval = setInterval(Duplicator.Pack.GetActivePackageStatus, 1000);
+            var statusInterval = setInterval(Duplicator.Pack.GetActivePackageStatus, Duplicator.Pack.StatusFrequency);
             
             $.ajax({
                 type: "POST",
