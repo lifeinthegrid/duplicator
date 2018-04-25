@@ -93,7 +93,8 @@ $archive_build_mode = DUP_Settings::Get('archive_build_mode')
 					</optgroup>
 				</select>
                 <p class="description">
-                    <?php _e("The date format shown in the 'Created' column on the Packages screen.", 'duplicator'); ?>
+                    <?php _e("The UTC date format shown in the 'Created' column on the Packages screen.", 'duplicator'); ?> <br/>
+					<small><?php _e("To use WordPress timezone formats consider an upgrade to Duplicator Pro.", 'duplicator'); ?></small>
                 </p>
             </td>
         </tr>

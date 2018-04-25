@@ -86,7 +86,7 @@ class DUP_CTRL_UI extends DUP_CTRL_Base
 			$payload = DUP_UI_ViewState::getArray();
 			
 			//RETURN RESULT
-			$test = (count($payload)) 
+			$test = (is_array($payload) && count($payload))
 					? DUP_CTRL_Status::SUCCESS
 					: DUP_CTRL_Status::FAILED;
 			return $result->process($payload, $test);

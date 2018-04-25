@@ -37,6 +37,8 @@ class DUP_Archive
     public $Dirs          = array();
     public $Files         = array();
     public $FilterInfo;
+    public $RecursiveLinks  = array();
+
     //PROTECTED
     protected $Package;
 	private $tmpFilterDirsAll = array();
@@ -495,22 +497,34 @@ class DUP_Archive
 				// if (is_dir($fullPath) && (is_link($fullPath) == false))
 				if (is_dir($fullPath)) {
 
-					$add = true;
-					//Directory filters
-					foreach ($this->tmpFilterDirsAll as $key => $val) {
-		
-						$trimmedFilterDir = rtrim($val, '/');
-						if ($fullPath == $trimmedFilterDir || strpos($fullPath, $trimmedFilterDir . '/') !== false) {
-							$add = false;
-							unset($this->tmpFilterDirsAll[$key]);
-							break;
-						}
-					}
+                    $add = true;
+                    if(!is_link($fullPath)){
+                        foreach ($this->tmpFilterDirsAll as $key => $val) {
+                            $trimmedFilterDir = rtrim($val, '/');
+                            if ($fullPath == $trimmedFilterDir || strpos($fullPath, $trimmedFilterDir . '/') !== false) {
+                                $add = false;
+                                unset($this->tmpFilterDirsAll[$key]);
+                                break;
+                            }
+                        }
+                    }else{
+                        //Convert relative path of link to absolute path
+                        chdir($fullPath);
+                        $link_path = realpath(readlink($fullPath));
+                        chdir(dirname(__FILE__));
 
-					if ($add) {
-						$this->getFileLists($fullPath);
-						$this->Dirs[] = $fullPath;
-					}
+                        $link_pos = strpos($fullPath,$link_path);
+                        if($link_pos === 0 && (strlen($link_path) <  strlen($fullPath))){
+                            $add = false;
+                            $this->RecursiveLinks[] = $fullPath;
+                            $this->FilterDirsAll[] = $fullPath;
+                        }
+                    }
+
+                    if ($add) {
+                        $this->getFileLists($fullPath);
+                        $this->Dirs[] = $fullPath;
+                    }
 				} else {
 					if ( ! (in_array(pathinfo($file, PATHINFO_EXTENSION), $this->FilterExtsAll)
 						|| in_array($fullPath, $this->FilterFilesAll))) {

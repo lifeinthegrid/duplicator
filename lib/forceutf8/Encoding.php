@@ -34,7 +34,7 @@ POSSIBILITY OF SUCH DAMAGE.
  * @version  2.0
  * @link     https://github.com/neitanod/forceutf8
  * @example  https://github.com/neitanod/forceutf8
- * @license  Revised BSD
+ * @license  Revised BSD 
   */
 
 //namespace ForceUTF8;
@@ -42,44 +42,41 @@ if (!class_exists('DUP_Encoding'))
 {
 	class DUP_Encoding {
 
-	  const ICONV_TRANSLIT = "TRANSLIT";
-	  const ICONV_IGNORE = "IGNORE";
-	  const WITHOUT_ICONV = "";
+		const ICONV_TRANSLIT = "TRANSLIT";
+		const ICONV_IGNORE = "IGNORE";
+		const WITHOUT_ICONV = "";
 
-	  protected static $win1252ToUtf8 = array(
-			128 => "\xe2\x82\xac",
+		protected static $win1252ToUtf8 = array(
+			  128 => "\xe2\x82\xac",
 
-			130 => "\xe2\x80\x9a",
-			131 => "\xc6\x92",
-			132 => "\xe2\x80\x9e",
-			133 => "\xe2\x80\xa6",
-			134 => "\xe2\x80\xa0",
-			135 => "\xe2\x80\xa1",
-			136 => "\xcb\x86",
-			137 => "\xe2\x80\xb0",
-			138 => "\xc5\xa0",
-			139 => "\xe2\x80\xb9",
-			140 => "\xc5\x92",
+			  130 => "\xe2\x80\x9a",
+			  131 => "\xc6\x92",
+			  132 => "\xe2\x80\x9e",
+			  133 => "\xe2\x80\xa6",
+			  134 => "\xe2\x80\xa0",
+			  135 => "\xe2\x80\xa1",
+			  136 => "\xcb\x86",
+			  137 => "\xe2\x80\xb0",
+			  138 => "\xc5\xa0",
+			  139 => "\xe2\x80\xb9",
+			  140 => "\xc5\x92",
+			  142 => "\xc5\xbd",
+			  145 => "\xe2\x80\x98",
+			  146 => "\xe2\x80\x99",
+			  147 => "\xe2\x80\x9c",
+			  148 => "\xe2\x80\x9d",
+			  149 => "\xe2\x80\xa2",
+			  150 => "\xe2\x80\x93",
+			  151 => "\xe2\x80\x94",
+			  152 => "\xcb\x9c",
+			  153 => "\xe2\x84\xa2",
+			  154 => "\xc5\xa1",
+			  155 => "\xe2\x80\xba",
+			  156 => "\xc5\x93",
 
-			142 => "\xc5\xbd",
-
-
-			145 => "\xe2\x80\x98",
-			146 => "\xe2\x80\x99",
-			147 => "\xe2\x80\x9c",
-			148 => "\xe2\x80\x9d",
-			149 => "\xe2\x80\xa2",
-			150 => "\xe2\x80\x93",
-			151 => "\xe2\x80\x94",
-			152 => "\xcb\x9c",
-			153 => "\xe2\x84\xa2",
-			154 => "\xc5\xa1",
-			155 => "\xe2\x80\xba",
-			156 => "\xc5\x93",
-
-			158 => "\xc5\xbe",
-			159 => "\xc5\xb8"
-	  );
+			  158 => "\xc5\xbe",
+			  159 => "\xc5\xb8"
+		);
 
 		protected static $brokenUtf8ToUtf8 = array(
 			"\xc2\x80" => "\xe2\x82\xac",
@@ -114,9 +111,9 @@ if (!class_exists('DUP_Encoding'))
 
 			"\xc2\x9e" => "\xc5\xbe",
 			"\xc2\x9f" => "\xc5\xb8"
-	  );
+		);
 
-	  protected static $utf8ToWin1252 = array(
+		protected static $utf8ToWin1252 = array(
 		   "\xe2\x82\xac" => "\x80",
 
 		   "\xe2\x80\x9a" => "\x82",
@@ -151,7 +148,7 @@ if (!class_exists('DUP_Encoding'))
 		   "\xc5\xb8"     => "\x9f"
 		);
 
-	  static function toUTF8($text){
+		static function toUTF8($text){
 	  /**
 	   * Function \ForceUTF8\Encoding::toUTF8
 	   *
@@ -246,104 +243,112 @@ if (!class_exists('DUP_Encoding'))
 		return $buf;
 	  }
 
-	  static function toWin1252($text, $option = self::WITHOUT_ICONV) {
-		if(is_array($text)) {
-		  foreach($text as $k => $v) {
-			$text[$k] = self::toWin1252($v, $option);
+		static function toWin1252($text, $option = self::WITHOUT_ICONV) {
+		  if(is_array($text)) {
+			foreach($text as $k => $v) {
+			  $text[$k] = self::toWin1252($v, $option);
+			}
+			return $text;
+		  } else if(is_string($text)) {
+			return self::utf8_decode($text, $option);
+		  } else {
+			return $text;
 		  }
-		  return $text;
-		} else if(is_string($text)) {
-		  return self::utf8_decode($text, $option);
-		} else {
-		  return $text;
-		}
-	  }
-
-	  static function toISO8859($text) {
-		return self::toWin1252($text);
-	  }
-
-	  static function toLatin1($text) {
-		return self::toWin1252($text);
-	  }
-
-	  static function fixUTF8($text, $option = self::WITHOUT_ICONV){
-		if(is_array($text)) {
-		  foreach($text as $k => $v) {
-			$text[$k] = self::fixUTF8($v, $option);
-		  }
-		  return $text;
 		}
 
-		$last = "";
-		while($last <> $text){
-		  $last = $text;
+		static function toISO8859($text) {
+		  return self::toWin1252($text);
+		}
+
+		static function toLatin1($text) {
+		  return self::toWin1252($text);
+		}
+
+		static function fixUTF8($text, $option = self::WITHOUT_ICONV){
+		  if(is_array($text)) {
+			foreach($text as $k => $v) {
+			  $text[$k] = self::fixUTF8($v, $option);
+			}
+			return $text;
+		  }
+
+		  $last = "";
+		  while($last <> $text){
+			$last = $text;
+			$text = self::toUTF8(self::utf8_decode($text, $option));
+		  }
 		  $text = self::toUTF8(self::utf8_decode($text, $option));
-		}
-		$text = self::toUTF8(self::utf8_decode($text, $option));
-		return $text;
-	  }
-
-	  static function UTF8FixWin1252Chars($text){
-		// If you received an UTF-8 string that was converted from Windows-1252 as it was ISO8859-1
-		// (ignoring Windows-1252 chars from 80 to 9F) use this function to fix it.
-		// See: http://en.wikipedia.org/wiki/Windows-1252
-
-		return str_replace(array_keys(self::$brokenUtf8ToUtf8), array_values(self::$brokenUtf8ToUtf8), $text);
-	  }
-
-	  static function removeBOM($str=""){
-		if(substr($str, 0,3) == pack("CCC",0xef,0xbb,0xbf)) {
-		  $str=substr($str, 3);
-		}
-		return $str;
-	  }
-
-	  protected static function strlen($text){
-		return (function_exists('mb_strlen') && ((int) ini_get('mbstring.func_overload')) & 2) ?
-			   mb_strlen($text,'8bit') : strlen($text);
-	  }
-
-	  public static function normalizeEncoding($encodingLabel)
-	  {
-		$encoding = strtoupper($encodingLabel);
-		$encoding = preg_replace('/[^a-zA-Z0-9\s]/', '', $encoding);
-		$equivalences = array(
-			'ISO88591' => 'ISO-8859-1',
-			'ISO8859'  => 'ISO-8859-1',
-			'ISO'      => 'ISO-8859-1',
-			'LATIN1'   => 'ISO-8859-1',
-			'LATIN'    => 'ISO-8859-1',
-			'UTF8'     => 'UTF-8',
-			'UTF'      => 'UTF-8',
-			'WIN1252'  => 'ISO-8859-1',
-			'WINDOWS1252' => 'ISO-8859-1'
-		);
-
-		if(empty($equivalences[$encoding])){
-		  return 'UTF-8';
+		  return $text;
 		}
 
-		return $equivalences[$encoding];
-	  }
+		static function UTF8FixWin1252Chars($text){
+		  // If you received an UTF-8 string that was converted from Windows-1252 as it was ISO8859-1
+		  // (ignoring Windows-1252 chars from 80 to 9F) use this function to fix it.
+		  // See: http://en.wikipedia.org/wiki/Windows-1252
 
-	  public static function encode($encodingLabel, $text)
-	  {
-		$encodingLabel = self::normalizeEncoding($encodingLabel);
-		if($encodingLabel == 'ISO-8859-1') return self::toLatin1($text);
-		return self::toUTF8($text);
-	  }
-
-	  protected static function utf8_decode($text, $option)
-	  {
-		if ($option == self::WITHOUT_ICONV || !function_exists('iconv')) {
-		   $o = utf8_decode(
-			 str_replace(array_keys(self::$utf8ToWin1252), array_values(self::$utf8ToWin1252), self::toUTF8($text))
-		   );
-		} else {
-		   $o = iconv("UTF-8", "Windows-1252" . ($option == self::ICONV_TRANSLIT ? '//TRANSLIT' : ($option == self::ICONV_IGNORE ? '//IGNORE' : '')), $text);
+		  return str_replace(array_keys(self::$brokenUtf8ToUtf8), array_values(self::$brokenUtf8ToUtf8), $text);
 		}
-		return $o;
-	  }
+
+		static function removeBOM($str=""){
+		  if(substr($str, 0,3) == pack("CCC",0xef,0xbb,0xbf)) {
+			$str=substr($str, 3);
+		  }
+		  return $str;
+		}
+
+		protected static function strlen($text)
+		{
+			if((version_compare(PHP_VERSION, '7.2.0') >= 0)) {
+				return (function_exists('mb_strlen'))
+					? mb_strlen($text,'8bit')
+					: strlen($text);
+			} else {
+				return (function_exists('mb_strlen') && ((int) ini_get('mbstring.func_overload')) & 2)
+						? mb_strlen($text,'8bit')
+						: strlen($text);
+			}
+		}
+
+		public static function normalizeEncoding($encodingLabel)
+		{
+		  $encoding = strtoupper($encodingLabel);
+		  $encoding = preg_replace('/[^a-zA-Z0-9\s]/', '', $encoding);
+		  $equivalences = array(
+			  'ISO88591' => 'ISO-8859-1',
+			  'ISO8859'  => 'ISO-8859-1',
+			  'ISO'      => 'ISO-8859-1',
+			  'LATIN1'   => 'ISO-8859-1',
+			  'LATIN'    => 'ISO-8859-1',
+			  'UTF8'     => 'UTF-8',
+			  'UTF'      => 'UTF-8',
+			  'WIN1252'  => 'ISO-8859-1',
+			  'WINDOWS1252' => 'ISO-8859-1'
+		  );
+
+		  if(empty($equivalences[$encoding])){
+			return 'UTF-8';
+		  }
+
+		  return $equivalences[$encoding];
+		}
+
+		public static function encode($encodingLabel, $text)
+		{
+		  $encodingLabel = self::normalizeEncoding($encodingLabel);
+		  if($encodingLabel == 'ISO-8859-1') return self::toLatin1($text);
+		  return self::toUTF8($text);
+		}
+
+		protected static function utf8_decode($text, $option)
+		{
+		  if ($option == self::WITHOUT_ICONV || !function_exists('iconv')) {
+			 $o = utf8_decode(
+			   str_replace(array_keys(self::$utf8ToWin1252), array_values(self::$utf8ToWin1252), self::toUTF8($text))
+			 );
+		  } else {
+			 $o = iconv("UTF-8", "Windows-1252" . ($option == self::ICONV_TRANSLIT ? '//TRANSLIT' : ($option == self::ICONV_IGNORE ? '//IGNORE' : '')), $text);
+		  }
+		  return $o;
+		}
 	}
 }

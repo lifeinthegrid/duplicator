@@ -9,8 +9,9 @@ $zip_build_nonce        = wp_create_nonce('duplicator_package_build');
 $duparchive_build_nonce = wp_create_nonce('duplicator_duparchive_package_build');
 
 //Help support Duplicator
-$atext0 = __('Help', 'duplicator')."&nbsp;<a target='_blank' href='https://wordpress.org/support/plugin/duplicator/reviews/?filter=5'>";
-$atext0 .= __('review the plugin', 'duplicator').'</a>!';
+
+$atext0  = "<a target='_blank' href='https://wordpress.org/support/plugin/duplicator/reviews/?filter=5'>";
+$atext0 .= __('Help review the plugin', 'duplicator') . '!</a>';
 
 //Get even more power & features with Duplicator Pro
 $atext1 = __('Want more power?  Try', 'duplicator');
@@ -49,7 +50,7 @@ $rand_txt[0] = $atext0;
     div.dup-button-footer {text-align:right; margin:20px 10px 0px 0px}
     button.button {font-size:16px !important; height:30px !important; font-weight:bold; padding:0px 10px 5px 10px !important; min-width: 150px }
     span.dup-btn-size {font-size:11px;font-weight: normal}
-    p.get-pro {font-size:13px; color:#999; border-top:1px solid #eeeeee; padding:5px 0 0 0; margin:0; font-style:italic}
+    p.get-pro {font-size:13px; color:#222; border-top:1px solid #eeeeee; padding:5px 0 0 0; margin:0; font-style:italic}
     div.dup-howto-exe {font-size:16px; font-style: italic; font-weight: bold; margin:45px 0 45px 0}
 
     /*HOST TIMEOUT */

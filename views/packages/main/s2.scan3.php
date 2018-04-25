@@ -281,6 +281,49 @@ FILE NAME CHECKS -->
 		<div id="hb-files-utf8-result" class="hb-files-style"></div>
 	</div>
 </div>
+<!-- ======================
+UNREADABLE FILES -->
+<div id="scan-unreadable-items" class="scan-item scan-item-last">
+    <div class='title' onclick="Duplicator.Pack.toggleScanItem(this);">
+        <div class="text"><i class="fa fa-caret-right"></i> <?php _e('Read Checks');?></div>
+        <div id="data-arc-status-unreadablefiles"></div>
+    </div>
+    <div class="info">
+        <?php
+        _e('PHP is unable to read the following items and they will <u>not</u> be included in the package.  Please work with your host to adjust the permissions or resolve the '
+            . 'symbolic-link(s) shown in the lists below.  If these items are not needed then this notice can be ignored.');
+        ?>
+        <script id="unreadable-files" type="text/x-handlebars-template">
+            <div class="container">
+                <div class="data">
+                    <b><?php _e('Unreadable Items:');?></b> <br/>
+                    <div class="directory">
+                        {{#if ARC.UnreadableItems}}
+                        {{#each ARC.UnreadableItems as |uitem|}}
+                        <i class="fa fa-lock"></i> {{uitem}} <br/>
+                        {{/each}}
+                        {{else}}
+                        <i><?php _e('No unreadable items found.<br>');?></i>
+                        {{/if}}
+                    </div>
+
+                    <b><?php _e('Recursive Links:');?></b> <br/>
+                    <div class="directory">
+                        {{#if  ARC.RecursiveLinks}}
+                        {{#each ARC.RecursiveLinks as |link|}}
+                        <i class="fa fa-lock"></i> {{link}} <br/>
+                        {{/each}}
+                        {{else}}
+                        <i><?php _e('No recursive sym-links found.<br>');?></i>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        </script>
+        <div id="unreadable-files-result" class="hb-files-style"></div>
+    </div>
+</div>
+
 
 
 <!-- ============
@@ -700,7 +743,8 @@ jQuery(document).ready(function($)
 		//var sizeChecks = data.ARC.Status.Size == 'Warn' || data.ARC.Status.Big == 'Warn' ? 'Warn' : 'Good';
 		$('#data-arc-status-size').html(Duplicator.Pack.setScanStatus(data.ARC.Status.Size));
 		$('#data-arc-status-names').html(Duplicator.Pack.setScanStatus(data.ARC.Status.Names));
-		$('#data-arc-size1').text(data.ARC.Size || errMsg);
+        $('#data-arc-status-unreadablefiles').html(Duplicator.Pack.setScanStatus(data.ARC.Status.UnreadableItems));
+        $('#data-arc-size1').text(data.ARC.Size || errMsg);
 		$('#data-arc-size2').text(data.ARC.Size || errMsg);
 		$('#data-arc-files').text(data.ARC.FileCount || errMsg);
 		$('#data-arc-dirs').text(data.ARC.DirCount || errMsg);
@@ -722,6 +766,12 @@ jQuery(document).ready(function($)
 		var templateScript = Handlebars.compile(template);
 		var html = templateScript(data);
 		$('#hb-files-utf8-result').html(html);
+
+        //NAME CHECKS
+        var template = $('#unreadable-files').html();
+        var templateScript = Handlebars.compile(template);
+        var html = templateScript(data);
+        $('#unreadable-files-result').html(html);
 
 		//SCANNER DETAILS: Dirs
 		var template = $('#hb-filter-file-list').html();

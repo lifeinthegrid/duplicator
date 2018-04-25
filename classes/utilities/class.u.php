@@ -692,5 +692,32 @@ class DUP_Util
     {
 		return esc_html(sanitize_text_field($string));
     }
+
+	  /**
+    * Finds if its a valid executable or not
+    * @param type $exe A non zero length executable path to find if that is executable or not.
+    * @param type $expectedValue expected value for the result
+    * @return boolean
+    */
+    public static function isExecutable($cmd)
+    {
+        if (strlen($cmd) < 1) return false;
+
+        if (@is_executable($cmd)){
+            return true;
+        }
+
+        $output = shell_exec($cmd);
+        if (!is_null($output)) {
+            return true;
+        }
+
+        $output = shell_exec($cmd . ' -?');
+        if (!is_null($output)) {
+            return true;
+        }
+
+        return false;
+    }
 }
 DUP_Util::init();

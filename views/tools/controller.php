@@ -149,12 +149,15 @@ if($current_tab == "diagnostics"  && ($section == "info" || $section == '')){
 
     <h2 class="nav-tab-wrapper">  
         <a href="?page=duplicator-tools&tab=diagnostics" class="nav-tab <?php echo ($current_tab == 'diagnostics') ? 'nav-tab-active' : '' ?>"> <?php _e('Diagnostics', 'duplicator'); ?></a>
+		<a href="?page=duplicator-tools&tab=templates" class="nav-tab <?php echo ($current_tab == 'templates') ? 'nav-tab-active' : '' ?>"> <?php _e('Templates', 'duplicator'); ?></a>
     </h2>
 
     <?php
     switch ($current_tab) {
-        case 'diagnostics': include('diagnostics/main.php');
-            break;
-    }
-    ?>
+		case 'diagnostics': include('diagnostics/main.php');
+			break;
+		case 'templates': include('templates.php');
+			break;
+	}
+	?>
 </div>

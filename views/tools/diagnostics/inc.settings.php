@@ -11,6 +11,7 @@
 	$mysqlDumpSupport = ($mysqldumpPath) ? $mysqldumpPath : 'Path Not Found';
 	
 	$client_ip_address = DUP_Server::getClientIP();
+	$error_log_path = ini_get('error_log');
 ?>
 
 <!-- ==============================
@@ -155,6 +156,10 @@ SERVER SETTINGS -->
         <tr>
             <td><a href="https://suhosin.org/stories/index.html" target="_blank"><?php _e("Suhosin Extension", 'duplicator'); ?></a></td>
             <td><?php echo extension_loaded('suhosin') ? _e("Enabled", 'duplicator') : _e("Disabled", 'duplicator'); ?></td>
+        </tr>
+		<tr>
+            <td><?php _e("Error Log File ", 'duplicator'); ?></td>
+            <td><?php echo $error_log_path; ?></td>
         </tr>
 		<tr>
 			<td class='dup-settings-diag-header' colspan="2">MySQL</td>

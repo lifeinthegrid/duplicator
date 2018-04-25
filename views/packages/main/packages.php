@@ -52,7 +52,7 @@ TOOL-BAR -->
 			</select>
 			<input type="button" id="dup-pack-bulk-apply" class="button action" value="<?php _e("Apply", 'duplicator') ?>" onclick="Duplicator.Pack.ConfirmDelete()">
 			<span class="btn-separator"></span>
-			<a href="javascript:void(0)" id="btn-logs-dialog" class="button"  title="<?php _e("Get Help", 'duplicator') ?>" onclick="Duplicator.Pack.showHelp()">
+			<a href="javascript:void(0)" class="button"  title="<?php _e("Get Help", 'duplicator') ?>" onclick="Duplicator.Pack.showHelp()">
 				<?php echo ($statusCount == 1)  
 						? '<i class="fa fa-question-circle" style="color:green"></i>'
 						: '<i class="fa fa-question-circle grey-icon"></i>';

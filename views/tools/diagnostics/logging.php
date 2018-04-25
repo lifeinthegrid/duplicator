@@ -2,10 +2,13 @@
 require_once(DUPLICATOR_PLUGIN_PATH . '/assets/js/javascript.php'); 
 require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php'); 
 
+function _duplicatorSortFiles($a,$b) {
+	return filemtime($b) - filemtime($a);
+}
+
 $logs = glob(DUPLICATOR_SSDIR_PATH . '/*.log') ;
-if ($logs != false && count($logs)) 
-{
-	usort($logs, create_function('$a,$b', 'return filemtime($b) - filemtime($a);'));
+if ($logs != false && count($logs))  {
+	usort($logs, '_duplicatorSortFiles');
 	@chmod(DUP_Util::safePath($logs[0]), 0644);
 } 
 
