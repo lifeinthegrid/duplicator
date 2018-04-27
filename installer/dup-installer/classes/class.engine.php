@@ -264,12 +264,10 @@ class DUPX_UpdateEngine
                                     continue;
                                 }
 
-                                $objArr = array();
-
                                 //Replace logic - level 1: simple check on any string or serlized strings
                                 foreach ($list as $item) {
-                                    $edited_data = self::recursiveUnserializeReplace($item['search'], $item['replace'],
-                                        $edited_data, false, $objArr);
+									$objArr = array();
+                                    $edited_data = self::recursiveUnserializeReplace($item['search'], $item['replace'], $edited_data, false, $objArr);
                                 }
 
                                 //Replace logic - level 2: repair serialized strings that have become broken

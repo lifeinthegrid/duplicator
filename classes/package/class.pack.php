@@ -48,26 +48,24 @@ class DUP_Build_Progress
     }
 
     public function set_validation_failures($failures)
-    {
-        $this->validation_failures = array();
+	{
+		$this->validation_failures = array();
 
-        foreach($failure as $failure)
-        {
-            $this->validation_failures[] = $failure->description();
-        }
-    }
+		foreach ($failures as $failure) {
+			$this->validation_failures[] = $failure->description();
+		}
+	}
 
-    public function set_build_failures($failures)
-    {
-        $this->build_failures = array();
+	public function set_build_failures($failures)
+	{
+		$this->build_failures = array();
 
-        foreach($failure as $failure)
-        {
-            $this->build_failures[] = $failure->description();
-        }
-    }
+		foreach ($failures as $failure) {
+			$this->build_failures[] = $failure->description();
+		}
+	}
 
-    public function set_failed($failure_message = null)
+	public function set_failed($failure_message = null)
     {
         if($failure_message !== null) {
 
@@ -193,6 +191,7 @@ class DUP_Package
         $timerStart     = DUP_Util::getMicrotime();
         $report         = array();
         $this->ScanFile = "{$this->NameHash}_scan.json";
+
 
         $report['RPT']['ScanTime'] = "0";
         $report['RPT']['ScanFile'] = $this->ScanFile;

@@ -399,10 +399,10 @@ DATABASE -->
 		</div>
 	</div>
     
-<!-- ============
-TOTAL SIZE -->
+	<!-- ============
+	TOTAL SIZE -->
     <div class="data-ll-section scan-header" style="display:none">
-		<i class="fa fa-table"></i>
+		<i class="fa fa-file-archive-o"></i>
 		<?php _e("Total Size", 'duplicator');	?>
 		<div class="scan-header-details">
 
@@ -416,35 +416,47 @@ TOTAL SIZE -->
 		</div>
 	</div>
 
-	<div class="data-ll-section scan-item scan-item-last" style="display:none">
-		<div class="title" onclick="Duplicator.Pack.toggleScanItem(this);">
+	<div class="data-ll-section scan-item scan-item-last" style="display: none">
+		<div style="padding: 7px; background-color:#F3B2B7; font-weight: bold ">
+		<?php
+				printf(__('The total size of the files and database exceeds the 1GB limit Duplicator Lite can process with the DupArchive engine. &nbsp;', 'duplicator'));
+                printf(__('The build process cannot continue <a href="javascript:void(0)" onclick="jQuery(\'#data-ll-status-recommendations\').toggle()">click for recommendations</a>.', 'duplicator'));
+
+		?>
+		</div>
+		<!--div class="title" onclick="Duplicator.Pack.toggleScanItem(this);">
 			<div class="text"><i class="fa fa-caret-right"></i> <?php _e('Overview', 'duplicator');?></div>
 			<div id="data-ll-status-totalsize"></div>
-		</div>
-		<div class="info">          
+		</div-->
+		<div class="info" id="data-ll-status-recommendations">
 			<?php
                 echo '<b>';
-				printf(__('The total site size (files and database) exceeds the maximum Duplicator Lite can process with the DupArchive engine (1 GB).', 'duplicator'));
+				$lnk = '<a href="admin.php?page=duplicator-settings&tab=package" target="_blank">' . __('Archive Engine', 'duplicator') . '</a>';
+				printf(__("The DupArchive eninge is a custom format designed to help with build issues on budget or contrainted hosts. The '{$lnk}' setting for DupArchive is "
+						. "currently capped at 1GB for Duplicator Lite.  For sites above 1GB check out the recommendations below.", 'duplicator'));
                 echo '</b>';
 
-				echo '<br/><br/><hr size="1" />';
+				echo '<br/><hr size="1" />';
 
 				
 				echo '<b>' . __('RECOMMENDATIONS:', 'duplicator') . '</b><br/>';
-
 				echo '<div style="padding:5px">';
-				$lnk = '<a href="maint/repair.php" target="_blank">' . __('repair and optimization', 'duplicator') . '</a>';
-				printf(__('1. Add unnecessary files and directories to the build filter.', 'duplicator'), $lnk);
+
+				$lnk = '<a href="admin.php?page=duplicator&tab=new1">' . __('Step 1', 'duplicator') . '</a>';
+				printf(__("- Exclude unnecessary files/directories/tables in the filters sections on %s.", 'duplicator'), $lnk);
 				echo '<br/><br/>';
-                _e('-or-', 'duplicator');
+
+                $lnk = '<a href="https://snapcreek.com/duplicator/docs/quick-start#quick-060-q" target="_blank">' . __('covered here.', 'duplicator') . '</a>';
+				printf(__("- Perform a two part install %s", 'duplicator'), $lnk);
                 echo '<br/><br/>';
-                $lnk = '<a href="#" target="_blank">' . __('here.', 'duplicator') . '</a>';
-				echo __("2. Perform a two part install as described", 'duplicator') . ' ' . $lnk;
+
+				$lnk = '<a href="admin.php?page=duplicator-settings&tab=package" target="_blank">' . __('ZipArchive Engine', 'duplicator') . '</a>';
+				printf(__("- Switch to the %s which requires a capable hosting provider (VPS recommended).", 'duplicator'),$lnk);
 				echo '<br/><br/>';
-                _e('-or-', 'duplicator');
-                echo '<br/><br/>';
-				$lnk = '<a href="#" target="_blank">' . __('Duplicator Pro.', 'duplicator') . '</a>';
-				echo __('3. Consider upgrading to', 'duplicator') . ' ' . $lnk;
+
+				$lnk = '<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_da_size_limit&utm_campaign=duplicator_pro" target="_blank">' . __('Duplicator Pro', 'duplicator') . '</a>';
+				printf(__("- Consider upgrading to %s for larger site support.", 'duplicator'), $lnk);
+
 				echo '</div>';
 
 			?>

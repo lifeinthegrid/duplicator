@@ -296,7 +296,9 @@ jQuery(document).ready(function($)
 			$('#dup-build-button').prop("disabled",false).addClass('button-primary');
 		}
 
-        Duplicator.Pack.initLiteLimitData(data);
+	    <?php if (DUP_Settings::Get('archive_build_mode') == DUP_Archive_Build_Mode::DupArchive) :?>
+			Duplicator.Pack.initLiteLimitData(data);
+		<?php endif; ?>
 	}
 	
 	//Toggles each scan item to hide/show details
