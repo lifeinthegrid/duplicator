@@ -490,6 +490,8 @@ DIALOGS:
 	$alert2->title		= __('Copy Quick Filter Paths', 'duplicator');
 	$alert2->message	= "<div id='arc-paths-dlg'></div>";
 	$alert2->initAlert();
+
+	$dup_archive_engine =  DUP_Settings::Get('archive_build_mode') == DUP_Archive_Build_Mode::ZipArchive ? "ZipArchive" : "DupArchive (beta)";
 ?>
 
 <!-- =======================
@@ -499,7 +501,8 @@ DIALOG: Scan Results -->
 	<!-- PACKAGE -->
 	<h2><i class="fa fa-archive"></i> <?php _e('Package', 'duplicator');?></h2>
 	<b><?php _e('Name', 'duplicator');?>:</b> <?php echo $Package->Name; ?><br/>
-	<b><?php _e('Notes', 'duplicator');?>:</b> <?php echo $Package->Notes; ; ?>
+	<b><?php _e('Notes', 'duplicator');?>:</b> <?php echo $Package->Notes; ; ?> <br/>
+	<b><?php _e('Archive Engine', 'duplicator');?>:</b> <a href="admin.php?page=duplicator-settings&tab=package" target="_blank"><?php echo $dup_archive_engine ?></a>
 	<br/><br/>
 
 	<!-- DATABASE -->
@@ -849,14 +852,13 @@ jQuery(document).ready(function($)
             $('.data-ll-section').show();
             $('#dup-build-button').hide();
             $('#dup-scan-warning-continue').hide();
-            $('#data-ll-status-totalsize').html(Duplicator.Pack.setScanStatus(data.LL.Status.TotalSize));
+            //$('#data-ll-status-totalsize').html(Duplicator.Pack.setScanStatus(data.LL.Status.TotalSize));
             $('#data-ll-totalsize').text(data.LL.TotalSize || errMsg);
             $('.dup-pro-support').hide();
         } else {
-            $('#dup-scan-warning-continue').show();
+           // $('#dup-scan-warning-continue').show();
             $('#dup-build-button').show();
-            $('#dup-build-button').prop("disabled",true);
-            //$('#dup-build-button').prop("disabled",false);
+           // $('#dup-build-button').prop("disabled",true);
             $('.data-ll-section').hide();
         }
 	}

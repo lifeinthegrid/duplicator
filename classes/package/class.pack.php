@@ -140,6 +140,7 @@ class DUP_Package
     public $Name;
     public $Hash;
     public $NameHash;
+	//MANUAL, SCHEDULED (scheduled not active)
     public $Type;
     public $Notes;
     public $StorePath;

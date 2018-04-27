@@ -114,7 +114,7 @@
 	div#arc-details-dlg table#db-area {margin:0;  width:98%}
 	div#arc-details-dlg table#db-area td {padding:0;}
 	div#arc-details-dlg table#db-area td:first-child {font-weight:bold;  white-space:nowrap; width:100px}
-	div#arc-details-dlg div.filter-area {height:265px; overflow-y:scroll; border:1px solid #dfdfdf; padding:8px; margin:2px 0}
+	div#arc-details-dlg div.filter-area {height:245px; overflow-y:scroll; border:1px solid #dfdfdf; padding:8px; margin:2px 0}
 	div#arc-details-dlg div.file-info {padding:0 0 10px 15px; width:500px; white-space:nowrap;}
 	div#arc-details-dlg div.file-info i.fa-question-circle { margin-right: 5px;  font-size: 11px;}
 

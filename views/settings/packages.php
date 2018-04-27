@@ -217,7 +217,7 @@ $archive_build_mode = DUP_Settings::Get('archive_build_mode')
 
 				<div class="engine-radio">
 					<input type="radio" name="archive_build_mode" id="archive_build_mode3"  value="<?php echo DUP_Archive_Build_Mode::DupArchive; ?>" <?php echo ($archive_build_mode == DUP_Archive_Build_Mode::DupArchive) ? 'checked="checked"' : ''; ?> />
-					<label for="archive_build_mode3"><?php _e('DupArchive'); ?></label> &nbsp; &nbsp;
+					<label for="archive_build_mode3"><?php _e('DupArchive (beta)'); ?></label> &nbsp; &nbsp;
 				</div>
 
 				<br style="clear:both"/>
