@@ -59,7 +59,6 @@ class DUPX_DBTest
 	private $out;
 	private $dbh;
 	private $permsChecked  = false;
-	private $newDBUserMade = false;
 	private $newDBMade	   = false;
 
 

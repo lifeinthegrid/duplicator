@@ -49,7 +49,7 @@ $cpnl_supported =  DUPX_U::$on_php_53_plus ? true : false;
 	</div>
 
 	<!-- CPANEL TAB -->
-	<div id="s2-cpnl-pane">
+	<div id="s2-cpnl-pane" style="display: none">
 		<?php require_once('view.s2.cpnl.lite.php'); ?>
 	</div>
 </form>
