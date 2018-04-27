@@ -159,12 +159,14 @@
 		cursor:pointer; color:#fff; font-size:13px; border-radius:5px;	padding:5px 20px 4px 20px;
 	    background-color:#989898; border:1px solid #777;
 	}
-
+	
 	/*cPanel DB */    
 	div.s2-cpnl-pane {margin-top:5px}
 	div.s2-gopro {color: black; margin-top:10px; padding:0 20px 10px 20px; border: 1px solid silver; background-color:#F6F6F6; border-radius: 4px}
 	div.s2-gopro h2 {text-align: center; margin:10px}
 	div.s2-gopro small {font-style: italic}
+	div.s2-cpanel-login {padding:15px; color:#fff; text-align:center; margin:15px 5px 15px 5px; border:1px solid silver; border-radius:5px; background-color:#13659C; font-size:14px; line-height:22px}
+	div.s2-cpanel-off {padding:15px; color:#fff; text-align:center; margin:15px 5px 15px 5px; border:1px solid silver; border-radius:5px; background-color:#b54949; font-size:14px; line-height:22px}
     div.s2-cpnl-panel-no-support {text-align:center; font-size:18px; font-weight:bold; line-height:30px; margin-top:40px}
 	td#cpnl-prefix-dbname {width:10px}
 	td#cpnl-prefix-dbuser {width:10px; white-space:normal}
