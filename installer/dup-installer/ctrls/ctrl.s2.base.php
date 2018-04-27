@@ -4,7 +4,7 @@ defined("ABSPATH") or die("");
 /** IDE HELPERS */
 /* @var $GLOBALS['DUPX_AC'] DUPX_ArchiveConfig */
 
-require_once($GLOBALS['DUPX_INIT'] . '/api/class.cpnl.ctrl.php');
+//require_once($GLOBALS['DUPX_INIT'] . '/api/class.cpnl.ctrl.php');
 
 //BASIC
 if ($_POST['view_mode'] == 'basic') {

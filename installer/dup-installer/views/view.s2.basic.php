@@ -112,20 +112,6 @@ OPTIONS -->
 			<td>Legacy:</td>
 			<td><input type="checkbox" name="dbcollatefb" id="dbcollatefb" value="1" /> <label for="dbcollatefb">Apply legacy collation fallback support for unknown collations types</label></td>
 		</tr>
-        <tr>
-            <td style="vertical-align:top">Memory:	</td>
-            <td>
-				<?php if($GLOBALS['DUPX_AC']->dbInfo->buildMode == 'PHPCHUNKING') : ?>
-					<input type="checkbox" name="dbchunk" id="dbchunk" value="1" /> <label for="dbchunk">Stream the sql file in chunks</label>
-				<?php else :?>
-					<input type="checkbox" name="dbchunk" id="dbchunk" value="0" disabled="true" /> <label for="dbchunk">Stream the sql file in chunks</label>
-					<div class="php-chuncking-warning">
-						This option is only available when the package is built with PHP Code + Chunking enabled.  To use this feature change the
-						goto to Plugin Settings &gt; Packages Tab &gt; SQL Script &gt; choose PHP Code + Chunking and create a new package.
-					</div>
-				<?php endif; ?>
-			</td>
-        </tr>
 		<tr>
 			<td>Spacing:</td>
 			<td><input type="checkbox" name="dbnbsp" id="dbnbsp" value="1" /> <label for="dbnbsp">Fix non-breaking space characters</label></td>

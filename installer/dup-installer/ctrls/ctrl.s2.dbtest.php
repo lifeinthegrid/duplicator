@@ -25,10 +25,6 @@ class DUPX_DBTestIn
 	public $dbpass;
 	public $dbport;
 	public $dbcollatefb;
-	public $cpnlHost;
-	public $cpnlUser;
-	public $cpnlPass;
-	public $cpnlNewUser;
 }
 
 class DUPX_DBTestOut extends DUPX_CTRL_Out
@@ -65,8 +61,7 @@ class DUPX_DBTest
 	private $permsChecked  = false;
 	private $newDBUserMade = false;
 	private $newDBMade	   = false;
-	private $cpnlAPI;
-	private $cpnlToken;
+
 
 	public function __construct(DUPX_DBTestIn $input)
 	{
@@ -75,7 +70,6 @@ class DUPX_DBTest
 		$this->out		 = new DUPX_DBTestOut();
 		$this->tblPerms	 = array('all' => -1, 'create' => -1, 'insert' => -1, 'update' => -1, 'delete' => -1, 'select' => -1, 'drop' => -1);
 		$this->ac = DUPX_ArchiveConfig::getInstance();
-		$this->cpnlAPI	 = new DUPX_cPanel_Controller();
 
 		//REQUIRMENTS
 		//Pass States: skipped = -1		failed = 0		passed = 1
@@ -155,86 +149,6 @@ class DUPX_DBTest
 		$this->n10All($this->notices[10]);
 		$this->r70All($this->reqs[70]);
 		$this->basicCleanup();
-	}
-
-	/**
-	 * Run cPanel Tests
-	 *
-	 * @return null
-	 */
-	private function runcPanel()
-	{
-		$this->cpnlToken  = $this->cpnlAPI->create_token($this->in->cpnlHost, $this->in->cpnlUser, $this->in->cpnlPass);
-		$this->cpnlAPI->connect($this->cpnlToken);
-
-		//REQUIRMENTS:
-		//[5]	 = "Create Database User"
-		//[10]	 = "Verify Host Connection"
-		//[20]	 = "Check Server Version"
-		//[30]	 = "Create New Database Tests"
-		//[40]	 = "Confirm Database Visibility"
-		//[50]	 = "Manual Table Check"
-		//[60]	 = "Test User Table Privileges"
-
-		if ($this->in->cpnlNewUser) {
-			$this->r5cPanel($this->reqs[5]);
-		}
-		$this->r10All($this->reqs[10]);
-		$this->r20All($this->reqs[20]);
-
-		switch ($this->in->dbaction) {
-			case "create" :
-				$this->r30cPanel($this->reqs[30]);
-				$this->r40cPanel($this->reqs[40]);
-				break;
-			case "empty" :
-				$this->r40cPanel($this->reqs[40]);
-				break;
-			case "rename":
-				$this->r40cPanel($this->reqs[40]);
-				break;
-			case "manual":
-				$this->r40cPanel($this->reqs[40]);
-				$this->r50All($this->reqs[50]);
-				break;
-		}
-
-		$this->r60All($this->reqs[60]);
-
-		//NOTICES
-		$this->n10All($this->notices[10]);
-		$this->r70All($this->reqs[70]);
-		$this->cpnlCleanup();
-	}
-
-	/**
-	 * Create Database User
-	 *
-	 * @return null
-	 */
-	private function r5cPanel(&$test)
-	{
-		try {
-
-			if ($this->isFailedState($test)) {
-				return;
-			}
-
-			$result	= $this->cpnlAPI->create_db_user($this->cpnlToken, $this->in->dbuser, $this->in->dbpass);
-			if ($result['status'] !== true) {
-				//$err		 = print_r($result['cpnl_api'], true);
-				$test['pass']	 = 0;
-				$test['info']	 = "Error creating database user <b>[{$this->in->dbuser}]</b> with cPanel API.<br/>Details: {$result['status']}<br/>";
-			} else {
-				$test['pass']	 = 1;
-				$test['info']	 = "Succesfully created database user <b>[{$this->in->dbuser}]</b> with cPanel API.";
-				$this->newDBUserMade = true;
-			}
-
-		} catch (Exception $ex) {
-			$test['pass']	 = 0;
-			$test['info']	 = "Error creating database user <b>[{$this->in->dbuser}]</b> with cPanel API.<br/>" . $this->formatError($ex);
-		}
 	}
 
 	/**
@@ -344,51 +258,6 @@ class DUPX_DBTest
 		}
 	}
 
-	/**
-	 * Create New DB: cPanel
-	 *
-	 * @return null
-	 */
-	private function r30cPanel(&$test)
-	{
-		try {
-
-			if ($this->isFailedState($test)) {
-				return;
-			}
-
-			//DATABASE EXISTS
-			$db_found = mysqli_select_db($this->dbh, $this->in->dbname);
-			if ($db_found) {
-				$test['pass']	 = 0;
-				$test['info']	 = "DATABASE CREATION FAILURE: A database named <b>[{$this->in->dbname}]</b> already exists.<br/><br/>"
-							."Please continue with the following options:<br/>"
-							."- Choose a different database name or remove this one.<br/>"
-							."- Change the action drop-down to an option like \"Connect and Remove All Data\".<br/>";
-				return;
-			}
-
-
-			//CREATE NEW DB
-			$result = $this->cpnlAPI->create_db($this->cpnlToken, $this->in->dbname);
-			if ($result['status'] !== true) {
-				$test['pass']	 = 0;
-				$test['info']	 = "Error creating database <b>[{$this->in->dbname}]</b> with cPanel API.<br/>Details: {$result['status']}";
-
-				return;
-
-			} else {
-				$this->newDBMade = true;
-				$test['pass']	 = 1;
-				$test['info']	 = "Succesfully created database <b>[{$this->in->dbname}]</b> with cPanel API.";
-			}
-
-
-		} catch (Exception $ex) {
-			$test['pass']	 = 0;
-			$test['info']	 = "Error creating database <b>[{$this->in->dbname}]</b> in mode <b>[cPanel Mode].<br/>" . $this->formatError($ex);
-		}
-	}
 
 	/**
 	 * Confirm Database Visibility for Basic
@@ -413,53 +282,6 @@ class DUPX_DBTest
 				$test['pass']	 = 0;
 				$test['info']	 = "The user <b>[{$this->in->dbuser}]</b> is unable to see the database named <b>[{$this->in->dbname}]</b>. "
 					."Be sure the database name already exists.  If you want to create a new database choose the action 'Create New Database'.";
-			} else {
-				$test['pass']	 = 1;
-				$test['info']	 = "The database user <b>[{$this->in->dbuser}]</b> has visible access to see the database named <b>[{$this->in->dbname}]</b>";
-			}
-
-		} catch (Exception $ex) {
-			$test['pass']	 = 0;
-			$test['info']	 = "The user <b>[{$this->in->dbuser}]</b> is unable to see the database named <b>[{$this->in->dbname}]</b>."
-				. "Be sure the database name already exists.  If you want to create a new database choose the action 'Create New Database'<br/>" . $this->formatError($ex);
-		}
-	}
-
-	/**
-	 * Confirm Database Visibility
-	 *
-	 * @return null
-	 */
-	private function r40cPanel(&$test)
-	{
-		try {
-
-			if ($this->isFailedState($test)) {
-				return;
-			}
-
-			$result = $this->cpnlAPI->is_user_in_db($this->cpnlToken, $this->in->dbname, $this->in->dbuser);
-			if (!$result['status']) {
-
-				$result = $this->cpnlAPI->assign_db_user($this->cpnlToken, $this->in->dbname, $this->in->dbuser);
-
-				//Failure Cleanup
-				if ($result['status'] !== true) {
-					$test['pass']	 = 0;
-					$test['info']	 = "Error assigning new user <b>[{$this->in->dbuser}]</b> to database <b>[{$this->in->dbname}]</b> with cPanel API.<br/>"
-						."Details: {$result['status']}";
-					return;
-				}
-			}
-
-			$host_user = $this->in->cpnlUser;
-			$this->databases = DUPX_DB::getDatabases($this->dbh, $host_user);
-			$db_found = mysqli_select_db($this->dbh, $this->in->dbname);
-
-			if (!$db_found) {
-				$test['pass']	 = 0;
-				$test['info']	 = "The user <b>[{$this->in->dbuser}]</b> is unable to see the database named <b>[{$this->in->dbname}]</b>. "
-					. "Be sure the database name already exists.  If you want to create a new database choose the action 'Create New Database'.";
 			} else {
 				$test['pass']	 = 1;
 				$test['info']	 = "The database user <b>[{$this->in->dbuser}]</b> has visible access to see the database named <b>[{$this->in->dbname}]</b>";
@@ -783,8 +605,7 @@ class DUPX_DBTest
         return $this->sql_modes;
 	}
 
-
-        /**
+    /**
 	 * Test if '0000-00-00' date query fails or not
 	 *
 	 * @return null
@@ -832,40 +653,6 @@ class DUPX_DBTest
 					$this->reqs[30][pass] = 0;
 					$this->reqs[30][info] = "The database <b>[{$this->in->dbname}]</b> was successfully created. However removing the database was not succussful with the following response.<br/>"
 								."Response Message: <i>".mysqli_error($this->dbh)."</i>.  This database may need to be removed manually.";
-				}
-			}
-		}
-	}
-
-	/**
-	 * Cleans up cpanel setup items when test mode is enabled
-	 *
-	 * @return null
-	 */
-	private function cpnlCleanup()
-	{
-		//TEST MODE ONLY
-		if ($this->runMode == 'TEST') {
-
-			//DELETE DB USER
-			if ($this->newDBUserMade) {
-				$result = $this->cpnlAPI->delete_db_user($this->cpnlToken, $this->in->dbuser);
-				if ($result['status'] !== true) {
-					$this->reqs[5][pass] = 0;
-					$this->reqs[5][info] = "The database user <b>[{$this->in->dbuser}]</b> was successfully created. However removing the user was not succussful via the cPanel API"
-										 . " with the following response:<br/>Details: {$result['status']}.<br/> To continue refresh the page, uncheck the 'Create New Database User'"
-										 . " checkbox and select the user from the drop-down.";
-				}
-			}
-
-			//DELETE DB
-			if ($this->newDBMade && $this->in->dbaction == 'create') {
-				$result = $this->cpnlAPI->delete_db($this->cpnlToken, $this->in->dbname);
-				if ($result['status'] !== true) {
-					$this->reqs[30][pass] = 0;
-					$this->reqs[30][info] = "The database <b>[{$this->in->dbname}]</b> was successfully created. However removing the database was not succussful via the cPanel API"
-										 . " with the following response:<br/>Details: {$result['status']}.<br/> To continue refresh the page, change the setup action"
-										 . " and continue with the install";
 				}
 			}
 		}

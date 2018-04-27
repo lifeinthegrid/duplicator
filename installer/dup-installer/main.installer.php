@@ -256,7 +256,7 @@ $(document).ready(function ()
 	<form id="form-debug" method="post" action="?debug=1">
 		<input id="debug-view" type="hidden" name="view" />
 		<br/><hr size="1" />
-		DEBUG MODE ON: <a href="//<?php echo $GLOBALS['_CURRENT_URL_PATH']?>/api/router.php" target="api">[API]</a> &nbsp;
+		DEBUG MODE ON
 		<br/><br/>
 		<a href="javascript:void(0)"  onclick="$('#debug-vars').toggle()"><b>PAGE VARIABLES</b></a>
 		<pre id="debug-vars"><?php print_r($GLOBALS); ?></pre>
