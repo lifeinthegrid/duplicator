@@ -590,7 +590,6 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
             return retVal;
         };
 
-        console.log('g');
         Duplicator.Pack.ToggleTwoPart = function () {
             var $btn = $('#dup-two-part-btn');
             if ($('#dup-two-part-check').is(':checked')) {
@@ -599,16 +598,14 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                 $btn.attr("disabled", true);
             }
         };
-
-        console.log('h');
         //Page Init:
         Duplicator.UI.AnimateProgressBar('dup-progress-bar');
 
-<?php if (DUP_Settings::Get('archive_build_mode') == DUP_Archive_Build_Mode::ZipArchive): ?>
-            Duplicator.Pack.CreateZip();
-<?php else: ?>
-            Duplicator.Pack.CreateDupArchive();
-<?php endif; ?>
+		<?php if (DUP_Settings::Get('archive_build_mode') == DUP_Archive_Build_Mode::ZipArchive): ?>
+			Duplicator.Pack.CreateZip();
+		<?php else: ?>
+			Duplicator.Pack.CreateDupArchive();
+		<?php endif; ?>
     });
 
 </script>

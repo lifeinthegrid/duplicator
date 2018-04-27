@@ -64,6 +64,7 @@
 
 	/*FILES */
 	div#data-arc-size1 {display:inline-block; font-size:11px; margin-right:1px;}
+	sup.dup-small-ext-type {font-size:11px; font-weight: normal; font-style: italic}
 	i.data-size-help { font-size:12px; display:inline-block;  margin:0; padding:0}
 	div.dup-data-size-uncompressed {font-size:10px; text-align: right; padding:0; margin:-7px 0 0 0; font-style: italic; font-weight: normal; border:0px solid red; clear:both}
 	div.hb-files-style div.container {border:1px solid #E0E0E0; border-radius:4px; margin:5px 0 10px 0}

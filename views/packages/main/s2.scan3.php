@@ -7,12 +7,16 @@
 		$sroot = strlen($root) > 50 ? substr($root, 0, 50) . '...' : $root;
 		echo "<div title='{$root}' class='divider'><i class='fa fa-folder-open'></i> {$sroot}</div>";
 	}
+
+	$archive_type_label		=  DUP_Settings::Get('archive_build_mode') == DUP_Archive_Build_Mode::ZipArchive ? "ZipArchive" : "DupArchive (beta)";
+	$archive_type_extension =  DUP_Settings::Get('archive_build_mode') == DUP_Archive_Build_Mode::ZipArchive ? "zip" : "daf";
 ?>
 
 <!-- ================================================================
 ARCHIVE -->
 <div class="details-title">
 	<i class="fa fa-file-archive-o"></i>&nbsp;<?php _e('Archive', 'duplicator');?>
+	<sup class="dup-small-ext-type"><?php echo $archive_type_extension; ?></sup>
 	<div class="dup-more-details" onclick="Duplicator.Pack.showDetailsDlg()" title="<?php _e('Show Scan Details', 'duplicator');?>"><i class="fa fa-window-maximize"></i></div>
 </div>
 
@@ -491,7 +495,6 @@ DIALOGS:
 	$alert2->message	= "<div id='arc-paths-dlg'></div>";
 	$alert2->initAlert();
 
-	$dup_archive_engine =  DUP_Settings::Get('archive_build_mode') == DUP_Archive_Build_Mode::ZipArchive ? "ZipArchive" : "DupArchive (beta)";
 ?>
 
 <!-- =======================
@@ -502,7 +505,7 @@ DIALOG: Scan Results -->
 	<h2><i class="fa fa-archive"></i> <?php _e('Package', 'duplicator');?></h2>
 	<b><?php _e('Name', 'duplicator');?>:</b> <?php echo $Package->Name; ?><br/>
 	<b><?php _e('Notes', 'duplicator');?>:</b> <?php echo $Package->Notes; ; ?> <br/>
-	<b><?php _e('Archive Engine', 'duplicator');?>:</b> <a href="admin.php?page=duplicator-settings&tab=package" target="_blank"><?php echo $dup_archive_engine ?></a>
+	<b><?php _e('Archive Engine', 'duplicator');?>:</b> <a href="admin.php?page=duplicator-settings&tab=package" target="_blank"><?php echo $archive_type_label ?></a>
 	<br/><br/>
 
 	<!-- DATABASE -->
