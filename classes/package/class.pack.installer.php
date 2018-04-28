@@ -92,8 +92,7 @@ class DUP_Installer
         }
 
         $search_array  = array('@@ARCHIVE@@', '@@VERSION@@', '@@ARCHIVE_SIZE@@', '@@DUPARCHIVE_MINI_EXPANDER@@');
-
-        $replace_array = array($this->Package->Archive->File, DUPLICATOR_PRO_VERSION, @filesize($archive_filepath), $mini_expander_string);
+        $replace_array = array($this->Package->Archive->File, DUPLICATOR_VERSION, @filesize($archive_filepath), $mini_expander_string);
 
         $installer_contents = str_replace($search_array, $replace_array, $installer_contents);
         
@@ -359,7 +358,6 @@ class DUP_Installer
 				DUP_Zip_U::addFileToZipArchive($zipArchive, $wpconfig_filepath, DUPLICATOR_WPCONFIG_ARK_FILENAME, true);
 			}
 
-            //  if ($zipArchive->addFile($scan_filepath, DUPLICATOR_PRO_EMBEDDED_SCAN_FILENAME)) {
             if (DUP_Zip_U::addFileToZipArchive($zipArchive, $scan_filepath, DUPLICATOR_EMBEDDED_SCAN_FILENAME, true)) {
                 if ($this->add_installer_files_using_zip_archive($zipArchive, $installer_filepath, $archive_config_filepath, true)) {
                     DUP_Log::info("Installer files added to archive");

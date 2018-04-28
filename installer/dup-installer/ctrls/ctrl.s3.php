@@ -338,7 +338,7 @@ mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` SET op
 mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` SET option_value = '{$serial_plugin_list}'  WHERE option_name = 'active_plugins' ");
 mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` SET option_value = '{$_POST['url_new']}'  WHERE option_name = 'home' ");
 mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` SET option_value = '{$_POST['siteurl']}'  WHERE option_name = 'siteurl' ");
-mysqli_query($dbh, "INSERT INTO `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` (option_value, option_name) VALUES('{$_POST['exe_safe_mode']}','duplicator_pro_exe_safe_mode')");
+mysqli_query($dbh, "INSERT INTO `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` (option_value, option_name) VALUES('{$_POST['exe_safe_mode']}','duplicator_exe_safe_mode')");
 //Reset the postguid data
 if ($_POST['postguid']) {
 	mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}posts` SET guid = REPLACE(guid, '{$_POST['url_new']}', '{$_POST['url_old']}')");
