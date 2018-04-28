@@ -25,7 +25,6 @@ $_POST['url_new']				 = isset($_POST['url_new']) ? rtrim(trim($_POST['url_new'])
 $_POST['ssl_admin']				 = (isset($_POST['ssl_admin'])) ? true : false;
 $_POST['cache_wp']				 = (isset($_POST['cache_wp'])) ? true : false;
 $_POST['cache_path']			 = (isset($_POST['cache_path'])) ? true : false;
-$_POST['empty_schedule_storage'] = (isset($_POST['empty_schedule_storage']) && $_POST['empty_schedule_storage'] == '1') ? true : false;
 $_POST['exe_safe_mode']	= isset($_POST['exe_safe_mode']) ? $_POST['exe_safe_mode'] : 0;
 
 //MYSQL CONNECTION
@@ -284,36 +283,6 @@ $wpconfig_ark_path	= "{$root_path}/wp-config-arc.txt";
 $wpconfig_ark_contents	= @file_get_contents($wpconfig_ark_path, true);
 $wpconfig_ark_contents	= preg_replace($patterns, $replace, $wpconfig_ark_contents);
 
-// Redundant - already processed in updateVars();
-////WP_CONTENT_DIR
-//if (isset($defines['WP_CONTENT_DIR'])) {
-//	$new_path = str_replace($_POST['path_old'], $_POST['path_new'], DUPX_U::setSafePath($defines['WP_CONTENT_DIR']), $count);
-//	if ($count > 0) {
-//		array_push($patterns, "/('|\")WP_CONTENT_DIR.*?\)\s*;/");
-//		array_push($replace, "'WP_CONTENT_DIR', '{$new_path}');");
-//	}
-//}
-//
-////WP_CONTENT_URL
-//// '/' added to prevent word boundary with domains that have the same root path
-//if (isset($defines['WP_CONTENT_URL'])) {
-//    $_POST['url_old']=trim($_POST['url_old'],'/');
-//    $_POST['url_new']=trim($_POST['url_new'],'/');
-//	$new_path = str_replace($_POST['url_old'], $_POST['url_new'], $defines['WP_CONTENT_URL'], $count);
-//	if ($count > 0) {
-//		array_push($patterns, "/('|\")WP_CONTENT_URL.*?\)\s*;/");
-//		array_push($replace, "'WP_CONTENT_URL', '{$new_path}');");
-//	}
-//}
-//
-////WP_TEMP_DIR
-//if (isset($defines['WP_TEMP_DIR'])) {
-//	$new_path = str_replace($_POST['path_old'], $_POST['path_new'], DUPX_U::setSafePath($defines['WP_TEMP_DIR']) , $count);
-//	if ($count > 0) {
-//		array_push($patterns, "/('|\")WP_TEMP_DIR.*?\)\s*;/");
-//		array_push($replace, "'WP_TEMP_DIR', '{$new_path}');");
-//	}
-//}
 
 if (!is_writable($wpconfig_ark_path)) {
 	$err_log = "\nWARNING: Unable to update file permissions and write to {$wpconfig_ark_path}.  ";
@@ -383,22 +352,6 @@ if ($mu_updates) {
 	DUPX_Log::info("- Update MU table blogs: domain {$mu_newDomainHost} ");
 }
 
-//SCHEDULE STORAGE CLEANUP
-if (($_POST['empty_schedule_storage']) == true || (DUPX_U::$on_php_53_plus == false)) {
-
-	$dbdelete_count	 = 0;
-	$dbdelete_count1 = 0;
-	$dbdelete_count2 = 0;
-
-	@mysqli_query($dbh, "DELETE FROM `{$GLOBALS['DUPX_AC']->wp_tableprefix}duplicator_pro_entities` WHERE `type` = 'DUP_PRO_Storage_Entity'");
-	$dbdelete_count1 = @mysqli_affected_rows($dbh);
-
-	@mysqli_query($dbh, "DELETE FROM `{$GLOBALS['DUPX_AC']->wp_tableprefix}duplicator_pro_entities` WHERE `type` = 'DUP_PRO_Schedule_Entity'");
-	$dbdelete_count2 = @mysqli_affected_rows($dbh);
-
-	$dbdelete_count = (abs($dbdelete_count1) + abs($dbdelete_count2));
-	DUPX_Log::info("- Removed '{$dbdelete_count}' schedule storage items");
-}
 
 //===============================================
 //NOTICES TESTS

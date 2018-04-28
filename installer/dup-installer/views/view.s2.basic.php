@@ -65,8 +65,6 @@ BASIC PANEL -->
 						<option value="create">Create New Database</option>
                     <?php endif; ?>
 					<option value="empty" selected>Connect and Remove All Data</option>
-					<option value="rename">Connect and Backup Any Existing Data</option>
-					<option value="manual">Manual SQL Execution (Advanced)</option>
 				</select>
 			</td>
 		</tr>

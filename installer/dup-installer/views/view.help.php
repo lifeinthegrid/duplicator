@@ -112,7 +112,7 @@ STEP 1
 				This extraction method will use the PHP <a href="http://php.net/manual/en/book.zip.php" target="_blank">ZipArchive</a> code to extract the archive zip file.
 				<br/><br/>
 
-				<b>Shell-Exec Unzip</b> <sup>pro</sup><br/>
+				<b>Shell-Exec Unzip</b><br/>
 				This extraction method will use the PHP <a href="http://php.net/manual/en/function.shell-exec.php" target="_blank">shell_exec</a> to call the system unzip
 				command on the server.  This is the default mode that is used if its avail on the server.
 				<br/><br/>
@@ -120,7 +120,7 @@ STEP 1
 			</td>
 		</tr>
 		<tr>
-			<td>Permissions <sup>pro</sup></td>
+			<td>Permissions</td>
 			<td>
 				<b>All Files:</b> Check the 'All Files' check-box and enter in the desired <a href="http://php.net/manual/en/function.chmod.php" target="_blank">chmod command</a>
 				to recursively set the octal value on all the files being extracted. Typically this value is 644 on most servers and hosts.
@@ -148,7 +148,7 @@ STEP 1
 			</td>
 		</tr>
 		<tr>
-			<td>Config Files <sup>pro</sup></td>
+			<td>Config Files </td>
 			<td>
 				Inside the archive.zip should be a copy of the original .htaccess (Apache) or the web.config (IIS) files that were setup with your packaged site.
 				When the installer runs it will backup and then reset all <i>.htaccess, user.ini, and web.config</i> files.   It will then create blank copies of

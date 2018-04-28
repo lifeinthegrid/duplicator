@@ -93,15 +93,9 @@ VIEW: STEP 3- INPUT -->
         <div class="help-target">
             <a href="<?php echo $GLOBALS['_HELP_URL_PATH'];?>#help-s3" target="help"><i class="fa fa-question-circle"></i></a>
         </div><br/>
-
-        <table class="s3-opts" id="search-replace-table">
-            <tr valign="top" id="search-0">
-                <td>Search:</td>
-                <td><input type="text" name="search[]" style="margin-right:5px"></td>
-            </tr>
-            <tr valign="top" id="replace-0"><td>Replace:</td><td><input type="text" name="replace[]"></td></tr>
-        </table>
-        <button type="button" onclick="DUPX.addSearchReplace();return false;" style="font-size:12px;display: block; margin: 10px 0 0 0; " class="default-btn">Add More</button>
+		Add additional search and replace URLs to replace additional data. This option is available only in
+		<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=duplicator_pro&utm_content=free_inst_replaceopts">Duplicator Pro</a>
+      
     </div>
     <br/><br/>
     
@@ -137,13 +131,6 @@ VIEW: STEP 3- INPUT -->
 		<!-- SCAN OPTIONS -->
 		<div class="hdr-sub3">Scan Options</div>
 		<table  class="s3-opts">
-			<tr style="display: <?php echo $empty_schedule_display; ?>">
-				<td>Cleanup:</td>
-				<td>
-					<input type="checkbox" name="empty_schedule_storage" id="empty_schedule_storage" value="1" checked />
-					<label for="empty_schedule_storage" style="font-weight: normal">Remove schedules and storage endpoints</label>
-				</td>
-			</tr>
 			<tr>
 				<td style="width:105px">Site URL:</td>
 				<td style="white-space: nowrap">
@@ -415,36 +402,7 @@ DUPX.editOldPath = function()
 	}
 };
 
-var searchReplaceIndex = 1;
 
-/**
- * Adds a search and replace line         */
-DUPX.addSearchReplace = function()
-{
-	$("#search-replace-table").append("<tr valign='top' id='search-" + searchReplaceIndex + "'>" +
-		"<td style='width:80px;padding-top:20px'>Search:</td>" +
-		"<td style='padding-top:20px'>" +
-			"<input type='text' name='search[]' style='margin-right:5px' />" +
-			"<a href='javascript:DUPX.removeSearchReplace(" + searchReplaceIndex + ")'><i class='fa fa-minus-circle'></i></a>" +
-		"</td>" +
-	  "</tr>" +
-			  "<tr valign='top' id='replace-" + searchReplaceIndex + "'>" +
-		"<td>Replace:</td>" +
-		"<td>" +
-			"<input type='text' name='replace[]' />" +
-		"</td>" +
-	  "</tr> ");
-
-	searchReplaceIndex++;
-};
-
-/**
- * Removes a search and replace line      */
-DUPX.removeSearchReplace = function(index)
-{
-	$("#search-" + index).remove();
-	$("#replace-" + index).remove();
-};
 
 /**
  * Go back on AJAX result view */
