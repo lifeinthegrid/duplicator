@@ -52,6 +52,7 @@ $archive_build_mode = DUP_Settings::Get('archive_build_mode')
     div.dup-feature-notfound {color:maroon; width:600px; line-height: 18px}
 	select#package_ui_created {font-family: monospace}
 	div.engine-radio {float: left; min-width: 100px}
+	div.engine-sub-opts {padding:10px 0 10px 25px; display:none }
 </style>
 
 <form id="dup-settings-form" action="<?php echo admin_url('admin.php?page=duplicator-settings&tab=package'); ?>" method="post">
@@ -211,19 +212,28 @@ $archive_build_mode = DUP_Settings::Get('archive_build_mode')
 			<th scope="row"><label><?php _e('Archive Engine', 'duplicator'); ?></label></th>
 			<td>
 				<div class="engine-radio">
-					<input type="radio" name="archive_build_mode" id="archive_build_mode2"  value="<?php echo DUP_Archive_Build_Mode::ZipArchive; ?>" <?php echo ($archive_build_mode == DUP_Archive_Build_Mode::ZipArchive) ? 'checked="checked"' : ''; ?> />
-					<label for="archive_build_mode2"><?php _e('ZipArchive', 'duplicator'); ?></label>
+					<input type="radio" name="archive_build_mode" id="archive_build_mode1" onclick="Duplicator.Pack.ToggleArchiveEngine()"
+						   value="<?php echo DUP_Archive_Build_Mode::ZipArchive; ?>" <?php echo ($archive_build_mode == DUP_Archive_Build_Mode::ZipArchive) ? 'checked="checked"' : ''; ?> />
+					<label for="archive_build_mode1"><?php _e('ZipArchive', 'duplicator'); ?></label>
 				</div>
 
 				<div class="engine-radio">
-					<input type="radio" name="archive_build_mode" id="archive_build_mode3"  value="<?php echo DUP_Archive_Build_Mode::DupArchive; ?>" <?php echo ($archive_build_mode == DUP_Archive_Build_Mode::DupArchive) ? 'checked="checked"' : ''; ?> />
-					<label for="archive_build_mode3"><?php _e('DupArchive (beta)'); ?></label> &nbsp; &nbsp;
+					<input type="radio" name="archive_build_mode" id="archive_build_mode2"  onclick="Duplicator.Pack.ToggleArchiveEngine()"
+						   value="<?php echo DUP_Archive_Build_Mode::DupArchive; ?>" <?php echo ($archive_build_mode == DUP_Archive_Build_Mode::DupArchive) ? 'checked="checked"' : ''; ?> />
+					<label for="archive_build_mode2"><?php _e('DupArchive (beta)'); ?></label> &nbsp; &nbsp;
 				</div>
 
 				<br style="clear:both"/>
 
+				<!-- ZIPARCHIVE -->
+				<div class="engine-sub-opts" id="engine-details-1" style="display:none">
+					<p class="description">
+						<?php _e('Creates a archive format (archive.zip).<br/>  This option uses the internal PHP ZipArchive classes to create a Zip file.', 'duplicator'); ?>
+					</p>
+				</div>
+
 				<!-- DUPARCHIVE -->
-				<div class="engine-sub-opts" id="engine-details-3" style="display:none">
+				<div class="engine-sub-opts" id="engine-details-2" style="display:none">
 					<p class="description">
 						<?php _e('Creates a custom archive format (archive.daf).<br/>  This option is recommended for large sites or sites on constrained servers.', 'duplicator'); ?>
 					</p>
@@ -254,6 +264,19 @@ $archive_build_mode = DUP_Settings::Get('archive_build_mode')
 <script>
 jQuery(document).ready(function($)
 {
+
+	Duplicator.Pack.ToggleArchiveEngine = function ()
+	{
+		$('#engine-details-1, #engine-details-2').hide();
+		if ($('#archive_build_mode1').is(':checked')) {
+			$('#engine-details-1').show();
+		} else {
+			$('#engine-details-2').show();
+		}
+	};
+
+	Duplicator.Pack.ToggleArchiveEngine();
 	$('#package_ui_created').val(<?php echo $package_ui_created ?> );
+
 });
 </script>
