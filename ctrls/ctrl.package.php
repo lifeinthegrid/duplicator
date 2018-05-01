@@ -453,7 +453,6 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
                 $test = DUP_CTRL_Status::SUCCESS;
    
                 $payload['status']  = $package->Status;
-                $payload['update-success'] = $success;
             } else {
                 $test = DUP_CTRL_Status::FAILED;
             }

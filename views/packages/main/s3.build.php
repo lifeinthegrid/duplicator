@@ -392,6 +392,8 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
 
                     if ((data != null) && (typeof (data) != 'undefined') && ((data.status == 1) || (data.status == 4))) {
 
+                        Duplicator.Pack.DupArchiveFailureCount = 0; 
+                    
                         // Status = 1 means complete, 4 means more to process
                         console.log("CreateDupArchive:Passed");
 
