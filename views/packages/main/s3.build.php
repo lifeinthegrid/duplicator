@@ -322,7 +322,7 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
         Duplicator.Pack.DupArchiveMaxRetries = 10;
         Duplicator.Pack.DupArchiveRetryDelayInMs = 8000;
         Duplicator.Pack.DupArchiveStartTime = new Date().getTime();
-        Duplicator.Pack.StatusFrequency = 4000;
+        Duplicator.Pack.StatusFrequency = 10000;
 
         /*	----------------------------------------
          *	METHOD: Performs Ajax post to create a new package

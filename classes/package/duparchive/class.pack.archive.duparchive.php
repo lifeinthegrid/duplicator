@@ -296,7 +296,7 @@ class DUP_DupArchive
                         $package->Status = SnapLibUtil::getWorkPercent(DUP_PackageStatus::ARCVALIDATION, DUP_PackageStatus::COMPLETE, $archiveSize,
                                 $expandState->archiveOffset);
                         DUP_LOG::TraceObject("package status after expand=", $package->Status);
-                        DUP_LOG::Trace("archive size:{$archiveSize} archive offset:{$expandState->archiveOffset}");
+                        DUP_LOG::Trace("archive size:{$archiveSize} expand offset:{$expandState->archiveOffset}");
                  
                     } catch (Exception $ex) {
                         DUP_Log::Trace('Exception:'.$ex->getMessage().':'.$ex->getTraceAsString());
