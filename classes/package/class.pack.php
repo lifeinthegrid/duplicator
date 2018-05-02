@@ -501,8 +501,7 @@ class DUP_Package
     }
 
      public function getLocalPackageFile($file_type, $only_default = false)
-    {
-        DUP_Log::TraceObject('getting local file for', $this);
+    {        
         $file_path = null;
 
         if ($file_type == DUP_PackageFileType::Installer) {

@@ -20,6 +20,38 @@ if (!defined('DUPLICATOR_VERSION')) {
 
 class DUP_Server
 {
+    const LockFileName = 'lockfile.txt';
+
+    // Possibly use in the future if we want to prevent double building
+    public static function isEngineLocked()
+    {
+        if(self::setEngineLock(true)) {
+            self::setEngineLock(false);
+            $locked = false;
+        } else {
+            $locked = true;
+        }
+    }
+
+    // Possibly use in the future if we want to prevent double building
+    public static function setEngineLock($shouldLock)
+    {
+        $success = false;
+
+        $locking_file = @fopen(self::LockFileName, 'c+');
+
+        if ($locking_file != false) {
+            if($shouldLock) {
+                $success = @flock($locking_file, LOCK_EX | LOCK_NB);
+            } else {
+                $success = @flock($locking_file, LOCK_UN);
+            }
+
+            @fclose($locking_file);
+        }        
+
+        return $success;
+    }
 
     /**
      * Gets the system requirements which must pass to buld a package

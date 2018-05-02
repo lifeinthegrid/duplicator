@@ -140,9 +140,15 @@ class DUP_Log {
     }
         
 
-	static public function TraceObject($msg, $o) {
+	static public function TraceObject($msg, $o, $log_private_members = true) {
+
         if(self::$traceEnabled) {
-            self::Trace($msg . ':' . print_r($o, true));
+
+            if(!$log_private_members) {
+                $o = get_object_vars($o);
+            }
+
+             self::Trace($msg . ':' . print_r($o, true));
         }
 	}
 

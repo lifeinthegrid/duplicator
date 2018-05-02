@@ -227,8 +227,6 @@ class DUP_Installer
             DUP_Log::Info("add_extra_files6");
         }
 
-        DUP_Log::TraceObject("archive format", $package->Archive->Format);
-
         if($package->Archive->Format == 'DAF') {
             DUP_Log::Info("add_extra_files7");
             $success = $this->add_extra_files_using_duparchive($installer_filepath, $scan_filepath, $sql_filepath, $archive_filepath, $archive_config_filepath);

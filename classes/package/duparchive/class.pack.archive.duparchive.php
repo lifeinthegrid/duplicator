@@ -104,7 +104,7 @@ class DUP_DupArchive
             }
 
 			DUP_LOG::trace("c12");
-            Dup_Log::TraceObject("buildprogress object", $buildProgress);
+            Dup_Log::TraceObject("buildprogress object", $buildProgress, false);
 
             $scanReport = json_decode($json);
 
