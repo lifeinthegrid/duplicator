@@ -114,7 +114,18 @@ TOOL-BAR -->
 		$txt_dbonly  = __('Database Only', 'duplicator');
 		$rows = $qryResult;
 		foreach ($rows as $row) {
+            /* @var $Package DUP_Package */
 			$Package = unserialize($row['package']);
+            
+            // Never display incomplete packages and actually purge those that are no longer active
+            if($Package->Status >= 0 && $Package->Status < 100) {
+                
+                if(DUP_Settings::Get('active_package_id') != $Package->ID) {
+                    $Package->delete();
+                }
+                continue;
+            }
+            
 			$pack_dbonly = false;
 
 			if (is_object($Package)) {
@@ -171,13 +182,13 @@ TOOL-BAR -->
 						$size = array_sum($result);
 					}
 					$pack_archive_size = $size;
-					$error_url = "?page=duplicator&action=detail&tab=detail&id={$row['id']}";
+					$error_url = "?page=duplicator&action=detail&tab=detail&id={$row['id']}"; 
 				?>
 				<tr class="dup-pack-info  <?php echo $css_alt ?>">
 					<td class="fail"><input name="delete_confirm" type="checkbox" id="<?php echo $row['id'] ;?>" /></td>
 					<td><?php echo DUP_Package::getCreatedDateFormat($row['created'], $ui_create_frmt);?></td>
 					<td><?php echo DUP_Util::byteSize($size); ?></td>
-					<td class='pack-name'><?php echo $pack_name ;?></td>
+					<td class='pack-name'><?php echo $pack_name ;?></td>               
 					<td class="get-btns error-msg" colspan="2">		
 						<span>
 							<i class="fa fa-exclamation-triangle"></i>

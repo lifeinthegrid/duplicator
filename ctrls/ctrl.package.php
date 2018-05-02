@@ -79,7 +79,7 @@ function duplicator_package_build()
     $json_response   = json_encode($json);
 
     //Simulate a Host Build Interrupt
-    //die(0);
+   // die(0);
 
     error_reporting($errLevel);
     die($json_response);

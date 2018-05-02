@@ -1154,7 +1154,7 @@ $(document).ready(function ()
 
 	DUPX.DAWS = new Object();
 	DUPX.DAWS.Url = document.URL.substr(0,document.URL.lastIndexOf('/')) + '/lib/dup_archive/daws/daws.php';
-	DUPX.DAWS.StatusPeriodInMS = 10000;
+	DUPX.DAWS.StatusPeriodInMS = 5000;
 	DUPX.DAWS.PingWorkerTimeInSec = 9;
 	DUPX.DAWS.KickoffWorkerTimeInSec = 6; // Want the initial progress % to come back quicker
 
