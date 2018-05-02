@@ -16,6 +16,7 @@ $mysqldump_on	 = DUP_Settings::Get('package_mysqldump') && DUP_DB::getMySqlDumpP
 $mysqlcompat_on  = isset($Package->Database->Compatible) && strlen($Package->Database->Compatible);
 $mysqlcompat_on  = ($mysqldump_on && $mysqlcompat_on) ? true : false;
 $dbbuild_mode    = ($mysqldump_on) ? 'mysqldump' : 'PHP';
+$archive_build_mode = ($package->Archive->Format === 'ZIP') ? 'ZipArchive' : 'DupArchive';
 ?>
 
 <style>
@@ -220,7 +221,8 @@ ARCHIVE -->
 	<table class='dup-dtl-data-tbl'>
 		<tr>
 			<td><?php _e('Build Mode', 'duplicator') ?>: </td>
-			<td><?php _e('ZipArchive', 'duplicator'); ?></td>
+            
+			<td><?php echo $archive_build_mode; ?></td>
 		</tr>			
 
 		<?php if ($package->Archive->ExportOnlyDB) : ?>
