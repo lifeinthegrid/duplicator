@@ -101,8 +101,8 @@ TOOL BAR: STEPS -->
         <div class="dup-progress-title"><?php _e('Building Package', 'duplicator'); ?> <i class="fa fa-cog fa-spin"></i> <span id="dup-progress-percent">0%</span></div>
         <div id="dup-progress-bar"></div>
         <b><?php _e('Please Wait...', 'duplicator'); ?></b><br/><br/>
-        <i><?php _e('Keep this window open during the build process.', 'duplicator'); ?></i><br/>
-        <i><?php _e('This may take several minutes.', 'duplicator'); ?></i><br/>
+        <i><?php _e('Keep this window open and do not close during the build process.', 'duplicator'); ?></i><br/>
+        <i><?php _e('This may take several minutes to complete.', 'duplicator'); ?></i><br/>
     </div>
 
     <div id="dup-progress-area" class="dup-panel" style="display:none">

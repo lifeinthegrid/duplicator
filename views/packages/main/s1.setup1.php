@@ -30,7 +30,7 @@ $ui_css_archive		= (isset($data->payload['dup-pack-archive-panel']) && $data->pa
 $ui_css_installer	= (isset($data->payload['dup-pack-installer-panel']) && $data->payload['dup-pack-installer-panel']) ? 'display:block' : 'display:none';
 $dup_intaller_files = implode(", ", array_keys(DUP_Server::getInstallerFiles()));
 $dbbuild_mode		= (DUP_Settings::Get('package_mysqldump') && DUP_DB::getMySqlDumpPath()) ? 'mysqldump' : 'PHP';
-$archive_build_mode = ($Package->Archive->Format === 'ZIP') ? 'zip' : 'daf';
+$archive_build_mode = DUP_Settings::Get('archive_build_mode') == DUP_Archive_Build_Mode::ZipArchive ? 'zip' : 'daf';
 
 //="No Selection", 1="Try Again", 2="Two-Part Install"
 $retry_state		= isset($_GET['retry']) ? $_GET['retry'] : 0;

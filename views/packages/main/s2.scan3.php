@@ -447,7 +447,7 @@ DATABASE -->
 				echo '<div style="padding:5px">';
 
 				$lnk = '<a href="admin.php?page=duplicator&tab=new1">' . __('Step 1', 'duplicator') . '</a>';
-				printf(__("- Exclude unnecessary files/directories/tables in the filters sections on %s.", 'duplicator'), $lnk);
+				printf(__("- Add files/directories/tables filters in the sections above (if shown) or in %s.", 'duplicator'), $lnk);
 				echo '<br/><br/>';
 
                 $lnk = '<a href="https://snapcreek.com/duplicator/docs/quick-start#quick-060-q" target="_blank">' . __('covered here.', 'duplicator') . '</a>';

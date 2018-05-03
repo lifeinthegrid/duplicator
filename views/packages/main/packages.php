@@ -1,4 +1,5 @@
 <?php
+	/* @var $Package DUP_Package */
 	$qryResult = $wpdb->get_results("SELECT * FROM `{$wpdb->prefix}duplicator_packages` ORDER BY id DESC", ARRAY_A);
 	$qryStatus = $wpdb->get_results("SELECT status FROM `{$wpdb->prefix}duplicator_packages` WHERE status >= 100", ARRAY_A);
 	$totalElements	= count($qryResult);
@@ -38,6 +39,8 @@
 	td.error-msg span {display:inline-block; padding:7px 18px 0px 0px; color:maroon}
 	div#dup-help-dlg i {display: inline-block; width: 15px; padding:2px;line-height:28px; font-size:14px;}
 	tr.dup-pack-info sup  {font-style:italic;font-size:10px; cursor: pointer; vertical-align: baseline; position: relative; top: -0.8em;}
+	tr#pack-processing {display: none}
+	tr#pack-processing  td {text-align: center; font-size: 14px; font-weight: bold; padding:10px;}
 </style>
 
 <form id="form-duplicator" method="post">
@@ -69,7 +72,7 @@ TOOL-BAR -->
 </table>	
 
 
-<?php if($totalElements == 0)  : ?>
+<?php if($totalElements == 0 )  : ?>
 	<!-- ====================
 	NO-DATA MESSAGES-->
 	<table class="widefat dup-pack-table">
@@ -109,6 +112,13 @@ TOOL-BAR -->
 				</th>
 			</tr>
 		</thead>
+		<tr id="pack-processing">
+			<td colspan="6">
+				<i class="fa fa-cog fa-spin fa-lg fa-fw"></i>
+				<?php _e('A package is currently building, please wait a few minutes for it to finish.<br/>  Do not try to create another package until the current process finishes. ', 'duplicator'); ?><br/>
+				<a href="admin.php?page=duplicator">[<?php _e('Refresh Page to Check Status', 'duplicator'); ?>]</a>
+			</td>
+		</tr>
 		<?php
 		$rowCount = 0;
 		$totalSize = 0;
@@ -116,17 +126,17 @@ TOOL-BAR -->
 		$txt_mode_zip  = __('Archive created as zip file', 'duplicator');
 		$txt_mode_daf  = __('Archive created as daf file', 'duplicator');
 		$rows = $qryResult;
+		$package_running = false;
 		foreach ($rows as $row) {
-            /* @var $Package DUP_Package */
 			$Package = unserialize($row['package']);
             
-            // Never display incomplete packages and actually purge those that are no longer active
+            // Never display incomplete packages and purge those that are no longer active
             if($Package->Status >= 0 && $Package->Status < 100) {
-                
                 if(DUP_Settings::Get('active_package_id') != $Package->ID) {
                     $Package->delete();
                 }
-                continue;
+				$package_running = true;
+				continue;
             }
             
 			$pack_dbonly = false;
@@ -346,6 +356,11 @@ jQuery(document).ready(function($)
 		$('#dup-help-dlg').html($('#dup-help-dlg-info').html());
 		<?php $alert3->showAlert(); ?>
 	}
+
+	<?php if ($package_running) :?>
+		$('#pack-processing').show();
+
+	<?php endif; ?>
 	
 });
 </script>
