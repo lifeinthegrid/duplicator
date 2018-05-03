@@ -14,7 +14,7 @@
     /*ARCHIVE SECTION*/
     form#dup-form-opts div.tabs-panel{max-height:800px; padding:10px; min-height:280px}
     form#dup-form-opts ul li.tabs{font-weight:bold}
-	sup.archive-ext {font-weight: normal; font-size:11px; font-style: italic}
+	sup.archive-ext {font-style:italic;font-size:10px; cursor: pointer; vertical-align: baseline; position: relative; top: -0.8em; font-weight: normal}
     ul.category-tabs li {padding:4px 15px 4px 15px}
     select#archive-format {min-width:100px; margin:1px 0 4px 0}
     span#dup-archive-filter-file {color:#A62426; display:none}
