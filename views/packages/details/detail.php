@@ -16,7 +16,7 @@ $mysqldump_on	 = DUP_Settings::Get('package_mysqldump') && DUP_DB::getMySqlDumpP
 $mysqlcompat_on  = isset($Package->Database->Compatible) && strlen($Package->Database->Compatible);
 $mysqlcompat_on  = ($mysqldump_on && $mysqlcompat_on) ? true : false;
 $dbbuild_mode    = ($mysqldump_on) ? 'mysqldump' : 'PHP';
-$archive_build_mode = ($package->Archive->Format === 'ZIP') ? 'ZipArchive' : 'DupArchive';
+$archive_build_mode = ($package->Archive->Format === 'ZIP') ? 'ZipArchive (zip)' : 'DupArchive (daf)';
 ?>
 
 <style>

@@ -25,7 +25,7 @@
 	table.dup-pack-table {word-break:break-all;}
 	table.dup-pack-table th {white-space:nowrap !important;}
 	table.dup-pack-table td.pack-name {text-overflow:ellipsis; white-space:nowrap}
-	table.dup-pack-table td.pack-name sup {font-style:italic;font-size:10px; cursor: pointer }
+
 	table.dup-pack-table input[name="delete_confirm"] {margin-left:15px}
 	table.dup-pack-table td.fail {border-left: 4px solid #d54e21;}
 	table.dup-pack-table td.pass {border-left: 4px solid #2ea2cc;}
@@ -37,6 +37,7 @@
 	td.error-msg a i {color:maroon}
 	td.error-msg span {display:inline-block; padding:7px 18px 0px 0px; color:maroon}
 	div#dup-help-dlg i {display: inline-block; width: 15px; padding:2px;line-height:28px; font-size:14px;}
+	tr.dup-pack-info sup  {font-style:italic;font-size:10px; cursor: pointer; vertical-align: baseline; position: relative; top: -0.8em;}
 </style>
 
 <form id="form-duplicator" method="post">
@@ -111,7 +112,9 @@ TOOL-BAR -->
 		<?php
 		$rowCount = 0;
 		$totalSize = 0;
-		$txt_dbonly  = __('Database Only', 'duplicator');
+		$txt_dbonly    = __('Database Only', 'duplicator');
+		$txt_mode_zip  = __('Archive created as zip file', 'duplicator');
+		$txt_mode_daf  = __('Archive created as daf file', 'duplicator');
 		$rows = $qryResult;
 		foreach ($rows as $row) {
             /* @var $Package DUP_Package */
@@ -134,11 +137,13 @@ TOOL-BAR -->
 				 $pack_storeurl		= $Package->StoreURL;
 				 $pack_namehash	    = $Package->NameHash;
 				 $pack_dbonly       = $Package->Archive->ExportOnlyDB;
+				 $pack_build_mode   = ($Package->Archive->Format === 'ZIP') ? true : false;
 			} else {
 				 $pack_archive_size = 0;
 				 $pack_storeurl		= 'unknown';
 				 $pack_name			= 'unknown';
-				 $pack_namehash	    = 'unknown';	
+				 $pack_namehash	    = 'unknown';
+				 $pack_build_mode   = false;
 			}
 			
 			//Links
@@ -153,7 +158,12 @@ TOOL-BAR -->
 			<?php if ($row['status'] >= 100) : ?>
 				<tr class="dup-pack-info <?php echo $css_alt ?>">
 					<td class="pass"><input name="delete_confirm" type="checkbox" id="<?php echo $row['id'] ;?>" /></td>
-					<td><?php echo DUP_Package::getCreatedDateFormat($row['created'], $ui_create_frmt);?></td>
+					<td>
+						<?php 
+							echo DUP_Package::getCreatedDateFormat($row['created'], $ui_create_frmt);
+							echo ($pack_build_mode) ? " <sup title='{$txt_mode_zip}'>zip</sup>" : " <sup title='{$txt_mode_daf}'>daf</sup>";
+						?>
+					</td>
 					<td><?php echo DUP_Util::byteSize($pack_archive_size); ?></td>
 					<td class='pack-name'>
 						<?php	echo ($pack_dbonly) ? "{$pack_name} <sup title='{$txt_dbonly}'>DB</sup>" : $pack_name ; ?>

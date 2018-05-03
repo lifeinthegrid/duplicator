@@ -14,6 +14,7 @@
     /*ARCHIVE SECTION*/
     form#dup-form-opts div.tabs-panel{max-height:800px; padding:10px; min-height:280px}
     form#dup-form-opts ul li.tabs{font-weight:bold}
+	sup.archive-ext {font-weight: normal; font-size:11px; font-style: italic}
     ul.category-tabs li {padding:4px 15px 4px 15px}
     select#archive-format {min-width:100px; margin:1px 0 4px 0}
     span#dup-archive-filter-file {color:#A62426; display:none}
@@ -120,7 +121,11 @@ STORAGE -->
 ARCHIVE -->
 <div class="dup-box">
     <div class="dup-box-title">
-        <i class="fa fa-file-archive-o"></i> <?php _e('Archive', 'duplicator') ?> &nbsp;
+        <i class="fa fa-file-archive-o"></i>
+			<?php
+				_e('Archive', 'duplicator');
+				echo "&nbsp;<sup class='archive-ext'>{$archive_build_mode}</sup>";
+			?> &nbsp;
         <span style="font-size:13px">
             <span id="dup-archive-filter-file" title="<?php _e('File filter enabled', 'duplicator') ?>"><i class="fa fa-files-o"></i> <i class="fa fa-filter"></i> &nbsp;&nbsp;</span> 
             <span id="dup-archive-filter-db" title="<?php _e('Database filter enabled', 'duplicator') ?>"><i class="fa fa-table"></i> <i class="fa fa-filter"></i></span>

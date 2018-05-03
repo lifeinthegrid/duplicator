@@ -189,7 +189,7 @@ if (is_admin() == true)
             case 'duplicator-settings': include('views/settings/controller.php');	break;
             case 'duplicator-tools':	include('views/tools/controller.php');      break;
 			case 'duplicator-debug':	include('debug/main.php');					break;
-			case 'duplicator-gopro':	include('views/help/gopro.php');			break;
+			case 'duplicator-gopro':	include('views/settings/gopro.php');			break;
         }
     }
 
