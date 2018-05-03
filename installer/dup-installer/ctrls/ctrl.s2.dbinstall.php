@@ -53,6 +53,9 @@ class DUPX_DBInstall
                 or DUPX_Log::error(sprintf(ERR_DBCREATE, $post['dbname']));
         }
 
+		@mysqli_query($this->dbh, "SET wait_timeout = {$GLOBALS['DB_MAX_TIME']}");
+        @mysqli_query($this->dbh, "SET max_allowed_packet = {$GLOBALS['DB_MAX_PACKETS']}");
+
         $this->profile_start   = isset($post['profile_start']) ? $post['profile_start'] : DUPX_U::getMicrotime();
         $this->start_microtime = isset($post['start_microtime']) ? $post['start_microtime'] : $start_microtime;
         $this->dbvar_maxtime   = DUPX_DB::getVariable($this->dbh, 'wait_timeout');
