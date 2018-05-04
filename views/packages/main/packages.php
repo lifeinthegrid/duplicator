@@ -40,7 +40,6 @@
 	div#dup-help-dlg i {display: inline-block; width: 15px; padding:2px;line-height:28px; font-size:14px;}
 	tr.dup-pack-info sup  {font-style:italic;font-size:10px; cursor: pointer; vertical-align: baseline; position: relative; top: -0.8em;}
 	tr#pack-processing {display: none}
-	tr#pack-processing  td {text-align: center; font-size: 14px; font-weight: bold; padding:10px;}
 </style>
 
 <form id="form-duplicator" method="post">
@@ -114,12 +113,22 @@ TOOL-BAR -->
 		</thead>
 		<tr id="pack-processing">
 			<td colspan="6">
-				<i class="fa fa-cog fa-spin fa-lg fa-fw"></i>
-				<?php _e('A package is currently building, please wait a few minutes for it to finish.<br/>  Do not try to create another package until the current process finishes. ', 'duplicator'); ?><br/>
-				<a href="admin.php?page=duplicator">[<?php _e('Refresh Page to Check Status', 'duplicator'); ?>]</a>
+				<div id='dup-list-alert-nodata'>
+					<i class="fa fa-archive"></i>
+					<?php _e("No Packages Found.", 'duplicator'); ?><br/>
+					<?php _e("Click the 'Create New' button to build a package.", 'duplicator'); ?><br/>
+					<div class="dup-quick-start">
+						<?php _e("New to Duplicator?", 'duplicator'); ?><br/>
+						<a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=packages_empty&utm_campaign=quick_start" target="_blank">
+							<?php _e("Check out the 'Quick Start' guide!", 'duplicator'); ?>
+						</a>
+					</div>
+					<div style="height:75px">&nbsp;</div>
+				</div>
 			</td>
 		</tr>
 		<?php
+		
 		$rowCount = 0;
 		$totalSize = 0;
 		$txt_dbonly    = __('Database Only', 'duplicator');
@@ -135,7 +144,10 @@ TOOL-BAR -->
                 if(DUP_Settings::Get('active_package_id') != $Package->ID) {
                     $Package->delete();
                 }
-				$package_running = true;
+
+				if ($rowCount <= 1 && $totalElements == 1)
+					$package_running = true;
+				
 				continue;
             }
             
