@@ -33,47 +33,6 @@
 		}
 	}
 
-	/*
-	 * DUPX.requestAPI({
-	 *			operation : '/cpnl/create_token/',
-	 *			data : params,
-	 *			callback :	function(){});
-	 */
-	DUPX.requestAPI = function(obj)
-	{
-		var timeout   = obj.timeout || 120000;  //default to 120 seconds
-		var apiPath	  = ( obj.operation.substr(-1) !== '/') ? apiPath += '/' :  obj.operation;
-		var urlPath   = window.location.pathname;
-		var pathName  = urlPath.substring(0, urlPath.lastIndexOf("/") + 1);
-		var requestURI = window.location.origin + pathName + 'api/router.php' + apiPath + window.location.search
-
-		for (var key in obj.params)
-		{
-			if (obj.params.hasOwnProperty(key) && typeof(obj.params[key]) != 'undefined')
-			{
-				obj.params[key] = encodeURIComponent(obj.params[key].replace(/&amp;/g, "&"));
-  			}
-		}
-
-		if (DUPX.GLB_DEBUG) {
-			console.log('==============================================================');
-			console.log('API REQUEST: ' + obj.operation);
-			console.log(obj.params);
-		}
-
-		//Requests to API are capped at 2 minutes
-		$.ajax({
-			type: "POST",
-			cache: false,
-			timeout: timeout,
-			dataType: "json",
-			url: requestURI,
-			data:  obj.params,
-			success: function(data) { if (DUPX.GLB_DEBUG) console.log(data); obj.callback(data); },
-			error:   function(data) { if (DUPX.GLB_DEBUG) console.log(data); obj.callback(data); }
-		});
-	}
-
 	DUPX.toggleAll = function(id) {
 		$(id + " *[data-type='toggle']").each(function() {
 			$(this).trigger('click');

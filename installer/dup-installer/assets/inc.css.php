@@ -151,7 +151,6 @@
 	/*Basic DB */
 	select#dbname-select {width:100%; border-radius:3px; height:20px; font-size:12px; border:1px solid silver;}
 	div#s2-dbrefresh-basic {float:right; font-size:12px; display:none;  font-weight:bold; margin:5px 5px 1px 0}
-	div#s2-dbrefresh-cpnl {float:right; font-size:12px; display:none; font-weight:bold; margin:5px 5px 1px 0}
 	div#s2-db-basic-overwrite {border: 1px solid silver; margin:5px 0 5px 0; padding:10px; background:#f2f2f2; border-radius:5px}
 	div#s2-db-basic-overwrite div.warn-text {font-style:italic; font-size:11px; padding:5px 0 5px 0; color:maroon}
 	div#s2-db-basic-overwrite div.btn-area {text-align: right; margin:5px 0}
@@ -168,23 +167,6 @@
 	div.s2-cpanel-login {padding:15px; color:#fff; text-align:center; margin:15px 5px 15px 5px; border:1px solid silver; border-radius:5px; background-color:#13659C; font-size:14px; line-height:22px}
 	div.s2-cpanel-off {padding:15px; color:#fff; text-align:center; margin:15px 5px 15px 5px; border:1px solid silver; border-radius:5px; background-color:#b54949; font-size:14px; line-height:22px}
     div.s2-cpnl-panel-no-support {text-align:center; font-size:18px; font-weight:bold; line-height:30px; margin-top:40px}
-	td#cpnl-prefix-dbname {width:10px}
-	td#cpnl-prefix-dbuser {width:10px; white-space:normal}
-	div#s2-cpnl-area div#cpnl-host-warn {white-space:normal; font-size:11px; display:none; font-style: italic}
-	a#s2-cpnl-status-msg {font-size:11px}
-	span#s2-cpnl-status-icon {display:none}
-	div#s2-cpnl-connect {margin:auto; text-align:center; margin:10px 0 0 0}
-	div#s2-cpnl-status-details {border:1px solid silver; border-radius:3px; background-color:#f9f9f9; padding:10px 10px 2px 10px; margin-top:10px; height:55px; overflow-y:scroll;}
-	div#cpnl-dbname-prefix {display:none; float:left; margin-top:3px;}
-	span#s2-cpnl-db-opts-lbl {font-size:11px; font-weight:normal; font-style:italic}
-	div#s2-cpnl-dbname-area2 table {border-collapse: collapse; width: 100%}
-	div#s2-cpnl-dbname-area2 table td {padding:0 !important; margin:0; border:0}
-	div#s2-cpnl-dbname-area2 table td:first-child {vertical-align:bottom;}
-	div#s2-cpnl-dbname-area2 table td:nth-child(2) {width:100%; padding-right:0 !important}
-	div#s2-cpnl-dbuser-area2 table {border-collapse: collapse; width: 100%}
-	div#s2-cpnl-dbuser-area2 table td {padding:0 !important; margin:0; border:0}
-	div#s2-cpnl-dbuser-area2 table td:first-child {vertical-align:bottom;}
-	div#s2-cpnl-dbuser-area2 table td:nth-child(2) {width:100%; padding-right:0 !important}
 
 	/*DATABASE CHECKS */
 	div.s2-dbtest-area {margin:auto; margin:10px 0 15px 0;  min-height:110px}

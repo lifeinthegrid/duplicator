@@ -136,11 +136,7 @@ Auto Posts to view.step3.php  -->
 </form>
 
 <script>
-	var CPNL_TOKEN;
-	var CPNL_DBINFO			= null;
-	var CPNL_DBUSERS		= null;
-	var CPNL_CONNECTED		= false;
-	var CPNL_PREFIX			= false;
+
 
 	/**
 	 *  Toggles the cpanel Login area  */
@@ -250,19 +246,11 @@ Auto Posts to view.step3.php  -->
                 }
 				if (typeof (data) != 'undefined' && data.pass == 1)
 				{
-					if ($('#s2-input-form-mode').val() == 'basic') {
-						$("#ajax-dbaction").val($("#dbaction").val());
-						$("#ajax-dbhost").val(dbhost);
-						$("#ajax-dbname").val(dbname);
-						$("#ajax-dbuser").val(dbuser);
-						$("#ajax-dbpass").val($("#dbpass").val());
-					} else {
-						$("#ajax-dbaction").val($("#cpnl-dbaction").val());
-						$("#ajax-dbhost").val(dbhost);
-						$("#ajax-dbname").val(dbname);
-						$("#ajax-dbuser").val(dbuser);
-						$("#ajax-dbpass").val($("#cpnl-dbpass").val());
-					}
+					$("#ajax-dbaction").val($("#dbaction").val());
+					$("#ajax-dbhost").val(dbhost);
+					$("#ajax-dbname").val(dbname);
+					$("#ajax-dbuser").val(dbuser);
+					$("#ajax-dbpass").val($("#dbpass").val());
 
 					//Advanced Opts
 					$("#ajax-dbcharset").val($("#dbcharset").val());
