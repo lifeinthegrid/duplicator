@@ -677,6 +677,8 @@ class DupArchiveEngine
 
         $workTimestamp = time();
         
+        DupArchiveUtil::logObject('#### standardvalidateitems. expandstate coming in:', $expandState);
+            
         while ($moreToRead && (!$to)) {
 
             if ($expandState->throttleDelayInUs !== 0) {
@@ -708,6 +710,8 @@ class DupArchiveEngine
                 }
             } else {
 
+                DupArchiveUtil::log('#### retrieving file or dir header using getNextHeaderType');
+                
                 // profile ok
                 $headerType = self::getNextHeaderType($archiveHandle);
 
