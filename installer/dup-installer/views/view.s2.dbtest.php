@@ -12,28 +12,6 @@ defined("ABSPATH") or die("");
 	</div>
 	<div class="s2-reqs" id="s2-reqs-all" style="border-bottom:none">
 
-
-		<!-- ==================================
-		REQ 5: CREATE DB USER: CPNL -->
-		{{#if payload.in.cpnlNewUser}}
-			<div class="status {{reqStyle payload.reqs.5.pass}}">{{reqText payload.reqs.5.pass}}</div>
-			<div class="title" data-type="toggle" data-target="#s2-reqs5"><i class="fa fa-caret-right"></i> {{payload.reqs.5.title}}</div>
-			<div class="info s2-reqs5" id="s2-reqs5">
-				<div class="sub-title">STATUS</div>
-				{{{getInfo payload.reqs.5.pass payload.reqs.5.info}}}<br/>
-
-				<div class="sub-title">DETAILS</div>
-				This test checks that the cPanl API is allowed to create a database user. This option is only visible when cPanel is selected.
-				<br/><br/>
-
-				<div class="sub-title">TROUBLESHOOT</div>
-				<ul>
-					<li>Contact your host to make sure they support the cPanel API.</li>
-					<li>Check with your host to make sure the user name provided meets the cPanel requirements.</li>
-				</ul>
-			</div>
-		{{/if}}
-
 		<!-- ==================================
 		REQ 10: VERIFY HOST CONNECTION -->
 		<div class="status {{reqStyle payload.reqs.10.pass}}">{{reqText payload.reqs.10.pass}}</div>
@@ -346,16 +324,10 @@ DUPX.testDBConnect = function ()
 	var $dbArea;
 	var $dbResult;
 	var $dbButton;
-	if ($('#s2-input-form-mode').val() == 'basic') {
-		$dbArea   = $('#s2-basic-pane .s2-dbtest-area');
-		$dbResult = $('#s2-dbtest-hb-basic');
-		$dbButton = $('#s2-dbtest-btn-basic');
 
-	} else {
-		$dbArea = $('#s2-cpnl-pane  .s2-dbtest-area');
-		$dbResult = $('#s2-dbtest-hb-cpnl');
-		$dbButton = $('#s2-dbtest-btn-cpnl');
-	}
+	$dbArea   = $('#s2-basic-pane .s2-dbtest-area');
+	$dbResult = $('#s2-dbtest-hb-basic');
+	$dbButton = $('#s2-dbtest-btn-basic');
 
 	$dbArea.show(250);
 	$dbResult.html("<div class='message'><i class='fa fa-circle-o-notch fa-spin fa-fw'></i>Running Database Validation. <br/>  Please wait...</div>");
@@ -448,9 +420,6 @@ DUPX.intTestDBResults = function(data, result)
 	$('div#s2-db-basic :input').on('keyup', {'mode': mode}, DUPX.resetDBTest);
 	$('div#s2-db-basic select#dbaction').on('change', {'mode': mode}, DUPX.resetDBTest);
 	$('table#s2-cpnl-db-opts :input').on('keyup', {'mode': mode}, DUPX.resetDBTest);
-	$('table#s2-cpnl-db-opts select#cpnl-dbaction').on('change', {'mode': mode}, DUPX.resetDBTest);
-	$('table#s2-cpnl-db-opts select#cpnl-dbuser-select').on('change', {'mode': mode}, DUPX.resetDBTest);
-	$('table#s2-cpnl-db-opts input#cpnl-dbuser-chk').on('click', {'mode': mode}, DUPX.resetDBTest);
 
 	<?php if ($GLOBALS['DUPX_DEBUG']) : ?>
 		var jsonStr = JSON.stringify(data, null, 2);

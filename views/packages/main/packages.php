@@ -7,6 +7,7 @@
 	$package_debug	= DUP_Settings::Get('package_debug');
     $ajax_nonce		= wp_create_nonce('package_list');
 	$ui_create_frmt = is_numeric(DUP_Settings::Get('package_ui_created')) ? DUP_Settings::Get('package_ui_created') : 1;
+	$package_running = false;
 ?>
 
 <style>
@@ -128,14 +129,12 @@ TOOL-BAR -->
 			</td>
 		</tr>
 		<?php
-		
 		$rowCount = 0;
 		$totalSize = 0;
 		$txt_dbonly    = __('Database Only', 'duplicator');
 		$txt_mode_zip  = __('Archive created as zip file', 'duplicator');
 		$txt_mode_daf  = __('Archive created as daf file', 'duplicator');
 		$rows = $qryResult;
-		$package_running = false;
 		foreach ($rows as $row) {
 			$Package = unserialize($row['package']);
             

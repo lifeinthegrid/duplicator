@@ -4,48 +4,19 @@ defined("ABSPATH") or die("");
 /** IDE HELPERS */
 /* @var $GLOBALS['DUPX_AC'] DUPX_ArchiveConfig */
 
-//require_once($GLOBALS['DUPX_INIT'] . '/api/class.cpnl.ctrl.php');
-
-//BASIC
-if ($_POST['view_mode'] == 'basic') {
-	$_POST['dbaction']	 = isset($_POST['dbaction']) ? $_POST['dbaction'] : 'create';
-	$_POST['dbhost']	 = isset($_POST['dbhost']) ? trim($_POST['dbhost']) : null;
-	$_POST['dbname']	 = isset($_POST['dbname']) ? trim($_POST['dbname']) : null;
-	$_POST['dbuser']	 = isset($_POST['dbuser']) ? trim($_POST['dbuser']) : null;
-	$_POST['dbpass']	 = isset($_POST['dbpass']) ? trim($_POST['dbpass']) : null;
-	$_POST['dbport']	 = isset($_POST['dbhost']) ? parse_url($_POST['dbhost'], PHP_URL_PORT) : 3306;
-	$_POST['dbport']	 = (!empty($_POST['dbport'])) ? $_POST['dbport'] : 3306;
-	$_POST['dbnbsp']	 = (isset($_POST['dbnbsp']) && $_POST['dbnbsp'] == '1') ? true : false;
-	$_POST['dbcharset']		= isset($_POST['dbcharset']) ? trim($_POST['dbcharset']) : $GLOBALS['DBCHARSET_DEFAULT'];
-	$_POST['dbcollate']		= isset($_POST['dbcollate']) ? trim($_POST['dbcollate']) : $GLOBALS['DBCOLLATE_DEFAULT'];
-	$_POST['dbcollatefb']	= (isset($_POST['dbcollatefb']) && $_POST['dbcollatefb'] == '1') ? true : false;
-	$_POST['dbobj_views']	= isset($_POST['dbobj_views']) ? true : false; 
-	$_POST['dbobj_procs']	= isset($_POST['dbobj_procs']) ? true : false;
-}
-//CPANEL
-else {
-	$_POST['dbaction']	= isset($_POST['cpnl-dbaction']) ? $_POST['cpnl-dbaction'] : 'create';
-	$_POST['dbhost']	= isset($_POST['cpnl-dbhost']) ? trim($_POST['cpnl-dbhost']) : null;
-	$_POST['dbname']	= isset($_POST['cpnl-dbname-result']) ? trim($_POST['cpnl-dbname-result']) : null;
-	$_POST['dbuser']	= isset($_POST['cpnl-dbuser-result']) ? trim($_POST['cpnl-dbuser-result']) : null;
-	$_POST['dbpass']	= isset($_POST['cpnl-dbpass']) ? trim($_POST['cpnl-dbpass']) : null;
-	$_POST['dbport']	= isset($_POST['cpnl-dbhost']) ? parse_url($_POST['cpnl-dbhost'], PHP_URL_PORT) : 3306;
-	$_POST['dbport']	= (!empty($_POST['cpnl-dbport'])) ? $_POST['cpnl-dbport'] : 3306;
-	$_POST['dbnbsp']	= (isset($_POST['cpnl-dbnbsp']) && $_POST['cpnl-dbnbsp'] == '1') ? true : false;
-	$_POST['dbmysqlmode']		= $_POST['cpnl-dbmysqlmode'];
-	$_POST['dbmysqlmode_opts']	= $_POST['cpnl-dbmysqlmode_opts'];
-	$_POST['dbcharset']			= isset($_POST['cpnl-dbcharset']) ? trim($_POST['cpnl-dbcharset']) : $GLOBALS['DBCHARSET_DEFAULT'];
-	$_POST['dbcollate']			= isset($_POST['cpnl-dbcollate']) ? trim($_POST['cpnl-dbcollate']) : $GLOBALS['DBCOLLATE_DEFAULT'];
-	$_POST['dbcollatefb']		= (isset($_POST['cpnl-dbcollatefb']) && $_POST['cpnl-dbcollatefb'] == '1') ? true : false;
-	$_POST['dbchunk']			= (isset($_POST['cpnl-dbchunk']) && $_POST['cpnl-dbchunk'] == '1') ? true : false;
-	$_POST['dbobj_views']		= isset($_POST['cpnl-dbobj_views']) ? true : false;
-	$_POST['dbobj_procs']		= isset($_POST['cpnl-dbobj_procs']) ? true : false;
-}
-
-$_POST['cpnl-dbuser-chk'] = (isset($_POST['cpnl-dbuser-chk']) && $_POST['cpnl-dbuser-chk'] == '1') ? true : false;
-$_POST['cpnl-host']		  = isset($_POST['cpnl-host']) ? $_POST['cpnl-host'] : '';
-$_POST['cpnl-user']		  = isset($_POST['cpnl-user']) ? $_POST['cpnl-user'] : '';
-$_POST['cpnl-pass']		  = isset($_POST['cpnl-pass']) ? $_POST['cpnl-pass'] : '';
+$_POST['dbaction']	 = isset($_POST['dbaction']) ? $_POST['dbaction'] : 'create';
+$_POST['dbhost']	 = isset($_POST['dbhost']) ? DUPX_U::sanitize(trim($_POST['dbhost'])) : null;
+$_POST['dbname']	 = isset($_POST['dbname']) ? DUPX_U::sanitize(trim($_POST['dbname'])) : null;
+$_POST['dbuser']	 = isset($_POST['dbuser']) ? trim($_POST['dbuser']) : null;
+$_POST['dbpass']	 = isset($_POST['dbpass']) ? trim($_POST['dbpass']) : null;
+$_POST['dbport']	 = isset($_POST['dbhost']) ? parse_url($_POST['dbhost'], PHP_URL_PORT) : 3306;
+$_POST['dbport']	 = (!empty($_POST['dbport'])) ? $_POST['dbport'] : 3306;
+$_POST['dbnbsp']	 = (isset($_POST['dbnbsp']) && $_POST['dbnbsp'] == '1') ? true : false;
+$_POST['dbcharset']		= isset($_POST['dbcharset']) ? DUPX_U::sanitize(trim($_POST['dbcharset'])) : $GLOBALS['DBCHARSET_DEFAULT'];
+$_POST['dbcollate']		= isset($_POST['dbcollate']) ? DUPX_U::sanitize(trim($_POST['dbcollate'])) : $GLOBALS['DBCOLLATE_DEFAULT'];
+$_POST['dbcollatefb']	= (isset($_POST['dbcollatefb']) && $_POST['dbcollatefb'] == '1') ? true : false;
+$_POST['dbobj_views']	= isset($_POST['dbobj_views']) ? true : false; 
+$_POST['dbobj_procs']	= isset($_POST['dbobj_procs']) ? true : false;
 
 $ajax2_start	 = DUPX_U::getMicrotime();
 $root_path		 = $GLOBALS['DUPX_ROOT'];
@@ -73,10 +44,7 @@ $dbTestIn->dbpass	 = $_POST['dbpass'];
 $dbTestIn->dbname	 = $_POST['dbname'];
 $dbTestIn->dbport	 = $_POST['dbport'];
 $dbTestIn->dbcollatefb = $_POST['dbcollatefb'];
-$dbTestIn->cpnlHost  = $_POST['cpnl-host'];
-$dbTestIn->cpnlUser  = $_POST['cpnl-user'];
-$dbTestIn->cpnlPass  = $_POST['cpnl-pass'];
-$dbTestIn->cpnlNewUser = $_POST['cpnl-dbuser-chk'];
+
 
 $dbTest	= new DUPX_DBTest($dbTestIn);
 
@@ -96,7 +64,6 @@ if (isset($_GET['dbtest'])) {
 	//@todo: 
 	// - Convert DUPX_DBTest to DUPX_DBSetup
 	// - implement property runMode = "Test/Live"
-	// - This should replace the cpnl code block below
 	/*
 	$dbSetup->runMode = 'LIVE';
 	$dbSetup->responseMode = 'PHP';
@@ -111,57 +78,7 @@ if (isset($_GET['dbtest'])) {
 //===============================================
 //CPANEL LOGIC: From Postback
 //===============================================
-$cpnllog = "";
-if ($_POST['view_mode'] == 'cpnl') {
-	try {
-		$cpnllog	  ="--------------------------------------\n";
-		$cpnllog	 .="CPANEL API\n";
-		$cpnllog	 .="--------------------------------------\n";
-
-		$CPNL		 = new DUPX_cPanel_Controller();
-		$cpnlToken	 = $CPNL->create_token($_POST['cpnl-host'], $_POST['cpnl-user'], $_POST['cpnl-pass']);
-		$cpnlHost	 = $CPNL->connect($cpnlToken);
-		
-		//CREATE DB USER: Attempt to create user should happen first in the case that the
-		//user passwords requirements are not met.
-		if ($_POST['cpnl-dbuser-chk']) {
-			$result = $CPNL->create_db_user($cpnlToken, $_POST['dbuser'], $_POST['dbpass']);
-			if ($result['status'] !== true) {
-				DUPX_Log::info('CPANEL API ERROR: create_db_user ' . print_r($result['cpnl_api'], true), 2);
-				DUPX_Log::error(sprintf(ERR_CPNL_API, $result['status']));
-			} else {
-				$cpnllog .= "- A new database user was created\n";
-			}
-		}
-
-		//CREATE NEW DB
-		if ($_POST['dbaction'] == 'create') {
-			$result = $CPNL->create_db($cpnlToken, $_POST['dbname']);
-			if ($result['status'] !== true) {
-				DUPX_Log::info('CPANEL API ERROR: create_db '.print_r($result['cpnl_api'], true), 2);
-				DUPX_Log::error(sprintf(ERR_CPNL_API, $result['status']));
-			} else {
-				$cpnllog .= "- A new database was created\n";
-			}
-		} else {
-			$cpnllog .= "- Used to connect to existing database named [{$_POST['dbname']}]\n";
-		}
-
-		//ASSIGN USER TO DB IF NOT ASSIGNED
-		$result = $CPNL->is_user_in_db($cpnlToken, $_POST['dbname'], $_POST['dbuser']);
-		if (!$result['status']) {
-			$result		 = $CPNL->assign_db_user($cpnlToken, $_POST['dbname'], $_POST['dbuser']);
-			if ($result['status'] !== true) {
-				DUPX_Log::info('CPANEL API ERROR: assign_db_user '.print_r($result['cpnl_api'], true), 2);
-				DUPX_Log::error(sprintf(ERR_CPNL_API, $result['status']));
-			} else {
-				$cpnllog .= "- Database user was assigned to database";
-			}
-		}
-	} catch (Exception $ex) {
-		DUPX_Log::error($ex);
-	}
-}
+//PRO ONLY
 
 $not_yet_logged = (isset($_POST['first_chunk']) && $_POST['first_chunk']) || (!isset($_POST['continue_chunking']));
 
@@ -171,10 +88,6 @@ if($not_yet_logged){
     DUPX_Log::info('* STEP-2 START @ '.@date('h:i:s'));
     DUPX_Log::info('* NOTICE: Do NOT post to public sites or forums!!');
     DUPX_Log::info("********************************************************************************");
-    if (! empty($cpnllog)) {
-        DUPX_Log::info($cpnllog);
-    }
-
     $POST_LOG = $_POST;
     unset($POST_LOG['dbpass']);
     ksort($POST_LOG);
