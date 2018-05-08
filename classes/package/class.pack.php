@@ -52,7 +52,7 @@ class DUP_Build_Progress
 		$this->validation_failures = array();
 
 		foreach ($failures as $failure) {
-			$this->validation_failures[] = $failure->description();
+			$this->validation_failures[] = $failure->description;
 		}
 	}
 
@@ -61,7 +61,7 @@ class DUP_Build_Progress
 		$this->build_failures = array();
 
 		foreach ($failures as $failure) {
-			$this->build_failures[] = $failure->description();
+			$this->build_failures[] = $failure->description;
 		}
 	}
 

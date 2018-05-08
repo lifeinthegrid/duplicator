@@ -436,7 +436,7 @@ class DaTester
                 $this->logger->log("start timestamp {$daTesterState->startTimestamp}");
                 $deltaTime = time() - $daTesterState->startTimestamp;
                 $this->logger->log("###### Processing ended.  Seconds taken:$deltaTime");
-                $this->logger->logObject("##### FAILURES:", $daTesterState->failures);
+            //    $this->logger->logObject("##### FAILURES:", $daTesterState->failures);
             }
         } catch (Exception $ex) {
             $error_message = "Error Encountered:".$ex->getMessage().'<br/>'.$ex->getTraceAsString();

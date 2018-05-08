@@ -269,6 +269,7 @@ class DupArchiveFileProcessor
 
         if (!$moreGlobstoProcess) {
 
+         //   DupArchiveUtil::logObject("#### standard validate not processing globs from the get go!" , $expandState);
             // Not a 'real' write but indicates that we actually did fully process a file in the archive
             $expandState->fileWriteCount++;
         } else {
@@ -305,7 +306,8 @@ class DupArchiveFileProcessor
                 $moreGlobstoProcess = $expandState->currentFileOffset < $expandState->currentFileHeader->fileSize;
 
                 if (!$moreGlobstoProcess) {
-                    
+
+                    DupArchiveUtil::log("#### file was completed so resetting file header in standard validate");
 
                     $expandState->fileWriteCount++;
 

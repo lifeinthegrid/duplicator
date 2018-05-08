@@ -677,7 +677,10 @@ class DupArchiveEngine
 
         $workTimestamp = time();
         
-        DupArchiveUtil::logObject('#### standardvalidateitems. expandstate coming in:', $expandState);
+      //  DupArchiveUtil::logObject('#### standardvalidateitems. expandstate coming in:', $expandState);
+        
+        $p = ftell($archiveHandle);
+        DupArchiveUtil::log("#### current archive position {$p}");
             
         while ($moreToRead && (!$to)) {
 
@@ -685,13 +688,19 @@ class DupArchiveEngine
                 usleep($expandState->throttleDelayInUs);
             }
 
-            if ($expandState->currentFileHeader != null) {
+            $header_set = isset($expandState->currentFileHeader);// != null;
+
+           // DupArchiveUtil::logObject("#### is current file header set?", $header_set);
+
+            //if ($expandState->currentFileHeader != null) {
+            if($header_set) {
 
                 try {
 
                     $fileCompleted = DupArchiveFileProcessor::standardValidateFileEntry($expandState, $archiveHandle);
 
                     if ($fileCompleted) {
+                        DupArchiveUtil::log("#### file was completed so resetting file header");
                         $expandState->resetForFile();
                     }
 
@@ -718,6 +727,8 @@ class DupArchiveEngine
                 switch ($headerType) {
                     case DupArchiveItemHeaderType::File:
 
+                        DupArchiveUtil::log('#### FILE HEADER!');
+
                         // profile ok
                         $expandState->currentFileHeader = DupArchiveFileHeader::readFromArchive($archiveHandle, false, true);
 
@@ -729,6 +740,8 @@ class DupArchiveEngine
 
                     case DupArchiveItemHeaderType::Directory:
 
+                        DupArchiveUtil::log('#### DIR HEADER!');
+
                         // profile ok
                         $directoryHeader = DupArchiveDirectoryHeader::readFromArchive($archiveHandle, true);
 
@@ -738,7 +751,15 @@ class DupArchiveEngine
                         break;
 
                     case DupArchiveItemHeaderType::None:
+                        DupArchiveUtil::log('#### NONE HEADER!');
                         $moreToRead = false;
+                        break;
+
+                    default:
+                        $p = ftell($archiveHandle);
+                        DupArchiveUtil::log("#### UNKNOWN HEADER! {$headerType}. Archive position={$p}");
+                        $moreToRead = false;
+                        break;
                 }
             }
 

@@ -13,23 +13,33 @@ class DUP_DupArchive_Expand_State extends DupArchiveExpandState
     {   
         $instance = new DUP_DupArchive_Expand_State();
         
-        if ($reset) {
-         
+        if ($reset) {            
             $instance->initMembers();
         } else {
-            $data = DUP_Settings::Get('duparchive_expand_state');
-        
-            DUP_LOG::traceObject("****RAW EXPAND STATE LOADED****", $data);
-            DUP_Util::objectCopy($data, $instance);
+            $instance->loadMembers();            
         }
 
         return $instance;
     }
 
-    private function setFromData($data)
+    private function loadMembers()
     {
-        $this->currentFileHeader     = $data->currentFileHeader;
-        $this->archiveHeader         = $data->archiveHeader;
+        $data = DUP_Settings::Get('duparchive_expand_state');
+
+        DUP_LOG::traceObject("****RAW EXPAND STATE LOADED****", $data);
+
+        if($data->currentFileHeaderString != null) {
+            $this->currentFileHeader      = DUP_JSON::decode($data->currentFileHeaderString);
+        } else {
+            $this->currentFileHeader      = null;
+        }
+
+        if($data->archiveHeaderString != null) {
+            $this->archiveHeader      = DUP_JSON::decode($data->archiveHeaderString);
+        } else {
+            $this->archiveHeader      = null;
+        }
+
         $this->archiveOffset         = $data->archiveOffset;
         $this->archivePath           = $data->archivePath;
         $this->basePath              = $data->basePath;
@@ -44,22 +54,52 @@ class DUP_DupArchive_Expand_State extends DupArchiveExpandState
         $this->working               = $data->working;
         $this->directoryModeOverride = $data->directoryModeOverride;
         $this->fileModeOverride      = $data->fileModeOverride;
-        $this->throttleDelayInUs     = $data->throttleDelayInUs;
+        $this->throttleDelayInUs     = $data->throttleDelayInUs;       
     }
 
     public function save()
     {
-        DUP_LOG::trace("****SAVING EXPAND STATE****");
-        DUP_Settings::Set('duparchive_expand_state', $this);
+        $data = new stdClass();
+
+        if($this->currentFileHeader != null) {
+            $data->currentFileHeaderString      = json_encode($this->currentFileHeader);
+        } else {
+            $data->currentFileHeaderString      = null;
+        }
+
+        if($this->archiveHeader != null) {
+            $data->archiveHeaderString      = json_encode($this->archiveHeader);
+        } else {
+            $data->archiveHeaderString      = null;
+        }
+
+        $data->archiveOffset         = $this->archiveOffset;
+        $data->archivePath           = $this->archivePath;
+        $data->basePath              = $this->basePath;
+        $data->currentFileOffset     = $this->currentFileOffset;
+        $data->failures              = $this->failures;
+        $data->isCompressed          = $this->isCompressed;
+        $data->startTimestamp        = $this->startTimestamp;
+        $data->timeSliceInSecs       = $this->timeSliceInSecs;
+        $data->validateOnly          = $this->validateOnly;
+        $data->fileWriteCount        = $this->fileWriteCount;
+        $data->directoryWriteCount   = $this->directoryWriteCount;
+        $data->working               = $this->working;
+        $data->directoryModeOverride = $this->directoryModeOverride;
+        $data->fileModeOverride      = $this->fileModeOverride;
+        $data->throttleDelayInUs     = $this->throttleDelayInUs;
+
+        DUP_LOG::traceObject("****SAVING EXPAND STATE****", $this);
+        DUP_LOG::traceObject("****SERIALIZED STATE****", $data);
+        DUP_Settings::Set('duparchive_expand_state', $data);
         DUP_Settings::Save();
     }
 
     private function initMembers()
     {
         $this->currentFileHeader = null;
-
         $this->archiveOffset         = 0;
-        $this->archiveHeader         = 0;
+        $this->archiveHeader         = null;
         $this->archivePath           = null;
         $this->basePath              = null;
         $this->currentFileOffset     = 0;
