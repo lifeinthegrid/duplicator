@@ -50,12 +50,21 @@ class DUP_Util
         self::$on_php_54_plus  = version_compare(PHP_VERSION, '5.4.0') >= 0;
 		self::$PHP7_plus = version_compare(PHP_VERSION, '7.0.0', '>=');
     }
-
     
-    public static function objectCopy($source, $dest) 
+//    public static function objectCopy($source, $dest)
+//    {
+//        foreach(get_object_vars($source) as $key => $value) {
+//            $dest->$key = $value;
+//        }
+//    }
+
+    public static function objectCopy($srcObject, $destObject, $skipMemberArray = null)
     {
-        foreach(get_object_vars($source) as $key => $value) {
-            $dest->$key = $value;
+        foreach ($srcObject as $member_name => $member_value) {
+            if (!is_object($member_value) && (($skipMemberArray == null) || !in_array($member_name, $skipMemberArray))) {
+                // Skipping all object members
+                $destObject->$member_name = $member_value;
+            }
         }
     }
 

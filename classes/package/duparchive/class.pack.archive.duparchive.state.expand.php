@@ -39,22 +39,35 @@ class DUP_DupArchive_Expand_State extends DupArchiveExpandState
         } else {
             $this->archiveHeader      = null;
         }
+        
+        if($data->failuresString)
+        {
+            $this->failures = DUP_JSON::decode($data->failuresString);
+        }
+        else
+        {
+            $this->failures = array();
+        }
 
-        $this->archiveOffset         = $data->archiveOffset;
-        $this->archivePath           = $data->archivePath;
-        $this->basePath              = $data->basePath;
-        $this->currentFileOffset     = $data->currentFileOffset;
-        $this->failures              = $data->failures;
-        $this->isCompressed          = $data->isCompressed;
-        $this->startTimestamp        = $data->startTimestamp;
-        $this->timeSliceInSecs       = $data->timeSliceInSecs;
-        $this->validateOnly          = $data->validateOnly;
-        $this->fileWriteCount        = $data->fileWriteCount;
-        $this->directoryWriteCount   = $data->directoryWriteCount;
-        $this->working               = $data->working;
-        $this->directoryModeOverride = $data->directoryModeOverride;
-        $this->fileModeOverride      = $data->fileModeOverride;
-        $this->throttleDelayInUs     = $data->throttleDelayInUs;       
+        DUP_Util::objectCopy($data, $this, array('archiveHeaderString', 'currentFileHeaderString', 'failuresString'));
+
+//
+//        $this->archiveOffset         = $data->archiveOffset;
+//        $this->archivePath           = $data->archivePath;
+//        $this->basePath              = $data->basePath;
+//        $this->currentFileOffset     = $data->currentFileOffset;
+//        $this->failures              = $data->failures;
+//        $this->isCompressed          = $data->isCompressed;
+//        $this->startTimestamp        = $data->startTimestamp;
+//        $this->timeSliceInSecs       = $data->timeSliceInSecs;
+//        $this->fileWriteCount        = $data->fileWriteCount;
+//        $this->directoryWriteCount   = $data->directoryWriteCount;
+//        $this->working               = $data->working;
+//        $this->directoryModeOverride = $data->directoryModeOverride;
+//        $this->fileModeOverride      = $data->fileModeOverride;
+//        $this->throttleDelayInUs     = $data->throttleDelayInUs;
+//        $this->validateOnly          = $data->validateOnly;
+//        $this->validationType        = $data->validationType;
     }
 
     public function save()
@@ -73,21 +86,27 @@ class DUP_DupArchive_Expand_State extends DupArchiveExpandState
             $data->archiveHeaderString      = null;
         }
 
-        $data->archiveOffset         = $this->archiveOffset;
-        $data->archivePath           = $this->archivePath;
-        $data->basePath              = $this->basePath;
-        $data->currentFileOffset     = $this->currentFileOffset;
-        $data->failures              = $this->failures;
-        $data->isCompressed          = $this->isCompressed;
-        $data->startTimestamp        = $this->startTimestamp;
-        $data->timeSliceInSecs       = $this->timeSliceInSecs;
-        $data->validateOnly          = $this->validateOnly;
-        $data->fileWriteCount        = $this->fileWriteCount;
-        $data->directoryWriteCount   = $this->directoryWriteCount;
-        $data->working               = $this->working;
-        $data->directoryModeOverride = $this->directoryModeOverride;
-        $data->fileModeOverride      = $this->fileModeOverride;
-        $data->throttleDelayInUs     = $this->throttleDelayInUs;
+        $data->failuresString = json_encode($this->failures, JSON_FORCE_OBJECT);
+
+        // Object members auto skipped
+        DUP_Util::objectCopy($this, $data);
+
+//        $data->archiveOffset         = $this->archiveOffset;
+//        $data->archivePath           = $this->archivePath;
+//        $data->basePath              = $this->basePath;
+//        $data->currentFileOffset     = $this->currentFileOffset;
+//        $data->failures              = $this->failures;
+//        $data->isCompressed          = $this->isCompressed;
+//        $data->startTimestamp        = $this->startTimestamp;
+//        $data->timeSliceInSecs       = $this->timeSliceInSecs;
+//        $data->fileWriteCount        = $this->fileWriteCount;
+//        $data->directoryWriteCount   = $this->directoryWriteCount;
+//        $data->working               = $this->working;
+//        $data->directoryModeOverride = $this->directoryModeOverride;
+//        $data->fileModeOverride      = $this->fileModeOverride;
+//        $data->throttleDelayInUs     = $this->throttleDelayInUs;
+//        $data->validateOnly          = $this->validateOnly;
+//        $data->validationType        = $this->validationType;
 
         DUP_LOG::traceObject("****SAVING EXPAND STATE****", $this);
         DUP_LOG::traceObject("****SERIALIZED STATE****", $data);
