@@ -322,7 +322,7 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
         Duplicator.Pack.DupArchiveMaxRetries = 10;
         Duplicator.Pack.DupArchiveRetryDelayInMs = 8000;
         Duplicator.Pack.DupArchiveStartTime = new Date().getTime();
-        Duplicator.Pack.StatusFrequency = 10000;
+        Duplicator.Pack.StatusFrequency = 8000;
 
         /*	----------------------------------------
          *	METHOD: Performs Ajax post to create a new package
@@ -390,7 +390,7 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                     // DATA FIELDS
                     // archive_offset, archive_size, failures, file_index, is_done, timestamp
 
-                    if ((data != null) && (typeof (data) != 'undefined') && ((data.status == 1) || (data.status == 4))) {
+                    if ((data != null) && (typeof (data) != 'undefined') && ((data.status == 1) || (data.status == 3) || (data.status == 4))) {
 
                         Duplicator.Pack.DupArchiveFailureCount = 0; 
                     
@@ -403,7 +403,7 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
                             console.log("CreateDupArchive:There are failures present. (" + data.failures.length) + ")";
                         }
 
-                        if (criticalFailureText === '') {
+                        if ((criticalFailureText === '') && (data.status != 3)) {
                             console.log("CreateDupArchive:No critical failures");
                             if (data.status == 1) {
 

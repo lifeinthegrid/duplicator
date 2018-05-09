@@ -289,6 +289,10 @@ class DupArchiveFileProcessor
                 }
 
                 $hash = hash('crc32b', $globContents);    
+
+//                if(rand(0, 10) == 1) {
+//                  $hash = 0;//RSR purposely injecting hash errors into system for test purposes
+//                }
                 
                 if ($hash != $globHeader->hash) {
                     $expandState->addFailure(DupArchiveFailureTypes::File, $expandState->currentFileHeader->relativePath, 'Hash mismatch on DupArchive file entry', true);
