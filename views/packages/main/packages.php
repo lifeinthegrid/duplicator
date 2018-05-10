@@ -169,7 +169,9 @@ TOOL-BAR -->
 			
 			//Links
 			$uniqueid  			= "{$row['name']}_{$row['hash']}";
-			$packagepath 		= $pack_storeurl . "{$uniqueid}_archive.zip";
+	
+      		$packagepath 		= $pack_storeurl . $Package->Archive->File;
+   
 			$installerpath		= $pack_storeurl . "{$uniqueid}_installer.php";
 			$installfilelink	= "{$installerpath}?get=1&file={$uniqueid}_installer.php";
 			$css_alt		    = ($rowCount % 2 != 0) ? '' : 'alternate';
@@ -193,7 +195,7 @@ TOOL-BAR -->
 						<button id="<?php echo "{$uniqueid}_installer.php" ?>" class="button no-select" onclick="Duplicator.Pack.DownloadPackageFile(0, <?php echo $Package->ID ?>); return false;">
 							<i class="fa fa-bolt"></i> <?php _e("Installer", 'duplicator') ?>
 						</button> 
-						<button id="<?php echo "{$uniqueid}_archive.zip" ?>" class="button no-select" onclick="Duplicator.Pack.DownloadPackageFile(1, <?php echo $Package->ID ?>); return false;">
+                        <button id="<?php echo "{$uniqueid}_archive.zip" ?>" class="button no-select" onclick="Duplicator.Pack.DownloadFile(<?php echo "'{$Package->Archive->File}', '{$packagepath}'"; ?>); return false;">
 							<i class="fa fa-file-archive-o"></i> <?php _e("Archive", 'duplicator') ?>
 						</button>
 						<button type="button" class="button no-select" title="<?php _e("Package Details", 'duplicator') ?>" onclick="Duplicator.Pack.OpenPackageDetails(<?php echo "{$row['id']}"; ?>);">

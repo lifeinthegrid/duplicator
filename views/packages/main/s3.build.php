@@ -518,7 +518,9 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
         Duplicator.Pack.WireDownloadLinks = function(data) {
 
             var pack = data.package;
-
+            var archive_name = pack.Archive.File;
+            var archive_url = "<?php echo DUPLICATOR_SSDIR_URL; ?>" + "/" + archive_name;
+                
             $('#dup-progress-bar-area').hide();
             $('#dup-progress-area, #dup-msg-success').show(300);
 
@@ -528,12 +530,9 @@ echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#in
 
             //Wire Up Downloads
             $('#dup-btn-installer').click(function() { Duplicator.Pack.DownloadPackageFile(0, pack.ID); return false});
-            $('#dup-btn-archive').click(function() { Duplicator.Pack.DownloadPackageFile(1, pack.ID); return false});
+            $('#dup-btn-archive').click(function() { Duplicator.Pack.DownloadFile(archive_name, archive_url); return false});
 
             $('#dup-link-download-both').on("click", function () {
-
-                var archive_name = pack.Archive.File;
-                var archive_url = "<?php echo DUPLICATOR_SSDIR_URL; ?>" + "/" + archive_name;
 
                 Duplicator.Pack.DownloadFile(archive_name, archive_url);
 
