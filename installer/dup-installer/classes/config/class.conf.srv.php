@@ -42,8 +42,11 @@ class DUPX_ServerConfig
 
 		//Apache
 		if (self::runReset($path, '.htaccess')) {
-			file_put_contents("{$path}/.htaccess", "#This file has been reset by Duplicator. See .htaccess-{$time}.orig for the original file");
-			@chmod("{$path}/.htaccess", 0644);
+			$apache_confg_file = "{$path}/.htaccess";
+			if (file_exists($apache_confg_file)) {
+				file_put_contents($apache_confg_file , "#This file has been reset by Duplicator. See .htaccess-{$time}.orig for the original file");
+				@chmod($apache_confg_file, 0644);
+			}
 		}
 		
 		//.user.ini - For WordFence
@@ -164,7 +167,7 @@ HTACCESS;
 		
 		($status)
 			? DUPX_Log::info("- {$file_name} was reset and a backup made to {$file_name}-{$time}.orig.")
-			: DUPX_Log::info("- {$file_name} file was not reset or backed up.");
+			: DUPX_Log::info("- {$file_name} file was NOT reset or backed up.");
 
 		return $status;
 	}

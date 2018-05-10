@@ -134,9 +134,7 @@ if (isset($_POST['ctrl_action'])) {
 <table cellspacing="0" class="header-wizard">
 	<tr>
 		<td style="width:100%;">
-			<div class="dupx-branding-header">              
-                    <i class="fa fa-bolt"></i> Duplicator     
-			</div>
+			<div class="dupx-branding-header">Duplicator</div>
 		</td>
 		<td class="wiz-dupx-version">
 			version:	<?php echo $GLOBALS['DUPX_AC']->version_dup ?> <br/>
