@@ -7,7 +7,7 @@ $_POST['exe_safe_mode']	= isset($_POST['exe_safe_mode']) ? $_POST['exe_safe_mode
 
 $url_new_rtrim  = rtrim(DUPX_U::sanitize($_POST['url_new']), "/");
 $admin_base		= basename($GLOBALS['DUPX_AC']->wplogin_url);
-$admin_redirect ="{$url_new_rtrim}/wp-admin/admin.php?page=duplicator-pro-tools&tab=diagnostics";
+$admin_redirect ="{$url_new_rtrim}/wp-admin/admin.php?page=duplicator-tools&tab=diagnostics";
 
 $safe_mode		= $_POST['exe_safe_mode'];
 $admin_redirect = "{$admin_redirect}&package={$GLOBALS['DUPX_AC']->package_name}&installer_name={$GLOBALS['BOOTLOADER_NAME']}&safe_mode={$safe_mode}" ;

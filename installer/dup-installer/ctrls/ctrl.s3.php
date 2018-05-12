@@ -326,8 +326,8 @@ DUPX_Log::info("====================================\n");
 $blog_name   = mysqli_real_escape_string($dbh, $_POST['blogname']);
 $plugin_list = (isset($_POST['plugins'])) ? $_POST['plugins'] : array();
 
-if (!in_array('duplicator-pro/duplicator-pro.php', $plugin_list)) {
-    $plugin_list[] = 'duplicator-pro/duplicator-pro.php';
+if (!in_array('duplicator/duplicator.php', $plugin_list)) {
+    $plugin_list[] = 'duplicator/duplicator.php';
 }
 $serial_plugin_list	 = @serialize($plugin_list);
 
