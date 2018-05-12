@@ -91,24 +91,6 @@ class DUP_Settings
 	}
 	
 	/**
-	*  LegacyClean: Cleans up legacy data
-	*/
-	public static function LegacyClean() {
-		global $wpdb;
-
-		//PRE 5.0
-		$table = $wpdb->prefix."duplicator";
-		$wpdb->query("DROP TABLE IF EXISTS $table");
-		delete_option('duplicator_pack_passcount'); 
-		delete_option('duplicator_add1_passcount'); 
-		delete_option('duplicator_add1_clicked'); 
-		delete_option('duplicator_options'); 
-		
-		//PRE 5.n
-		//Next version here if needed
-	}
-	
-	/**
 	*  DeleteWPOption: Cleans up legacy data
 	*/
 	public static function DeleteWPOption($optionName) {

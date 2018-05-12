@@ -7,6 +7,7 @@
 						. " especially if it was renamed.", 'duplicator');
 ?>
 
+
 <!-- ==============================
 OPTIONS DATA -->
 <div class="dup-box">
@@ -110,11 +111,10 @@ jQuery(document).ready(function($)
 		var key = $(anchor).text();
 		var msg_id = '<?php echo $confirm1->getMessageID() ?>';
 		var msg    = '<?php _e('Delete the option value', 'duplicator');?>' + ' [' + key + '] ?';
-		jQuery('#dup-settings-form-action').val(key);
+		jQuery('#dup-remove-options-value').val(key);
 		jQuery('#' + msg_id).html(msg)
 		<?php $confirm1->showConfirm(); ?>
 	}
-	
 	
 	Duplicator.Settings.DeleteOption = function () 
 	{
@@ -137,8 +137,7 @@ Duplicator.Tools.deleteInstallerFiles = function()
 {
 	var data = {
 		action: 'DUP_CTRL_Tools_deleteInstallerFiles',
-		nonce: '<?php echo $ajax_nonce; ?>',
-		'archive-name':  '<?php echo $package_name; ?>'
+		'archive-name'  : '<?php echo $package_name; ?>'
 	};
 
 	jQuery.ajax({
