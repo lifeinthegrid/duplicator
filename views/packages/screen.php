@@ -69,6 +69,13 @@ class DUP_Package_Screen extends DUP_UI_Screen
                 . "<b><i class='fa fa-download'></i> Downloads</b><br/>"
 			    . "To download the package files click on the Installer and Archive buttons after creating a package.  The archive file will have a copy of the installer inside of it named "
 				. "installer-backup.php in case the original installer file is lost.  To see the details of a package click on the <i class='fa fa-archive'></i> details button.<br/><br/>"
+
+				. "<b><i class='fa fa-file-archive-o'></i> Archive Types</b><br/>"
+				. "An archive file can be saved as either a .zip file or .daf file.  A zip file is a common archive format used to compress and group files.  The daf file short for "
+				. "'Duplicator Archive Format' is a custom format used specifically  for working with larger packages and scale-ability issues on many shared hosting platforms.  Both "
+				. "formats work very similar.  The main difference is that the daf file can only be extracted using the installer.php file or the "
+				. "<a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-052-q' target='_blank'>DAF extraction tool</a>.  The zip file can be used by the installer.php "
+				. "or other zip tools like winrar/7zip/winzip or other client-side tools. <br/><br/>"
 			,'duplicator');
 	}
 

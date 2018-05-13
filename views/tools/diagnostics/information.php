@@ -87,10 +87,12 @@ if ($section == "info" || $section == '') {
 		$safe_msg = __('Please test the entire site to validate the migration process!');
 
 		switch(get_option("duplicator_exe_safe_mode")){
+			
 			//safe_mode basic
 			case 1:
 				$safe_msg = __('NOTICE: Safe mode (Basic) was enabled during install, be sure to re-enable all your plugins.');
 			break;
+
 			//safe_mode advance
 			case 2:
 				$safe_msg = __('NOTICE: Safe mode (Advanced) was enabled during install, be sure to re-enable all your plugins.');
@@ -110,7 +112,6 @@ if ($section == "info" || $section == '') {
 					switch_theme($temp_theme['template'], $temp_theme['stylesheet']);
 					switch_theme($active_theme->template, $active_theme->stylesheet);
 				}
-
 
 			break;
 		}
