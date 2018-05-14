@@ -244,41 +244,19 @@ DUPX_Log::info("\n====================================");
 DUPX_Log::info('CONFIGURATION FILE UPDATES:');
 DUPX_Log::info("====================================\n");
 
-$mu_newDomain		 = parse_url($_POST['url_new']);
-$mu_oldDomain		 = parse_url($_POST['url_old']);
-$mu_newDomainHost	 = $mu_newDomain['host'];
-$mu_oldDomainHost	 = $mu_oldDomain['host'];
-$mu_newUrlPath		 = parse_url($_POST['url_new'], PHP_URL_PATH);
-$mu_oldUrlPath		 = parse_url($_POST['url_old'], PHP_URL_PATH);
-
-if (empty($mu_newUrlPath) || ($mu_newUrlPath == '/')) {
-	$mu_newUrlPath = '/';
-} else {
-	$mu_newUrlPath = rtrim($mu_newUrlPath, '/').'/';
-}
-
-if (empty($mu_oldUrlPath) || ($mu_oldUrlPath == '/')) {
-	$mu_oldUrlPath = '/';
-} else {
-	$mu_oldUrlPath = rtrim($mu_oldUrlPath, '/').'/';
-}
 
 // UPDATE WP-CONFIG FILE
 $patterns = array("/('|\")WP_HOME.*?\)\s*;/",
-	"/('|\")WP_SITEURL.*?\)\s*;/",
-	"/('|\")DOMAIN_CURRENT_SITE.*?\)\s*;/",
-	"/('|\")PATH_CURRENT_SITE.*?\)\s*;/");
+	"/('|\")WP_SITEURL.*?\)\s*;/");
 
 $replace = array("'WP_HOME', '{$_POST['url_new']}');",
-	"'WP_SITEURL', '{$_POST['url_new']}');",
-	"'DOMAIN_CURRENT_SITE', '{$mu_newDomainHost}');",
-	"'PATH_CURRENT_SITE', '{$mu_newUrlPath}');");
+	"'WP_SITEURL', '{$_POST['url_new']}');");
 
 DUPX_WPConfig::updateVars($patterns, $replace);
 
 //@todo: integrate all logic into DUPX_WPConfig::updateVars
 $root_path		= $GLOBALS['DUPX_ROOT'];
-//$wpconfig_path	= "{$root_path}/wp-config.php";
+
 $wpconfig_ark_path	= "{$root_path}/wp-config-arc.txt";
 $wpconfig_ark_contents	= @file_get_contents($wpconfig_ark_path, true);
 $wpconfig_ark_contents	= preg_replace($patterns, $replace, $wpconfig_ark_contents);
@@ -345,13 +323,6 @@ if ($_POST['postguid']) {
 	$update_guid = @mysqli_affected_rows($dbh) or 0;
 	DUPX_Log::info("Reverted '{$update_guid}' post guid columns back to '{$_POST['url_old']}'");
 }
-
-
-$mu_updates = @mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}blogs` SET domain = '{$mu_newDomainHost}' WHERE domain = '{$mu_oldDomainHost}'");
-if ($mu_updates) {
-	DUPX_Log::info("- Update MU table blogs: domain {$mu_newDomainHost} ");
-}
-
 
 //===============================================
 //NOTICES TESTS
