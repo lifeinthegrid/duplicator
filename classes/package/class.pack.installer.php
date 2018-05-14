@@ -3,6 +3,7 @@ if (!defined('DUPLICATOR_VERSION')) exit; // Exit if accessed directly
 
 require_once(DUPLICATOR_PLUGIN_PATH . '/classes/class.archive.config.php');
 require_once(DUPLICATOR_PLUGIN_PATH . '/classes/utilities/class.u.zip.php');
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/utilities/class.u.multisite.php');
 
 class DUP_Installer
 {
@@ -154,20 +155,9 @@ class DUP_Installer
         $ac->cache_wp    = $this->Package->Installer->OptsCacheWP;
         $ac->cache_path  = $this->Package->Installer->OptsCachePath;
 
-        //PRE-FILLED: CPANEL
-        $ac->cpnl_host     = '';
-        $ac->cpnl_user     = '';
-        $ac->cpnl_pass     = '';
-        $ac->cpnl_enable   = false;
-        $ac->cpnl_connect  = false;
-        $ac->cpnl_dbaction = 'create';
-        $ac->cpnl_dbhost   = '';
-        $ac->cpnl_dbname   = '';
-        $ac->cpnl_dbuser   = '';
-
 		$ac->wp_tableprefix = $wpdb->base_prefix;
-
-        $ac->subsites = array();
+        
+        $ac->mu_mode = DUP_MU::getMode();
 
         $json = json_encode($ac);
 

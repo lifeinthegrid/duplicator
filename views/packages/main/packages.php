@@ -170,6 +170,7 @@ TOOL-BAR -->
 			//Links
 			$uniqueid  			= "{$row['name']}_{$row['hash']}";
 	
+            
       		$packagepath 		= $pack_storeurl . $Package->Archive->File;
    
 			$installerpath		= $pack_storeurl . "{$uniqueid}_installer.php";

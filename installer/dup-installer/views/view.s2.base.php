@@ -297,8 +297,8 @@ Auto Posts to view.step3.php  -->
 
 	//DOCUMENT LOAD
 	$(document).ready(function () {
-		//Init
-		<?php echo ($GLOBALS['DUPX_AC']->cpnl_enable)  ? 'DUPX.togglePanels("cpanel");' : 'DUPX.togglePanels("basic");'; ?>
+		//Init		
+        DUPX.togglePanels("basic");
 		$("*[data-type='toggle']").click(DUPX.toggleClick);
 
 	});

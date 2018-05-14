@@ -41,17 +41,7 @@ class DUPX_ArchiveConfig
 	public $dbname;
 	public $dbuser;
 	public $dbpass;
-	//CPANEL: Login
-	public $cpnl_host;
-	public $cpnl_user;
-	public $cpnl_pass;
-	public $cpnl_enable;
-	public $cpnl_connect;
-	//CPANEL: DB
-	public $cpnl_dbaction;
-	public $cpnl_dbhost;
-	public $cpnl_dbname;
-	public $cpnl_dbuser;
+
 	//ADV OPTS
 	public $cache_wp;
 	public $cache_path;
@@ -97,9 +87,6 @@ class DUPX_ArchiveConfig
 		//Instance Updates:
 		self::$instance->blogNameSafe	= preg_replace("/[^A-Za-z0-9?!]/", '', self::$instance->blogname);
 		self::$instance->dbhost			= empty(self::$instance->dbhost)       ? 'localhost' : self::$instance->dbhost;
-		self::$instance->cpnl_host		= empty(self::$instance->cpnl_host)    ? "https://{$GLOBALS['HOST_NAME']}:2083" : self::$instance->cpnl_host;
-		self::$instance->cpnl_dbhost	= empty(self::$instance->cpnl_dbhost)  ? 'localhost' : self::$instance->cpnl_dbhost;
-		self::$instance->cpnl_dbname	= strlen(self::$instance->cpnl_dbname) ? self::$instance->cpnl_dbname : '';
 
 		return self::$instance;
 	}

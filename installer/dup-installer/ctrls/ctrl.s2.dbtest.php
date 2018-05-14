@@ -15,8 +15,6 @@ defined("ABSPATH") or die("");
 
 class DUPX_DBTestIn
 {
-	//Basic, cPanel
-	public $mode;
 	//Create, Rename, Empty, Skip
 	public $dbaction;
 	public $dbhost;
@@ -87,11 +85,7 @@ class DUPX_DBTest
 	public function run()
 	{
 		//Requirments
-		if ($this->in->mode == 'basic') {
-			$this->runBasic();
-		} else {
-			$this->runcPanel();
-		}
+        $this->runBasic();
 
 		$this->buildStateSummary();
 		$this->buildDisplaySummary();
@@ -253,7 +247,7 @@ class DUPX_DBTest
 			}
 		} catch (Exception $ex) {
 			$test['pass']	 = 0;
-			$test['info']	 = "Error creating database <b>[{$this->in->dbname}]</b> in mode <b>[{$this->in->mode}].<br/>" . $this->formatError($ex);
+			$test['info']	 = "Error creating database <b>[{$this->in->dbname}]</b>.<br/>" . $this->formatError($ex);
 		}
 	}
 

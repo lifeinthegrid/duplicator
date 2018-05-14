@@ -33,23 +33,9 @@ class DUP_Archive_Config
     public $dbpass;
     public $cache_wp;
     public $cache_path;
-    //PRE-FILLED: CPANEL
-    public $cpnl_dbname;
-    public $cpnl_host;
-    public $cpnl_user;
-    public $cpnl_pass;
-    public $cpnl_enable;
-    public $cpnl_connect;
-    public $cpnl_dbaction;
-    public $cpnl_dbhost;
-    public $cpnl_dbuser;
+    
+    // MULTISITE
+    public $mu_mode;
     
     public $wp_tableprefix;
-
-    //MISC
-
-    function __construct()
-    {
-        $this->subsites = array();
-    }
 }
