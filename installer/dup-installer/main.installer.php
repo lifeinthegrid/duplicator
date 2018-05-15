@@ -163,7 +163,7 @@ FORM DATA: User-Interface views -->
 	<?php
 		switch ($GLOBALS["VIEW"]) {
 			case "secure" :
-                require_once($GLOBALS['DUPX_INIT'] . '/views/view.init1.php');
+                echo 'Password protection is available only in Duplicator Pro';
 				break;
 
 			case "step1"   :

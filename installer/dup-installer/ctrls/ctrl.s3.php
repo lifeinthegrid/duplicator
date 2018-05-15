@@ -13,18 +13,18 @@ $ajax3_error_level	 = error_reporting();
 error_reporting(E_ERROR);
 
 //POST PARAMS
-$_POST['blogname']				 = isset($_POST['blogname']) ? $_POST['blogname'] : 'No Blog Title Set';
-$_POST['postguid']				 = isset($_POST['postguid']) && $_POST['postguid'] == 1 ? 1 : 0;
-$_POST['fullsearch']			 = isset($_POST['fullsearch']) && $_POST['fullsearch'] == 1 ? 1 : 0;
-$_POST['path_old']				 = isset($_POST['path_old']) ? trim($_POST['path_old']) : null;
-$_POST['path_new']				 = isset($_POST['path_new']) ? trim($_POST['path_new']) : null;
-$_POST['siteurl']				 = isset($_POST['siteurl']) ? rtrim(trim($_POST['siteurl']), '/') : null;
-$_POST['tables']				 = isset($_POST['tables']) && is_array($_POST['tables']) ? array_map('stripcslashes', $_POST['tables']) : array();
-$_POST['url_old']				 = isset($_POST['url_old']) ? trim($_POST['url_old']) : null;
-$_POST['url_new']				 = isset($_POST['url_new']) ? rtrim(trim($_POST['url_new']), '/') : null;
-$_POST['ssl_admin']				 = (isset($_POST['ssl_admin'])) ? true : false;
-$_POST['cache_wp']				 = (isset($_POST['cache_wp'])) ? true : false;
-$_POST['cache_path']			 = (isset($_POST['cache_path'])) ? true : false;
+$_POST['blogname']		= isset($_POST['blogname']) ? $_POST['blogname'] : 'No Blog Title Set';
+$_POST['postguid']		= isset($_POST['postguid']) && $_POST['postguid'] == 1 ? 1 : 0;
+$_POST['fullsearch']	= isset($_POST['fullsearch']) && $_POST['fullsearch'] == 1 ? 1 : 0;
+$_POST['path_old']		= isset($_POST['path_old']) ? trim($_POST['path_old']) : null;
+$_POST['path_new']		= isset($_POST['path_new']) ? trim($_POST['path_new']) : null;
+$_POST['siteurl']		= isset($_POST['siteurl']) ? rtrim(trim($_POST['siteurl']), '/') : null;
+$_POST['tables']		= isset($_POST['tables']) && is_array($_POST['tables']) ? array_map('stripcslashes', $_POST['tables']) : array();
+$_POST['url_old']		= isset($_POST['url_old']) ? trim($_POST['url_old']) : null;
+$_POST['url_new']		= isset($_POST['url_new']) ? rtrim(trim($_POST['url_new']), '/') : null;
+$_POST['ssl_admin']		= (isset($_POST['ssl_admin'])) ? true : false;
+$_POST['cache_wp']		= (isset($_POST['cache_wp'])) ? true : false;
+$_POST['cache_path']	= (isset($_POST['cache_path'])) ? true : false;
 $_POST['exe_safe_mode']	= isset($_POST['exe_safe_mode']) ? $_POST['exe_safe_mode'] : 0;
 
 //MYSQL CONNECTION

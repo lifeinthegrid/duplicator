@@ -45,7 +45,6 @@ $dbTestIn->dbname	 = $_POST['dbname'];
 $dbTestIn->dbport	 = $_POST['dbport'];
 $dbTestIn->dbcollatefb = $_POST['dbcollatefb'];
 
-
 $dbTest	= new DUPX_DBTest($dbTestIn);
 
 //CLICKS 'Test Database'
@@ -57,28 +56,7 @@ if (isset($_GET['dbtest'])) {
 		header('Content-Type: application/json');
 	}
 	die($dbTest->run());
-	
-//CLICKS 'Next' 
-} else {
-
-	//@todo: 
-	// - Convert DUPX_DBTest to DUPX_DBSetup
-	// - implement property runMode = "Test/Live"
-	/*
-	$dbSetup->runMode = 'LIVE';
-	$dbSetup->responseMode = 'PHP';
-	$dbSetupResult = $dbSetup->run();
-
-	if (! $dbSetupResult->payload->reqsPass) {
-		$errorMessage = $dbTestResult->payload->lastError;
-		DUPX_Log::error(empty($errorMessage) ? 'UNKNOWN ERROR RESPONSE:  Please try the process again!' : $errorMessage);
-	}*/
-}
-
-//===============================================
-//CPANEL LOGIC: From Postback
-//===============================================
-//PRO ONLY
+} 
 
 $not_yet_logged = (isset($_POST['first_chunk']) && $_POST['first_chunk']) || (!isset($_POST['continue_chunking']));
 
@@ -118,7 +96,6 @@ if($not_yet_logged) {
 }
 
 if ($_POST['dbaction'] == 'manual') {
-
 	DUPX_Log::info("\n** SQL EXECUTION IS IN MANUAL MODE **");
 	DUPX_Log::info("- No SQL script has been executed -");
 	$JSON['pass'] = 1;

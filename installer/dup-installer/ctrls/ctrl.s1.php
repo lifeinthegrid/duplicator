@@ -1,26 +1,25 @@
 <?php
 defined("ABSPATH") or die("");
-//-- START OF ACTION STEP1
+
 /** IDE HELPERS */
 /* @var $GLOBALS['DUPX_AC'] DUPX_ArchiveConfig */
 
-//print_r($_POST);
 //Advanced Opts
-$_POST['set_file_perms']	 = (isset($_POST['set_file_perms']) && $_POST['set_file_perms'] == '1') ? true : false;
-$_POST['set_dir_perms']		 = (isset($_POST['set_dir_perms']) && $_POST['set_dir_perms'] == '1') ? true : false;
-$_POST['file_perms_value']	 = (isset($_POST['file_perms_value'])) ? intval(('0'.$_POST['file_perms_value']), 8) : 0755;
-$_POST['dir_perms_value']	 = (isset($_POST['dir_perms_value'])) ? intval(('0'.$_POST['dir_perms_value']), 8) : 0644;
-$_POST['zip_filetime']		 = (isset($_POST['zip_filetime'])) ? $_POST['zip_filetime'] : 'current';
-$_POST['retain_config']		 = (isset($_POST['retain_config']) && $_POST['retain_config'] == '1') ? true : false;
-$_POST['archive_engine']	 = (isset($_POST['archive_engine'])) ? $_POST['archive_engine'] : 'manual';
-$_POST['exe_safe_mode']	 = (isset($_POST['exe_safe_mode'])) ? $_POST['exe_safe_mode'] : 0;
+$_POST['set_file_perms']	= (isset($_POST['set_file_perms']) && $_POST['set_file_perms'] == '1') ? true : false;
+$_POST['set_dir_perms']		= (isset($_POST['set_dir_perms']) && $_POST['set_dir_perms'] == '1') ? true : false;
+$_POST['file_perms_value']	= (isset($_POST['file_perms_value'])) ? intval(('0'.$_POST['file_perms_value']), 8) : 0755;
+$_POST['dir_perms_value']	= (isset($_POST['dir_perms_value'])) ? intval(('0'.$_POST['dir_perms_value']), 8) : 0644;
+$_POST['zip_filetime']		= (isset($_POST['zip_filetime'])) ? $_POST['zip_filetime'] : 'current';
+$_POST['retain_config']		= (isset($_POST['retain_config']) && $_POST['retain_config'] == '1') ? true : false;
+$_POST['archive_engine']	= (isset($_POST['archive_engine'])) ? $_POST['archive_engine'] : 'manual';
+$_POST['exe_safe_mode']		= (isset($_POST['exe_safe_mode'])) ? $_POST['exe_safe_mode'] : 0;
+
 //LOGGING
 $POST_LOG = $_POST;
 unset($POST_LOG['dbpass']);
 ksort($POST_LOG);
 
 if($_POST['archive_engine'] == 'manual') {
-
 	$GLOBALS['DUPX_STATE']->isManualExtraction = true;
 	$GLOBALS['DUPX_STATE']->save();
 }

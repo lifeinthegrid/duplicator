@@ -27,7 +27,6 @@ class DUPX_DBTestIn
 
 class DUPX_DBTestOut extends DUPX_CTRL_Out
 {
-
 	public function __construct()
 	{
 		parent::__construct();
@@ -250,7 +249,6 @@ class DUPX_DBTest
 			$test['info']	 = "Error creating database <b>[{$this->in->dbname}]</b>.<br/>" . $this->formatError($ex);
 		}
 	}
-
 
 	/**
 	 * Confirm Database Visibility for Basic
@@ -629,6 +627,7 @@ class DUPX_DBTest
 
         return $this->queryDateInserted;
 	}
+
 	/**
 	 * Cleans up basic setup items when test mode is enabled
 	 *

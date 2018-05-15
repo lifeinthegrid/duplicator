@@ -9,8 +9,6 @@ defined("ABSPATH") or die("");
  * Standard: PSR-2
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
  *
- * @package SC\DUPX\CTRL\Base
- *
  */
 //Enum used to define the various test statues 
 final class DUPX_CTRL_Status
@@ -21,9 +19,7 @@ final class DUPX_CTRL_Status
 }
 
 /**
- * A class structer used to report on controller methods
- *
- * @package Dupicator\ctrls\
+ * A class used to report on controller methods
  */
 class DUPX_CTRL_Report
 {
@@ -36,8 +32,6 @@ class DUPX_CTRL_Report
 
 /**
  * Base class for all controllers
- * 
- * @package Dupicator\ctrls\
  */
 class DUPX_CTRL_Out
 {
