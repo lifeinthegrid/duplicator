@@ -6,7 +6,6 @@ defined("ABSPATH") or die("");
 /* @var $installer_state DUPX_InstallerState */
 
 require_once($GLOBALS['DUPX_INIT'] . '/classes/config/class.archive.config.php');
-require_once(dirname(__FILE__) . '/view.s1.base.movesite.php');
 
 //ARCHIVE FILE
 $arcCheck = (file_exists($GLOBALS['FW_PACKAGE_PATH'])) ? 'Pass' : 'Fail';
@@ -50,6 +49,7 @@ $notice['04'] = 'Good'; //Place-holder for future check
 $notice['05'] = DUPX_Server::$php_version_53_plus	 ? 'Good' : 'Warn';
 $notice['06'] = empty($openbase) ? 'Good' : 'Warn';
 $notice['07'] = !$max_time_warn ? 'Good' : 'Warn';
+$notice['08'] = $GLOBALS['DUPX_AC']->mu_mode == 0 ? 'Good' : 'Warn';
 $all_notice = in_array('Warn', $notice) ? 'Warn' : 'Good';
 
 //SUMMATION
@@ -65,12 +65,6 @@ $archive_config  = DUPX_ArchiveConfig::getInstance();
 $installer_state = DUPX_InstallerState::getInstance();
 $is_import_mode  =  ($installer_state->mode === DUPX_InstallerMode::OverwriteInstall);
 
-/** FORWARD: To one-click installer
-  $oneclick = ($GLOBALS['FW_ONECLICK'] && $req_success) && (! isset($_GET['view']));
-  if ($oneclick && ! $_GET['debug']) {
-  DUPX_HTTP::post_with_html(DUPX_HTTP::get_request_uri(), array('view' => 'deploy'));
-  exit;
-  } */
 ?>
 
 <form id="s1-input-form" method="post" class="content-form">
@@ -408,9 +402,29 @@ VALIDATION
 			archive file using the 'Manual Archive Extraction' method.
 			Please see the	<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-100-q" target="_blank">FAQ timeout</a> help link for more details.
 		</div>
+
+
+		<!-- NOTICE 8 -->
+		<div class="status <?php echo ($notice['08'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['08']; ?></div>
+		<div class="title" data-type="toggle" data-target="#s1-notice08"><i class="fa fa-caret-right"></i> WordPress MultiSite</div>
+		<div class="info" id="s1-notice08">
+			<b>Multisite:</b> <?php echo $notice['08'] <= 0 ? 'This archive is not a multisite' : 'This is an unsupported multisite archive' ?>
+			<br/><br/>
+
+			 Duplicator does not support WordPress multisite migrations.  We recommend using Duplicator Pro which currently supports full multisite migrations and subsite to
+			 standalone site migrations.
+			 <br/><br/>
+			 While it is not recommended you can still continue with the build of this package.  Please note that after the install the site may not be working correctly.
+			 Additional manual custom configurations will need to be made to finalize this multisite migration.
+
+			 <i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_is_mu_warn_exe&utm_campaign=duplicator_pro' target='_blank'>[upgrade to pro]</a></i>
+		</div>
+
 	</div>
 </div>
 <br/><br/>
+
+
 <!-- ====================================
 OPTIONS
 ==================================== -->
