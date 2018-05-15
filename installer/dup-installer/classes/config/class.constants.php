@@ -55,7 +55,7 @@ class DUPX_Constants
 		//SHARED POST PARMS
 		$_GET['debug'] = isset($_GET['debug']) ? true : false;
 		$_GET['basic'] = isset($_GET['basic']) ? true : false;
-		$_POST['view'] = isset($_POST['view']) ? $_POST['view'] : "secure";
+		$_POST['view'] = isset($_POST['view']) ? $_POST['view'] : "step1";
 
 		//GLOBALS
 		$GLOBALS["VIEW"]				= isset($_GET["view"]) ? $_GET["view"] : $_POST["view"];
