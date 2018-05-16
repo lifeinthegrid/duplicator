@@ -15,18 +15,15 @@ class DUP_IO
      * @return TRUE on success or if file does not exist. FALSE on failure
      */
     public static function deleteFile($file)
-    {
-        if (file_exists($file))
-        {
-            if (@unlink($file) === false)
-            {
-                DUP_Log::Info("Could not delete file: {$file}");
-                return false;
-            }
-        }
-        return true;
-    }
-
+	{
+		if (file_exists($file)) {
+			if (@unlink($file) === false) {
+				DUP_Log::Info("Could not delete file: {$file}");
+				return false;
+			}
+		}
+		return true;
+	}
 
 	/**
      * Removes a directory recursively except for the root of a WP Site
