@@ -110,8 +110,8 @@ if (is_admin() == true)
     }
 
 	/**
-	 * Hooked into `register_deactivation_hook`.  Routines used to deactivae the plugin
-	 * For uninstall see uninstall.php  Wordpress by default will call the uninstall.php file
+	 * Hooked into `register_deactivation_hook`.  Routines used to deactivate the plugin
+	 * For uninstall see uninstall.php  WordPress by default will call the uninstall.php file
      *
      * @access global
      * @return null

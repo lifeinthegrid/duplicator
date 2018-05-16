@@ -9,7 +9,6 @@ defined("ABSPATH") or die("");
  * @subpackage classes/utilities
  * @copyright (c) 2017, Snapcreek LLC
  * @license	https://opensource.org/licenses/GPL-3.0 GNU Public License
- * @since 3.3.0
  */
 
 class DUP_Zip_U

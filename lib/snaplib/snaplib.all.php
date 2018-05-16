@@ -7,3 +7,4 @@ require_once(dirname(__FILE__).'/class.snaplib.u.os.php');
 require_once(dirname(__FILE__).'/class.snaplib.u.stream.php');
 require_once(dirname(__FILE__).'/class.snaplib.u.string.php');
 require_once(dirname(__FILE__).'/class.snaplib.u.ui.php');
+require_once(dirname(__FILE__).'/class.snaplib.u.url.php');

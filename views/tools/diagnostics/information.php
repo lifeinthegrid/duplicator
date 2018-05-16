@@ -1,6 +1,7 @@
 <?php
 wp_enqueue_script('dup-handlebars');
 require_once(DUPLICATOR_PLUGIN_PATH . '/classes/utilities/class.u.scancheck.php');
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/class.io.php');
 
 $installer_files	= DUP_Server::getInstallerFiles();
 $package_name		= (isset($_GET['package'])) ?  esc_html($_GET['package']) : '';
@@ -48,7 +49,18 @@ if ($section == "info" || $section == '') {
 					//REMOVE CORE INSTALLER FILES
 					$installer_files = DUP_Server::getInstallerFiles();
 					foreach ($installer_files as $file => $path) {
-						@unlink($path);
+						if (! is_dir($path)) {
+							DUP_IO::deleteFile($path);
+
+						} elseif (is_dir($path)) {
+							// Extra protection to ensure we only are deleting the installer directory
+							if(SnapLibStringU::contains($path, 'dup-installer')) {
+								if(file_exists("{$path}/archive.cfg")) {
+									DUP_IO::deleteTree($path);
+								}
+							}
+						}
+
 						echo (file_exists($path))
 							? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - {$path}  </div>"
 							: "<div class='success'> <i class='fa fa-check'></i> {$txt_removed} - {$path}	</div>";
@@ -60,7 +72,8 @@ if ($section == "info" || $section == '') {
 					if (file_exists($package_path)) {
 						$path_parts	 = pathinfo($package_name);
 						$path_parts	 = (isset($path_parts['extension'])) ? $path_parts['extension'] : '';
-						if ($path_parts == "zip" && !is_dir($package_path)) {
+						$valid_ext   = ($path_parts == "zip" || $path_parts == "daf");
+						if ($valid_ext  && !is_dir($package_path)) {
 							$html .= (@unlink($package_path))
 										? "<div class='success'><i class='fa fa-check'></i> {$txt_removed} - {$package_path}</div>"
 										: "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - {$package_path}</div>";

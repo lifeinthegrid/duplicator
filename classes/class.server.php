@@ -6,9 +6,8 @@
  * @link http://www.php-fig.org/psr/psr-2
  *
  * @package Duplicator
- * @subpackage classes/utilites
+ * @subpackage classes/utilities
  * @copyright (c) 2017, Snapcreek LLC
- * @since 1.1.0
  * 
  */
 require_once (DUPLICATOR_PLUGIN_PATH.'classes/utilities/class.u.php');
@@ -54,7 +53,7 @@ class DUP_Server
     }
 
     /**
-     * Gets the system requirements which must pass to buld a package
+     * Gets the system requirements which must pass to build a package
      *
      * @return array   An array of requirements
      */
@@ -195,14 +194,18 @@ class DUP_Server
      */
     public static function getInstallerFiles()
     {
-        // Files:  installer.php, installer-backup.php, installer-data.sql, installer-log.txt, database.sql
+        //Files:   database.sql, installer.php, installer-backup.php, installer-bootlog.txt, installer-data.sql, installer-log.txt, scan.json
+		//Dirs:	   dup-installer
         return array(
-            DUPLICATOR_INSTALL_PHP => DUPLICATOR_WPROOTPATH.DUPLICATOR_INSTALL_PHP,
-            DUPLICATOR_INSTALL_BAK => DUPLICATOR_WPROOTPATH.DUPLICATOR_INSTALL_BAK,
-            DUPLICATOR_INSTALL_SQL => DUPLICATOR_WPROOTPATH.DUPLICATOR_INSTALL_SQL,
-            DUPLICATOR_INSTALL_LOG => DUPLICATOR_WPROOTPATH.DUPLICATOR_INSTALL_LOG,
-            DUPLICATOR_INSTALL_DB => DUPLICATOR_WPROOTPATH.DUPLICATOR_INSTALL_DB,
-            DUPLICATOR_WPCONFIG_ARK_FILENAME => DUPLICATOR_WPROOTPATH.DUPLICATOR_WPCONFIG_ARK_FILENAME
+            DUPLICATOR_INSTALL_PHP => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_PHP,
+            DUPLICATOR_INSTALL_BAK => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_BAK,
+            DUPLICATOR_INSTALL_SQL => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_SQL,
+            DUPLICATOR_INSTALL_LOG => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_LOG,
+            DUPLICATOR_INSTALL_DB  => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_DB,
+			DUPLICATOR_INSTALL_BOOT_LOG => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_BOOT_LOG,
+            DUPLICATOR_WPCONFIG_ARK_FILENAME => DUPLICATOR_WPROOTPATH . DUPLICATOR_WPCONFIG_ARK_FILENAME,
+			DUPLICATOR_EMBEDDED_SCAN_FILENAME => DUPLICATOR_WPROOTPATH . DUPLICATOR_EMBEDDED_SCAN_FILENAME,
+			basename(DUPLICATOR_INSTALLER_DIRECTORY) . ' ' . __('(directory)') => DUPLICATOR_INSTALLER_DIRECTORY,
         );
     }
 
@@ -224,9 +227,9 @@ class DUP_Server
     }
 
     /**
-     * Get PHP memory useage
+     * Get PHP memory usage
      *
-     * @return string   Returns human readable memory useage.
+     * @return string   Returns human readable memory usage.
      */
     public static function getPHPMemory($peak = false)
     {

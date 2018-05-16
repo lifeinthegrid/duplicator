@@ -57,5 +57,20 @@ class SnapLibStringU
             throw new Exception("Error decoding JSON");
         }
     }
+	
+	/**
+     * Returns true if the $needle is found in the $haystack
+     *
+     * @param string  $haystack     The full string to search in
+     * @param string  $needle       The string to for
+     *
+     * @return bool
+     */
+    public static function contains($haystack, $needle)
+    {
+        $pos = strpos($haystack, $needle);
+        return ($pos !== false);
+    }
+
 }
 }

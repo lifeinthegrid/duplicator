@@ -408,7 +408,7 @@ VALIDATION
 		<div class="status <?php echo ($notice['08'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['08']; ?></div>
 		<div class="title" data-type="toggle" data-target="#s1-notice08"><i class="fa fa-caret-right"></i> WordPress Multisite</div>
 		<div class="info" id="s1-notice08">
-			<b>Multisite:</b> <?php echo $notice['08'] <= 0 ? 'This archive is not a multisite' : 'This is an unsupported multisite archive' ?>
+			<b>Status:</b> <?php echo $notice['08'] <= 0 ? 'This archive is not a multisite' : 'This is an unsupported multisite archive' ?>
 			<br/><br/>
 
 			 Duplicator does not support WordPress multisite migrations.  We recommend using Duplicator Pro which currently supports full multisite migrations and subsite to
