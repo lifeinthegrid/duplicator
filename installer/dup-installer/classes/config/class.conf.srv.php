@@ -68,15 +68,15 @@ class DUPX_ServerConfig
      * Copies the code in htaccess.orig to .htaccess
      *
      * @param $path					The root path to the location of the server config files
-	 * @param $new_htaccess_name	New name of htaccess (either .htaccess or a backup name)
      *
      * @return bool					Returns true if the .htaccess file was retained successfully
      */
-
-	public static function renameHtaccess($path, $new_htaccess_name){
+	public static function renameHtaccessOrigFile($path)
+	{
         $status = false;
+		$time	= self::$timestamp;
 
-		if(!@rename($path.'/htaccess.orig', $path.'/' . $new_htaccess_name)){
+		if(rename("{$path}/htaccess.orig", "{$path}/htaccess-{$time}.orig")){
             $status = true;
         }
 
@@ -100,7 +100,6 @@ class DUPX_ServerConfig
 		$newpath = DUPX_U::addSlash(isset($newdata['path']) ? $newdata['path'] : "");
 		$update_msg  = "# This file was updated by Duplicator on {$timestamp}.\n";
 		$update_msg .= (file_exists("{$path}/.htaccess")) ? "# See htaccess.orig for the .htaccess original file."	: "";
-
 
         $empty_htaccess	 = false;
         $query_result	 = @mysqli_query($dbh, "SELECT option_value FROM `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` WHERE option_name = 'permalink_structure' ");
@@ -130,18 +129,17 @@ RewriteRule . {$newpath}index.php [L]
 </IfModule>
 # END WordPress
 HTACCESS;
-            DUPX_Log::info("- Preparing .htaccess file with basic setup.");
+            DUPX_Log::info("- PASS: Preparing .htaccess file with basic setup.");
         }
 
 
 		if (@file_put_contents("{$path}/.htaccess", $tmp_htaccess) === FALSE) {
 			DUPX_Log::info("WARNING: Unable to update the .htaccess file! Please check the permission on the root directory and make sure the .htaccess exists.");
 		} else {
-			DUPX_Log::info("- Successfully updated the .htaccess file setting.");
+			DUPX_Log::info("- PASS: Successfully updated the .htaccess file setting.");
+			@chmod('.htaccess', 0644);
 		}
-		@chmod('.htaccess', 0644);		
 
-		
     }
 
 
@@ -159,7 +157,7 @@ HTACCESS;
 		$file	= "{$path}/{$file_name}";
 		$time	= self::$timestamp;
 
-		if (file_exists($file)) {
+		if (is_file($file)) {
 			if (copy($file, "{$file}-{$time}.orig")) {
 				$status = @unlink("{$path}/{$file_name}");
 			}

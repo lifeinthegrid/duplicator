@@ -22,10 +22,11 @@ $_POST['siteurl']		= isset($_POST['siteurl']) ? rtrim(trim($_POST['siteurl']), '
 $_POST['tables']		= isset($_POST['tables']) && is_array($_POST['tables']) ? array_map('stripcslashes', $_POST['tables']) : array();
 $_POST['url_old']		= isset($_POST['url_old']) ? trim($_POST['url_old']) : null;
 $_POST['url_new']		= isset($_POST['url_new']) ? rtrim(trim($_POST['url_new']), '/') : null;
-$_POST['ssl_admin']		= (isset($_POST['ssl_admin'])) ? true : false;
-$_POST['cache_wp']		= (isset($_POST['cache_wp'])) ? true : false;
-$_POST['cache_path']	= (isset($_POST['cache_path'])) ? true : false;
+$_POST['ssl_admin']		= isset($_POST['ssl_admin']) ? true : false;
+$_POST['cache_wp']		= isset($_POST['cache_wp']) ? true : false;
+$_POST['cache_path']	= isset($_POST['cache_path']) ? true : false;
 $_POST['exe_safe_mode']	= isset($_POST['exe_safe_mode']) ? $_POST['exe_safe_mode'] : 0;
+$_POST['retain_config']	= (isset($_POST['retain_config']) && $_POST['retain_config'] == 1) ? true : false;
 
 //MYSQL CONNECTION
 $dbh		 = DUPX_DB::connect($_POST['dbhost'], $_POST['dbuser'], html_entity_decode($_POST['dbpass']), $_POST['dbname'], $_POST['dbport']);
@@ -274,19 +275,10 @@ file_put_contents($wpconfig_ark_path, $wpconfig_ark_contents);
 
 DUPX_Log::info("UPDATED WP-CONFIG ARK FILE:\n - '{$wpconfig_ark_path}'");
 
-if($_POST['retain_config']) {
-	$new_htaccess_name = '.htaccess';
-} else {
-	$new_htaccess_name = 'htaccess.orig' . rand();
-}
-
-if(DUPX_ServerConfig::renameHtaccess($GLOBALS['DUPX_ROOT'], $new_htaccess_name)){
-	DUPX_Log::info("\nReseted original .htaccess content from htaccess.orig");
-}
 
 //Web Server Config Updates
-if (!isset($_POST['url_new']) || $_POST['retain_config']) {
-	DUPX_Log::info("\nNOTICE: Retaining the original .htaccess, .user.ini and web.config files may cause");
+if ($_POST['retain_config']) {
+	DUPX_Log::info("\nWARNING: Retaining the original .htaccess, .user.ini and web.config files may cause");
 	DUPX_Log::info("issues with the initial setup of your site.  If you run into issues with your site or");
 	DUPX_Log::info("during the install process please uncheck the 'Config Files' checkbox labeled:");
 	DUPX_Log::info("'Retain original .htaccess, .user.ini and web.config' and re-run the installer.");    
@@ -294,12 +286,18 @@ if (!isset($_POST['url_new']) || $_POST['retain_config']) {
 	DUPX_ServerConfig::setup($dbh, $root_path);
 }
 
+if(DUPX_ServerConfig::renameHtaccessOrigFile($GLOBALS['DUPX_ROOT'])){
+	DUPX_Log::info("\n- PASS: The orginal {$GLOBALS['DUPX_ROOT']}/htaccess.orig was renamed");
+} else {
+	DUPX_Log::info("\n- WARN: The orginal {$GLOBALS['DUPX_ROOT']}/htaccess.orig was NOT renamed");
+}
+
 //===============================================
 //GENERAL UPDATES & CLEANUP
 //===============================================
-DUPX_Log::info("\n====================================");
-DUPX_Log::info('GENERAL UPDATES & CLEANUP:');
-DUPX_Log::info("====================================\n");
+//DUPX_Log::info("\n====================================");
+//DUPX_Log::info('GENERAL UPDATES & CLEANUP:');
+//DUPX_Log::info("====================================\n");
 
 $blog_name   = mysqli_real_escape_string($dbh, $_POST['blogname']);
 $plugin_list = (isset($_POST['plugins'])) ? $_POST['plugins'] : array();
@@ -312,7 +310,6 @@ $serial_plugin_list	 = @serialize($plugin_list);
 /** FINAL UPDATES: Must happen after the global replace to prevent double pathing
   http://xyz.com/abc01 will become http://xyz.com/abc0101  with trailing data */
 mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` SET option_value = '{$blog_name}' WHERE option_name = 'blogname' ");
-
 mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` SET option_value = '{$serial_plugin_list}'  WHERE option_name = 'active_plugins' ");
 mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` SET option_value = '{$_POST['url_new']}'  WHERE option_name = 'home' ");
 mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` SET option_value = '{$_POST['siteurl']}'  WHERE option_name = 'siteurl' ");

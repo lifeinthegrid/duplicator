@@ -63,8 +63,10 @@ $shell_exec_zip_enabled = ($shell_exec_unzip_path != null);
 $zip_archive_enabled = class_exists('ZipArchive') ? 'Enabled' : 'Not Enabled';
 $archive_config  = DUPX_ArchiveConfig::getInstance();
 $installer_state = DUPX_InstallerState::getInstance();
-$is_import_mode  =  ($installer_state->mode === DUPX_InstallerMode::OverwriteInstall);
 
+//Enable after regular installer has baked
+//$is_import_mode  =  ($installer_state->mode === DUPX_InstallerMode::OverwriteInstall);
+$is_import_mode    = false;
 ?>
 
 <form id="s1-input-form" method="post" class="content-form">
@@ -299,14 +301,17 @@ VALIDATION
 			<div class="title" data-type="toggle" data-target="#s1-notice01"><i class="fa fa-caret-right"></i> Configuration File</div>
 			<div class="info" id="s1-notice01">
 				Duplicator works best by placing the installer and archive files into an empty directory.  If a wp-config.php file is found in the extraction
-				directory it might indicate that a pre-existing WordPress site exists which can lead to a bad install.  <i>If this archive was manually extracted or the mode
-				is set to "Overwrite Install" then	this notice can be ignored.</i>
+				directory it might indicate that a pre-existing WordPress site exists which can lead to a bad install. 
+				
+				<!-- TODO: REWRITE-ENABLED: Show 
+				<i>If this archive was manually extracted or the mode is set to "Overwrite Install" then	this notice can be ignored.</i>-->
 				<br/><br/>
 				<b>Options:</b>
 				<ul style="margin-bottom: 0">
 					<li>If the archive was manually extracted then <a href="javascript:void(0)" onclick="DUPX.getManaualArchiveOpt()">[Enable Manual Archive Extraction]</a></li>
 					<li>If the wp-config file is not needed then remove it.</li>
-					<li>If the mode is "Overwrite Install" then this message can be ignored.</li>
+					<!-- TODO: REWRITE-ENABLED: Show
+					<li>If the mode is "Overwrite Install" then this message can be ignored.</li> -->
 				</ul>
 			</div>
 
@@ -318,8 +323,7 @@ VALIDATION
 				<br/><br/>
 				There are currently <?php echo "<b>[{$scancount}]</b>"; ?>  items in the deployment path. These items will be overwritten if they also exist
 				inside the archive file.  The notice is to prevent overwriting an existing site or trying to install on-top of one which
-				can have un-intended results. <i>This notice shows if it detects more than 20 items. If this archive was manually extracted then
-				this notice can be ignored.</i>
+				can have un-intended results. <i>This notice shows if it detects more than 20 items. If this archive was manually extracted then	this notice can be ignored.</i>
 				<br/><br/>
 				<b>Options:</b>
 				<ul style="margin-bottom: 0">

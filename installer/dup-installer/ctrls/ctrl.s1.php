@@ -158,8 +158,6 @@ if ($_POST['archive_engine'] == 'manual') {
         if(isset($_POST['extra_data'])) {
 			$extraData = $_POST['extra_data'];
 
-            DUPX_LOG::info("\n(TEMP)DAWS STATUS:" . $extraData);
-
 			$log = "\n--------------------------------------\n";
 			$log .= "DUPARCHIVE EXTRACTION STATUS\n";
 			$log .= "--------------------------------------\n";
@@ -256,7 +254,7 @@ if ($_POST['set_file_perms'] || $_POST['set_dir_perms'] || (($_POST['archive_eng
 //RESET SERVER CONFIG FILES
 //===============================
 if ($_POST['retain_config']) {
-	DUPX_Log::info("\nNOTICE: Retaining the original .htaccess, .user.ini and web.config files may cause");
+	DUPX_Log::info("\WARNING: Retaining the original .htaccess, .user.ini and web.config files may cause");
 	DUPX_Log::info("issues with the initial setup of your site.  If you run into issues with your site or");
 	DUPX_Log::info("during the install process please uncheck the 'Config Files' checkbox labeled:");
 	DUPX_Log::info("'Retain original .htaccess, .user.ini and web.config' and re-run the installer.");
