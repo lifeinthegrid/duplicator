@@ -503,18 +503,22 @@ OPTIONS
                 <tr>
 			<td>Safe Mode:</td>
 			<td>
-                            <select name="exe_safe_mode" id="exe_safe_mode" onchange="DUPX.onSafeModeSwitch();" style="width:200px;">
-                                <option value="0">Off</option>
-                                <option value="1">Basic</option>
-                                <option value="2">Advanced</option>
-                            </select>
+				<select name="exe_safe_mode" id="exe_safe_mode" onchange="DUPX.onSafeModeSwitch();" style="width:250px;">
+					<option value="0">Off</option>
+					<option value="1">Basic</option>
+					<option value="2">Advanced</option>
+				</select>
 			</td>
 		</tr>
 		<tr>
 			<td>Config Files:</td>
 			<td>
-				<input type="checkbox" name="retain_config" id="retain_config" value="1" />
-				<label for="retain_config" style="font-weight: normal">Retain original .htaccess, .user.ini and web.config</label>
+				<select name="config_mode" id="config_mode"  style="width:250px;">
+					<option value="NEW">Create New (recommended)</option>
+					<option value="RESTORE">Restore Original</option>
+					<option value="IGNORE">Ignore All</option>
+				</select> <br/>
+				<small style="font-weight: normal">Controls how .htaccess, .user.ini and web.config are used. See help for more details.</small>
 			</td>
 		</tr>
 		<tr>
@@ -593,7 +597,7 @@ Auto Posts to view.step2.php
         <input type="hidden" name="view" value="step2" />
 		<input type="hidden" name="logging" id="ajax-logging"  />
         <input type="hidden" name="archive_name" value="<?php echo $GLOBALS['FW_PACKAGE_NAME'] ?>" />
-        <input type="hidden" name="retain_config" id="ajax-retain-config" />
+        <input type="hidden" name="config_mode" id="ajax-config-mode" />
         <input type="hidden" name="exe_safe_mode" id="exe-safe-mode"  value="0" />
 		<input type="hidden" name="json" id="ajax-json" />
         <textarea id='ajax-json-debug' name='json_debug_view'></textarea>
@@ -844,7 +848,7 @@ DUPX.pingDAWS = function ()
 						// Don't stop for non-critical failures - just display those at the end
 
 						$("#ajax-logging").val($("input:radio[name=logging]:checked").val());
-						$("#ajax-retain-config").val($("#retain_config").is(":checked") ? 1 : 0);
+						$("#ajax-config-mode").val($("#config_mode").val());
 						$("#ajax-json").val(escape(dataJSON));
 
 						<?php if (!$GLOBALS['DUPX_DEBUG']) : ?>
@@ -893,7 +897,7 @@ DUPX.isClientSideKickoff = function()
 
 DUPX.areConfigFilesPreserved = function()
 {
-	return $('#retain_config').is(':checked');
+	return $('#config_mode').is(':checked');
 }
 
 DUPX.kickOffDupArchiveExtract = function ()
@@ -1043,7 +1047,7 @@ DUPX.runStandardExtraction = function ()
 			$("#ajax-json-debug").val(dataJSON);
 			if (typeof (data) != 'undefined' && data.pass == 1) {
 				$("#ajax-logging").val($("input:radio[name=logging]:checked").val());
-				$("#ajax-retain-config").val($("#retain_config").is(":checked") ? 1 : 0);
+				$("#ajax-config-mode").val($("#config_mode").val());
 				$("#ajax-json").val(escape(dataJSON));
 
 				<?php if (!$GLOBALS['DUPX_DEBUG']) : ?>
@@ -1151,17 +1155,17 @@ DUPX.acceptWarning = function ()
 DUPX.onSafeModeSwitch = function ()
 {
     var mode = $('#exe_safe_mode').val();
-    if(mode == 0){
-        $("#retain_config").removeAttr("disabled");
-    }else if(mode == 1 || mode ==2){
-        if($("#retain_config").is(':checked'))
-                    $("#retain_config").removeAttr("checked");
-        $("#retain_config").attr("disabled", true);
+    if (mode == 0) {
+        $("#config_mode").removeAttr("disabled");
+    } else if(mode == 1 || mode ==2) {
+        $("#config_mode").val("NEW");
+		$("#config_mode").attr("disabled", true);
+		$('#config_mode option:eq(0)').prop('selected', true)
     }
 
     $('#exe-safe-mode').val(mode);
-    console.log("mode set to"+mode);
 };
+
 //DOCUMENT LOAD
 $(document).ready(function ()
 {

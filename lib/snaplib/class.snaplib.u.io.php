@@ -307,5 +307,16 @@ class SnapLibIOU
             throw new Exception("Couldn't write data to {$filename}");
         }
     }
+
+
+	public static function getFileName($file_path) {
+		$info = new SplFileInfo($file_path);
+		return $info->getFilename();
+    }
+
+	public static function getPath($file_path) {
+		$info = new SplFileInfo($file_path);
+		return $info->getPath();
+    }
 }
 }

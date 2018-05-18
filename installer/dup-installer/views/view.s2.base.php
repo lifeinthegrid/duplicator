@@ -106,7 +106,7 @@ Auto Posts to view.step3.php  -->
 		<input type="hidden" name="dbcharset" id="ajax-dbcharset" />
 		<input type="hidden" name="dbcollate" id="ajax-dbcollate" />
 		<input type="hidden" name="exe_safe_mode" id="ajax-exe-safe-mode" />
-		<input type="hidden" name="retain_config" value="<?php echo $_POST['retain_config']; ?>" />
+		<input type="hidden" name="config_mode" value="<?php echo $_POST['config_mode']; ?>" />
 		<input type="hidden" name="json"   id="ajax-json" />
 		<input type='submit' value='manual submit'>
 	</div>

@@ -18,50 +18,97 @@ class DUPX_ServerConfig
 	/**
 	 *  Common timestamp of all members of this class
 	 */
-	public static $timestamp;
+	public static $filehash;
 
 	/**
 	 *  Setup this classes properties
 	 */
 	public static function init()
 	{
-		self::$timestamp = date("ymdHis");
+		self::$filehash = date("ymdHis") . uniqid();
 	}
 
 	/**
-	 * Creates a copy of the original server config file and resets the original to blank
-	 *
-	 * @param string $path		The root path to the location of the server config files
+	 * After the archive is extracted run a series of back and remove checks
 	 *
 	 * @return null
 	 */
-	public static function reset($path)
+	public static function afterExtractionSetup()
 	{
-		$time = self::$timestamp;
-		DUPX_Log::info("\nWEB SERVER CONFIGURATION FILE STATUS:");
+		$hash = self::$filehash;
 
-		//Apache
-		if (self::runReset($path, '.htaccess')) {
-			$apache_confg_file = "{$path}/.htaccess";
-			if (file_exists($apache_confg_file)) {
-				file_put_contents($apache_confg_file , "#This file has been reset by Duplicator. See .htaccess-{$time}.orig for the original file");
-				@chmod($apache_confg_file, 0644);
-			}
-		}
-		
-		//.user.ini - For WordFence
-		self::runReset($path, '.user.ini');
+		//---------------------
+		//APACHE
+		//No need to make update to htaccess.org file
 
-		//IIS: This is reset because on some instances of IIS having old values cause issues
-		//Recommended fix for users who want it because errors are triggered is to have
-		//them check the box for ignoring the web.config files on step 1 of installer
-		if (self::runReset($path, 'web.config')) {
+		 //---------------------
+		//WORDFENCE
+		$file_name = '.user.ini';
+		$file_path = "{$GLOBALS['DUPX_ROOT']}/{$file_name}";
+		self::removeFile($file_path)
+		   ? DUPX_Log::info("- PASS: WordFence {$file_name} was removed")
+		   : DUPX_Log::info("- WARN: WordFence {$file_name} was not removed, a possible permission error?");
+
+
+		 //---------------------
+		//MICROSOFT IIS
+		$file_name = 'web.config';
+		$file_path = "{$GLOBALS['DUPX_ROOT']}/{$file_name}";
+		 if (file_exists($file_path)) {
 			$xml_contents  = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-			$xml_contents .= "<!-- Reset by Duplicator Installer.  Original can be found in web.config.{$time}.orig -->\n";
+			$xml_contents .= "<!-- Reset by Duplicator Installer.  Original can be found in web.config.{$hash}.orig -->\n";
 			$xml_contents .=  "<configuration></configuration>\n";
-			@file_put_contents("{$path}/web.config", $xml_contents);
-		}
+			@file_put_contents($file_path, $xml_contents);
+		 }
+	}
 
+	/**
+	 * Before the archive is extracted run a series of back and remove checks
+	 *
+	 * @return null
+	 */
+	public static function beforeExtractionSetup()
+	{
+		$time = self::$filehash;
+
+		//---------------------
+		//APACHE
+		$file_name = '.htaccess';
+		$file_path = "{$GLOBALS['DUPX_ROOT']}/{$file_name}";
+		 if (self::createBackup($file_path)) {
+			 DUPX_Log::info("- PASS: Apache {$file_name} was backed-up to {$file_name}-{$time}.bak");
+			 self::removeFile($file_path)
+				? DUPX_Log::info("- PASS: Apache {$file_name} was removed")
+				: DUPX_Log::info("- WARN: Apache $file_path not removed, a possible permission error?");
+		 } else {
+			 DUPX_Log::info("- PASS: Apache {$file_name} file was not found in root directory");
+		 }
+
+		 //---------------------
+		//WORDFENCE
+		$file_name = '.user.ini';
+		$file_path = "{$GLOBALS['DUPX_ROOT']}/{$file_name}";
+		 if (self::createBackup($file_path)) {
+			 DUPX_Log::info("- PASS: WordFence {$file_name} was backed-up to {$file_name}-{$time}.bak");
+			 self::removeFile($file_path)
+				? DUPX_Log::info("- PASS: WordFence {$file_name} was removed")
+				: DUPX_Log::info("- WARN: WordFence {$file_name} not removed, a possible permission error?");
+		 } else {
+			 DUPX_Log::info("- PASS: WordFence {$file_name} file was not found in root directory");
+		 }
+
+		 //---------------------
+		//MICROSOFT IIS
+		$file_name = 'web.config';
+		$file_path = "{$GLOBALS['DUPX_ROOT']}/{$file_name}";
+		 if (self::createBackup($file_path)) {
+			 DUPX_Log::info("- PASS: Microsoft IIS {$file_name} was backed-up to {$file_name}-{$time}.bak");
+			 self::removeFile($file_path)
+				? DUPX_Log::info("- PASS: Microsoft IIS {$file_name} was removed")
+				: DUPX_Log::info("- WARN: Microsoft IIS {$file_name} not removed, a possible permission error?");
+		 } else {
+			 DUPX_Log::info("- PASS: Microsoft IIS {$file_name} file was not found in root directory");
+		 }
 	}
 
     /**
@@ -73,14 +120,7 @@ class DUPX_ServerConfig
      */
 	public static function renameHtaccessOrigFile($path)
 	{
-        $status = false;
-		$time	= self::$timestamp;
-
-		if(rename("{$path}/htaccess.orig", "{$path}/htaccess-{$time}.orig")){
-            $status = true;
-        }
-
-        return $status;
+		return rename("{$path}/htaccess.orig", "{$path}/.htaccess");
     }
 
 	/**
@@ -91,32 +131,17 @@ class DUPX_ServerConfig
 	 *
 	 * @return null
 	 */
-	public static function setup($dbh, $path)
+	public static function makeBasicHtaccess($path)
 	{
-		DUPX_Log::info("\nWEB SERVER CONFIGURATION FILE UPDATED:");
+		DUPX_Log::info("\nAPACHE CONFIGURATION FILE UPDATED:");
 
 		$timestamp = date("Y-m-d H:i:s");
 		$newdata = parse_url($_POST['url_new']);
 		$newpath = DUPX_U::addSlash(isset($newdata['path']) ? $newdata['path'] : "");
-		$update_msg  = "# This file was updated by Duplicator on {$timestamp}.\n";
-		$update_msg .= (file_exists("{$path}/.htaccess")) ? "# See htaccess.orig for the .htaccess original file."	: "";
+		$update_msg  = "# This file was created by Duplicator on {$timestamp}.\n";
+		$update_msg .= (file_exists("{$path}/.htaccess")) ? "# See htaccess.bak for a backup of .htaccess that was present before install ran."	: "";
 
-        $empty_htaccess	 = false;
-        $query_result	 = @mysqli_query($dbh, "SELECT option_value FROM `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` WHERE option_name = 'permalink_structure' ");
-
-        if ($query_result) {
-            $row = @mysqli_fetch_array($query_result);
-            if ($row != null) {
-                $permalink_structure = trim($row[0]);
-                $empty_htaccess		 = empty($permalink_structure);
-            }
-        }
-
-
-        if ($empty_htaccess) {
-            $tmp_htaccess = '';
-        } else {
-            $tmp_htaccess = <<<HTACCESS
+        $tmp_htaccess = <<<HTACCESS
 {$update_msg}
 # BEGIN WordPress
 <IfModule mod_rewrite.c>
@@ -129,46 +154,48 @@ RewriteRule . {$newpath}index.php [L]
 </IfModule>
 # END WordPress
 HTACCESS;
-            DUPX_Log::info("- PASS: Preparing .htaccess file with basic setup.");
-        }
-
+        
 
 		if (@file_put_contents("{$path}/.htaccess", $tmp_htaccess) === FALSE) {
-			DUPX_Log::info("WARNING: Unable to update the .htaccess file! Please check the permission on the root directory and make sure the .htaccess exists.");
+			DUPX_Log::info("- WARN: Unable to update the .htaccess file! Please check the permission on the root directory and make sure the .htaccess exists.");
 		} else {
 			DUPX_Log::info("- PASS: Successfully updated the .htaccess file setting.");
 			@chmod('.htaccess', 0644);
 		}
 
     }
-
-
+	
 	/**
-	 * Creates a copy of the original server config file and resets the original to blank per file
+	 * Creates a copy of any existing file and hashes it with a .bak extension
 	 *
-	 * @param string $path		The root path to the location of the server config file
-	 * @param string $file_name	The file name of the config file
+	 * @param string $file_path		The full path of the config file
 	 *
 	 * @return bool		Returns true if the file was backed-up and reset.
 	 */
-	private static function runReset($path, $file_name)
+	private static function createBackup($file_path)
 	{
-		$status = false;
-		$file	= "{$path}/{$file_name}";
-		$time	= self::$timestamp;
+		$status		= false;
+		//$file_name	= SnapLibIOU::getFileName($file_path);
+		$hash		= self::$filehash;
 
-		if (is_file($file)) {
-			if (copy($file, "{$file}-{$time}.orig")) {
-				$status = @unlink("{$path}/{$file_name}");
-			}
+		if (is_file($file_path)) {
+			$status = copy($file_path, "{$file_path}-{$hash}.bak");
 		}
-		
-		($status)
-			? DUPX_Log::info("- {$file_name} was reset and a backup made to {$file_name}-{$time}.orig.")
-			: DUPX_Log::info("- {$file_name} file was NOT reset or backed up.");
 
 		return $status;
 	}
+
+	private static function removeFile($file_path)
+	{
+		$status = false;
+		if (is_file($file_path)) {
+			chmod($file_path, 0777);
+			$status = unlink($file_path);
+		}
+
+		return $status;
+	}
+
 }
 
 DUPX_ServerConfig::init();

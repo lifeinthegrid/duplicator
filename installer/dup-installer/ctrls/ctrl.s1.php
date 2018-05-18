@@ -10,7 +10,7 @@ $_POST['set_dir_perms']		= (isset($_POST['set_dir_perms']) && $_POST['set_dir_pe
 $_POST['file_perms_value']	= (isset($_POST['file_perms_value'])) ? intval(('0'.$_POST['file_perms_value']), 8) : 0755;
 $_POST['dir_perms_value']	= (isset($_POST['dir_perms_value'])) ? intval(('0'.$_POST['dir_perms_value']), 8) : 0644;
 $_POST['zip_filetime']		= (isset($_POST['zip_filetime'])) ? $_POST['zip_filetime'] : 'current';
-$_POST['retain_config']		= (isset($_POST['retain_config']) && $_POST['retain_config'] == '1') ? true : false;
+$_POST['config_mode']		= (isset($_POST['config_mode'])) ? $_POST['config_mode'] : 'NEW';
 $_POST['archive_engine']	= (isset($_POST['archive_engine'])) ? $_POST['archive_engine'] : 'manual';
 $_POST['exe_safe_mode']		= (isset($_POST['exe_safe_mode'])) ? $_POST['exe_safe_mode'] : 0;
 
@@ -79,7 +79,20 @@ $log .= "--------------------------------------\n";
 $log .= print_r($POST_LOG, true);
 DUPX_Log::info($log, 2);
 
-$log = "\n--------------------------------------\n";
+$log = "--------------------------------------\n";
+$log .= "WEB CONFIG PRE-EXTRACT-CHECKS\n";
+$log .= "--------------------------------------";
+DUPX_Log::info($log);
+if ($_POST['config_mode'] != 'IGNORE') {
+	DUPX_ServerConfig::beforeExtractionSetup();
+} else {
+	DUPX_Log::info("\nWARNING: Ignoring to update .htaccess, .user.ini and web.config files may cause");
+	DUPX_Log::info("issues with the initial setup of your site.  If you run into issues with your site or");
+	DUPX_Log::info("during the install process please change the 'Config Files' mode to 'Create New'.");
+	DUPX_Log::info("This option is only for advanced users.");
+}
+
+$log = "--------------------------------------\n";
 $log .= "ARCHIVE SETUP\n";
 $log .= "--------------------------------------\n";
 $log .= "NAME:\t{$GLOBALS['FW_PACKAGE_NAME']}\n";
@@ -250,16 +263,14 @@ if ($_POST['set_file_perms'] || $_POST['set_dir_perms'] || (($_POST['archive_eng
 	}
 }
 
-//===============================
-//RESET SERVER CONFIG FILES
-//===============================
-if ($_POST['retain_config']) {
-	DUPX_Log::info("\WARNING: Retaining the original .htaccess, .user.ini and web.config files may cause");
-	DUPX_Log::info("issues with the initial setup of your site.  If you run into issues with your site or");
-	DUPX_Log::info("during the install process please uncheck the 'Config Files' checkbox labeled:");
-	DUPX_Log::info("'Retain original .htaccess, .user.ini and web.config' and re-run the installer.");
+$log  = "--------------------------------------\n";
+$log .= "WEB SERVER CONFIG POST-EXTACT-CHECKS\n";
+$log .= "--------------------------------------\n";
+DUPX_Log::info($log);
+if ($_POST['config_mode'] != 'IGNORE') {
+	DUPX_ServerConfig::afterExtractionSetup();
 } else {
-	DUPX_ServerConfig::reset($GLOBALS['DUPX_ROOT']);
+	DUPX_Log::info("** CONFIG FILE SET TO IGNORE ALL CHANGES **");
 }
 
 //FINAL RESULTS

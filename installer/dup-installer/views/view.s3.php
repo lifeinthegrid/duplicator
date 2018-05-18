@@ -54,7 +54,7 @@ VIEW: STEP 3- INPUT -->
 		<input type="hidden" name="dbname" 		  value="<?php echo $_POST['dbname'] ?>" />
 		<input type="hidden" name="dbcharset" 	  value="<?php echo $_POST['dbcharset'] ?>" />
 		<input type="hidden" name="dbcollate" 	  value="<?php echo $_POST['dbcollate'] ?>" />
-		<input type="hidden" name="retain_config" value="<?php echo $_POST['retain_config'] ?>" />
+		<input type="hidden" name="config_mode"	  value="<?php echo $_POST['config_mode'] ?>" />
 		<input type="hidden" name="exe_safe_mode" id="exe-safe-mode" value="<?php echo $_POST['exe_safe_mode'] ?>" />
 		<input type="hidden" name="json"		  value="<?php echo $_POST['json']; ?>" />
 	</div>

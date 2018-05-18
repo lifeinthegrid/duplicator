@@ -26,7 +26,7 @@ $_POST['ssl_admin']		= isset($_POST['ssl_admin']) ? true : false;
 $_POST['cache_wp']		= isset($_POST['cache_wp']) ? true : false;
 $_POST['cache_path']	= isset($_POST['cache_path']) ? true : false;
 $_POST['exe_safe_mode']	= isset($_POST['exe_safe_mode']) ? $_POST['exe_safe_mode'] : 0;
-$_POST['retain_config']	= (isset($_POST['retain_config']) && $_POST['retain_config'] == 1) ? true : false;
+$_POST['config_mode']	= (isset($_POST['config_mode'])) ? $_POST['config_mode'] : 'NEW';
 
 //MYSQL CONNECTION
 $dbh		 = DUPX_DB::connect($_POST['dbhost'], $_POST['dbuser'], html_entity_decode($_POST['dbpass']), $_POST['dbname'], $_POST['dbport']);
@@ -270,27 +270,36 @@ if (!is_writable($wpconfig_ark_path)) {
 	chmod($wpconfig_ark_path, 0644) ? DUPX_Log::info("File Permission Update: {$wpconfig_ark_path} set to 0644") : DUPX_Log::error("{$err_log}");
 }
 
+
+$log = "--------------------------------------\n";
+$log .= "WEB SERVER CONFIG POST-EXTACT-CHECKS\n";
+$log .= "--------------------------------------\n";
+DUPX_Log::info($log);
 $wpconfig_ark_contents = preg_replace($patterns, $replace, $wpconfig_ark_contents);
 file_put_contents($wpconfig_ark_path, $wpconfig_ark_contents);
-
 DUPX_Log::info("UPDATED WP-CONFIG ARK FILE:\n - '{$wpconfig_ark_path}'");
 
+switch ($_POST['config_mode']) {
+	case 'NEW':
+		DUPX_ServerConfig::makeBasicHtaccess($root_path);
+		break;
 
-//Web Server Config Updates
-if ($_POST['retain_config']) {
-	DUPX_Log::info("\nWARNING: Retaining the original .htaccess, .user.ini and web.config files may cause");
-	DUPX_Log::info("issues with the initial setup of your site.  If you run into issues with your site or");
-	DUPX_Log::info("during the install process please uncheck the 'Config Files' checkbox labeled:");
-	DUPX_Log::info("'Retain original .htaccess, .user.ini and web.config' and re-run the installer.");    
-} else {
-	DUPX_ServerConfig::setup($dbh, $root_path);
+	case 'RESTORE':
+		if(DUPX_ServerConfig::renameHtaccessOrigFile($GLOBALS['DUPX_ROOT'])){
+			DUPX_Log::info("\n- PASS: The orginal {$GLOBALS['DUPX_ROOT']}/htaccess.orig was renamed");
+		} else {
+			DUPX_Log::info("\n- WARN: The orginal {$GLOBALS['DUPX_ROOT']}/htaccess.orig was NOT renamed");
+		}
+		break;
+
+	case 'IGNORE':
+		DUPX_Log::info("\nWARNING: Retaining the original .htaccess, .user.ini and web.config files may cause");
+		DUPX_Log::info("issues with the initial setup of your site.  If you run into issues with your site or");
+		DUPX_Log::info("during the install process please uncheck the 'Config Files' checkbox labeled:");
+		DUPX_Log::info("'Retain original .htaccess, .user.ini and web.config' and re-run the installer.");
+		break;
 }
 
-if(DUPX_ServerConfig::renameHtaccessOrigFile($GLOBALS['DUPX_ROOT'])){
-	DUPX_Log::info("\n- PASS: The orginal {$GLOBALS['DUPX_ROOT']}/htaccess.orig was renamed");
-} else {
-	DUPX_Log::info("\n- WARN: The orginal {$GLOBALS['DUPX_ROOT']}/htaccess.orig was NOT renamed");
-}
 
 //===============================================
 //GENERAL UPDATES & CLEANUP
