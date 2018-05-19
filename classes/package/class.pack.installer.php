@@ -240,6 +240,7 @@ class DUP_Installer
         try {
             DUP_Log::Info("add_extra_files_using_da1");
 			$htaccess_filepath = DUPLICATOR_WPROOTPATH . '.htaccess';
+			$webconf_filepath  = DUPLICATOR_WPROOTPATH . 'web.config';
 			$wpconfig_filepath = DUPLICATOR_WPROOTPATH . 'wp-config.php';
 
             $logger = new DUP_DupArchive_Logger();
@@ -250,13 +251,19 @@ class DUP_Installer
             $this->numFilesAdded++;
 
 			if(file_exists($htaccess_filepath)) {
-				try
-				{
+				try {
 					DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $htaccess_filepath, DUPLICATOR_HTACCESS_ORIG_FILENAME);
 					$this->numFilesAdded++;
+				} catch (Exception $ex) {
+					// Non critical so bury exception
 				}
-				catch (Exception $ex)
-				{
+			}
+
+			if(file_exists($webconf_filepath)) {
+				try {
+					DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $webconf_filepath, DUPLICATOR_WEBCONFIG_ORIG_FILENAME);
+					$this->numFilesAdded++;
+				} catch (Exception $ex) {
 					// Non critical so bury exception
 				}
 			}
@@ -328,8 +335,9 @@ class DUP_Installer
 
     private function add_extra_files_using_ziparchive($installer_filepath, $scan_filepath, $sql_filepath, $zip_filepath, $archive_config_filepath)
     {
-		$htaccess_filepath = DUPLICATOR_WPROOTPATH . '.htaccess';
-		$wpconfig_filepath = DUPLICATOR_WPROOTPATH . 'wp-config.php';
+		$htaccess_filepath  = DUPLICATOR_WPROOTPATH . '.htaccess';
+		$webconfig_filepath = DUPLICATOR_WPROOTPATH . 'web.config';
+		$wpconfig_filepath  = DUPLICATOR_WPROOTPATH . 'wp-config.php';
 
         $success = false;
 
@@ -340,6 +348,10 @@ class DUP_Installer
 
 			if(file_exists($htaccess_filepath)) {
 				DUP_Zip_U::addFileToZipArchive($zipArchive, $htaccess_filepath, DUPLICATOR_HTACCESS_ORIG_FILENAME, true);
+			}
+
+			if(file_exists($webconfig_filepath)) {
+				DUP_Zip_U::addFileToZipArchive($zipArchive, $webconfig_filepath, DUPLICATOR_WEBCONFIG_ORIG_FILENAME, true);
 			}
 
 			if(file_exists($wpconfig_filepath)) {

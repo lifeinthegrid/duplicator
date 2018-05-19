@@ -307,6 +307,7 @@ class DUP_Archive
 		$this->FilterFilesAll = array_merge($this->FilterInfo->Files->Instance);
         
         $this->FilterFilesAll[] = DUPLICATOR_WPROOTPATH . '.htaccess';
+		$this->FilterFilesAll[] = DUPLICATOR_WPROOTPATH . 'web.config';
 		$this->FilterFilesAll[] = DUPLICATOR_WPROOTPATH . 'wp-config.php';
 
 		$this->tmpFilterDirsAll = $this->FilterDirsAll;

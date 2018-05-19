@@ -35,13 +35,11 @@ $GLOBALS['DUPX_INIT']  = "{$GLOBALS['DUPX_ROOT']}/dup-installer";
 $GLOBALS['DUPX_ENFORCE_PHP_INI']  = false;
 
 if (!isset($_GET['archive'])) {
-	// RSR TODO: Fail gracefully
-	die("Archive parameter not specified");
+	die("Archive parameter not specified in query string! Please try to re-run installer.php");
 }
 
 if (!isset($_GET['bootloader'])) {
-	// RSR TODO: Fail gracefully
-	die("Bootloader parameter not specified");
+	die("Bootloader parameter not specified in query string! Please try to re-run installer.php");
 }
 
 require_once($GLOBALS['DUPX_INIT'].'/lib/snaplib/snaplib.all.php');
@@ -52,8 +50,7 @@ require_once($GLOBALS['DUPX_INIT'].'/classes/class.installer.state.php');
 
 $GLOBALS['DUPX_AC'] = DUPX_ArchiveConfig::getInstance();
 if ($GLOBALS['DUPX_AC'] == null) {
-	// RSR TODO: Fail 'gracefully'
-	die("Can't initialize config globals");
+	die("Can't initialize config globals! Please try to re-run installer.php");
 }
 
 if($GLOBALS["VIEW"] == "step1") {
@@ -62,12 +59,10 @@ if($GLOBALS["VIEW"] == "step1") {
 	$init_state = false;
 }
 
-
 // TODO: If this is the very first step
 $GLOBALS['DUPX_STATE'] = DUPX_InstallerState::getInstance($init_state);
 if ($GLOBALS['DUPX_STATE'] == null) {
-	// RSR TODO: Fail 'gracefully'
-	die("Can't initialize installer state");
+	die("Can't initialize installer state! Please try to re-run installer.php");
 }
 
 require_once($GLOBALS['DUPX_INIT'] . '/classes/utilities/class.u.php');
@@ -77,7 +72,7 @@ require_once($GLOBALS['DUPX_INIT'] . '/classes/class.http.php');
 require_once($GLOBALS['DUPX_INIT'] . '/classes/class.server.php');
 require_once($GLOBALS['DUPX_INIT'] . '/classes/config/class.conf.srv.php');
 require_once($GLOBALS['DUPX_INIT'] . '/classes/config/class.conf.wp.php');
-require_once($GLOBALS['DUPX_INIT'] . '/classes/class.engine.php');
+
 
 $GLOBALS['_CURRENT_URL_PATH'] = $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
 $GLOBALS['_HELP_URL_PATH']    = "?view=help&archive={$GLOBALS['FW_PACKAGE_NAME']}&bootloader={$GLOBALS['BOOTLOADER_NAME']}&basic";
@@ -104,6 +99,7 @@ if (isset($_POST['ctrl_action'])) {
 			break;
 
 		case "ctrl-step3" :
+			require_once($GLOBALS['DUPX_INIT'].'/classes/class.engine.php');
             require_once($GLOBALS['DUPX_INIT'].'/ctrls/ctrl.s3.php');            
 			break;
 	}

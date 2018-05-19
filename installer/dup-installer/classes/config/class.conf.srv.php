@@ -25,41 +25,29 @@ class DUPX_ServerConfig
 	 */
 	public static function init()
 	{
-		self::$filehash = date("ymdHis") . uniqid();
+		self::$filehash = date("ymdHis") . '-' . uniqid();
 	}
 
 	/**
-	 * After the archive is extracted run a series of back and remove checks
+	 * After the archive is extracted run setup checks
 	 *
 	 * @return null
 	 */
 	public static function afterExtractionSetup()
 	{
-		$hash = self::$filehash;
+		if ($_POST['config_mode'] == 'NEW') {
+			//APACHE
+			$file_path = "{$GLOBALS['DUPX_ROOT']}/htaccess.orig";
+			self::removeFile($file_path, 'Apache');
 
-		//---------------------
-		//APACHE
-		//No need to make update to htaccess.org file
+			//MICROSOFT IIS
+			$file_path = "{$GLOBALS['DUPX_ROOT']}/web.config.orig";
+			self::removeFile($file_path, 'Microsoft IIS');
 
-		 //---------------------
-		//WORDFENCE
-		$file_name = '.user.ini';
-		$file_path = "{$GLOBALS['DUPX_ROOT']}/{$file_name}";
-		self::removeFile($file_path)
-		   ? DUPX_Log::info("- PASS: WordFence {$file_name} was removed")
-		   : DUPX_Log::info("- WARN: WordFence {$file_name} was not removed, a possible permission error?");
-
-
-		 //---------------------
-		//MICROSOFT IIS
-		$file_name = 'web.config';
-		$file_path = "{$GLOBALS['DUPX_ROOT']}/{$file_name}";
-		 if (file_exists($file_path)) {
-			$xml_contents  = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-			$xml_contents .= "<!-- Reset by Duplicator Installer.  Original can be found in web.config.{$hash}.orig -->\n";
-			$xml_contents .=  "<configuration></configuration>\n";
-			@file_put_contents($file_path, $xml_contents);
-		 }
+			//WORDFENCE
+			$file_path = "{$GLOBALS['DUPX_ROOT']}/.user.ini";
+			self::removeFile($file_path, 'WordFence');
+		}
 	}
 
 	/**
@@ -69,46 +57,26 @@ class DUPX_ServerConfig
 	 */
 	public static function beforeExtractionSetup()
 	{
-		$time = self::$filehash;
-
 		//---------------------
 		//APACHE
-		$file_name = '.htaccess';
-		$file_path = "{$GLOBALS['DUPX_ROOT']}/{$file_name}";
-		 if (self::createBackup($file_path)) {
-			 DUPX_Log::info("- PASS: Apache {$file_name} was backed-up to {$file_name}-{$time}.bak");
-			 self::removeFile($file_path)
-				? DUPX_Log::info("- PASS: Apache {$file_name} was removed")
-				: DUPX_Log::info("- WARN: Apache $file_path not removed, a possible permission error?");
-		 } else {
-			 DUPX_Log::info("- PASS: Apache {$file_name} file was not found in root directory");
-		 }
+		$source    = 'Apache';
+		$file_path = "{$GLOBALS['DUPX_ROOT']}/.htaccess";
+		if (self::createBackup($file_path, $source))
+			self::removeFile($file_path, $source);
 
-		 //---------------------
-		//WORDFENCE
-		$file_name = '.user.ini';
-		$file_path = "{$GLOBALS['DUPX_ROOT']}/{$file_name}";
-		 if (self::createBackup($file_path)) {
-			 DUPX_Log::info("- PASS: WordFence {$file_name} was backed-up to {$file_name}-{$time}.bak");
-			 self::removeFile($file_path)
-				? DUPX_Log::info("- PASS: WordFence {$file_name} was removed")
-				: DUPX_Log::info("- WARN: WordFence {$file_name} not removed, a possible permission error?");
-		 } else {
-			 DUPX_Log::info("- PASS: WordFence {$file_name} file was not found in root directory");
-		 }
-
-		 //---------------------
+		//---------------------
 		//MICROSOFT IIS
-		$file_name = 'web.config';
-		$file_path = "{$GLOBALS['DUPX_ROOT']}/{$file_name}";
-		 if (self::createBackup($file_path)) {
-			 DUPX_Log::info("- PASS: Microsoft IIS {$file_name} was backed-up to {$file_name}-{$time}.bak");
-			 self::removeFile($file_path)
-				? DUPX_Log::info("- PASS: Microsoft IIS {$file_name} was removed")
-				: DUPX_Log::info("- WARN: Microsoft IIS {$file_name} not removed, a possible permission error?");
-		 } else {
-			 DUPX_Log::info("- PASS: Microsoft IIS {$file_name} file was not found in root directory");
-		 }
+		$source    = 'Microsoft IIS';
+		$file_path = "{$GLOBALS['DUPX_ROOT']}/web.config";
+		if (self::createBackup($file_path, $source))
+			 self::removeFile($file_path, $source);
+
+		//---------------------
+		//WORDFENCE
+		$source    = 'WordFence';
+		$file_path = "{$GLOBALS['DUPX_ROOT']}/.user.ini";
+		if (self::createBackup($file_path, $source))
+			 self::removeFile($file_path, $source);
 	}
 
     /**
@@ -131,7 +99,7 @@ class DUPX_ServerConfig
 	 *
 	 * @return null
 	 */
-	public static function makeBasicHtaccess($path)
+	public static function makeApacheConfig($path)
 	{
 		DUPX_Log::info("\nAPACHE CONFIGURATION FILE UPDATED:");
 
@@ -164,35 +132,70 @@ HTACCESS;
 		}
 
     }
+
+		/**
+	 * Sets up the web config file based on the inputs from the installer forms.
+	 *
+	 * @param object $dbh		The database connection handle for this request
+	 * @param string $path		The path to the config file
+	 *
+	 * @return null
+	 */
+	public static function makeWebConfig($path)
+	{
+		 //---------------------
+		//MICROSOFT IIS
+		$file_name = 'web.config';
+		$file_path = "{$GLOBALS['DUPX_ROOT']}/{$file_name}";
+		 if (file_exists($file_path)) {
+			$xml_contents  = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+			$xml_contents .= "<!-- Reset by Duplicator Installer.  Original can be found in web.config.{$hash}.orig -->\n";
+			$xml_contents .=  "<configuration></configuration>\n";
+			@file_put_contents($file_path, $xml_contents);
+		 }
+    }
 	
 	/**
 	 * Creates a copy of any existing file and hashes it with a .bak extension
 	 *
 	 * @param string $file_path		The full path of the config file
+	 * @param string $source		The source name of the configuration
 	 *
-	 * @return bool		Returns true if the file was backed-up and reset.
+	 * @return bool		Returns true if the file was backed-up.
 	 */
-	private static function createBackup($file_path)
+	private static function createBackup($file_path, $source)
 	{
 		$status		= false;
-		//$file_name	= SnapLibIOU::getFileName($file_path);
+		$file_name  = SnapLibIOU::getFileName($file_path);
 		$hash		= self::$filehash;
-
 		if (is_file($file_path)) {
 			$status = copy($file_path, "{$file_path}-{$hash}.bak");
+			$status ? DUPX_Log::info("- PASS: {$source} file {$file_name} was backed-up to {$file_name}-{$hash}.bak")
+					: DUPX_Log::info("- WARN: {$source} file {$file_name} unable to create backup copy, a possible permission error?");
+		} else {
+			DUPX_Log::info("- PASS: {$source} file {$file_name} was not found in root directory no backup needed.");
 		}
 
 		return $status;
 	}
 
-	private static function removeFile($file_path)
+	/**
+	 * Removes the specified file
+	 *
+	 * @param string $file_path		The full path of the config file
+	 * @param string $source		The source name of the configuration
+	 *
+	 * @return bool		Returns true if the file was removed
+	 */
+	private static function removeFile($file_path, $source)
 	{
 		$status = false;
 		if (is_file($file_path)) {
 			chmod($file_path, 0777);
 			$status = unlink($file_path);
+			$status ? DUPX_Log::info("- PASS: Existing {$source} {$file_name} was removed")
+					: DUPX_Log::info("- WARN: Existing {$source} {$file_path} not removed, a possible permission error?");
 		}
-
 		return $status;
 	}
 

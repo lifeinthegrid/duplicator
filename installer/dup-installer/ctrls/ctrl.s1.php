@@ -25,12 +25,12 @@ if($_POST['archive_engine'] == 'manual') {
 }
 
 //ACTION VARS
-$ajax1_start	 = DUPX_U::getMicrotime();
-$root_path		 = $GLOBALS['DUPX_ROOT'];
-$wpconfig_ark_path	 = "{$root_path}/wp-config-arc.txt";
-$archive_path	 = $GLOBALS['FW_PACKAGE_PATH'];
-$JSON			 = array();
-$JSON['pass']	 = 0;
+$ajax1_start		= DUPX_U::getMicrotime();
+$root_path			= $GLOBALS['DUPX_ROOT'];
+$wpconfig_ark_path	= "{$root_path}/wp-config-arc.txt";
+$archive_path		= $GLOBALS['FW_PACKAGE_PATH'];
+$JSON				= array();
+$JSON['pass']		= 0;
 
 /** JSON RESPONSE: Most sites have warnings turned off by default, but if they're turned on the warnings
   cause errors in the JSON data Here we hide the status so warning level is reset at it at the end */
@@ -99,15 +99,22 @@ $log .= "NAME:\t{$GLOBALS['FW_PACKAGE_NAME']}\n";
 $log .= "SIZE:\t".DUPX_U::readableByteSize(@filesize($GLOBALS['FW_PACKAGE_PATH']));
 DUPX_Log::info($log . "\n");
 
-if ($_POST['archive_engine'] == 'manual') {
-	DUPX_Log::info("\n** PACKAGE EXTRACTION IS IN MANUAL MODE ** \n");
-} else {
 
-	$target			 = $root_path;
-	$shell_exec_path = DUPX_Server::get_unzip_filepath();
+$target	 = $root_path;
 
-	//SHELL EXEX - UNZIP
-	if ($_POST['archive_engine'] == 'shellexec_unzip') {
+switch ($_POST['archive_engine']) {
+	
+	//-----------------------
+	//MANUAL EXTRACTION
+	case 'manual':
+		DUPX_Log::info("\n** PACKAGE EXTRACTION IS IN MANUAL MODE ** \n");
+		break;
+
+	//-----------------------
+	//SHELL EXEC
+	case 'shellexec_unzip':
+
+		$shell_exec_path = DUPX_Server::get_unzip_filepath();
 		DUPX_Log::info("ZIP:\tShell Exec Unzip");
 
 		$command = "{$shell_exec_path} -o -qq \"{$archive_path}\" -d {$target} 2>&1";
@@ -124,9 +131,11 @@ if ($_POST['archive_engine'] == 'manual') {
 		}
 		DUPX_Log::info("<<< Shell-Exec Unzip Complete.");
 
-	} else if ($_POST['archive_engine'] == 'ziparchive') {
-        //ZIP ARCHIVE - UNZIP
+		break;
 
+	//-----------------------
+	//ZIP-ARCHIVE
+	case 'ziparchive':
 		DUPX_Log::info(">>> Starting ZipArchive Unzip");
 
 		if (!class_exists('ZipArchive')) {
@@ -164,11 +173,15 @@ if ($_POST['archive_engine'] == 'manual') {
 			$zip_err_msg .= "<br/><br/><b>To resolve error see <a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-130-q' target='_blank'>https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-130-q</a></b>";
 			DUPX_Log::error($zip_err_msg);
 		}
-	} else {
 
+		break;
+
+	//-----------------------
+	//DUP-ARCHIVE
+	case 'duparchive':
         DUPX_Log::info(">>> DupArchive Extraction Complete");
 
-        if(isset($_POST['extra_data'])) {
+        if (isset($_POST['extra_data'])) {
 			$extraData = $_POST['extra_data'];
 
 			$log = "\n--------------------------------------\n";
@@ -177,19 +190,19 @@ if ($_POST['archive_engine'] == 'manual') {
 
 			$dawsStatus = json_decode($extraData);
 
-			if($dawsStatus === null) {
+			if ($dawsStatus === null) {
 
 				$log .= "Can't decode the dawsStatus!\n";
 				$log .= print_r(extraData, true);
 			} else {
 				$criticalPresent = false;
 
-				if(count($dawsStatus->failures) > 0) {
+				if (count($dawsStatus->failures) > 0) {
 					$log .= "Archive extracted with errors.\n";
 
-					foreach($dawsStatus->failures as $failure) {
-						if($failure->isCritical) {
-							$log .= '(C) ';
+					foreach ($dawsStatus->failures as $failure) {
+						if ($failure->isCritical) {
+							$log			 .= '(C) ';
 							$criticalPresent = true;
 						}
 
@@ -199,19 +212,18 @@ if ($_POST['archive_engine'] == 'manual') {
 					$log .= "Archive extracted with no errors.\n";
 				}
 
-				if($criticalPresent) {
+				if ($criticalPresent) {
 					$log .= "\n\nCritical Errors present so stopping install.\n";
 					exit();
 				}
 			}
 
 			DUPX_Log::info($log);
-        }
-		else {
+		} else {
 			DUPX_LOG::info("DAWS STATUS: UNKNOWN since extra_data wasn't in post!");
 		}
-    }
 
+		break;	
 }
 
 
