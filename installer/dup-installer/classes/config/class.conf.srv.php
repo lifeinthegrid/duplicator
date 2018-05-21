@@ -53,7 +53,7 @@ class DUPX_ServerConfig
 	/**
 	 * Before the archive is extracted run a series of back and remove checks
 	 *
-	 * @return null
+	 * @return void
 	 */
 	public static function beforeExtractionSetup()
 	{
@@ -82,24 +82,32 @@ class DUPX_ServerConfig
     /**
      * Copies the code in htaccess.orig to .htaccess
      *
-     * @param $path					The root path to the location of the server config files
+	 * @return void
      *
-     * @return bool					Returns true if the .htaccess file was retained successfully
      */
-	public static function renameHtaccessOrigFile($path)
+	public static function renameOrigConfigs()
 	{
-		return rename("{$path}/htaccess.orig", "{$path}/.htaccess");
+		//APACHE
+		if(rename("{$GLOBALS['DUPX_ROOT']}/htaccess.orig", "{$GLOBALS['DUPX_ROOT']}/.htaccess")){
+			DUPX_Log::info("\n- PASS: The orginal htaccess.orig was renamed");
+		} else {
+			DUPX_Log::info("\n- WARN: The orginal htaccess.orig was NOT renamed");
+		}
+
+		//IIS
+		if(rename("{$GLOBALS['DUPX_ROOT']}/web.config.orig", "{$GLOBALS['DUPX_ROOT']}/web.config")){
+			DUPX_Log::info("\n- PASS: The orginal htaccess.orig was renamed");
+		} else {
+			DUPX_Log::info("\n- WARN: The orginal htaccess.orig was NOT renamed");
+		}
     }
 
 	/**
 	 * Sets up the web config file based on the inputs from the installer forms.
 	 *
-	 * @param object $dbh		The database connection handle for this request
-	 * @param string $path		The path to the config file
-	 *
 	 * @return null
 	 */
-	public static function makeApacheConfig($path)
+	public static function createNewApacheConfig()
 	{
 		DUPX_Log::info("\nAPACHE CONFIGURATION FILE UPDATED:");
 
@@ -107,7 +115,7 @@ class DUPX_ServerConfig
 		$newdata = parse_url($_POST['url_new']);
 		$newpath = DUPX_U::addSlash(isset($newdata['path']) ? $newdata['path'] : "");
 		$update_msg  = "# This file was created by Duplicator on {$timestamp}.\n";
-		$update_msg .= (file_exists("{$path}/.htaccess")) ? "# See htaccess.bak for a backup of .htaccess that was present before install ran."	: "";
+		$update_msg .= (file_exists("{$GLOBALS['DUPX_ROOT']}/.htaccess")) ? "# See htaccess.bak for a backup of .htaccess that was present before install ran."	: "";
 
         $tmp_htaccess = <<<HTACCESS
 {$update_msg}
@@ -124,7 +132,7 @@ RewriteRule . {$newpath}index.php [L]
 HTACCESS;
         
 
-		if (@file_put_contents("{$path}/.htaccess", $tmp_htaccess) === FALSE) {
+		if (@file_put_contents("{$GLOBALS['DUPX_ROOT']}/.htaccess", $tmp_htaccess) === FALSE) {
 			DUPX_Log::info("- WARN: Unable to update the .htaccess file! Please check the permission on the root directory and make sure the .htaccess exists.");
 		} else {
 			DUPX_Log::info("- PASS: Successfully updated the .htaccess file setting.");
@@ -133,15 +141,12 @@ HTACCESS;
 
     }
 
-		/**
+	/**
 	 * Sets up the web config file based on the inputs from the installer forms.
-	 *
-	 * @param object $dbh		The database connection handle for this request
-	 * @param string $path		The path to the config file
 	 *
 	 * @return null
 	 */
-	public static function makeWebConfig($path)
+	public static function createNewIISConfig()
 	{
 		 //---------------------
 		//MICROSOFT IIS

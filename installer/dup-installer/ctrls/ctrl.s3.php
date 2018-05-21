@@ -281,22 +281,20 @@ DUPX_Log::info("UPDATED WP-CONFIG ARK FILE:\n - '{$wpconfig_ark_path}'");
 
 switch ($_POST['config_mode']) {
 	case 'NEW':
-		DUPX_ServerConfig::makeBasicHtaccess($root_path);
+		DUPX_ServerConfig::createNewApacheConfig();
+		DUPX_ServerConfig::createNewIISConfig();
 		break;
 
 	case 'RESTORE':
-		if(DUPX_ServerConfig::renameHtaccessOrigFile($GLOBALS['DUPX_ROOT'])){
-			DUPX_Log::info("\n- PASS: The orginal {$GLOBALS['DUPX_ROOT']}/htaccess.orig was renamed");
-		} else {
-			DUPX_Log::info("\n- WARN: The orginal {$GLOBALS['DUPX_ROOT']}/htaccess.orig was NOT renamed");
-		}
+		DUPX_ServerConfig::renameOrigConfigs();
+		DUPX_Log::info("\nWARNING: Retaining the original .htaccess or web.config files may cause");
+		DUPX_Log::info("issues with the initial setup of your site.  If you run into issues with the install");
+		DUPX_Log::info("process choose 'Create New' for the 'Config Files' options");
 		break;
 
 	case 'IGNORE':
-		DUPX_Log::info("\nWARNING: Retaining the original .htaccess, .user.ini and web.config files may cause");
-		DUPX_Log::info("issues with the initial setup of your site.  If you run into issues with your site or");
-		DUPX_Log::info("during the install process please uncheck the 'Config Files' checkbox labeled:");
-		DUPX_Log::info("'Retain original .htaccess, .user.ini and web.config' and re-run the installer.");
+		DUPX_Log::info("\nWARNING: Choseing the option to ignore the .htaccess, web.config and .user.ini files");
+		DUPX_Log::info("can lead to install issues.  The 'Ignore All' opition is designed for advanced users.");
 		break;
 }
 
