@@ -11,11 +11,6 @@ defined("ABSPATH") or die("");
  */
 class DUPX_ServerConfig
 {
-	/* @var $GLOBALS['DUPX_AC'] DUPX_ArchiveConfig */
-
-	/**
-	 *  Common timestamp of all members of this class
-	 */
 	protected static $fileHash;
 	protected static $timeStamp;
 	protected static $confFileApache;
@@ -23,19 +18,23 @@ class DUPX_ServerConfig
 	protected static $confFileIIS;
 	protected static $confFileIISOrig;
 	protected static $confFileWordFence;
+	protected static $configMode;
+	protected static $newSiteURL;
 
 	/**
 	 *  Setup this classes properties
 	 */
 	public static function init()
 	{
-		self::$fileHash  = date("ymdHis") . '-' . uniqid();
-		self::$timeStamp = date("Y-m-d H:i:s");
+		self::$fileHash				= date("ymdHis") . '-' . uniqid();
+		self::$timeStamp			= date("Y-m-d H:i:s");
 		self::$confFileApache		= "{$GLOBALS['DUPX_ROOT']}/.htaccess";
 		self::$confFileApacheOrig	= "{$GLOBALS['DUPX_ROOT']}/htaccess.orig";
 		self::$confFileIIS			= "{$GLOBALS['DUPX_ROOT']}/web.config";
 		self::$confFileIISOrig		= "{$GLOBALS['DUPX_ROOT']}/web.config.orig";
 		self::$confFileWordFence	= "{$GLOBALS['DUPX_ROOT']}/.user.ini";
+		self::$configMode           = isset($_POST['config_mode']) ? $_POST['config_mode']  : null;
+		self::$newSiteURL           = isset($_POST['url_new'])	   ? $_POST['url_new']		: null;
 	}
 
 	/**
@@ -45,7 +44,7 @@ class DUPX_ServerConfig
 	 */
 	public static function afterExtractionSetup()
 	{
-		if ($_POST['config_mode'] != 'IGNORE') {
+		if (self::$configMode  != 'IGNORE') {
 			//WORDFENCE: Only the WordFence file needs to be removed
 			//completly from setup to avoid any issues
 			self::removeFile(self::$confFileWordFence, 'WordFence');
@@ -56,12 +55,14 @@ class DUPX_ServerConfig
 
 	/**
 	 * Before the archive is extracted run a series of back and remove checks
+	 * This is for existing config files that may exist before the ones in the
+	 * archive are extracted.
 	 *
 	 * @return void
 	 */
 	public static function beforeExtractionSetup()
 	{
-		if ($_POST['config_mode'] == 'IGNORE') {
+		if (self::$configMode == 'IGNORE') {
 			DUPX_Log::info("\nWARNING: Ignoring to update .htaccess, .user.ini and web.config files may cause");
 			DUPX_Log::info("issues with the initial setup of your site.  If you run into issues with your site or");
 			DUPX_Log::info("during the install process please change the 'Config Files' mode to 'Create New'.");
@@ -88,7 +89,8 @@ class DUPX_ServerConfig
 	}
 
     /**
-     * Copies the code in htaccess.orig to .htaccess
+     * Copies the code in htaccess.orig and web.config.orig
+	 * to .htaccess and web.config
      *
 	 * @return void
      */
@@ -139,7 +141,7 @@ class DUPX_ServerConfig
 		DUPX_Log::info("\nAPACHE CONFIGURATION FILE UPDATED:");
 
 		$timestamp   = self::$timeStamp;
-		$newdata	 = parse_url($_POST['url_new']);
+		$newdata	 = parse_url(self::$newSiteURL);
 		$newpath	 = DUPX_U::addSlash(isset($newdata['path']) ? $newdata['path'] : "");
 		$update_msg  = "# This file was created by Duplicator Installer on {$timestamp}.\n";
 		$update_msg .= (file_exists(self::$confFileApache)) ? "# See htaccess.bak for a backup of .htaccess that was present before install ran."	: "";
@@ -164,7 +166,6 @@ HTACCESS;
 			DUPX_Log::info("- PASS: Successfully updated the .htaccess file setting.");
 			@chmod(self::$confFileApache, 0644);
 		}
-
     }
 
 	/**
@@ -218,8 +219,11 @@ HTACCESS;
 		$status = false;
 		if (is_file($file_path)) {
 			$file_name  = SnapLibIOU::getFileName($file_path);
-			@chmod($file_path, 0777);
 			$status = @unlink($file_path);
+			if ($status === FALSE) {
+				@chmod($file_path, 0777);
+				$status = @unlink($file_path);
+			}
 			$status ? DUPX_Log::info("- PASS: Existing {$source} '{$file_name}' was removed")
 					: DUPX_Log::info("- WARN: Existing {$source} '{$file_path}' not removed, a possible permission error?");
 		}
