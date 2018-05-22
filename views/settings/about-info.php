@@ -20,8 +20,6 @@
     div.dup-spread-word {display:inline-block; border:1px solid red; text-align:center}
 
     img#dup-support-approved { -webkit-animation:approve-keyframe 12s 1s infinite alternate backwards}
-    form#dup-donate-form input {opacity:0.7;}
-    form#dup-donate-form input:hover {opacity:1.0;}
     img#dup-img-5stars {opacity:0.7;}
     img#dup-img-5stars:hover {opacity:1.0;}
 

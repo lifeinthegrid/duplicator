@@ -98,9 +98,9 @@ STORAGE -->
 						<span class="dup-pro-text">
 							<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/amazon-64.png" /> 
 							<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/dropbox-64.png" /> 
-							<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/google_drive_64px.png" /> 
+							<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/google_drive_64px.png" />
+							<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/onedrive-48px.png" /> 
 							<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/ftp-64.png" /> 
-							<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/onedrive-48px.png" />
 							<?php echo sprintf(__('%1$s, %2$s, %3$s, %4$s, %5$s and other storage options available in', 'duplicator'), 'Amazon', 'Dropbox', 'Google Drive', 'OneDrive', 'FTP/SFTP'); ?>
 							<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_storage&utm_campaign=duplicator_pro" target="_blank"><?php _e('Duplicator Pro', 'duplicator');?></a> 
 							<i class="fa fa-lightbulb-o" 
