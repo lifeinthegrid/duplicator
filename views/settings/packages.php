@@ -158,14 +158,16 @@ $archive_build_mode = DUP_Settings::Get('archive_build_mode')
 																
 								?>
                             </div><br/>
-
                         <?php endif; ?>
 
+						<label><?php _e("Custom Path", 'duplicator'); ?></label>
 						<i class="fa fa-question-circle"
-								data-tooltip-title="<?php _e("mysqldump path:", 'duplicator'); ?>"
-								data-tooltip="<?php _e('An optional path to the mysqldump program.  Add a custom path if the path to mysqldump is not properly detected or needs to be changed.', 'duplicator'); ?>"></i>
-                        <label><?php _e("Custom Path:", 'duplicator'); ?></label><br/>
-                        <input type="text" name="package_mysqldump_path" id="package_mysqldump_path" value="<?php echo $package_mysqldump_path; ?>" placeholder="<?php _e("/usr/bin/mypath/mysqldump.exe", 'duplicator'); ?>" />
+							data-tooltip-title="<?php _e("mysqldump path:", 'duplicator'); ?>"
+							data-tooltip="<?php _e('Add a custom path if the path to mysqldump is not properly detected.   For all paths use a forward slash as the '
+							. 'path seperator.  On Linux systems use mysqldump for Windows systems use mysqldump.exe.  If the path tried does not work please contact your hosting '
+							. 'provider for details on the correct path.', 'duplicator'); ?>"></i>
+                        <br/>
+                        <input type="text" name="package_mysqldump_path" id="package_mysqldump_path" value="<?php echo $package_mysqldump_path; ?>" placeholder="<?php _e("/usr/bin/mypath/mysqldump", 'duplicator'); ?>" />
 						<div class="dup-feature-notfound">
 						<?php
 							if ($action_updated && $mysqldump_path_valid === false) {
