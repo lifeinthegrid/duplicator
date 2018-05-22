@@ -175,10 +175,10 @@ HTACCESS;
 		$hash		= self::$filehash;
 		if (is_file($file_path)) {
 			$status = copy($file_path, "{$file_path}-{$hash}.bak");
-			$status ? DUPX_Log::info("- PASS: {$source} file {$file_name} was backed-up to {$file_name}-{$hash}.bak")
-					: DUPX_Log::info("- WARN: {$source} file {$file_name} unable to create backup copy, a possible permission error?");
+			$status ? DUPX_Log::info("- PASS: {$source} '{$file_name}' backed-up to {$file_name}-{$hash}.bak")
+					: DUPX_Log::info("- WARN: {$source} '{$file_name}' unable to create backup copy, a possible permission error?");
 		} else {
-			DUPX_Log::info("- PASS: {$source} file {$file_name} was not found in root directory no backup needed.");
+			DUPX_Log::info("- PASS: {$source} '{$file_name}' not found - no backup needed.");
 		}
 
 		return $status;
@@ -196,10 +196,11 @@ HTACCESS;
 	{
 		$status = false;
 		if (is_file($file_path)) {
-			chmod($file_path, 0777);
-			$status = unlink($file_path);
-			$status ? DUPX_Log::info("- PASS: Existing {$source} {$file_name} was removed")
-					: DUPX_Log::info("- WARN: Existing {$source} {$file_path} not removed, a possible permission error?");
+			$file_name  = SnapLibIOU::getFileName($file_path);
+			@chmod($file_path, 0777);
+			$status = @unlink($file_path);
+			$status ? DUPX_Log::info("- PASS: Existing {$source} '{$file_name}' was removed")
+					: DUPX_Log::info("- WARN: Existing {$source} '{$file_path}' not removed, a possible permission error?");
 		}
 		return $status;
 	}

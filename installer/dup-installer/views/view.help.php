@@ -150,8 +150,8 @@ STEP 1
 		<tr>
 			<td>Config Files </td>
 			<td>
-				Inside the archive.zip should be a copy of the original .htaccess (Apache) or the web.config (IIS) files that were setup with your packaged site.
-				When the installer runs it will backup and then reset all <i>.htaccess, user.ini, and web.config</i> files.   It will then create blank copies of
+				Inside the archive.zip will be a copy of the original .htaccess (Apache) or the web.config (IIS) files that were setup with your packaged site.
+				When the installer runs it will backup all <i>.htaccess, .user.ini, and web.config</i> files.   It will then create blank copies of
 				both files.   This is needed because the original files that were archived in most cases will not play well in the new environment.
 				<br/><br/>
 

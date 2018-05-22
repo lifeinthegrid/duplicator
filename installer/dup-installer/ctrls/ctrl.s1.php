@@ -4,15 +4,17 @@ defined("ABSPATH") or die("");
 /** IDE HELPERS */
 /* @var $GLOBALS['DUPX_AC'] DUPX_ArchiveConfig */
 
-//Advanced Opts
-$_POST['set_file_perms']	= (isset($_POST['set_file_perms']) && $_POST['set_file_perms'] == '1') ? true : false;
-$_POST['set_dir_perms']		= (isset($_POST['set_dir_perms']) && $_POST['set_dir_perms'] == '1') ? true : false;
-$_POST['file_perms_value']	= (isset($_POST['file_perms_value'])) ? intval(('0'.$_POST['file_perms_value']), 8) : 0755;
-$_POST['dir_perms_value']	= (isset($_POST['dir_perms_value'])) ? intval(('0'.$_POST['dir_perms_value']), 8) : 0644;
-$_POST['zip_filetime']		= (isset($_POST['zip_filetime'])) ? $_POST['zip_filetime'] : 'current';
-$_POST['config_mode']		= (isset($_POST['config_mode'])) ? $_POST['config_mode'] : 'NEW';
-$_POST['archive_engine']	= (isset($_POST['archive_engine'])) ? $_POST['archive_engine'] : 'manual';
-$_POST['exe_safe_mode']		= (isset($_POST['exe_safe_mode'])) ? $_POST['exe_safe_mode'] : 0;
+//OPTIONS
+$base_file_perms_value		= $_POST['file_perms_value'];
+$base_dir_perms_value		= $_POST['dir_perms_value'];
+$_POST['set_file_perms']	= (isset($_POST['set_file_perms']))   ? 1 : 0;
+$_POST['set_dir_perms']		= (isset($_POST['set_dir_perms']))    ? 1 : 0;
+$_POST['file_perms_value']	= (isset($_POST['file_perms_value'])) ? intval(('0' . $_POST['file_perms_value']), 8) : 0755;
+$_POST['dir_perms_value']	= (isset($_POST['dir_perms_value']))  ? intval(('0' . $_POST['dir_perms_value']), 8)  : 0644;
+$_POST['zip_filetime']		= (isset($_POST['zip_filetime']))     ? $_POST['zip_filetime'] : 'current';
+$_POST['config_mode']		= (isset($_POST['config_mode']))      ? $_POST['config_mode'] : 'NEW';
+$_POST['archive_engine']	= (isset($_POST['archive_engine']))   ? $_POST['archive_engine'] : 'manual';
+$_POST['exe_safe_mode']		= (isset($_POST['exe_safe_mode']))    ? $_POST['exe_safe_mode'] : 0;
 
 //LOGGING
 $POST_LOG = $_POST;
@@ -72,6 +74,7 @@ DUPX_Log::info("DOC ROOT 755:\t".var_export($GLOBALS['CHOWN_ROOT_PATH'], true));
 DUPX_Log::info("LOG FILE 644:\t".var_export($GLOBALS['CHOWN_LOG_PATH'], true));
 DUPX_Log::info("REQUEST URL:\t{$GLOBALS['URL_PATH']}");
 DUPX_Log::info("SAFE MODE :\t{$_POST['exe_safe_mode']}");
+DUPX_Log::info("CONFIG MODE :\t{$_POST['config_mode']}");
 
 $log = "--------------------------------------\n";
 $log .= "POST DATA\n";
@@ -80,7 +83,7 @@ $log .= print_r($POST_LOG, true);
 DUPX_Log::info($log, 2);
 
 $log = "--------------------------------------\n";
-$log .= "WEB CONFIG PRE-EXTRACT-CHECKS\n";
+$log .= "CONFIG MODE PRE-EXTRACT-CHECKS\n";
 $log .= "--------------------------------------";
 DUPX_Log::info($log);
 if ($_POST['config_mode'] != 'IGNORE') {
@@ -230,7 +233,7 @@ switch ($_POST['archive_engine']) {
 //===============================
 //FILE PERMISSIONS
 //===============================
-if ($_POST['set_file_perms'] || $_POST['set_dir_perms'] || (($_POST['archive_engine'] == 'shellexec_unzip') && ($_POST['zip_filetime'] == 'current'))) {
+if ($_POST['set_file_perms'] || $_POST['set_dir_perms']) {
 
 	// Skips past paths it can't read
 	class IgnorantRecursiveDirectoryIterator extends RecursiveDirectoryIterator
@@ -245,12 +248,14 @@ if ($_POST['set_file_perms'] || $_POST['set_dir_perms'] || (($_POST['archive_eng
 		}
 	}
 
-	DUPX_Log::info("Resetting permissions");
+	DUPX_Log::info("\nPERMISSION UPDATES:");
+	DUPX_Log::info("\t-DIRS:  '{$base_dir_perms_value}'");
+	DUPX_Log::info("\t-FILES: '{$base_file_perms_value}'");
 	$set_file_perms		 = $_POST['set_file_perms'];
 	$set_dir_perms		 = $_POST['set_dir_perms'];
 	$set_file_mtime		 = ($_POST['zip_filetime'] == 'current');
 	$file_perms_value	 = $_POST['file_perms_value'] ? $_POST['file_perms_value'] : 0755;
-	$dir_perms_value	 = $_POST['dir_perms_value'] ? $_POST['dir_perms_value'] : 0644;
+	$dir_perms_value	 = $_POST['dir_perms_value']  ? $_POST['dir_perms_value']  : 0644;
 
 	$objects = new RecursiveIteratorIterator(new IgnorantRecursiveDirectoryIterator($root_path), RecursiveIteratorIterator::SELF_FIRST);
 
@@ -276,8 +281,8 @@ if ($_POST['set_file_perms'] || $_POST['set_dir_perms'] || (($_POST['archive_eng
 }
 
 $log  = "--------------------------------------\n";
-$log .= "WEB SERVER CONFIG POST-EXTACT-CHECKS\n";
-$log .= "--------------------------------------\n";
+$log .= "CONFIG MODE POST-EXTACT-CHECKS\n";
+$log .= "--------------------------------------";
 DUPX_Log::info($log);
 if ($_POST['config_mode'] != 'IGNORE') {
 	DUPX_ServerConfig::afterExtractionSetup();

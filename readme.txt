@@ -1,6 +1,6 @@
 === Duplicator - WordPress Migration Plugin ===
 Contributors: corylamleorg, bobriley
-Donate link: www.lifeinthegrid.com/partner
+Donate link: www.snapcreek.com
 Tags: migration, backup, restore, move, migrate, duplicate, transfer, clone, automate, copy site
 Requires at least: 4.0
 Tested up to: 4.9
@@ -39,7 +39,7 @@ Duplicator lets you make your own pre-configured sites to eliminate rework.  Ins
 Duplicator Pro takes Duplicator to the next level with features you'll really appreciate, such as:
 
 * Scheduled backups
-* Cloud Storage to Dropbox, Google Drive, Amazon S3 and FTP
+* Cloud Storage to Dropbox, Google Drive, Amazon S3, OneDrive and FTP/SFTP
 * Multi-threaded to support larger web sites &amp; databases
 * Migrate an entire multisite WordPress network in one shot
 * Install a multisite subsite as a new standalone website

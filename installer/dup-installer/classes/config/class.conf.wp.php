@@ -97,22 +97,6 @@ class DUPX_WPConfig
 				array_push($replace, "'WP_TEMP_DIR', '{$new_path}');");
 			}
 		}
-
-		// This is all redundant - all this is happening on the caller.  Really should move the outside logic into here
-//		if (!is_writable($wpconfig_path)) {
-//			$err_log = "\nWARNING: Unable to update file permissions and write to {$wpconfig_path}.  ";
-//			$err_log .= "Check that the wp-config.php is in the archive.zip and check with your host or administrator to enable PHP to write to the wp-config.php file.  ";
-//			$err_log .= "If performing a 'Manual Extraction' please be sure to select the 'Manual Archive Extraction' option on step 1 under options.";
-//			chmod($wpconfig_path, 0644) ? DUPX_Log::info("File Permission Update: {$wpconfig_path} set to 0644") : DUPX_Log::error("{$err_log}");
-//		}
-
-		//$wpconfig = preg_replace($patterns, $replace, $wpconfig);
-		//$wpconfig_updated = file_put_contents($wpconfig_path, $wpconfig);
-
-		//if ($wpconfig_updated === false) {
-		//	DUPX_Log::error("\nWARNING: Unable to udpate {$wpconfig_path} file.  Be sure the file is present in your archive and PHP has permissions to update the file.");
-		//}
-		//$wpconfig = null;
 	}
 
 	/**
