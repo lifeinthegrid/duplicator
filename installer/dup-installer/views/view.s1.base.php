@@ -482,7 +482,7 @@ OPTIONS
 			<td>
 			</td>
 			<td style="padding-bottom:8px">
-				<i>*Option available when archive has been pre-extracted.</i>
+				<small><i>*Option available when archive has been pre-extracted.</i></small>
 			</td>
 		<tr/>
 		<?php endif ?>
@@ -515,10 +515,12 @@ OPTIONS
 			<td>
 				<select name="config_mode" id="config_mode"  style="width:250px;">
 					<option value="NEW">Create New (recommended)</option>
-					<option value="RESTORE">Restore Original</option>
-					<option value="IGNORE">Ignore All</option>
+					<optgroup label="Advanced">
+						<option value="RESTORE">Restore Original</option>
+						<option value="IGNORE">Ignore All</option>
+					</optgroup>
 				</select> <br/>
-				<small style="font-weight: normal">Controls how .htaccess, .user.ini and web.config are used. See help for more details.</small>
+				<small style="font-weight: normal"><i>Controls how .htaccess, .user.ini and web.config are used. See help for more details.</i></small>
 			</td>
 		</tr>
 		<tr>
