@@ -5,8 +5,8 @@ defined("ABSPATH") or die("");
 /* @var $GLOBALS['DUPX_AC'] DUPX_ArchiveConfig */
 
 //OPTIONS
-$base_file_perms_value		= $_POST['file_perms_value'];
-$base_dir_perms_value		= $_POST['dir_perms_value'];
+$base_file_perms_value		= (isset($_POST['file_perms_value'])) ? $_POST['file_perms_value'] : 'not set';
+$base_dir_perms_value		= (isset($_POST['dir_perms_value']))  ? $_POST['dir_perms_value']  : 'not set';
 $_POST['set_file_perms']	= (isset($_POST['set_file_perms']))   ? 1 : 0;
 $_POST['set_dir_perms']		= (isset($_POST['set_dir_perms']))    ? 1 : 0;
 $_POST['file_perms_value']	= (isset($_POST['file_perms_value'])) ? intval(('0' . $_POST['file_perms_value']), 8) : 0755;
@@ -86,14 +86,8 @@ $log = "--------------------------------------\n";
 $log .= "CONFIG MODE PRE-EXTRACT-CHECKS\n";
 $log .= "--------------------------------------";
 DUPX_Log::info($log);
-if ($_POST['config_mode'] != 'IGNORE') {
-	DUPX_ServerConfig::beforeExtractionSetup();
-} else {
-	DUPX_Log::info("\nWARNING: Ignoring to update .htaccess, .user.ini and web.config files may cause");
-	DUPX_Log::info("issues with the initial setup of your site.  If you run into issues with your site or");
-	DUPX_Log::info("during the install process please change the 'Config Files' mode to 'Create New'.");
-	DUPX_Log::info("This option is only for advanced users.");
-}
+DUPX_ServerConfig::beforeExtractionSetup();
+
 
 $log = "--------------------------------------\n";
 $log .= "ARCHIVE SETUP\n";
@@ -194,7 +188,6 @@ switch ($_POST['archive_engine']) {
 			$dawsStatus = json_decode($extraData);
 
 			if ($dawsStatus === null) {
-
 				$log .= "Can't decode the dawsStatus!\n";
 				$log .= print_r(extraData, true);
 			} else {
@@ -208,7 +201,6 @@ switch ($_POST['archive_engine']) {
 							$log			 .= '(C) ';
 							$criticalPresent = true;
 						}
-
 						$log .= "{$failure->description}\n";
 					}
 				} else {
@@ -230,9 +222,13 @@ switch ($_POST['archive_engine']) {
 }
 
 
+$log  = "--------------------------------------\n";
+$log .= "POST-EXTACT-CHECKS\n";
+$log .= "--------------------------------------";
+DUPX_Log::info($log);
+
 //===============================
 //FILE PERMISSIONS
-//===============================
 if ($_POST['set_file_perms'] || $_POST['set_dir_perms']) {
 
 	// Skips past paths it can't read
@@ -248,9 +244,9 @@ if ($_POST['set_file_perms'] || $_POST['set_dir_perms']) {
 		}
 	}
 
-	DUPX_Log::info("\nPERMISSION UPDATES:");
-	DUPX_Log::info("\t-DIRS:  '{$base_dir_perms_value}'");
-	DUPX_Log::info("\t-FILES: '{$base_file_perms_value}'");
+	DUPX_Log::info("PERMISSION UPDATES:");
+	DUPX_Log::info("    -DIRS:  '{$base_dir_perms_value}'");
+	DUPX_Log::info("    -FILES: '{$base_file_perms_value}'");
 	$set_file_perms		 = $_POST['set_file_perms'];
 	$set_dir_perms		 = $_POST['set_dir_perms'];
 	$set_file_mtime		 = ($_POST['zip_filetime'] == 'current');
@@ -273,22 +269,16 @@ if ($_POST['set_file_perms'] || $_POST['set_dir_perms']) {
 				DUPX_Log::info("Permissions setting on {$name} failed");
 			}
 		}
-
 		if ($set_file_mtime) {
 			@touch($name);
 		}
 	}
+} else {
+	DUPX_Log::info("\nPERMISSION UPDATES: None Applied");
 }
 
-$log  = "--------------------------------------\n";
-$log .= "CONFIG MODE POST-EXTACT-CHECKS\n";
-$log .= "--------------------------------------";
-DUPX_Log::info($log);
-if ($_POST['config_mode'] != 'IGNORE') {
-	DUPX_ServerConfig::afterExtractionSetup();
-} else {
-	DUPX_Log::info("** CONFIG FILE SET TO IGNORE ALL CHANGES **");
-}
+DUPX_ServerConfig::afterExtractionSetup();
+
 
 //FINAL RESULTS
 $ajax1_sum	 = DUPX_U::elapsedTime(DUPX_U::getMicrotime(), $ajax1_start);

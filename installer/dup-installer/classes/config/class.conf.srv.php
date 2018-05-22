@@ -3,12 +3,10 @@ defined("ABSPATH") or die("");
 
 /**
  * Class used to update and edit web server configuration files
- * for .htaccess, web.config and user.ini
+ * for .htaccess, web.config and .user.ini
  *
  * Standard: PSR-2
  * @link http://www.php-fig.org/psr/psr-2 Full Documentation
- *
- * @package SC\DUPX\ServerConfig
  *
  */
 class DUPX_ServerConfig
@@ -18,14 +16,26 @@ class DUPX_ServerConfig
 	/**
 	 *  Common timestamp of all members of this class
 	 */
-	public static $filehash;
+	protected static $fileHash;
+	protected static $timeStamp;
+	protected static $confFileApache;
+	protected static $confFileApacheOrig;
+	protected static $confFileIIS;
+	protected static $confFileIISOrig;
+	protected static $confFileWordFence;
 
 	/**
 	 *  Setup this classes properties
 	 */
 	public static function init()
 	{
-		self::$filehash = date("ymdHis") . '-' . uniqid();
+		self::$fileHash  = date("ymdHis") . '-' . uniqid();
+		self::$timeStamp = date("Y-m-d H:i:s");
+		self::$confFileApache		= "{$GLOBALS['DUPX_ROOT']}/.htaccess";
+		self::$confFileApacheOrig	= "{$GLOBALS['DUPX_ROOT']}/htaccess.orig";
+		self::$confFileIIS			= "{$GLOBALS['DUPX_ROOT']}/web.config";
+		self::$confFileIISOrig		= "{$GLOBALS['DUPX_ROOT']}/web.config.orig";
+		self::$confFileWordFence	= "{$GLOBALS['DUPX_ROOT']}/.user.ini";
 	}
 
 	/**
@@ -35,18 +45,12 @@ class DUPX_ServerConfig
 	 */
 	public static function afterExtractionSetup()
 	{
-		if ($_POST['config_mode'] == 'NEW') {
-			//APACHE
-			$file_path = "{$GLOBALS['DUPX_ROOT']}/htaccess.orig";
-			self::removeFile($file_path, 'Apache');
-
-			//MICROSOFT IIS
-			$file_path = "{$GLOBALS['DUPX_ROOT']}/web.config.orig";
-			self::removeFile($file_path, 'Microsoft IIS');
-
-			//WORDFENCE
-			$file_path = "{$GLOBALS['DUPX_ROOT']}/.user.ini";
-			self::removeFile($file_path, 'WordFence');
+		if ($_POST['config_mode'] != 'IGNORE') {
+			//WORDFENCE: Only the WordFence file needs to be removed
+			//completly from setup to avoid any issues
+			self::removeFile(self::$confFileWordFence, 'WordFence');
+		} else {
+			DUPX_Log::info("** CONFIG FILE SET TO IGNORE ALL CHANGES **");
 		}
 	}
 
@@ -57,65 +61,88 @@ class DUPX_ServerConfig
 	 */
 	public static function beforeExtractionSetup()
 	{
-		//---------------------
-		//APACHE
-		$source    = 'Apache';
-		$file_path = "{$GLOBALS['DUPX_ROOT']}/.htaccess";
-		if (self::createBackup($file_path, $source))
-			self::removeFile($file_path, $source);
+		if ($_POST['config_mode'] == 'IGNORE') {
+			DUPX_Log::info("\nWARNING: Ignoring to update .htaccess, .user.ini and web.config files may cause");
+			DUPX_Log::info("issues with the initial setup of your site.  If you run into issues with your site or");
+			DUPX_Log::info("during the install process please change the 'Config Files' mode to 'Create New'.");
+			DUPX_Log::info("This option is only for advanced users.");
+		} else {
+			//---------------------
+			//APACHE
+			$source    = 'Apache';
+			if (self::createBackup(self::$confFileApache, $source))
+				self::removeFile(self::$confFileApache, $source);
 
-		//---------------------
-		//MICROSOFT IIS
-		$source    = 'Microsoft IIS';
-		$file_path = "{$GLOBALS['DUPX_ROOT']}/web.config";
-		if (self::createBackup($file_path, $source))
-			 self::removeFile($file_path, $source);
+			//---------------------
+			//MICROSOFT IIS
+			$source    = 'Microsoft IIS';
+			if (self::createBackup(self::$confFileIIS, $source))
+				 self::removeFile(self::$confFileIIS, $source);
 
-		//---------------------
-		//WORDFENCE
-		$source    = 'WordFence';
-		$file_path = "{$GLOBALS['DUPX_ROOT']}/.user.ini";
-		if (self::createBackup($file_path, $source))
-			 self::removeFile($file_path, $source);
+			//---------------------
+			//WORDFENCE
+			$source    = 'WordFence';
+			if (self::createBackup(self::$confFileWordFence, $source))
+				 self::removeFile(self::$confFileWordFence, $source);
+		}
 	}
 
     /**
      * Copies the code in htaccess.orig to .htaccess
      *
 	 * @return void
-     *
      */
 	public static function renameOrigConfigs()
 	{
 		//APACHE
-		if(rename("{$GLOBALS['DUPX_ROOT']}/htaccess.orig", "{$GLOBALS['DUPX_ROOT']}/.htaccess")){
+		if(rename(self::$confFileApacheOrig, self::$confFileApache)){
 			DUPX_Log::info("\n- PASS: The orginal htaccess.orig was renamed");
 		} else {
 			DUPX_Log::info("\n- WARN: The orginal htaccess.orig was NOT renamed");
 		}
 
 		//IIS
-		if(rename("{$GLOBALS['DUPX_ROOT']}/web.config.orig", "{$GLOBALS['DUPX_ROOT']}/web.config")){
+		if(rename(self::$confFileIISOrig, self::$confFileIIS)){
 			DUPX_Log::info("\n- PASS: The orginal htaccess.orig was renamed");
 		} else {
 			DUPX_Log::info("\n- WARN: The orginal htaccess.orig was NOT renamed");
 		}
     }
 
+	 /**
+     * Creates the new config file
+     *
+	 * @return void
+     */
+	public static function createNewConfigs()
+	{
+		//APACHE
+		if(file_exists(self::$confFileApacheOrig)){
+			self::createNewApacheConfig();
+			self::removeFile(self::$confFileApacheOrig, 'Apache');
+		}
+
+		//IIS
+		if(file_exists(self::$confFileIISOrig)){
+			self::createNewIISConfig();
+			self::removeFile(self::$confFileIISOrig, 'Microsoft IIS');
+		}
+    }
+
 	/**
 	 * Sets up the web config file based on the inputs from the installer forms.
 	 *
-	 * @return null
+	 * @return void
 	 */
-	public static function createNewApacheConfig()
+	private static function createNewApacheConfig()
 	{
 		DUPX_Log::info("\nAPACHE CONFIGURATION FILE UPDATED:");
 
-		$timestamp = date("Y-m-d H:i:s");
-		$newdata = parse_url($_POST['url_new']);
-		$newpath = DUPX_U::addSlash(isset($newdata['path']) ? $newdata['path'] : "");
-		$update_msg  = "# This file was created by Duplicator on {$timestamp}.\n";
-		$update_msg .= (file_exists("{$GLOBALS['DUPX_ROOT']}/.htaccess")) ? "# See htaccess.bak for a backup of .htaccess that was present before install ran."	: "";
+		$timestamp   = self::$timeStamp;
+		$newdata	 = parse_url($_POST['url_new']);
+		$newpath	 = DUPX_U::addSlash(isset($newdata['path']) ? $newdata['path'] : "");
+		$update_msg  = "# This file was created by Duplicator Installer on {$timestamp}.\n";
+		$update_msg .= (file_exists(self::$confFileApache)) ? "# See htaccess.bak for a backup of .htaccess that was present before install ran."	: "";
 
         $tmp_htaccess = <<<HTACCESS
 {$update_msg}
@@ -130,13 +157,12 @@ RewriteRule . {$newpath}index.php [L]
 </IfModule>
 # END WordPress
 HTACCESS;
-        
 
-		if (@file_put_contents("{$GLOBALS['DUPX_ROOT']}/.htaccess", $tmp_htaccess) === FALSE) {
+		if (@file_put_contents(self::$confFileApache, $tmp_htaccess) === FALSE) {
 			DUPX_Log::info("- WARN: Unable to update the .htaccess file! Please check the permission on the root directory and make sure the .htaccess exists.");
 		} else {
 			DUPX_Log::info("- PASS: Successfully updated the .htaccess file setting.");
-			@chmod('.htaccess', 0644);
+			@chmod(self::$confFileApache, 0644);
 		}
 
     }
@@ -144,20 +170,15 @@ HTACCESS;
 	/**
 	 * Sets up the web config file based on the inputs from the installer forms.
 	 *
-	 * @return null
+	 * @return void
 	 */
-	public static function createNewIISConfig()
+	private static function createNewIISConfig()
 	{
-		 //---------------------
-		//MICROSOFT IIS
-		$file_name = 'web.config';
-		$file_path = "{$GLOBALS['DUPX_ROOT']}/{$file_name}";
-		 if (file_exists($file_path)) {
-			$xml_contents  = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-			$xml_contents .= "<!-- Reset by Duplicator Installer.  Original can be found in web.config.{$hash}.orig -->\n";
-			$xml_contents .=  "<configuration></configuration>\n";
-			@file_put_contents($file_path, $xml_contents);
-		 }
+		$timestamp = self::$timeStamp;
+		$xml_contents  = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+		$xml_contents .= "<!-- This file was created by Duplicator Installer on {$timestamp}.  Original can be found in web.config.orig -->\n";
+		$xml_contents .=  "<configuration></configuration>\n";
+		@file_put_contents(self::$confFileIIS, $xml_contents);
     }
 	
 	/**
@@ -172,7 +193,7 @@ HTACCESS;
 	{
 		$status		= false;
 		$file_name  = SnapLibIOU::getFileName($file_path);
-		$hash		= self::$filehash;
+		$hash		= self::$fileHash;
 		if (is_file($file_path)) {
 			$status = copy($file_path, "{$file_path}-{$hash}.bak");
 			$status ? DUPX_Log::info("- PASS: {$source} '{$file_name}' backed-up to {$file_name}-{$hash}.bak")

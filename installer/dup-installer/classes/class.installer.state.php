@@ -51,18 +51,20 @@ class DUPX_InstallerState
 				}
             } else {
 
-				$wpConfigPath	= "{$GLOBALS['DUPX_ROOT']}/wp-config.php";
+				//$wpConfigPath	= "{$GLOBALS['DUPX_ROOT']}/wp-config.php";
 
                 // RSR TODO: Remove for lite then put back in when we do overwrite
-				if(file_exists($wpConfigPath)) {
-					$defines = DUPX_WPConfig::parseDefines($wpConfigPath);
-					
-					self::$instance->mode = DUPX_InstallerMode::OverwriteInstall;
-					self::$instance->ovr_wp_content_dir = SnapLibUtil::getArrayValue($defines, 'WP_CONTENT_DIR', false, $GLOBALS['CURRENT_ROOT_PATH'] . '/wp-content');
+//				if(file_exists($wpConfigPath)) {
+//					$defines = DUPX_WPConfig::parseDefines($wpConfigPath);
+//
+//					self::$instance->mode = DUPX_InstallerMode::OverwriteInstall;
+//					self::$instance->ovr_wp_content_dir = SnapLibUtil::getArrayValue($defines, 'WP_CONTENT_DIR', false, $GLOBALS['CURRENT_ROOT_PATH'] . '/wp-content');
+//
+//				} else {
+//					self::$instance->mode = DUPX_InstallerMode::StandardInstall;
+//				}
 
-				} else {
-					self::$instance->mode = DUPX_InstallerMode::StandardInstall;
-				}
+				self::$instance->mode = DUPX_InstallerMode::StandardInstall;
 			}
 
 

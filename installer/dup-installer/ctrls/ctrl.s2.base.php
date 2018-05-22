@@ -17,6 +17,7 @@ $_POST['dbcollate']		= isset($_POST['dbcollate']) ? DUPX_U::sanitize(trim($_POST
 $_POST['dbcollatefb']	= (isset($_POST['dbcollatefb']) && $_POST['dbcollatefb'] == '1') ? true : false;
 $_POST['dbobj_views']	= isset($_POST['dbobj_views']) ? true : false; 
 $_POST['dbobj_procs']	= isset($_POST['dbobj_procs']) ? true : false;
+$_POST['config_mode']	= (isset($_POST['config_mode'])) ? $_POST['config_mode'] : 'NEW';
 
 $ajax2_start	 = DUPX_U::getMicrotime();
 $root_path		 = $GLOBALS['DUPX_ROOT'];

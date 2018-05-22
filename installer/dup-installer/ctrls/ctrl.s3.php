@@ -253,15 +253,12 @@ $patterns = array("/('|\")WP_HOME.*?\)\s*;/",
 $replace = array("'WP_HOME', '{$_POST['url_new']}');",
 	"'WP_SITEURL', '{$_POST['url_new']}');");
 
+//@todo: integrate all logic into DUPX_WPConfig::updateVars
 DUPX_WPConfig::updateVars($patterns, $replace);
 
-//@todo: integrate all logic into DUPX_WPConfig::updateVars
-$root_path		= $GLOBALS['DUPX_ROOT'];
-
-$wpconfig_ark_path	= "{$root_path}/wp-config-arc.txt";
+$wpconfig_ark_path	= "{$GLOBALS['DUPX_ROOT']}/wp-config-arc.txt";
 $wpconfig_ark_contents	= @file_get_contents($wpconfig_ark_path, true);
 $wpconfig_ark_contents	= preg_replace($patterns, $replace, $wpconfig_ark_contents);
-
 
 if (!is_writable($wpconfig_ark_path)) {
 	$err_log = "\nWARNING: Unable to update file permissions and write to {$wpconfig_ark_path}.  ";
@@ -269,29 +266,20 @@ if (!is_writable($wpconfig_ark_path)) {
 	$err_log .= "If performing a 'Manual Extraction' please be sure to select the 'Manual Archive Extraction' option on step 1 under options.";
 	chmod($wpconfig_ark_path, 0644) ? DUPX_Log::info("File Permission Update: {$wpconfig_ark_path} set to 0644") : DUPX_Log::error("{$err_log}");
 }
-
-
-$log = "--------------------------------------\n";
-$log .= "WEB SERVER CONFIG POST-EXTACT-CHECKS\n";
-$log .= "--------------------------------------\n";
-DUPX_Log::info($log);
 $wpconfig_ark_contents = preg_replace($patterns, $replace, $wpconfig_ark_contents);
 file_put_contents($wpconfig_ark_path, $wpconfig_ark_contents);
 DUPX_Log::info("UPDATED WP-CONFIG ARK FILE:\n - '{$wpconfig_ark_path}'");
 
 switch ($_POST['config_mode']) {
 	case 'NEW':
-		DUPX_ServerConfig::createNewApacheConfig();
-		DUPX_ServerConfig::createNewIISConfig();
+		DUPX_ServerConfig::createNewConfigs();
 		break;
-
 	case 'RESTORE':
 		DUPX_ServerConfig::renameOrigConfigs();
 		DUPX_Log::info("\nWARNING: Retaining the original .htaccess or web.config files may cause");
 		DUPX_Log::info("issues with the initial setup of your site.  If you run into issues with the install");
 		DUPX_Log::info("process choose 'Create New' for the 'Config Files' options");
 		break;
-
 	case 'IGNORE':
 		DUPX_Log::info("\nWARNING: Choseing the option to ignore the .htaccess, web.config and .user.ini files");
 		DUPX_Log::info("can lead to install issues.  The 'Ignore All' opition is designed for advanced users.");
@@ -371,8 +359,8 @@ mysqli_close($dbh);
 
 //-- Finally, back up the old wp-config and rename the new one
 
-$wpconfig_path	= "{$root_path}/wp-config.php";
-$wpconfig_orig_path	= "{$root_path}/wp-config.orig";
+$wpconfig_path	= "{$GLOBALS['DUPX_ROOT']}/wp-config.php";
+$wpconfig_orig_path	= "{$GLOBALS['DUPX_ROOT']}/wp-config.orig";
 
 if(file_exists($wpconfig_path)) {	
 	if (!is_writable($wpconfig_path)) {
