@@ -83,7 +83,7 @@ $log .= print_r($POST_LOG, true);
 DUPX_Log::info($log, 2);
 
 $log = "--------------------------------------\n";
-$log .= "CONFIG MODE PRE-EXTRACT-CHECKS\n";
+$log .= "PRE-EXTRACT-CHECKS\n";
 $log .= "--------------------------------------";
 DUPX_Log::info($log);
 DUPX_ServerConfig::beforeExtractionSetup();

@@ -24,7 +24,7 @@ STEP 1
 <a class="help-target" name="help-s1"></a>
 <h2>Step <span class="step">1</span> of 4: Deployment</h2>
 <div id="dup-help-scanner" class="help-page">
-	There are currently several modes that the installer can be in.  The mode will be shown at the top of each screen. Below is an overview of the various modes. <sup>pro</sup>
+	There are currently several modes that the installer can be in.  The mode will be shown at the top of each screen. Below is an overview of the various modes.
 
 	<table class="help-opt">
 	<tr>

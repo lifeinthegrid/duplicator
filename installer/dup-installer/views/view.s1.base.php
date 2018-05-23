@@ -648,27 +648,16 @@ DUPX.getManaualArchiveOpt = function ()
 
 DUPX.startExtraction = function()
 {
-    // TODO: Temporary check for wp-config. Remove once site overwrite is cleared for Lite
-    <?php
-		$wpConfigPath	= "{$GLOBALS['DUPX_ROOT']}/wp-config.php";
+	var isManualExtraction = ($("#archive_engine").val() == "manual");
+	var zipEnabled = <?php echo SnapLibStringU::boolToString($archive_config->isZipArchive()); ?>;
 
-		if(file_exists($wpConfigPath)): ?>
-			$('#s1-input-form').hide();
-            $('#s1-result-form').show();
-			$('#ajaxerr-data').html("A wp-config.php already exists in this location. This may indicate that you are attempting to overwrite an existing site which functionality not supported by Duplicator Lite at this time. To resolve this, remove all files other than the installer and package and retry the install.");
-			DUPX.hideProgressBar();
-		<?php else : ?>
-			var isManualExtraction = ($("#archive_engine").val() == "manual");
-			var zipEnabled = <?php echo SnapLibStringU::boolToString($archive_config->isZipArchive()); ?>;
+	$("#operation-text").text("Extracting Archive Files");
 
-			$("#operation-text").text("Extracting Archive Files");
-
-			if (zipEnabled || isManualExtraction) {
-				DUPX.runStandardExtraction();
-			} else {
-				DUPX.kickOffDupArchiveExtract();
-			}
-		<?php endif;?>
+	if (zipEnabled || isManualExtraction) {
+		DUPX.runStandardExtraction();
+	} else {
+		DUPX.kickOffDupArchiveExtract();
+	}
 }
 
 DUPX.processNext = function ()

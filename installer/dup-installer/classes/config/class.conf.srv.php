@@ -138,13 +138,11 @@ class DUPX_ServerConfig
 	 */
 	private static function createNewApacheConfig()
 	{
-		DUPX_Log::info("\nAPACHE CONFIGURATION FILE UPDATED:");
-
 		$timestamp   = self::$timeStamp;
 		$newdata	 = parse_url(self::$newSiteURL);
 		$newpath	 = DUPX_U::addSlash(isset($newdata['path']) ? $newdata['path'] : "");
-		$update_msg  = "# This file was created by Duplicator Installer on {$timestamp}.\n";
-		$update_msg .= (file_exists(self::$confFileApache)) ? "# See htaccess.bak for a backup of .htaccess that was present before install ran."	: "";
+		$update_msg  = "#This Apache config file was created by Duplicator Installer on {$timestamp}.\n";
+		$update_msg .= "#The original can be found in archived file with the name htaccess.orig\n";
 
         $tmp_htaccess = <<<HTACCESS
 {$update_msg}
@@ -161,9 +159,9 @@ RewriteRule . {$newpath}index.php [L]
 HTACCESS;
 
 		if (@file_put_contents(self::$confFileApache, $tmp_htaccess) === FALSE) {
-			DUPX_Log::info("- WARN: Unable to update the .htaccess file! Please check the permission on the root directory and make sure the .htaccess exists.");
+			DUPX_Log::info("- WARN: Unable to create the .htaccess file! Please check the permission on the root directory and make sure the .htaccess exists.");
 		} else {
-			DUPX_Log::info("- PASS: Successfully updated the .htaccess file setting.");
+			DUPX_Log::info("- PASS: Successfully created a new .htaccess file.");
 			@chmod(self::$confFileApache, 0644);
 		}
     }
@@ -177,7 +175,8 @@ HTACCESS;
 	{
 		$timestamp = self::$timeStamp;
 		$xml_contents  = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-		$xml_contents .= "<!-- This file was created by Duplicator Installer on {$timestamp}.  Original can be found in web.config.orig -->\n";
+		$xml_contents .= "<!-- This new IIS config file was created by Duplicator Installer on {$timestamp}.\n"
+					  .  "The original can be found in archived file with the name web.config.orig -->\n";
 		$xml_contents .=  "<configuration></configuration>\n";
 		@file_put_contents(self::$confFileIIS, $xml_contents);
     }

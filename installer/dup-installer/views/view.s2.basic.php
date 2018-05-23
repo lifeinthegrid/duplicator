@@ -44,10 +44,13 @@ BASIC PANEL -->
 <div id="s2-db-basic">
 	<?php if($is_import_mode) : ?>
 		<div id="s2-db-basic-overwrite">
-			<b>Installing on top of a existing site! Click apply to use that site's database.</b><br/>
+			<b style='color:maroon'><i class="fa fa-warning"></i> Warning: Installing into an existing database! </b><br/>
 			<div class="warn-text">
-				<i class="fa fa-warning"></i> Warning: Reusing the existing site's database will <u>overwrite</u> all of its data when using the action 'Connect and Remove All Data'.
-				<i>If you're not sure about using this database then contact your web host or create a new database and use those credentials instead.</i>
+				An existing wp-config.php settings have been applied below.  Please note that reusing an existing site's database will <u>overwrite</u> all of its data.
+				If you're not 100% sure about using this database, then create a new database and use those credentials instead. <br/><br/>
+
+				If you want to connect to this database and replace all its data then click the 'Apply button' to lock in these changes.  To use a different database click the
+				'Reset button' to clear the values and enter in new values.
 			</div>
 
 			<div class="btn-area">
@@ -209,7 +212,7 @@ $(document).ready(function ()
 	{
 		state = typeof state !== 'undefined' ? state : 'enabled';
 		var $inputs = $("#s2-db-basic").find("input[type=text]");
-		console.log(state);
+
 		switch (state) {
 			case 'readonly' :
 				$inputs.each(function(){$(this).attr('readonly', true).css('border', 'none');});

@@ -139,7 +139,7 @@
 	select#dbname-select {width:100%; border-radius:3px; height:20px; font-size:12px; border:1px solid silver;}
 	div#s2-dbrefresh-basic {float:right; font-size:12px; display:none;  font-weight:bold; margin:5px 5px 1px 0}
 	div#s2-db-basic-overwrite {border: 1px solid silver; margin:5px 0 5px 0; padding:10px; background:#f2f2f2; border-radius:5px}
-	div#s2-db-basic-overwrite div.warn-text {font-style:italic; font-size:11px; padding:5px 0 5px 0; color:maroon}
+	div#s2-db-basic-overwrite div.warn-text {font-style:italic; font-size:12px; padding:5px 0 5px 0; color:maroon}
 	div#s2-db-basic-overwrite div.btn-area {text-align: right; margin:5px 0}
 	input.overwrite-btn {
 		cursor:pointer; color:#fff; font-size:13px; border-radius:5px;	padding:5px 20px 4px 20px;
