@@ -46,8 +46,8 @@ BASIC PANEL -->
 		<div id="s2-db-basic-overwrite">
 			<b style='color:maroon'>Ready to connect to existing sites database? </b><br/>
 			<div class="warn-text">
-				The existing sites database configuration settings are ready to be applied below.  If you want to connect to this database and replace all its data then 
-				click the 'Apply button' to lock in these changes.  To use different database settings click the 'Reset button' to clear the values and enter in new values.
+				The existing sites database settings are ready to be applied below.  If you want to connect to this database and replace all its data then 
+				click the 'Apply button' to set the placeholder values.  To use different database settings click the 'Reset button' to clear and set new values.
 				<br/><br/>
 				
 				<i><i class="fa fa-warning"></i> Warning: Please note that reusing an existing site's database will <u>overwrite</u> all of its data. If you're not 100% sure about
@@ -259,11 +259,9 @@ $(document).ready(function ()
 		DUPX.basicDBToggleImportMode('toggle');
 	}
 
-
 	<?php if($is_import_mode) : ?>
 		DUPX.fillInPlaceHolders();
 	<?php endif; ?>
-
 
 });
 </script>
