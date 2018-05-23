@@ -98,6 +98,22 @@ class DUPX_Server
 		}
 		return $filepath;
 	}
+
+	/**
+	* Is the web server IIS
+	*
+	* @return bool		Returns true if web server is IIS
+	*/
+	private static function isIISRunning()
+	{
+		$sSoftware = strtolower( $_SERVER["SERVER_SOFTWARE"] );
+		if ( strpos($sSoftware, "microsoft-iis") !== false ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }
 //INIT Class Properties
 DUPX_Server::_init();

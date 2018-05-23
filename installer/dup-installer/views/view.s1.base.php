@@ -63,10 +63,8 @@ $shell_exec_zip_enabled = ($shell_exec_unzip_path != null);
 $zip_archive_enabled = class_exists('ZipArchive') ? 'Enabled' : 'Not Enabled';
 $archive_config  = DUPX_ArchiveConfig::getInstance();
 $installer_state = DUPX_InstallerState::getInstance();
+$is_import_mode  =  ($installer_state->mode === DUPX_InstallerMode::OverwriteInstall);
 
-//Enable after regular installer has baked
-//$is_import_mode  =  ($installer_state->mode === DUPX_InstallerMode::OverwriteInstall);
-$is_import_mode    = false;
 ?>
 
 <form id="s1-input-form" method="post" class="content-form">

@@ -62,12 +62,7 @@ class DUPX_ServerConfig
 	 */
 	public static function beforeExtractionSetup()
 	{
-		if (self::$configMode == 'IGNORE') {
-			DUPX_Log::info("\nWARNING: Ignoring to update .htaccess, .user.ini and web.config files may cause");
-			DUPX_Log::info("issues with the initial setup of your site.  If you run into issues with your site or");
-			DUPX_Log::info("during the install process please change the 'Config Files' mode to 'Create New'.");
-			DUPX_Log::info("This option is only for advanced users.");
-		} else {
+		if (self::$configMode != 'IGNORE') {
 			//---------------------
 			//APACHE
 			$source    = 'Apache';
@@ -118,16 +113,29 @@ class DUPX_ServerConfig
      */
 	public static function createNewConfigs()
 	{
+		$config_made = false;
+
 		//APACHE
 		if(file_exists(self::$confFileApacheOrig)){
 			self::createNewApacheConfig();
 			self::removeFile(self::$confFileApacheOrig, 'Apache');
+			$config_made = true;
 		}
 
-		//IIS
 		if(file_exists(self::$confFileIISOrig)){
 			self::createNewIISConfig();
 			self::removeFile(self::$confFileIISOrig, 'Microsoft IIS');
+			$config_made = true;
+		}
+
+		//No config was made so try to guess which one
+		//95% of the time it will be Apache
+		if (! $config_made) {
+			if (DUPX_Server::isIISRunning()) {
+				self::createNewIISConfig();
+			} else {
+				self::createNewApacheConfig();
+			}
 		}
     }
 
@@ -195,8 +203,8 @@ HTACCESS;
 		$file_name  = SnapLibIOU::getFileName($file_path);
 		$hash		= self::$fileHash;
 		if (is_file($file_path)) {
-			$status = copy($file_path, "{$file_path}-{$hash}.bak");
-			$status ? DUPX_Log::info("- PASS: {$source} '{$file_name}' backed-up to {$file_name}-{$hash}.bak")
+			$status = copy($file_path, "{$file_path}-{$hash}-duplicator.bak");
+			$status ? DUPX_Log::info("- PASS: {$source} '{$file_name}' backed-up to {$file_name}-{$hash}-duplicator.bak")
 					: DUPX_Log::info("- WARN: {$source} '{$file_name}' unable to create backup copy, a possible permission error?");
 		} else {
 			DUPX_Log::info("- PASS: {$source} '{$file_name}' not found - no backup needed.");
@@ -228,7 +236,6 @@ HTACCESS;
 		}
 		return $status;
 	}
-
 }
 
 DUPX_ServerConfig::init();

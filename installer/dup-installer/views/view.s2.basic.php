@@ -44,13 +44,14 @@ BASIC PANEL -->
 <div id="s2-db-basic">
 	<?php if($is_import_mode) : ?>
 		<div id="s2-db-basic-overwrite">
-			<b style='color:maroon'><i class="fa fa-warning"></i> Warning: Installing into an existing database! </b><br/>
+			<b style='color:maroon'>Ready to connect to existing sites database? </b><br/>
 			<div class="warn-text">
-				An existing wp-config.php settings have been applied below.  Please note that reusing an existing site's database will <u>overwrite</u> all of its data.
-				If you're not 100% sure about using this database, then create a new database and use those credentials instead. <br/><br/>
-
-				If you want to connect to this database and replace all its data then click the 'Apply button' to lock in these changes.  To use a different database click the
-				'Reset button' to clear the values and enter in new values.
+				The existing sites database configuration settings are ready to be applied below.  If you want to connect to this database and replace all its data then 
+				click the 'Apply button' to lock in these changes.  To use different database settings click the 'Reset button' to clear the values and enter in new values.
+				<br/><br/>
+				
+				<i><i class="fa fa-warning"></i> Warning: Please note that reusing an existing site's database will <u>overwrite</u> all of its data. If you're not 100% sure about
+				using these database settings, then create a new database and use the new credentials instead.</i>
 			</div>
 
 			<div class="btn-area">
@@ -241,13 +242,28 @@ $(document).ready(function ()
 		$("#s2-db-basic-setup").show();
 	}
 
+	DUPX.fillInPlaceHolders = function()
+	{
+		$("#dbhost").attr('placeholder', <?php echo "'{$ovr_dbhost}'" ?>);
+		$("#dbname").attr('placeholder', <?php echo "'{$ovr_dbname}'" ?>);
+		$("#dbuser").attr('placeholder', <?php echo "'{$ovr_dbuser}'" ?>);
+		$("#dbpass").attr('placeholder', <?php echo "'{$ovr_dbpass}'" ?>);
+	}
+
 	DUPX.resetParameters = function()
 	{
-		$("#dbhost").val('');
-		$("#dbname").val('');
-		$("#dbuser").val('');
-		$("#dbpass").val('');
+		$("#dbhost").val('').attr('placeholder', '');
+		$("#dbname").val('').attr('placeholder', '');
+		$("#dbuser").val('').attr('placeholder', '');
+		$("#dbpass").val('').attr('placeholder', '');
 		DUPX.basicDBToggleImportMode('toggle');
 	}
+
+
+	<?php if($is_import_mode) : ?>
+		DUPX.fillInPlaceHolders();
+	<?php endif; ?>
+
+
 });
 </script>
