@@ -2,6 +2,19 @@
 defined("ABSPATH") or die("");
 
 /**
+ * Class for server type enum setup
+ * .htaccess, web.config and .user.ini
+ *
+ */
+abstract class DUPX_ServerConfigTypes
+{
+    const Apache		= 0;
+    const IIS			= 1;
+    const WordFence     = 2;
+}
+
+
+/**
  * Class used to update and edit web server configuration files
  * for .htaccess, web.config and .user.ini
  *
@@ -20,6 +33,7 @@ class DUPX_ServerConfig
 	protected static $confFileWordFence;
 	protected static $configMode;
 	protected static $newSiteURL;
+	protected static $rootPath;
 
 	/**
 	 *  Setup this classes properties
@@ -28,6 +42,7 @@ class DUPX_ServerConfig
 	{
 		self::$fileHash				= date("ymdHis") . '-' . uniqid();
 		self::$timeStamp			= date("Y-m-d H:i:s");
+		self::$rootPath				= "{$GLOBALS['DUPX_ROOT']}";
 		self::$confFileApache		= "{$GLOBALS['DUPX_ROOT']}/.htaccess";
 		self::$confFileApacheOrig	= "{$GLOBALS['DUPX_ROOT']}/htaccess.orig";
 		self::$confFileIIS			= "{$GLOBALS['DUPX_ROOT']}/web.config";
@@ -65,21 +80,18 @@ class DUPX_ServerConfig
 		if (self::$configMode != 'IGNORE') {
 			//---------------------
 			//APACHE
-			$source    = 'Apache';
-			if (self::createBackup(self::$confFileApache, $source))
-				self::removeFile(self::$confFileApache, $source);
+			if (self::createBackup(self::$confFileApache, DUPX_ServerConfigTypes::Apache))
+				self::removeFile(self::$confFileApache, DUPX_ServerConfigTypes::Apache);
 
 			//---------------------
 			//MICROSOFT IIS
-			$source    = 'Microsoft IIS';
-			if (self::createBackup(self::$confFileIIS, $source))
-				 self::removeFile(self::$confFileIIS, $source);
+			if (self::createBackup(self::$confFileIIS, DUPX_ServerConfigTypes::IIS))
+				 self::removeFile(self::$confFileIIS, DUPX_ServerConfigTypes::IIS);
 
 			//---------------------
 			//WORDFENCE
-			$source    = 'WordFence';
-			if (self::createBackup(self::$confFileWordFence, $source))
-				 self::removeFile(self::$confFileWordFence, $source);
+			if (self::createBackup(self::$confFileWordFence, DUPX_ServerConfigTypes::WordFence))
+				 self::removeFile(self::$confFileWordFence, DUPX_ServerConfigTypes::WordFence);
 		}
 	}
 
@@ -118,13 +130,13 @@ class DUPX_ServerConfig
 		//APACHE
 		if(file_exists(self::$confFileApacheOrig)){
 			self::createNewApacheConfig();
-			self::removeFile(self::$confFileApacheOrig, 'Apache');
+			self::removeFile(self::$confFileApacheOrig, DUPX_ServerConfigTypes::Apache);
 			$config_made = true;
 		}
 
 		if(file_exists(self::$confFileIISOrig)){
 			self::createNewIISConfig();
-			self::removeFile(self::$confFileIISOrig, 'Microsoft IIS');
+			self::removeFile(self::$confFileIISOrig, DUPX_ServerConfigTypes::IIS);
 			$config_made = true;
 		}
 
@@ -192,20 +204,23 @@ HTACCESS;
 	/**
 	 * Creates a copy of any existing file and hashes it with a .bak extension
 	 *
-	 * @param string $file_path		The full path of the config file
-	 * @param string $source		The source name of the configuration
+	 * @param string $file_path					The full path of the config file
+	 * @param DUPX_ServerConfigTypes $type		A valid DUPX_ServerConfigTypes
 	 *
 	 * @return bool		Returns true if the file was backed-up.
 	 */
-	private static function createBackup($file_path, $source)
+	private static function createBackup($file_path, $type)
 	{
 		$status		= false;
 		$file_name  = SnapLibIOU::getFileName($file_path);
 		$hash		= self::$fileHash;
 		if (is_file($file_path)) {
-			$status = copy($file_path, "{$file_path}-{$hash}-duplicator.bak");
-			$status ? DUPX_Log::info("- PASS: {$source} '{$file_name}' backed-up to {$file_name}-{$hash}-duplicator.bak")
-					: DUPX_Log::info("- WARN: {$source} '{$file_name}' unable to create backup copy, a possible permission error?");
+			$source = self::getTypeName($type);
+			if (! self::backupExists($type)) {
+				$status = copy($file_path, "{$file_path}-{$hash}-duplicator.bak");
+				$status ? DUPX_Log::info("- PASS: {$source} '{$file_name}' backed-up to {$file_name}-{$hash}-duplicator.bak")
+						: DUPX_Log::info("- WARN: {$source} '{$file_name}' unable to create backup copy, a possible permission error?");
+			}
 		} else {
 			DUPX_Log::info("- PASS: {$source} '{$file_name}' not found - no backup needed.");
 		}
@@ -216,15 +231,16 @@ HTACCESS;
 	/**
 	 * Removes the specified file
 	 *
-	 * @param string $file_path		The full path of the config file
-	 * @param string $source		The source name of the configuration
+	 * @param string $file_path					The full path of the config file
+	 * @param DUPX_ServerConfigTypes $type		A valid DUPX_ServerConfigTypes
 	 *
 	 * @return bool		Returns true if the file was removed
 	 */
-	private static function removeFile($file_path, $source)
+	private static function removeFile($file_path, $type)
 	{
 		$status = false;
 		if (is_file($file_path)) {
+			$source		= self::getTypeName($type);
 			$file_name  = SnapLibIOU::getFileName($file_path);
 			$status = @unlink($file_path);
 			if ($status === FALSE) {
@@ -236,6 +252,74 @@ HTACCESS;
 		}
 		return $status;
 	}
+
+	/**
+	 * Check if a backup file already exists
+	 *
+	 * @param DUPX_ServerConfigTypes $type		A valid DUPX_ServerConfigTypes
+	 *
+	 * @return bool		Returns true if the file was removed
+	 */
+	private static function backupExists($type)
+	{
+		$pattern = 'unknown-duplicator-type-set';
+
+		switch ($type) {
+			case DUPX_ServerConfigTypes::Apache:
+				$pattern = '/.htaccess-.*-duplicator.bak/';
+				break;
+			case DUPX_ServerConfigTypes::IIS:
+				$pattern = '/web.config-.*-duplicator.bak/';
+				break;
+			case DUPX_ServerConfigTypes::WordFence:
+				$pattern = '/.user.ini-.*-duplicator.bak/';
+				break;
+
+		}
+
+		if (is_dir(self::$rootPath)){
+			$dir = new DirectoryIterator(self::$rootPath);
+			foreach ($dir as $file) {
+				if ($file->isFile()) {
+					$name = $file->getFilename();
+					if (strpos($name, '-duplicator.bak')) {
+						if (preg_match($pattern, $name))
+							return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Gets the friendly type name
+	 *
+	 * @param DUPX_ServerConfigTypes $type		A valid DUPX_ServerConfigTypes
+	 *
+	 * @return string		The friendly enum name
+	 */
+	private static function getTypeName($type)
+	{
+		switch ($type) {
+			case DUPX_ServerConfigTypes::Apache:
+				return 'Apache';
+				break;
+			case DUPX_ServerConfigTypes::IIS:
+				return 'Microsoft IIS';
+				break;
+			case DUPX_ServerConfigTypes::WordFence:
+				return 'WordFence';
+				break;			
+
+			default:
+				throw new Exception('The param $type must be of type DUPX_ServerConfigTypes');
+				break;
+		}
+	}
+
+
 }
 
 DUPX_ServerConfig::init();

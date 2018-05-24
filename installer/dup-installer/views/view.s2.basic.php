@@ -252,11 +252,11 @@ $(document).ready(function ()
 
 	DUPX.resetParameters = function()
 	{
-		$("#dbhost").val('').attr('placeholder', '');
-		$("#dbname").val('').attr('placeholder', '');
-		$("#dbuser").val('').attr('placeholder', '');
-		$("#dbpass").val('').attr('placeholder', '');
-		DUPX.basicDBToggleImportMode('toggle');
+		$("#dbhost").val('').attr('placeholder', 'localhost');
+		$("#dbname").val('').attr('placeholder', 'new or existing database name');
+		$("#dbuser").val('').attr('placeholder', 'valid database user name');
+		$("#dbpass").val('').attr('placeholder', 'valid database user password');
+		DUPX.basicDBToggleImportMode('enable');
 	}
 
 	<?php if($is_import_mode) : ?>
