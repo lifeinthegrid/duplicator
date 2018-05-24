@@ -274,7 +274,6 @@ HTACCESS;
 			case DUPX_ServerConfigTypes::WordFence:
 				$pattern = '/.user.ini-.*-duplicator.bak/';
 				break;
-
 		}
 
 		if (is_dir(self::$rootPath)){
