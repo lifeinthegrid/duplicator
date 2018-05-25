@@ -104,6 +104,14 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
+				<tr>
+			<td class="feature-column">
+				<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/onedrive-48px.png" style='height:16px; width:16px'  />
+				<?php _e('Microsoft One Drive Storage', 'duplicator') ?>
+			</td>
+			<td class="check-column"></td>
+			<td class="check-column"><i class="fa fa-check"></i></td>
+		</tr>
 		<tr>
 			<td class="feature-column">
 				<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/ftp-64.png" style='height:16px; width:16px'  /> 

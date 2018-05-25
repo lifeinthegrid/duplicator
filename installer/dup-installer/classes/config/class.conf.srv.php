@@ -62,7 +62,7 @@ class DUPX_ServerConfig
 		if (self::$configMode  != 'IGNORE') {
 			//WORDFENCE: Only the WordFence file needs to be removed
 			//completly from setup to avoid any issues
-			self::removeFile(self::$confFileWordFence, 'WordFence');
+			self::removeFile(self::$confFileWordFence, DUPX_ServerConfigTypes::WordFence);
 		} else {
 			DUPX_Log::info("** CONFIG FILE SET TO IGNORE ALL CHANGES **");
 		}

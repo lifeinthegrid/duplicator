@@ -88,7 +88,7 @@ VIEW: STEP 4- INPUT -->
 				re-run installer at <a href="<?php echo $url_new_rtrim; ?>/installer.php">step 1</a>
 			</li>
 			<li>The .htaccess file was reset.  Re-save plugins that write to this file.</li>
-			<li>For additional help visit the <a href='http://snapcreek.com/support/docs/faqs/' target='_blank'>online FAQs</a>.</li>
+			<li>For additional help visit the <a href='https://snapcreek.com/duplicator/docs/' target='_blank'>online knowledge-base</a>.</li>
 		</ul>
 	</div>
 
