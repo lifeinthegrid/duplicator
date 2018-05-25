@@ -150,14 +150,29 @@ STEP 1
 		<tr>
 			<td>Config Files </td>
 			<td>
-				Inside the archive.zip will be a copy of the original .htaccess (Apache) or the web.config (IIS) files that were setup with your packaged site.
-				When the installer runs it will backup all <i>.htaccess, .user.ini, and web.config</i> files.   It will then create blank copies of
-				both files.   This is needed because the original files that were archived in most cases will not play well in the new environment.
+				When dealing with configuration files (.htaccess, web.config and .user.ini) the installer can apply different modes:
 				<br/><br/>
 
-				There are cases where users do not want these files over-written after the installer runs.  If that is the case then check the checkbox for this setting
-				to retain the original web server configuration files you had on the original site that was archived.  This is an advanced feature and requires that you
-				know how to properly configure either the .htaccess or web.config files on your server.
+				<b>Create New:</b> This is the default recommended option which will create either a new .htaccess or web.config file.  The new file is streamlined to help
+				guarantee no conflicts are created during install.   The config files generated with this mode will be simple and basic.  The WordFence .user.ini file if
+				present will be removed.
+				<br/><br/>
+
+				<b>Restore Original:</b> This option simply renames the htaccess.orig or web.config.orig	files to .htaccess or web.config. The *.orig files come from the original
+				web server where the package was built.	Please note this option will cause issues with the install process if the configuration files are not properly setup to
+				handle the new server environment.  This is an	advanced option and should only be used if you know how to properly configure your web servers configuration.
+				<br/><br/>
+
+				<b>Ignore All:</b> This option simply does nothing.  No files are backed up, nothing is renamed or created.  This advanced option assumes you already have your
+				config files setup and know how they should behave in the new environment.
+				<br/><br/>
+
+				<small>
+				<b>Additional Notes:</b>
+				Inside the archive.zip will be a copy of the original .htaccess (Apache) or the web.config (IIS) files that were setup with your packaged site.  They are both
+				renamed to htaccess.orig and web.config.orig.  Using either Create New or Restore Original if any existing config files exist for the extraction process they will
+				be backed up with a .bak extension.</small>
+				<br/><br/>
 			</td>
 		</tr>
 
