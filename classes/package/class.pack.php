@@ -99,14 +99,12 @@ final class DUP_PackageStatus
     const ARCVALIDATION = 60;
     const ARCDONE = 65;
     const COMPLETE = 100;
-
 }
 
 final class DUP_PackageType
 {
     const MANUAL    = 0;
     const SCHEDULED = 1;
-
 }
 
 abstract class DUP_PackageFileType
@@ -117,13 +115,12 @@ abstract class DUP_PackageFileType
     const SQL = 2;
     const Log = 3;
     //const Dump = 4;
-
 }
 
 /**
  * Class used to store and process all Package logic
  *
- * @package Dupicator\classes
+ * @package Duplicator\classes
  */
 class DUP_Package
 {
@@ -500,7 +497,7 @@ class DUP_Package
         }
     }
 
-     public function getLocalPackageFile($file_type, $only_default = false)
+     public function getLocalPackageFile($file_type)
     {        
         $file_path = null;
 
@@ -887,8 +884,6 @@ class DUP_Package
         $reflectionClass->getProperty($property)->setValue($package, $value);
         update_option(self::OPT_ACTIVE, $package);
     }
-
-
 
     /**
      * Sets the status to log the state of the build

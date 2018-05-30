@@ -96,514 +96,525 @@ TOOL BAR: STEPS -->
 <form id="form-duplicator" method="post" action="?page=duplicator">
 <?php wp_nonce_field('dup_form_opts', 'dup_form_opts_nonce_field', false); ?>
 
-    <!--  PROGRESS BAR -->
-    <div id="dup-progress-bar-area">
-        <div class="dup-progress-title"><?php _e('Building Package', 'duplicator'); ?> <i class="fa fa-cog fa-spin"></i> <span id="dup-progress-percent">0%</span></div>
-        <div id="dup-progress-bar"></div>
-        <b><?php _e('Please Wait...', 'duplicator'); ?></b><br/><br/>
-        <i><?php _e('Keep this window open and do not close during the build process.', 'duplicator'); ?></i><br/>
-        <i><?php _e('This may take several minutes to complete.', 'duplicator'); ?></i><br/>
-    </div>
+<!--  PROGRESS BAR -->
+<div id="dup-progress-bar-area">
+	<div class="dup-progress-title"><?php _e('Building Package', 'duplicator'); ?> <i class="fa fa-cog fa-spin"></i> <span id="dup-progress-percent">0%</span></div>
+	<div id="dup-progress-bar"></div>
+	<b><?php _e('Please Wait...', 'duplicator'); ?></b><br/><br/>
+	<i><?php _e('Keep this window open and do not close during the build process.', 'duplicator'); ?></i><br/>
+	<i><?php _e('This may take several minutes to complete.', 'duplicator'); ?></i><br/>
+</div>
 
-    <div id="dup-progress-area" class="dup-panel" style="display:none">
-        <div class="dup-panel-title"><b style="font-size:22px"><?php _e('Build Status', 'duplicator'); ?></b></div>
-        <div class="dup-panel-panel">
+<div id="dup-progress-area" class="dup-panel" style="display:none">
+	<div class="dup-panel-title"><b style="font-size:22px"><?php _e('Build Status', 'duplicator'); ?></b></div>
+	<div class="dup-panel-panel">
 
-            <!--  =========================
-            SUCCESS MESSAGE -->
-            <div id="dup-msg-success" style="display:none">
-                <div class="hdr-pack-complete">
-                    <i class="fa fa-check-square-o fa-lg"></i> <?php _e('Package Completed', 'duplicator'); ?>
-                </div>
+		<!--  =========================
+		SUCCESS MESSAGE -->
+		<div id="dup-msg-success" style="display:none">
+			<div class="hdr-pack-complete">
+				<i class="fa fa-check-square-o fa-lg"></i> <?php _e('Package Completed', 'duplicator'); ?>
+			</div>
 
-                <div class="dup-msg-success-stats">
-                        <!--b><?php _e('Name', 'duplicator'); ?>:</b> <span id="data-name-hash"></span><br/-->
-                    <b><?php _e('Process Time', 'duplicator'); ?>:</b> <span id="data-time"></span><br/>
-                </div><br/>
+			<div class="dup-msg-success-stats">
+					<!--b><?php _e('Name', 'duplicator'); ?>:</b> <span id="data-name-hash"></span><br/-->
+				<b><?php _e('Process Time', 'duplicator'); ?>:</b> <span id="data-time"></span><br/>
+			</div><br/>
 
-                <!-- DOWNLOAD FILES -->
-                <fieldset class="download-area">
-                    <legend>
-                        &nbsp; <?php _e("Download Files", 'duplicator') ?> <i class="fa fa-download"></i> &nbsp;
-                    </legend>
-                    <button id="dup-btn-installer" class="button button-primary button-large" title="<?php _e("Click to download installer file", 'duplicator') ?>">
-                        <i class="fa fa-bolt"></i> <?php _e("Installer", 'duplicator') ?> &nbsp;
-                    </button> &nbsp;
-                    <button id="dup-btn-archive" class="button button-primary button-large" title="<?php _e("Click to download archive file", 'duplicator') ?>">
-                        <i class="fa fa-file-archive-o"></i> <?php _e("Archive", 'duplicator') ?>
-                        <span id="dup-btn-archive-size" class="dup-btn-size"></span> &nbsp;
-                    </button>
-                    <div class="one-click-download">
-                        <a href="javascript:void(0)" id="dup-link-download-both" title="<?php _e("Click to download both files", 'duplicator') ?>"><i class="fa fa-bolt"></i><i class="fa fa-file-archive-o"></i><?php _e("One-Click Download",
-    'duplicator') ?></a>
-                        <sup><i class="fa fa-question-circle" style='font-size:11px'
-                                data-tooltip-title="<?php _e("One Click:", 'duplicator'); ?>"
-                                data-tooltip="<?php _e('Clicking this link will open both the installer and archive download prompts at the same time. '
-                                    .'On some browsers you may have to disable pop-up warnings on this domain for this to work correctly.', 'duplicator');
-?>">
-                            </i></sup>
-                    </div>
-                </fieldset>
+			<!-- DOWNLOAD FILES -->
+			<fieldset class="download-area">
+				<legend>
+					&nbsp; <?php _e("Download Files", 'duplicator') ?> <i class="fa fa-download"></i> &nbsp;
+				</legend>
+				<button id="dup-btn-installer" class="button button-primary button-large" title="<?php _e("Click to download installer file", 'duplicator') ?>">
+					<i class="fa fa-bolt"></i> <?php _e("Installer", 'duplicator') ?> &nbsp;
+				</button> &nbsp;
+				<button id="dup-btn-archive" class="button button-primary button-large" title="<?php _e("Click to download archive file", 'duplicator') ?>">
+					<i class="fa fa-file-archive-o"></i> <?php _e("Archive", 'duplicator') ?>
+					<span id="dup-btn-archive-size" class="dup-btn-size"></span> &nbsp;
+				</button>
+				<div class="one-click-download">
+					<a href="javascript:void(0)" id="dup-link-download-both" title="<?php _e("Click to download both files", 'duplicator') ?>">
+						<i class="fa fa-bolt"></i><i class="fa fa-file-archive-o"></i><?php _e("One-Click Download",   'duplicator') ?>
+					</a>
+					<sup><i class="fa fa-question-circle" style='font-size:11px'
+							data-tooltip-title="<?php _e("One Click:", 'duplicator'); ?>"
+							data-tooltip="<?php _e('Clicking this link will open both the installer and archive download prompts at the same time. '
+								.'On some browsers you may have to disable pop-up warnings on this domain for this to work correctly.', 'duplicator'); ?>">
+						</i></sup>
+				</div>
+			</fieldset>
 
-                <div class="dup-howto-exe">
-                    <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help&utm_campaign=duplicator_free#quick-040-q" target="_blank">
-<?php _e('How do I install this Package?', 'duplicator'); ?>
-                    </a>
-                </div>
+			<div class="dup-howto-exe">
+				<a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=package_built_install_help&utm_campaign=duplicator_free#quick-040-q" target="_blank">
+					<?php _e('How do I install this Package?', 'duplicator'); ?>
+				</a>
+			</div>
 
-                <p class="get-pro">
-<?php echo $rand_txt[array_rand($rand_txt, 1)]; ?>
-                </p>
-            </div>
+			<p class="get-pro">
+				<?php echo $rand_txt[array_rand($rand_txt, 1)]; ?>
+			</p>
+		</div>
 
-            <!--  =========================
-            ERROR MESSAGE -->
-            <div id="dup-msg-error" style="display:none; color:#000">
-                <div class="done-title"><i class="fa fa-chain-broken"></i> <?php _e('Host Build Interrupt', 'duplicator'); ?></div>
-                <b><?php _e('This server cannot complete the build due to setup constraints.', 'duplicator'); ?></b><br/>
-                <i><?php _e("To help get you past this hosts limitation consider these three options:", 'duplicator'); ?></i>
-                <br/><br/><br/>
+		<!--  =========================
+		ERROR MESSAGE -->
+		<div id="dup-msg-error" style="display:none; color:#000">
+			<div class="done-title"><i class="fa fa-chain-broken"></i> <?php _e('Host Build Interrupt', 'duplicator'); ?></div>
+			<b><?php _e('This server cannot complete the build due to setup constraints.', 'duplicator'); ?></b><br/>
+			<i><?php _e("To help get you past this hosts limitation consider these three options:", 'duplicator'); ?></i>
+			<br/><br/><br/>
 
-                <!-- OPTION 1: TRY AGAIN -->
-                <div class="dup-box">
-                    <div class="dup-box-title">
-                        <i class="fa fa-reply"></i>&nbsp;<?php _e('Try Again', 'duplicator'); ?>
-                        <div class="dup-box-arrow"><i class="fa fa-caret-down"></i></div>
-                    </div>
-                    <div class="dup-box-panel" id="dup-pack-build-try1" style="display:none">
-                        <b class="opt-title"><?php _e('OPTION 1:', 'duplicator'); ?></b><br/>
+			<!-- OPTION 1: TRY AGAIN -->
+			<div class="dup-box">
+				<div class="dup-box-title">
+					<i class="fa fa-reply"></i>&nbsp;<?php _e('Try Again', 'duplicator'); ?>
+					<div class="dup-box-arrow"><i class="fa fa-caret-down"></i></div>
+				</div>
+				<div class="dup-box-panel" id="dup-pack-build-try1" style="display:none">
+					<b class="opt-title"><?php _e('OPTION 1:', 'duplicator'); ?></b><br/>
 
-<?php _e('The first pass for reading files on some budget hosts is slow and may conflict with strict timeout settings '
-    .'set up by the hosting provider.  If this is the case its recommended to retry the build.  <i>If the problem persists then consider the other options below.</i>',
-    'duplicator');
-?><br/><br/>
+					<?php _e('The first pass for reading files on some budget hosts is slow and may conflict with strict timeout settings set up by the hosting provider.  '
+						. 'If this is the case its recommended to retry the build.  <i>If the problem persists then consider the other options below.</i>',
+						'duplicator');	?>
+					<br/><br/>
 
-                        <div style="text-align: center; margin: 10px">
-                            <input type="button" class="button-large button-primary" value="<?php _e('Retry Package Build', 'duplicator'); ?>" onclick="window.location = 'admin.php?page=duplicator&tab=new1&retry=1'" />
-                        </div>
+					<div style="text-align: center; margin: 10px">
+						<input type="button" class="button-large button-primary" value="<?php _e('Retry Package Build', 'duplicator'); ?>" onclick="window.location = 'admin.php?page=duplicator&tab=new1&retry=1'" />
+					</div>
 
-                        <div style="color:#777; padding: 15px 5px 5px 5px">
-                            <b> <?php _e('Notice', 'duplicator'); ?></b><br/>
-                            <?php
-                            printf('<b><i class="fa fa-folder-o"></i> %s %s</b> <br/> %s', __('Build Folder:'), DUPLICATOR_SSDIR_PATH_TMP,
-                                __("On some servers the build will continue to run in the background. To validate if a build is still running; open the 'tmp' folder above and see "
-                                    ."if the archive file is growing in size or check the main packages screen to see if the package completed. If it is not then your server "
-                                    ."has strict timeout constraints.", 'duplicator')
-                            );
-                            ?>
-                        </div>
-                    </div>
-                </div>
+					<div style="color:#777; padding: 15px 5px 5px 5px">
+						<b> <?php _e('Notice', 'duplicator'); ?></b><br/>
+						<?php
+						printf('<b><i class="fa fa-folder-o"></i> %s %s</b> <br/> %s', __('Build Folder:'), DUPLICATOR_SSDIR_PATH_TMP,
+							__("On some servers the build will continue to run in the background. To validate if a build is still running; open the 'tmp' folder above and see "
+								."if the archive file is growing in size or check the main packages screen to see if the package completed. If it is not then your server "
+								."has strict timeout constraints.", 'duplicator')
+						);
+						?>
+					</div>
+				</div>
+			</div>
 
-                <!-- OPTION 2: Two-Part Install -->
-                <div class="dup-box no-top">
-                    <div class="dup-box-title">
-                        <i class="fa fa-random"></i>&nbsp;<?php _e('Two-Part Install', 'duplicator'); ?>
-                        <div class="dup-box-arrow"><i class="fa fa-caret-down"></i></div>
-                    </div>
-                    <div class="dup-box-panel" id="dup-pack-build-try2" style="display:none">
-                        <b class="opt-title"><?php _e('OPTION 2:', 'duplicator'); ?></b><br/>
+			<!-- OPTION 2: Two-Part Install -->
+			<div class="dup-box no-top">
+				<div class="dup-box-title">
+					<i class="fa fa-random"></i>&nbsp;<?php _e('Two-Part Install', 'duplicator'); ?>
+					<div class="dup-box-arrow"><i class="fa fa-caret-down"></i></div>
+				</div>
+				<div class="dup-box-panel" id="dup-pack-build-try2" style="display:none">
+					<b class="opt-title"><?php _e('OPTION 2:', 'duplicator'); ?></b><br/>
 
-                        <?php _e('A two-part install minimizes server load and can avoid I/O and CPU issues encountered on some budget hosts. With this procedure you simply build a '
-                            .'\'database-only\' archive, manually move the website files, and then run the installer to complete the process.', 'duplicator');
-                        ?><br/><br/>
+					<?php _e('A two-part install minimizes server load and can avoid I/O and CPU issues encountered on some budget hosts. With this procedure you simply build a '
+						.'\'database-only\' archive, manually move the website files, and then run the installer to complete the process.', 'duplicator');
+					?><br/><br/>
 
-                        <b><?php _e('<i class="fa fa-file-text-o"></i> Overview', 'duplicator'); ?></b><br/>
-                                <?php _e('Please follow these steps:', 'duplicator'); ?><br/>
-                        <ol>
-                            <li><?php _e('Click the button below to go back to Step 1.', 'duplicator'); ?></li>
-                            <li><?php _e('On Step 1 the "Archive Only the Database" checkbox will be auto checked.', 'duplicator'); ?></li>
-                            <li>
-                                <?php _e('Complete the package build and follow the ', 'duplicator'); ?>
-<?php
-printf('%s "<a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=host_interupt_2partlink&utm_campaign=build_issues#quick-060-q" target="faq">%s</a>".',
-    __('', 'duplicator'), __('Quick Start Two-Part Install Instructions', 'duplicator'));
-?>
-                            </li>
-                        </ol> <br/>
+					<b><?php _e('<i class="fa fa-file-text-o"></i> Overview', 'duplicator'); ?></b><br/>
+							<?php _e('Please follow these steps:', 'duplicator'); ?><br/>
+					<ol>
+						<li><?php _e('Click the button below to go back to Step 1.', 'duplicator'); ?></li>
+						<li><?php _e('On Step 1 the "Archive Only the Database" checkbox will be auto checked.', 'duplicator'); ?></li>
+						<li>
+							<?php _e('Complete the package build and follow the ', 'duplicator'); ?>
+							<?php
+							printf('%s "<a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=host_interupt_2partlink&utm_campaign=build_issues#quick-060-q" target="faq">%s</a>".',
+								__('', 'duplicator'), __('Quick Start Two-Part Install Instructions', 'duplicator'));
+							?>
+						</li>
+					</ol> <br/>
 
-                        <div style="text-align: center; margin: 10px">
-                            <input type="checkbox" id="dup-two-part-check" onclick="Duplicator.Pack.ToggleTwoPart()">
-                            <label for="dup-two-part-check"><?php _e('Yes. I have read the above overview and would like to continue!', 'duplicator'); ?></label><br/><br/>
-                            <button id="dup-two-part-btn"  type="button" class="button-large button-primary" disabled="true" onclick="window.location = 'admin.php?page=duplicator&tab=new1&retry=2'">
-                                <i class="fa fa-random"></i> <?php _e('Start Two-Part Install Process', 'duplicator'); ?>
-                            </button>
-                        </div><br/>
-                    </div>
-                </div>
+					<div style="text-align: center; margin: 10px">
+						<input type="checkbox" id="dup-two-part-check" onclick="Duplicator.Pack.ToggleTwoPart()">
+						<label for="dup-two-part-check"><?php _e('Yes. I have read the above overview and would like to continue!', 'duplicator'); ?></label><br/><br/>
+						<button id="dup-two-part-btn"  type="button" class="button-large button-primary" disabled="true" onclick="window.location = 'admin.php?page=duplicator&tab=new1&retry=2'">
+							<i class="fa fa-random"></i> <?php _e('Start Two-Part Install Process', 'duplicator'); ?>
+						</button>
+					</div><br/>
+				</div>
+			</div>
 
-                <!-- OPTION 3: DIAGNOSE SERVER -->
-                <div class="dup-box no-top">
-                    <div class="dup-box-title">
-                        <i class="fa fa-cog"></i>&nbsp;<?php _e('Configure Server', 'duplicator'); ?>
-                        <div class="dup-box-arrow"><i class="fa fa-caret-down"></i></div>
-                    </div>
-                    <div class="dup-box-panel" id="dup-pack-build-try3" style="display:none">
-                        <b class="opt-title"><?php _e('OPTION 3:', 'duplicator'); ?></b><br/>
-<?php _e('This option is available on some hosts that allow for users to adjust server configurations.  With this option you will be directed to an FAQ page that will show '
-    .'various recommendations you can take to improve/unlock constraints set up on this server.', 'duplicator');
-?><br/><br/>
+			<!-- OPTION 3: DIAGNOSE SERVER -->
+			<div class="dup-box no-top">
+				<div class="dup-box-title">
+					<i class="fa fa-cog"></i>&nbsp;<?php _e('Configure Server', 'duplicator'); ?>
+					<div class="dup-box-arrow"><i class="fa fa-caret-down"></i></div>
+				</div>
+				<div class="dup-box-panel" id="dup-pack-build-try3" style="display:none">
+					<b class="opt-title"><?php _e('OPTION 3:', 'duplicator'); ?></b><br/>
+					<?php _e('This option is available on some hosts that allow for users to adjust server configurations.  With this option you will be directed to an FAQ page that will show '
+						.'various recommendations you can take to improve/unlock constraints set up on this server.', 'duplicator');
+					?><br/><br/>
 
-                        <div style="text-align: center; margin: 10px; font-size:16px; font-weight: bold">
-                            <a href="https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=host_interupt_diagnosebtn&utm_campaign=build_issues#faq-trouble-100-q" target="_blank">
-                                [<?php _e('Diagnose Server Setup', 'duplicator'); ?>]
-                            </a>
-                        </div>
+					<div style="text-align: center; margin: 10px; font-size:16px; font-weight: bold">
+						<a href="https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=host_interupt_diagnosebtn&utm_campaign=build_issues#faq-trouble-100-q" target="_blank">
+							[<?php _e('Diagnose Server Setup', 'duplicator'); ?>]
+						</a>
+					</div>
 
-                        <b><?php _e('RUNTIME DETAILS', 'duplicator'); ?>:</b><br/>
-                        <div class="dup-msg-error-area">
-                            <div id="dup-msg-error-response-time">
-                                <span class="label"><?php _e("Allowed Runtime:", 'duplicator'); ?></span>
-                                <span class="data"></span>
-                            </div>
-                            <div id="dup-msg-error-response-php">
-                                <span class="label"><?php _e("PHP Max Execution", 'duplicator'); ?></span><br/>
-                                <span class="data sub-data">
-                                    <span class="label"><?php _e("Time", 'duplicator'); ?>:</span>
-<?php
-$try_value   = @ini_get('max_execution_time');
-$try_update  = set_time_limit(0);
-echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#ini.max-execution-time' target='_blank'> (default)</a>";
-?>
-                                    <i class="fa fa-question-circle data-size-help"
-                                       data-tooltip-title="<?php _e("PHP Max Execution Time", 'duplicator'); ?>"
-                                       data-tooltip="<?php _e('This value is represented in seconds. A value of 0 means no timeout limit is set for PHP.',
-    'duplicator'); ?>"></i>
-                                </span><br/>
+					<b><?php _e('RUNTIME DETAILS', 'duplicator'); ?>:</b><br/>
+					<div class="dup-msg-error-area">
+						<div id="dup-msg-error-response-time">
+							<span class="label"><?php _e("Allowed Runtime:", 'duplicator'); ?></span>
+							<span class="data"></span>
+						</div>
+						<div id="dup-msg-error-response-php">
+							<span class="label"><?php _e("PHP Max Execution", 'duplicator'); ?></span><br/>
+							<span class="data sub-data">
+								<span class="label"><?php _e("Time", 'duplicator'); ?>:</span>
+								<?php
+								$try_value   = @ini_get('max_execution_time');
+								$try_update  = set_time_limit(0);
+								echo "$try_value <a href='http://www.php.net/manual/en/info.configuration.php#ini.max-execution-time' target='_blank'> (default)</a>";
+								?>
+								<i class="fa fa-question-circle data-size-help"
+								   data-tooltip-title="<?php _e("PHP Max Execution Time", 'duplicator'); ?>"
+								   data-tooltip="<?php _e('This value is represented in seconds. A value of 0 means no timeout limit is set for PHP.',    'duplicator'); ?>"></i>
+							</span><br/>
 
-                                <span class="data sub-data">
-                                    <span class="label"><?php _e("Mode", 'duplicator'); ?>:</span>
-                                       <?php
-                                       $try_update  = $try_update ? 'is dynamic' : 'value is fixed';
-                                       echo "{$try_update}";
-                                       ?>
-                                    <i class="fa fa-question-circle data-size-help"
-                                       data-tooltip-title="<?php _e("PHP Max Execution Mode", 'duplicator'); ?>"
-                                       data-tooltip="<?php
-                                       _e('If the value is [dynamic] then its possible for PHP to run longer than the default.  '
-                                           .'If the value is [fixed] then PHP will not be allowed to run longer than the default. <br/><br/> If this value is larger than the [Allowed Runtime] above then '
-                                           .'the web server has been enabled with a timeout cap and is overriding the PHP max time setting.', 'duplicator');
-                                       ?>"></i>
-                                </span>
-                            </div>
+							<span class="data sub-data">
+								<span class="label"><?php _e("Mode", 'duplicator'); ?>:</span>
+								   <?php
+								   $try_update  = $try_update ? 'is dynamic' : 'value is fixed';
+								   echo "{$try_update}";
+								   ?>
+								<i class="fa fa-question-circle data-size-help"
+								   data-tooltip-title="<?php _e("PHP Max Execution Mode", 'duplicator'); ?>"
+								   data-tooltip="<?php
+								   _e('If the value is [dynamic] then its possible for PHP to run longer than the default.  '
+									   .'If the value is [fixed] then PHP will not be allowed to run longer than the default. <br/><br/> If this value is larger than the [Allowed Runtime] above then '
+									   .'the web server has been enabled with a timeout cap and is overriding the PHP max time setting.', 'duplicator');
+								   ?>"></i>
+							</span>
+						</div>
 
-                            <div id="dup-msg-error-response-status">
-                                <span class="label"><?php _e("Server Status:", 'duplicator'); ?></span>
-                                <span class="data"></span>
-                            </div>
-                            <div id="dup-msg-error-response-text">
-                                <span class="label"><?php _e("Error Message:", 'duplicator'); ?></span><br/>
-                                <span class="data"></span>
-                            </div>
-                        </div>
+						<div id="dup-msg-error-response-status">
+							<span class="label"><?php _e("Server Status:", 'duplicator'); ?></span>
+							<span class="data"></span>
+						</div>
+						<div id="dup-msg-error-response-text">
+							<span class="label"><?php _e("Error Message:", 'duplicator'); ?></span><br/>
+							<span class="data"></span>
+						</div>
+					</div>
 
-                        <!-- LOGS -->
-                        <div id="dup-logs">
-                            <br/>
-                            <i class="fa fa-list-alt"></i>
-                            <a href='javascript:void(0)' style="color:#000" onclick='Duplicator.OpenLogWindow(true)'><?php _e('Read Package Log File',
-                                           'duplicator'); ?></a>
-                            <br/><br/>
-                        </div>
-                    </div>
-                </div>
-                <br/><br/><br/>
-            </div>
+					<!-- LOGS -->
+					<div id="dup-logs">
+						<br/>
+						<i class="fa fa-list-alt"></i>
+						<a href='javascript:void(0)' style="color:#000" onclick='Duplicator.OpenLogWindow(true)'><?php _e('Read Package Log File',
+									   'duplicator'); ?></a>
+						<br/><br/>
+					</div>
+				</div>
+			</div>
 
-        </div>
-    </div>
+			<!-- OPTION 4: Try DupArchive Engine -->
+			<div class="dup-box no-top">
+				<div class="dup-box-title">
+					<i class="fa fa-check-circle-o"></i>&nbsp;<?php _e('Try DupArchive', 'duplicator'); ?>
+					<div class="dup-box-arrow"><i class="fa fa-caret-down"></i></div>
+				</div>
+				<div class="dup-box-panel" id="dup-pack-build-try2" style="display:none">
+					<b class="opt-title"><?php _e('OPTION 4:', 'duplicator'); ?></b><br/>
 
+					<?php _e('Enable the DupArchive format which is specific to Duplicator and is designed around performance and scalability. '
+						. 'Many budget hosting providers have very strict timeouts and CPU/IO constraints configured into their servers.  DupArchive is '
+						. 'designed	to help get around these server constraints so that users can build larger packages.', 'duplicator'); ?>
+					<br/><br/>
+
+					<b><?php _e('<i class="fa fa-file-text-o"></i> Overview', 'duplicator'); ?></b><br/>
+					<?php _e('Please follow these steps:', 'duplicator'); ?><br/>
+					<ol>
+						<li>
+							<?php _e('Goto Duplicator &gt; Settings &gt; Packages Tab &gt; Archive Engine &gt;', 'duplicator'); ?>
+							<a href="admin.php?page=duplicator-settings&tab=package"><?php _e('Enable DupArchive', 'duplicator'); ?></a>
+						</li>
+						<li><?php _e('Try and build a new package again using the new engine format.', 'duplicator'); ?></li>
+					</ol> <br/>
+
+
+					<small style="font-style: italic">
+						<?php _e('Note: The DupArchive engine will generate an archive.daf file. This file is very simular to a .zip except that it can only be extracted by the '
+							. 'installer.php file or the', 'duplicator'); ?>
+						<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-052-q" target="_blank"><?php _e('commandline extraction tool'); ?></a>.
+					</small>
+				</div>
+			</div>
+
+
+			<br/><br/><br/>
+		</div>
+
+	</div>
+</div>
 </form>
 
 <script>
-    jQuery(document).ready(function ($) {
+jQuery(document).ready(function ($)
+{
 
-        Duplicator.Pack.DupArchiveFailureCount = 0;
-        Duplicator.Pack.DupArchiveMaxRetries = 10;
-        Duplicator.Pack.DupArchiveRetryDelayInMs = 8000;
-        Duplicator.Pack.DupArchiveStartTime = new Date().getTime();
-        Duplicator.Pack.StatusFrequency = 8000;
+	Duplicator.Pack.DupArchiveFailureCount = 0;
+	Duplicator.Pack.DupArchiveMaxRetries = 10;
+	Duplicator.Pack.DupArchiveRetryDelayInMs = 8000;
+	Duplicator.Pack.DupArchiveStartTime = new Date().getTime();
+	Duplicator.Pack.StatusFrequency = 8000;
 
-        /*	----------------------------------------
-         *	METHOD: Performs Ajax post to create a new package
-         *	Timeout (10000000 = 166 minutes)  */
-        Duplicator.Pack.CreateZip = function () {
+	/*	----------------------------------------
+	 *	METHOD: Performs Ajax post to create a new package
+	 *	Timeout (10000000 = 166 minutes)  */
+	Duplicator.Pack.CreateZip = function ()
+	{
+		var startTime;
+		var data = {action: 'duplicator_package_build', nonce: '<?php echo $zip_build_nonce; ?>'}
+		var statusInterval = setInterval(Duplicator.Pack.GetActivePackageStatus, Duplicator.Pack.StatusFrequency);
 
-            var startTime;
+		$.ajax({
+			type: "POST",
+			url: ajaxurl,
+			dataType: "json",
+			timeout: 10000000,
+			data: data,
+			beforeSend: function () {
+				startTime = new Date().getTime();
+			},
+			complete: function () {
+				Duplicator.Pack.PostTransferCleanup(statusInterval, startTime);
+			},
+			success: function (data) {
+				Duplicator.Pack.WireDownloadLinks(data);
+			},
+			error: function (jqxhr) {
+				$('#dup-progress-bar-area').hide();
+				$('#dup-progress-area, #dup-msg-error').show(200);
+				var status = jqxhr.status + ' -' + data.statusText;
+				var response = (jqxhr.responseText != undefined && jqxhr.responseText.trim().length > 1) ? jqxhr.responseText.trim() : 'No client side error - see package log file';
+				$('#dup-msg-error-response-status span.data').html(status)
+				$('#dup-msg-error-response-text span.data').html(response);
+				console.log(jqxhr);
+			}
+		});
+		return false;
+	}
 
-            var data = {action: 'duplicator_package_build', nonce: '<?php echo $zip_build_nonce; ?>'}
+	/*	----------------------------------------
+	 *	METHOD: Performs Ajax post to create a new DupArchive-based package */
+	Duplicator.Pack.CreateDupArchive = function ()
+	{
+		console.log('Duplicator.Pack.CreateDupArchive');
+		var data = {action: 'duplicator_duparchive_package_build', nonce: '<?php echo $duparchive_build_nonce; ?>'}
+		var statusInterval = setInterval(Duplicator.Pack.GetActivePackageStatus, Duplicator.Pack.StatusFrequency);
 
-            var statusInterval = setInterval(Duplicator.Pack.GetActivePackageStatus, Duplicator.Pack.StatusFrequency);
-            
-            $.ajax({
-                type: "POST",
-                url: ajaxurl,
-                dataType: "json",
-                timeout: 10000000,
-                data: data,
-                beforeSend: function () {
-                    startTime = new Date().getTime();
-                },
-                complete: function () {
-                    Duplicator.Pack.PostTransferCleanup(statusInterval, startTime);
-                },
-                success: function (data) {
-                    Duplicator.Pack.WireDownloadLinks(data);
-                },
-                error: function (jqxhr) {
-                    $('#dup-progress-bar-area').hide();
-                    $('#dup-progress-area, #dup-msg-error').show(200);
-                    var status = jqxhr.status + ' -' + data.statusText;
-                    var response = (jqxhr.responseText != undefined && jqxhr.responseText.trim().length > 1) ? jqxhr.responseText.trim() : 'No client side error - see package log file';
-                    $('#dup-msg-error-response-status span.data').html(status)
-                    $('#dup-msg-error-response-text span.data').html(response);
-                    console.log(jqxhr);
-                }
-            });
-            return false;
-        }
-       
-        /*	----------------------------------------
-         *	METHOD: Performs Ajax post to create a new DupArchive-based package */
-        Duplicator.Pack.CreateDupArchive = function () {
+		$.ajax({
+			type: "POST",
+			timeout: <?php echo DUP_DupArchive::WorkerTimeInSec * 2000 ?>, // Double worker time and convert to ms
+			dataType: "json",
+			url: ajaxurl,
+			data: data,
+			complete: function () {
+				Duplicator.Pack.PostTransferCleanup(statusInterval, Duplicator.Pack.DupArchiveStartTime);
+			},
+			success: function (data) {
 
-            console.log('Duplicator.Pack.CreateDupArchive');
+				console.log("CreateDupArchive:AJAX success. Data equals:");
 
-            var data = {action: 'duplicator_duparchive_package_build', nonce: '<?php echo $duparchive_build_nonce; ?>'}
+				console.log(data);
+				// DATA FIELDS
+				// archive_offset, archive_size, failures, file_index, is_done, timestamp
 
-            var statusInterval = setInterval(Duplicator.Pack.GetActivePackageStatus, Duplicator.Pack.StatusFrequency);
-            
-            $.ajax({
-                type: "POST",
-                timeout: <?php echo DUP_DupArchive::WorkerTimeInSec * 2000 ?>, // Double worker time and convert to ms
-                dataType: "json",
-                url: ajaxurl,
-                data: data,
-                complete: function () {
-                    Duplicator.Pack.PostTransferCleanup(statusInterval, Duplicator.Pack.DupArchiveStartTime);
-                },
-                success: function (data) {
+				if ((data != null) && (typeof (data) != 'undefined') && ((data.status == 1) || (data.status == 3) || (data.status == 4))) {
 
-                    console.log("CreateDupArchive:AJAX success. Data equals:");
+					Duplicator.Pack.DupArchiveFailureCount = 0;
 
-                    console.log(data);
-                    // DATA FIELDS
-                    // archive_offset, archive_size, failures, file_index, is_done, timestamp
+					// Status = 1 means complete, 4 means more to process
+					console.log("CreateDupArchive:Passed");
+					var criticalFailureText = Duplicator.Pack.GetFailureText(data.failures, true);
 
-                    if ((data != null) && (typeof (data) != 'undefined') && ((data.status == 1) || (data.status == 3) || (data.status == 4))) {
+					if (data.failures.length > 0) {
+						console.log("CreateDupArchive:There are failures present. (" + data.failures.length) + ")";
+					}
 
-                        Duplicator.Pack.DupArchiveFailureCount = 0; 
-                    
-                        // Status = 1 means complete, 4 means more to process
-                        console.log("CreateDupArchive:Passed");
+					if ((criticalFailureText === '') && (data.status != 3)) {
+						console.log("CreateDupArchive:No critical failures");
+						if (data.status == 1) {
 
-                        var criticalFailureText = Duplicator.Pack.GetFailureText(data.failures, true);
+							// Don't stop for non-critical failures - just display those at the end TODO: put these in the log not popup
+							console.log("CreateDupArchive:archive has completed");
+							if (data.failures.length > 0) {
 
-                        if (data.failures.length > 0) {
-                            console.log("CreateDupArchive:There are failures present. (" + data.failures.length) + ")";
-                        }
+								console.log(data.failures);
+								var errorMessage = "CreateDupArchive:Problems during package creation. These may be non-critical so continue with install.\n------\n";
+								var len = data.failures.length;
 
-                        if ((criticalFailureText === '') && (data.status != 3)) {
-                            console.log("CreateDupArchive:No critical failures");
-                            if (data.status == 1) {
+								for (var j = 0; j < len; j++) {
+									failure = data.failures[j];
+									errorMessage += failure.subject + ":" + failure.description + "\n";
+								}
+								alert(errorMessage);
+							}
 
-                                // Don't stop for non-critical failures - just display those at the end TODO: put these in the log not popup
+						   Duplicator.Pack.WireDownloadLinks(data);
 
-                                console.log("CreateDupArchive:archive has completed");
-                                if (data.failures.length > 0) {
+						} else {
+							// data.Status == 4
+							console.log('CreateDupArchive:Archive not completed so continue ping DAWS in 500');
+							setTimeout(Duplicator.Pack.CreateDupArchive, 500);
+						}
+					} else {
 
-                                    console.log(data.failures);
-                                    var errorMessage = "CreateDupArchive:Problems during package creation. These may be non-critical so continue with install.\n------\n";
-                                    var len = data.failures.length;
+						console.log("CreateDupArchive:critical failures present");
+						// If we get a critical failure it means it's something we can't recover from so no purpose in retrying, just fail immediately.
+						var errorString = 'Error Processing Step 1<br/>';
+						errorString += criticalFailureText;
+						Duplicator.Pack.DupArchiveProcessingFailed(errorString);
+					}
+				} else {
+					// data is null or Status is warn or fail
+					var errorString = '';
+					if(data == null) {
+						errorString = "Data returned from web service is null.";
+					}
+					else {
+						var errorString = '';
+						if(data.failures.length > 0) {
+							errorString += Duplicator.Pack.GetFailureText(data.failures, false);
+						}
+					}
+					Duplicator.Pack.HandleDupArchiveInterruption(errorString);
+				}
+			},
+			error: function (jqxhr, textStatus) {
+				console.log('DupArchive AJAX error!');
+				console.log("jqHr:");
+				console.log(jqxhr);
+				console.log("textStatus:");
+				console.log(textStatus);
+				Duplicator.Pack.HandleDupArchiveInterruption(jqxhr.responseText);
+			}
+		});
+	};
 
-                                    for (var j = 0; j < len; j++) {
-                                        failure = data.failures[j];
-                                        errorMessage += failure.subject + ":" + failure.description + "\n";
-                                    }
+	/*	----------------------------------------
+	 *	METHOD: Retrieves package status and updates UI with build percentage */
+	Duplicator.Pack.GetActivePackageStatus = function ()
+	{
+		var data = {action: 'DUP_CTRL_Package_getActivePackageStatus'}
+		console.log('####Duplicator.Pack.GetActivePackageStatus');
 
-                                    alert(errorMessage);
-                                }
+		$.ajax({
+			type: "POST",
+			url: ajaxurl,
+			dataType: "json",
+			timeout: 10000000,
+			data: data,
+			success: function (data) {
 
-                               Duplicator.Pack.WireDownloadLinks(data);
+			if(data.report.status == 1) {
+					$('#dup-progress-percent').html(data.payload.status + "%");
+				} else {
+					console.log('Error retrieving build status');
+					console.log(data);
+				}
+			},
+			error: function (jqxhr) {
+				console.log('Error retrieving build status');
+				console.log(jqxhr);
+			}
+		});
+		return false;
+	}
 
-                            } else {
-                                // data.Status == 4
-                                console.log('CreateDupArchive:Archive not completed so continue ping DAWS in 500');
-                                setTimeout(Duplicator.Pack.CreateDupArchive, 500);
-                            }
-                        } else {
+	Duplicator.Pack.PostTransferCleanup = function(statusInterval, startTime)
+	{
+		clearInterval(statusInterval);
+		endTime = new Date().getTime();
+		var millis = (endTime - startTime);
+		var minutes = Math.floor(millis / 60000);
+		var seconds = ((millis % 60000) / 1000).toFixed(0);
+		var status = minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+		$('#dup-msg-error-response-time span.data').html(status);
+		$('#dup-create-area-nolink').hide();
+		$('#dup-create-area-link').show();
+	};
 
-                            console.log("CreateDupArchive:critical failures present");
-                            // If we get a critical failure it means it's something we can't recover from so no purpose in retrying, just fail immediately.
-                            var errorString = 'Error Processing Step 1<br/>';
+	Duplicator.Pack.WireDownloadLinks = function(data)
+	{
+		var pack = data.package;
+		var archive_name = pack.Archive.File;
+		var archive_url = "<?php echo DUPLICATOR_SSDIR_URL; ?>" + "/" + archive_name;
 
-                            errorString += criticalFailureText;
+		$('#dup-progress-bar-area').hide();
+		$('#dup-progress-area, #dup-msg-success').show(300);
 
-                            Duplicator.Pack.DupArchiveProcessingFailed(errorString);
-                        }
-                    } else {
-                        // data is null or Status is warn or fail
+		$('#dup-btn-archive-size').append('&nbsp; (' + data.archiveSize + ')')
+		$('#data-name-hash').text(pack.NameHash || 'error read');
+		$('#data-time').text(data.runtime || 'unable to read time');
 
-                        var errorString = '';
+		//Wire Up Downloads
+		$('#dup-btn-installer').click(function() { Duplicator.Pack.DownloadPackageFile(0, pack.ID); return false});
+		$('#dup-btn-archive').click(function() { Duplicator.Pack.DownloadFile(archive_name, archive_url); return false});
 
-                        if(data == null) {
+		$('#dup-link-download-both').on("click", function () {
+			Duplicator.Pack.DownloadFile(archive_name, archive_url);
+			Duplicator.Pack.DownloadPackageFile(0, pack.ID);
+			return false;
+		});
+	};
 
-                            errorString = "Data returned from web service is null.";
-                        }
-                        else {                            
-                            var errorString = '';
+	Duplicator.Pack.HandleDupArchiveInterruption = function (errorText)
+	{
+		Duplicator.Pack.DupArchiveFailureCount++;
 
-                            if(data.failures.length > 0) {
-                                errorString += Duplicator.Pack.GetFailureText(data.failures, false);
-                            }
-                        }
+		if (Duplicator.Pack.DupArchiveFailureCount <= Duplicator.Pack.DupArchiveMaxRetries) {
+			console.log("Failure count:" + Duplicator.Pack.DupArchiveFailureCount);
+			// / rsr todo don’t worry about this right now Duplicator.Pack.DupArchiveThrottleDelay = 9;	// Equivalent of 'low' server throttling (ms)
+			console.log('Relaunching in ' + Duplicator.Pack.DupArchiveRetryDelayInMs);
+			setTimeout(Duplicator.Pack.CreateDupArchive, Duplicator.Pack.DupArchiveRetryDelayInMs);
+		} else {
+			console.log('Too many failures.' + errorText);
+			// Processing problem
+			Duplicator.Pack.DupArchiveProcessingFailed("Too many retries when building DupArchive package. " + errorText);
+		}
+	};
 
-                        Duplicator.Pack.HandleDupArchiveInterruption(errorString);
-                    }
-                },
-                error: function (jqxhr, textStatus) {
-                    console.log('DupArchive AJAX error!');
-                    console.log("jqHr:");
-                    console.log(jqxhr);
-                    console.log("textStatus:");
-                    console.log(textStatus);
-                    Duplicator.Pack.HandleDupArchiveInterruption(jqxhr.responseText);
-                }
-            });
-        };
-        
-        /*	----------------------------------------
-         *	METHOD: Retrieves package status and updates UI with build percentage */
-        Duplicator.Pack.GetActivePackageStatus = function () {
+	Duplicator.Pack.DupArchiveProcessingFailed = function (errorText)
+	{
+		$('#dup-progress-bar-area').hide();
+		$('#dup-progress-area, #dup-msg-error').show(200);
+		$('#dup-msg-error-response-text span.data').html(errorText);
+	};
 
-            var data = {action: 'DUP_CTRL_Package_getActivePackageStatus'}
+	Duplicator.Pack.GetFailureText = function (failures, onlyCritical)
+	{
+		var retVal = '';
 
-            console.log('####Duplicator.Pack.GetActivePackageStatus');
-            
-            $.ajax({
-                type: "POST",
-                url: ajaxurl,
-                dataType: "json",
-                timeout: 10000000,
-                data: data,
-                success: function (data) {
+		if ((failures !== null) && (typeof failures !== 'undefined')) {
+			var len = failures.length;
 
-                if(data.report.status == 1) {
-                        $('#dup-progress-percent').html(data.payload.status + "%");
-                    } else {
-                        console.log('Error retrieving build status');
-                        console.log(data);
-                    }
-                },
-                error: function (jqxhr) {
-                    console.log('Error retrieving build status');
-                    console.log(jqxhr);
-                }
-            });
-            return false;
-        }
-        
-        Duplicator.Pack.PostTransferCleanup = function(statusInterval, startTime) {
-            clearInterval(statusInterval);
-            endTime = new Date().getTime();
-            var millis = (endTime - startTime);
-            var minutes = Math.floor(millis / 60000);
-            var seconds = ((millis % 60000) / 1000).toFixed(0);
-            var status = minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-            $('#dup-msg-error-response-time span.data').html(status);
-            $('#dup-create-area-nolink').hide();
-            $('#dup-create-area-link').show();
-        };
+			for (var j = 0; j < len; j++) {
+				failure = failures[j];
+				if (!onlyCritical || failure.isCritical) {
+					retVal += failure.description;
+					retVal += "<br/>";
+				}
+			}
+		}
+		return retVal;
+	};
 
-        Duplicator.Pack.WireDownloadLinks = function(data) {
+	Duplicator.Pack.ToggleTwoPart = function () {
+		var $btn = $('#dup-two-part-btn');
+		if ($('#dup-two-part-check').is(':checked')) {
+			$btn.removeAttr("disabled");
+		} else {
+			$btn.attr("disabled", true);
+		}
+	};
+	//Page Init:
+	Duplicator.UI.AnimateProgressBar('dup-progress-bar');
 
-            var pack = data.package;
-            var archive_name = pack.Archive.File;
-            var archive_url = "<?php echo DUPLICATOR_SSDIR_URL; ?>" + "/" + archive_name;
-                
-            $('#dup-progress-bar-area').hide();
-            $('#dup-progress-area, #dup-msg-success').show(300);
-
-            $('#dup-btn-archive-size').append('&nbsp; (' + data.archiveSize + ')')
-            $('#data-name-hash').text(pack.NameHash || 'error read');
-            $('#data-time').text(data.runtime || 'unable to read time');
-
-            //Wire Up Downloads
-            $('#dup-btn-installer').click(function() { Duplicator.Pack.DownloadPackageFile(0, pack.ID); return false});
-            $('#dup-btn-archive').click(function() { Duplicator.Pack.DownloadFile(archive_name, archive_url); return false});
-
-            $('#dup-link-download-both').on("click", function () {
-
-                Duplicator.Pack.DownloadFile(archive_name, archive_url);
-
-                Duplicator.Pack.DownloadPackageFile(0, pack.ID);
-
-                return false;
-            });
-        };
-
-        Duplicator.Pack.HandleDupArchiveInterruption = function (errorText)
-        {
-            Duplicator.Pack.DupArchiveFailureCount++;
-
-            if (Duplicator.Pack.DupArchiveFailureCount <= Duplicator.Pack.DupArchiveMaxRetries) {
-
-                console.log("Failure count:" + Duplicator.Pack.DupArchiveFailureCount);
-
-                // / rsr todo don’t worry about this right now Duplicator.Pack.DupArchiveThrottleDelay = 9;	// Equivalent of 'low' server throttling (ms)
-                console.log('Relaunching in ' + Duplicator.Pack.DupArchiveRetryDelayInMs);
-                setTimeout(Duplicator.Pack.CreateDupArchive, Duplicator.Pack.DupArchiveRetryDelayInMs);
-            } else {
-                console.log('Too many failures.' + errorText);
-
-                // Processing problem
-                Duplicator.Pack.DupArchiveProcessingFailed("Too many retries when building DupArchive package. " + errorText);
-            }
-        };
-
-        Duplicator.Pack.DupArchiveProcessingFailed = function (errorText)
-        {
-            $('#dup-progress-bar-area').hide();
-            $('#dup-progress-area, #dup-msg-error').show(200);
-            $('#dup-msg-error-response-text span.data').html(errorText);
-        };
-
-        Duplicator.Pack.GetFailureText = function (failures, onlyCritical)
-        {
-            var retVal = '';
-
-            if ((failures !== null) && (typeof failures !== 'undefined')) {
-                var len = failures.length;
-
-                for (var j = 0; j < len; j++) {
-                    failure = failures[j];
-
-                    if (!onlyCritical || failure.isCritical) {
-                        retVal += failure.description;
-                        retVal += "<br/>";
-                    }
-                }
-            }
-
-            return retVal;
-        };
-
-        Duplicator.Pack.ToggleTwoPart = function () {
-            var $btn = $('#dup-two-part-btn');
-            if ($('#dup-two-part-check').is(':checked')) {
-                $btn.removeAttr("disabled");
-            } else {
-                $btn.attr("disabled", true);
-            }
-        };
-        //Page Init:
-        Duplicator.UI.AnimateProgressBar('dup-progress-bar');
-
-		<?php if (DUP_Settings::Get('archive_build_mode') == DUP_Archive_Build_Mode::ZipArchive): ?>
-			Duplicator.Pack.CreateZip();
-		<?php else: ?>
-			Duplicator.Pack.CreateDupArchive();
-		<?php endif; ?>
-    });
-
+	<?php if (DUP_Settings::Get('archive_build_mode') == DUP_Archive_Build_Mode::ZipArchive): ?>
+		Duplicator.Pack.CreateZip();
+	<?php else: ?>
+		Duplicator.Pack.CreateDupArchive();
+	<?php endif; ?>
+});
 </script>

@@ -4,6 +4,7 @@ require_once(DUPLICATOR_PLUGIN_PATH.'/classes/utilities/class.u.scancheck.php');
 require_once(DUPLICATOR_PLUGIN_PATH.'/classes/utilities/class.u.json.php');
 require_once(DUPLICATOR_PLUGIN_PATH.'/classes/package/class.pack.php');
 require_once(DUPLICATOR_PLUGIN_PATH.'/classes/package/duparchive/class.pack.archive.duparchive.state.create.php');
+/* @var $package DUP_Package */
 
 /**
  *  DUPLICATOR_PACKAGE_SCAN
@@ -14,7 +15,6 @@ require_once(DUPLICATOR_PLUGIN_PATH.'/classes/package/duparchive/class.pack.arch
  */
 function duplicator_package_scan()
 {
-
     header('Content-Type: application/json;');
     DUP_Util::hasCapability('export');
 
@@ -42,11 +42,9 @@ function duplicator_package_scan()
  */
 function duplicator_package_build()
 {
-
     DUP_Util::hasCapability('export');
 
     check_ajax_referer('duplicator_package_build', 'nonce');
-
     header('Content-Type: application/json');
 
     @set_time_limit(0);
@@ -55,11 +53,9 @@ function duplicator_package_build()
     DUP_Util::initSnapshotDirectory();
 
     $Package = DUP_Package::getActive();
-    
     $Package->save('zip');
 
     DUP_Settings::Set('active_package_id', $Package->ID);
-
     DUP_Settings::Save();
 
     if (!is_readable(DUPLICATOR_SSDIR_PATH_TMP."/{$Package->ScanFile}")) {
@@ -79,14 +75,13 @@ function duplicator_package_build()
     $json_response   = json_encode($json);
 
     //Simulate a Host Build Interrupt
-   // die(0);
+	//die(0);
 
     error_reporting($errLevel);
     die($json_response);
 }
 
 /**
- *  duplicator_duparchive_package_build
  *  Returns the package result status
  *
  *  @return json   JSON object of package results
@@ -110,13 +105,9 @@ function duplicator_duparchive_package_build()
     if ($active_package_id == -1) {
 
         $package = DUP_Package::getActive();
-
         $package->save('daf');
-
         DUP_Log::TraceObject("saving active package as new id={$package->ID}", package);
-
         DUP_Settings::Set('active_package_id', $package->ID);
-
         DUP_Settings::Save();
     } else {
 
@@ -141,20 +132,14 @@ function duplicator_duparchive_package_build()
         catch(Exception $ex) {
             Dup_Log::Trace('#### caught exception');
             Dup_Log::Error('Caught exception', $ex->getMessage(), Dup_ErrorBehavior::LogOnly);
-
             Dup_Log::Trace('#### after log');
-
-            /* @var $package DUP_Package */
             $package->setStatus(DUP_PackageStatus::ERROR);
-
             $hasCompleted = true;
         }
     }
     
     $json = array();
-
     $json['failures'] = array_merge($package->BuildProgress->build_failures, $package->BuildProgress->validation_failures);
-
     DUP_LOG::traceObject("#### failures", $json['failures']);
     
     //JSON:Debug Response
@@ -166,7 +151,6 @@ function duplicator_duparchive_package_build()
         if($package->Status == DUP_PackageStatus::ERROR) {
 
             Dup_Log::Trace('#### error');
-
             $error_message = __('Error building DupArchive package') . '<br/>';
 
             foreach($json['failures'] as $failure) {
@@ -183,7 +167,6 @@ function duplicator_duparchive_package_build()
         }
 
         Dup_Log::Trace('#### json package');
-
         $json['package']     = $package;
         $json['runtime']     = $package->Runtime;
         $json['exeSize']     = $package->ExeSize;
