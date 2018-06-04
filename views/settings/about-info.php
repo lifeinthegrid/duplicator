@@ -22,6 +22,9 @@
     img#dup-support-approved { -webkit-animation:approve-keyframe 12s 1s infinite alternate backwards}
     img#dup-img-5stars {opacity:0.7;}
     img#dup-img-5stars:hover {opacity:1.0;}
+	div.social-images img { width: auto; margin-right: 10px}
+	div.social-images a { text-decoration: none; outline: 0 !important;}
+	div.social-images a:focus {outline: 0  !important;}
 
 	/* EMAIL AREA */
 	div.dup-support-email-area {width:825px; height:355px; border:1px solid #dfdfdf; border-radius:4px; margin:10px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
@@ -30,12 +33,8 @@
 	#mc-embedded-subscribe { height: 35px; font-size: 16px; font-weight: bold}
 	div.mce_inline_error {width:300px; margin: auto !important}
 	div#mce-responses {margin: auto; padding: 10px; width:500px; font-weight: bold;}
-
 </style>
 
-<script>var switchTo5x = true;</script>
-<script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
-<script>stLight.options({publisher: "1a44d92e-2a78-42c3-a32e-414f78f9f484"});</script>
 
 <div class="wrap dup-wrap dup-support-all">
 
@@ -85,18 +84,23 @@
                 </tr>
             </table>
             <div class="dup-support-hlp-txt">
-                <?php
-                $title = __("Duplicate Your WordPress", 'duplicator');
-                $summary = __("Rapid WordPress Duplication by snapcreek.com", 'duplicator');
-                $share_this_data = "st_url='" . DUPLICATOR_HOMEPAGE . "' st_title='{$title}' st_summary='{$summary}'";
-                ?>
-                <div style="width:100%; padding:20px 10px 0px 10px" align="center">
-                    <span class='st_facebook_vcount' displayText='Facebook' <?php echo $share_this_data; ?> ></span>
-                    <span class='st_twitter_vcount' displayText='Tweet' <?php echo $share_this_data; ?> ></span>
-                    <span class='st_googleplus_vcount' displayText='Google +' <?php echo $share_this_data; ?> ></span>
-                    <span class='st_linkedin_vcount' displayText='LinkedIn' <?php echo $share_this_data; ?> ></span>
-                    <span class='st_email_vcount' displayText='Email' <?php echo $share_this_data; ?> ></span>
-                </div><br/>
+				<br/>
+				<div class="social-images">
+					<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//snapcreek.com/" target="_blank">
+						<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/social-facebook.png" alt="facebook" />
+					</a>
+					<a href="https://twitter.com/home?status=Checkout%20the%20WordPress%20Duplicator%20plugin!%20%0Ahttps%3A//snapcreek.com/duplicator"  target="_blank">
+						<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/social-twitter.png" alt="twitter" />
+					</a>
+					<a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A//snapcreek.com&title=WordPress%20Duplicator%20Plugin&summary=&source=">
+						<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/social-linkin.png" alt="linkedin" />
+					</a>
+					<a href="https://plus.google.com/share?url=https%3A//snapcreek.com/" target="_blank">
+						<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/social-google.png" alt="google+" />
+					</a>
+				</div>
+				
+				
             </div>
         </div>
         <br style="clear:both" /><br/>
@@ -159,15 +163,6 @@
             </div>
         </div>
         <br style="clear:both" /><br/>
-
-
-		<!--div style='margin: auto; text-align: center; margin-top: 20px'>
-			<a href="http://lifeinthegrid.com/tools" target="_blank"  class="button button-large button-primary">
-				<i class="fa fa-rocket" style="margin-right:8px"></i><?php _e('Get More Great Tools', 'duplicator') ?>...
-			</a>
-		</div-->
-
-
     </div>
 </div><br/><br/><br/><br/>
 <script>
