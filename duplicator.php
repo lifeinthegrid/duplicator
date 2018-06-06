@@ -1,7 +1,7 @@
 <?php
 /** ===============================================================================
   Plugin Name: Duplicator
-  Plugin URI: http://www.lifeinthegrid.com/duplicator/
+  Plugin URI: https://snapcreek.com/duplicator/duplicator-free/
   Description: Migrate and backup a copy of your WordPress files and database. Duplicate and move a site from one location to another quickly.
   Version: 1.3.0.0
   Author: Snap Creek
@@ -33,7 +33,6 @@ require_once("define.php");
 
 if (is_admin() == true) 
 {
-    
 	//Classes
     require_once 'classes/class.settings.php';
     require_once 'classes/class.logging.php';    
