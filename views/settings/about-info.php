@@ -92,7 +92,7 @@
 					<a href="https://twitter.com/home?status=Checkout%20the%20WordPress%20Duplicator%20plugin!%20%0Ahttps%3A//snapcreek.com/duplicator/duplicator-free/"  target="_blank">
 						<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/social-twitter.png" alt="twitter" />
 					</a>
-					<a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A//snapcreek.com/duplicator/duplicator-free/&title=WordPress%20Duplicator%20Plugin&summary=&source=">
+					<a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A//snapcreek.com/duplicator/duplicator-free/&title=WordPress%20Duplicator%20Plugin&summary=&source=" target="_blank">
 						<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/social-linkin.png" alt="linkedin" />
 					</a>
 					<a href="https://plus.google.com/share?url=https%3A//snapcreek.com/duplicator/duplicator-free/" target="_blank">
