@@ -33,7 +33,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 </style>
 
 <div class="dup-pro-area">
-	<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/logo-dpro-300x50-nosnap.png"  /> 
+	<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/logo-dpro-300x50.png"  /> 
 	<div style="font-size:18px; font-style:italic; color:gray">
 		<?php _e('The simplicity of Duplicator', 'duplicator') ?>
 		<?php _e('with power for the professional.', 'duplicator') ?>
