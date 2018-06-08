@@ -32,14 +32,18 @@ $datetime1	= $GLOBALS['DUPX_AC']->created;
 $datetime2	= date("Y-m-d H:i:s");
 $fulldays	= round(abs(strtotime($datetime1) - strtotime($datetime2))/86400);
 $root_path	= SnapLibIOU::safePath($GLOBALS['DUPX_ROOT'], true);
-$archive_path = SnapLibIOU::safePath($GLOBALS['FW_PACKAGE_PATH'], true);
-$wpconf_path = "{$root_path}/wp-config.php";
-$max_time_zero = ($GLOBALS['DUPX_ENFORCE_PHP_INI']) ? false : @set_time_limit(0);
-$max_time_size = 314572800;  //300MB
-$max_time_ini = ini_get('max_execution_time');
-$max_time_warn = (is_numeric($max_time_ini) && $max_time_ini < 31 && $max_time_ini > 0) && $arcSize > $max_time_size;
+$archive_path	= SnapLibIOU::safePath($GLOBALS['FW_PACKAGE_PATH'], true);
+$wpconf_path	= "{$root_path}/wp-config.php";
+$max_time_zero	= ($GLOBALS['DUPX_ENFORCE_PHP_INI']) ? false : @set_time_limit(0);
+$max_time_size	= 314572800;  //300MB
+$max_time_ini	= ini_get('max_execution_time');
+$max_time_warn	= (is_numeric($max_time_ini) && $max_time_ini < 31 && $max_time_ini > 0) && $arcSize > $max_time_size;
+
+$installer_state = DUPX_InstallerState::getInstance();
+$is_overwrite_mode  =  ($installer_state->mode === DUPX_InstallerMode::OverwriteInstall);
 
 $notice = array();
+$notice['00'] = $is_overwrite_mode;
 if (!$GLOBALS['DUPX_AC']->exportOnlyDB) {
 	$notice['01'] = !file_exists($wpconf_path) ? 'Good' : 'Warn';
 	$notice['02'] = $scancount <= 20 ? 'Good' : 'Warn';
@@ -50,7 +54,7 @@ $notice['05'] = DUPX_Server::$php_version_53_plus	 ? 'Good' : 'Warn';
 $notice['06'] = empty($openbase) ? 'Good' : 'Warn';
 $notice['07'] = !$max_time_warn ? 'Good' : 'Warn';
 $notice['08'] = $GLOBALS['DUPX_AC']->mu_mode == 0 ? 'Good' : 'Warn';
-$all_notice = in_array('Warn', $notice) ? 'Warn' : 'Good';
+$all_notice	  = in_array('Warn', $notice) ? 'Warn' : 'Good';
 
 //SUMMATION
 $req_success = ($all_req == 'Pass');
@@ -62,9 +66,6 @@ $shell_exec_unzip_path = DUPX_Server::get_unzip_filepath();
 $shell_exec_zip_enabled = ($shell_exec_unzip_path != null);
 $zip_archive_enabled = class_exists('ZipArchive') ? 'Enabled' : 'Not Enabled';
 $archive_config  = DUPX_ArchiveConfig::getInstance();
-$installer_state = DUPX_InstallerState::getInstance();
-$is_import_mode  =  ($installer_state->mode === DUPX_InstallerMode::OverwriteInstall);
-
 ?>
 
 <form id="s1-input-form" method="post" class="content-form">
@@ -293,23 +294,46 @@ VALIDATION
 			</table>
 		</div>
 
-		<?php if (!$GLOBALS['DUPX_AC']->exportOnlyDB && ! $is_import_mode) :?>
+		<?php if ($is_overwrite_mode) :?>
+			<!-- NOTICE 0 -->
+			<div class="status fail">Warn</div>
+			<div class="title" data-type="toggle" data-target="#s1-notice00"><i class="fa fa-caret-right"></i> Overwrite Install</div>
+			<div class="info" id="s1-notice00">
+				Duplicator is in "Overwrite Install" mode because it has detected an existing WordPress configuration file.  This mode allows for the installer to be
+				dropped directly into an existing WordPress site and overwrite its contents.   Any content that is inside of the archive file will <u>overwrite</u> the
+				contents from where it is placed.
+				<br/><br/>
+
+				<i style="color:#025d02">
+					<b>Recommendation:</b> When using this mode it is recommend to be used in conjunction it with a WordPress site that has minimal
+					setup (plugins/themes).  Typically a fresh install or a cPanel 'one click' install is the best baseline to work from when using this mode.
+				</i>
+				<br/><br/>
+
+				<i style="color:maroon">
+					<b>Note:</b> Existing content such as plugin/themes/images will still show-up after the install is complete if they did not already exist in
+					the archive file. For example if you have an SEO plugin in the current site but that same SEO plugin <u>does not exist</u> in the archive file
+					then that plugin will display as a disabled plugin after the install is completed. The same concept with themes and images applies.  This will
+					not impact the sites operation, and the behavior is expected.
+				</i>
+			</div>
+		
+		<?php endif; ?>
+
+		<?php if (!$GLOBALS['DUPX_AC']->exportOnlyDB && ! $is_overwrite_mode) :?>
 			<!-- NOTICE 1 -->
 			<div class="status <?php echo ($notice['01'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['01']; ?></div>
 			<div class="title" data-type="toggle" data-target="#s1-notice01"><i class="fa fa-caret-right"></i> Configuration File</div>
 			<div class="info" id="s1-notice01">
 				Duplicator works best by placing the installer and archive files into an empty directory.  If a wp-config.php file is found in the extraction
 				directory it might indicate that a pre-existing WordPress site exists which can lead to a bad install. 
-				
-				<!-- TODO: REWRITE-ENABLED: Show 
-				<i>If this archive was manually extracted or the mode is set to "Overwrite Install" then	this notice can be ignored.</i>-->
+				<i>If this archive was manually extracted or the mode is set to "Overwrite Install" then	this notice can be ignored.</i>
 				<br/><br/>
 				<b>Options:</b>
 				<ul style="margin-bottom: 0">
 					<li>If the archive was manually extracted then <a href="javascript:void(0)" onclick="DUPX.getManaualArchiveOpt()">[Enable Manual Archive Extraction]</a></li>
 					<li>If the wp-config file is not needed then remove it.</li>
-					<!-- TODO: REWRITE-ENABLED: Show
-					<li>If the mode is "Overwrite Install" then this message can be ignored.</li> -->
+					<li>If the mode is "Overwrite Install" then this message can be ignored.</li> 
 				</ul>
 			</div>
 
@@ -1040,9 +1064,7 @@ DUPX.runStandardExtraction = function ()
 				$("#ajax-json").val(escape(dataJSON));
 
 				<?php if (!$GLOBALS['DUPX_DEBUG']) : ?>
-				setTimeout(function () {
-					$('#s1-result-form').submit();
-				}, 500);
+					setTimeout(function () {$('#s1-result-form').submit();}, 500);
 				<?php endif; ?>
 				$('#progress-area').fadeOut(1000);
 			} else {
@@ -1051,7 +1073,6 @@ DUPX.runStandardExtraction = function ()
 			}
 		},
 		error: function (xHr) {
-
 			DUPX.ajaxCommunicationFailed(xHr, '', 'extract');
 		}
 	});
@@ -1077,10 +1098,8 @@ DUPX.ajaxCommunicationFailed = function (xhr, textstatus, page)
 				default_timeout_message += "<li><strong>Contact SnapCreek:</strong> We will try our best to help configure and point users in the right direction, however these types of issues can be time-consuming and can take time from our support staff.</li>";
 			default_timeout_message += "</ol>";
 
-		if(page)
-		{
-			switch(page)
-			{
+		if(page) {
+			switch(page) {
 				default:
 					status += default_timeout_message;
 					break;
@@ -1097,9 +1116,7 @@ DUPX.ajaxCommunicationFailed = function (xhr, textstatus, page)
 					status += "See <a target='_blank' href='https://snapcreek.com/duplicator/docs/faqs-tech/?180116153643#faq-installer-120-q'>this FAQ item</a> for possible resolutions.<br/><br/>";
 					break;
 			}
-		}
-		else
-		{
+		} else {
 			status += default_timeout_message;
 		}
 

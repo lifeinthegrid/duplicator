@@ -5,8 +5,8 @@ defined("ABSPATH") or die("");
 /* @var $state DUPX_InstallerState */
 
 $state = $GLOBALS['DUPX_STATE'];
-$is_standard_mode = $state->mode == DUPX_InstallerMode::StandardInstall;
-$is_import_mode   = $state->mode == DUPX_InstallerMode::OverwriteInstall;
+$is_standard_mode	= $state->mode == DUPX_InstallerMode::StandardInstall;
+$is_overwrite_mode	= $state->mode == DUPX_InstallerMode::OverwriteInstall;
 
 if($is_standard_mode) {
 
@@ -42,7 +42,7 @@ BASIC PANEL -->
 	<a href="javascript:void(0)"><i class="fa fa-minus-square"></i>Setup</a>
 </div>
 <div id="s2-db-basic">
-	<?php if($is_import_mode) : ?>
+	<?php if($is_overwrite_mode) : ?>
 		<div id="s2-db-basic-overwrite">
 			<b style='color:maroon'>Ready to connect to existing sites database? </b><br/>
 			<div class="warn-text">
@@ -259,7 +259,7 @@ $(document).ready(function ()
 		DUPX.basicDBToggleImportMode('enable');
 	}
 
-	<?php if($is_import_mode) : ?>
+	<?php if($is_overwrite_mode) : ?>
 		DUPX.fillInPlaceHolders();
 	<?php endif; ?>
 
