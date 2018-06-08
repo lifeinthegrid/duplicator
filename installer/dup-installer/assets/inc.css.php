@@ -33,8 +33,8 @@
 	.dupx-warn {display:inline-block; color:#555;}
 	.dupx-notice {display:inline-block; color:#000;}
 	i[data-tooltip].fa-question-circle {cursor: pointer; color:#C3C3C3}
-	div.status-badge-pass {float:right; border-radius:4px; color:#fff; padding:0 4px 0 4px;  font-size:12px; min-width:30px; text-align:center;background-color:#418446; font-weight:normal; }
-	div.status-badge-fail {float:right; border-radius:4px; color:#fff; padding:0 4px 0 4px;  font-size:12px; min-width:30px; text-align:center;background-color:maroon; font-weight:normal;}
+	div.status-badge-pass {float:right; border-radius:4px; color:#fff; padding:0 3px 0 3px;  font-size:11px; min-width:30px; text-align:center;background-color:#418446; font-weight:normal; }
+	div.status-badge-fail {float:right; border-radius:4px; color:#fff; padding:0 3px 0 3px;  font-size:11px; min-width:30px; text-align:center;background-color:maroon; font-weight:normal;}
 
     button.default-btn, input.default-btn {
 		cursor:pointer; color:#fff; font-size:16px; border-radius:5px;	padding:7px 25px 5px 25px;
@@ -104,7 +104,7 @@
 
 	div.s1-reqs {background-color:#efefef; border:1px solid silver; border-radius:4px; padding-bottom:4px}
 	div.s1-reqs div.header {background-color:#E0E0E0; color:#000;  border-bottom: 1px solid silver; padding:2px; font-weight:bold }
-	div.s1-reqs div.status {float:right; border-radius:4px; color:#fff; padding:0 4px 0 4px; margin:4px 5px 0 0; font-size:12px; min-width:30px; text-align:center;}
+	div.s1-reqs div.status {float:right; border-radius:4px; color:#fff; padding:0 3px 0 3px; margin:4px 5px 0 0; font-size:11px; min-width:30px; text-align:center;}
 	div.s1-reqs div.pass {background-color:green;}
 	div.s1-reqs div.fail {background-color:maroon;}
 	div.s1-reqs div.title {padding:3px 3px 3px 5px; font-size:13px;}

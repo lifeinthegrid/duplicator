@@ -280,8 +280,8 @@ VALIDATION
 			</table>
 		</div>
 
+		<!-- NOTICE 10 -->
 		<?php if ($is_overwrite_mode) :?>
-			<!-- NOTICE 10 -->
 			<div class="status fail">Warn</div>
 			<div class="title" data-type="toggle" data-target="#s1-notice10"><i class="fa fa-caret-right"></i> Overwrite Install</div>
 			<div class="info" id="s1-notice10">
@@ -306,29 +306,28 @@ VALIDATION
 			</div>
 		<?php endif; ?>
 
+		<!-- NOTICE 20 -->
 		<?php if ($is_wpconfarc_present) :?>
-			<!-- NOTICE 20 -->
 			<div class="status fail">Warn</div>
 			<div class="title" data-type="toggle" data-target="#s1-notice20"><i class="fa fa-caret-right"></i> Manual Extraction</div>
 			<div class="info" id="s1-notice20">
-				<b>Deployment Path:</b> <i><?php echo "{$GLOBALS['DUPX_ROOT']}"; ?></i>
-				<br/><br/>
-				The installer has detected that the archive file has been manually extracted to the deployment path above.  In order to skip the installer extraction process
+				<b>Enable Manual Archive Extraction:</b> The installer has detected that the archive file has been manually extracted to the deployment path below.
+				In order to skip the installer extraction process
 				<a href="javascript:void(0)" onclick="DUPX.getManaualArchiveOpt()">[Click Here to Enable the Manual Archive Extraction]</a> option from the options
-				extraction section below.  Then continue the installer process by clicking the 'Next' button at the bottom of the screen.
+				section below.  Then continue the install process by clicking the 'Next' button at the bottom of the screen. For more details on this process see the
+				<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q" target="_blank">Manual Extraction FAQ</a>.
 				<br/><br/>
-				<small>
-					Note: For more details on this process see the 
-					<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q" target="_blank">Manual Extraction FAQ</a>.
-				</small>
+
+				<b>Deployment Path:</b> <i><?php echo "{$GLOBALS['DUPX_ROOT']}"; ?></i>
 			</div>
 		<?php endif; ?>
 
 		<!-- NOTICE 30 -->
 		<div class="status <?php echo ($notice['30'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['30']; ?></div>
-		<div class="title" data-type="toggle" data-target="#s1-notice03"><i class="fa fa-caret-right"></i> Package Age</div>
+		<div class="title" data-type="toggle" data-target="#s1-notice30"><i class="fa fa-caret-right"></i> Package Age</div>
 		<div class="info" id="s1-notice30">
-			<?php echo "The package is {$fulldays} day(s) old. Packages older than 180 days might be considered stale"; ?>
+			This package is <?php echo "{$fulldays}"; ?> day(s) old. Packages older than 180 days might be considered stale.  It is recommended to build a new
+			package unless your aware of the content and its data.  This is message is simply a recommendation.
 		</div>
 
 
