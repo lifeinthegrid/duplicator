@@ -17,6 +17,7 @@
 	div#content-inner {padding:10px 25px; min-height:550px}
 	form.content-form {min-height:550px; position:relative; line-height:17px}
 	div.logfile-link {float:right; font-weight:normal; font-size:11px; font-style:italic}
+	span.sub-notes {font-size:10px;}
 
 	/* Header */
 	table.header-wizard {border-top-left-radius:5px; border-top-right-radius:5px; width:100%; box-shadow:0 5px 3px -3px #999; background-color:#F1F1F1; font-weight:bold}
@@ -101,8 +102,7 @@
 	table.s1-checks-area td.title small {font-size:11px; font-weight:normal}
 	table.s1-checks-area td.toggle {font-size:11px; margin-right:7px; font-weight:normal}
 
-
-	div.s1-reqs {background-color:#efefef; border:1px solid silver; border-radius:4px;}
+	div.s1-reqs {background-color:#efefef; border:1px solid silver; border-radius:4px; padding-bottom:4px}
 	div.s1-reqs div.header {background-color:#E0E0E0; color:#000;  border-bottom: 1px solid silver; padding:2px; font-weight:bold }
 	div.s1-reqs div.status {float:right; border-radius:4px; color:#fff; padding:0 4px 0 4px; margin:4px 5px 0 0; font-size:12px; min-width:30px; text-align:center;}
 	div.s1-reqs div.pass {background-color:green;}
@@ -111,7 +111,7 @@
 	div.s1-reqs div.title:hover {background-color:#dfdfdf; cursor:pointer}
 	div.s1-reqs div.info {padding:8px 8px 20px 8px; background-color:#fff; display:none; line-height:18px; font-size: 12px}
 	div.s1-reqs div.info a {color:#485AA3;}
-	select#archive_engine {width:80%; cursor:pointer}
+	select#archive_engine {width:90%; cursor:pointer}
 
 	/*Terms and Notices*/
 	div#s1-warning-check label{cursor:pointer;}

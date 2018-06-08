@@ -13,16 +13,14 @@ $arcSize = @filesize($GLOBALS['FW_PACKAGE_PATH']);
 $arcSize = is_numeric($arcSize) ? $arcSize : 0;
 
 $root_path		= $GLOBALS['DUPX_ROOT'];
-$wpconfig_arc_present = file_exists("{$root_path}/wp-config-arc.txt");
+$is_wpconfarc_present = file_exists("{$root_path}/wp-config-arc.txt");
 
 //REQUIRMENTS
 $req = array();
-$req['01'] = DUPX_Server::is_dir_writable($GLOBALS['DUPX_ROOT']) ? 'Pass' : 'Fail';
-$req['02'] = 'Pass'; //Place-holder for future check
-$req['03'] = 'Pass'; //Place-holder for future check
-$req['04'] = function_exists('mysqli_connect') ? 'Pass' : 'Fail';
-$req['05'] = DUPX_Server::$php_version_safe ? 'Pass' : 'Fail';
-$all_req = in_array('Fail', $req) ? 'Fail' : 'Pass';
+$req['10'] = DUPX_Server::is_dir_writable($GLOBALS['DUPX_ROOT'])	? 'Pass' : 'Fail';
+$req['20'] = function_exists('mysqli_connect')						? 'Pass' : 'Fail';
+$req['30'] = DUPX_Server::$php_version_safe							? 'Pass' : 'Fail';
+$all_req = in_array('Fail', $req)									? 'Fail' : 'Pass';
 
 //NOTICES
 $openbase	= ini_get("open_basedir");
@@ -43,24 +41,20 @@ $installer_state = DUPX_InstallerState::getInstance();
 $is_overwrite_mode  =  ($installer_state->mode === DUPX_InstallerMode::OverwriteInstall);
 
 $notice = array();
-$notice['00'] = $is_overwrite_mode;
-if (!$GLOBALS['DUPX_AC']->exportOnlyDB) {
-	$notice['01'] = !file_exists($wpconf_path) ? 'Good' : 'Warn';
-	$notice['02'] = $scancount <= 20 ? 'Good' : 'Warn';
-}
-$notice['03'] = $fulldays <= 180 ? 'Good' : 'Warn';
-$notice['04'] = 'Good'; //Place-holder for future check
-$notice['05'] = DUPX_Server::$php_version_53_plus	 ? 'Good' : 'Warn';
-$notice['06'] = empty($openbase) ? 'Good' : 'Warn';
-$notice['07'] = !$max_time_warn ? 'Good' : 'Warn';
-$notice['08'] = $GLOBALS['DUPX_AC']->mu_mode == 0 ? 'Good' : 'Warn';
-$all_notice	  = in_array('Warn', $notice) ? 'Warn' : 'Good';
+$notice['10'] = ! $is_overwrite_mode				? 'Good' : 'Warn';
+$notice['20'] = ! $is_wpconfarc_present				? 'Good' : 'Warn';
+$notice['30'] = $fulldays <= 180					? 'Good' : 'Warn';
+$notice['40'] = DUPX_Server::$php_version_53_plus	? 'Good' : 'Warn';
+$notice['50'] = empty($openbase)					? 'Good' : 'Warn';
+$notice['60'] = !$max_time_warn						? 'Good' : 'Warn';
+$notice['70'] = $GLOBALS['DUPX_AC']->mu_mode == 0	? 'Good' : 'Warn';
+$all_notice	  = in_array('Warn', $notice)			? 'Warn' : 'Good';
 
 //SUMMATION
-$req_success = ($all_req == 'Pass');
-$req_notice = ($all_notice == 'Good');
-$all_success = ($req_success && $req_notice);
-$agree_msg = "To enable this button the checkbox above under the 'Terms & Notices' must be checked.";
+$req_success	= ($all_req == 'Pass');
+$req_notice		= ($all_notice == 'Good');
+$all_success	= ($req_success && $req_notice);
+$agree_msg		= "To enable this button the checkbox above under the 'Terms & Notices' must be checked.";
 
 $shell_exec_unzip_path = DUPX_Server::get_unzip_filepath();
 $shell_exec_zip_enabled = ($shell_exec_unzip_path != null);
@@ -75,7 +69,6 @@ $archive_config  = DUPX_ArchiveConfig::getInstance();
 
 <div class="hdr-main">
 	Step <span class="step">1</span> of 4: Deployment
-	<!--div style="float:right; font-size:14px"><a href="javascript:void(0)">One-Click Install</a></div-->
 </div><br/>
 
 <!-- ====================================
@@ -230,10 +223,10 @@ VALIDATION
 			</table>
 		</div>
 
-		<!-- REQ 1 -->
-		<div class="status <?php echo strtolower($req['01']); ?>"><?php echo $req['01']; ?></div>
-		<div class="title" data-type="toggle" data-target="#s1-reqs01"><i class="fa fa-caret-right"></i> Permissions</div>
-		<div class="info" id="s1-reqs01">
+		<!-- REQ 10 -->
+		<div class="status <?php echo strtolower($req['10']); ?>"><?php echo $req['10']; ?></div>
+		<div class="title" data-type="toggle" data-target="#s1-reqs10"><i class="fa fa-caret-right"></i> Permissions</div>
+		<div class="info" id="s1-reqs10">
 			<table>
 				<tr>
 					<td><b>Deployment Path:</b> </td>
@@ -255,27 +248,20 @@ VALIDATION
 			PHP with <a href='http://php.net/manual/en/features.safe-mode.php' target='_blank'>safe mode</a> should be disabled.  If Safe Mode is enabled then
 			please contact your hosting provider or server administrator to disable PHP safe mode.
 		</div>
-		<!-- REQ 2
-		<div class="status <?php echo strtolower($req['02']); ?>"><?php echo $req['02']; ?></div>
-		<div class="title" data-type="toggle" data-target="#s1-reqs02"><i class="fa fa-caret-right"></i> Place Holder</div>
-		<div class="info" id="s1-reqs02"></div>-->
-		<!-- REQ 3
-		<div class="status <?php echo strtolower($req['03']); ?>"><?php echo $req['03']; ?></div>
-		<div class="title" data-type="toggle" data-target="#s1-reqs03"><i class="fa fa-caret-right"></i> Place Holder</div>
-		<div class="info" id="s1-reqs03"></div>-->
-		<!-- REQ 4 -->
-		<div class="status <?php echo strtolower($req['04']); ?>"><?php echo $req['04']; ?></div>
-		<div class="title" data-type="toggle" data-target="#s1-reqs04"><i class="fa fa-caret-right"></i> PHP Mysqli</div>
-		<div class="info" id="s1-reqs04">
+
+		<!-- REQ 20 -->
+		<div class="status <?php echo strtolower($req['20']); ?>"><?php echo $req['20']; ?></div>
+		<div class="title" data-type="toggle" data-target="#s1-reqs20"><i class="fa fa-caret-right"></i> PHP Mysqli</div>
+		<div class="info" id="s1-reqs20">
 			Support for the PHP <a href='http://us2.php.net/manual/en/mysqli.installation.php' target='_blank'>mysqli extension</a> is required.
 			Please contact your hosting provider or server administrator to enable the mysqli extension.  <i>The detection for this call uses
 				the function_exists('mysqli_connect') call.</i>
 		</div>
 
-		<!-- REQ 5 -->
-		<div class="status <?php echo strtolower($req['05']); ?>"><?php echo $req['05']; ?></div>
-		<div class="title" data-type="toggle" data-target="#s1-reqs05"><i class="fa fa-caret-right"></i> PHP Version</div>
-		<div class="info" id="s1-reqs05">
+		<!-- REQ 30 -->
+		<div class="status <?php echo strtolower($req['30']); ?>"><?php echo $req['30']; ?></div>
+		<div class="title" data-type="toggle" data-target="#s1-reqs30"><i class="fa fa-caret-right"></i> PHP Version</div>
+		<div class="info" id="s1-reqs30">
 			This server is running PHP: <b><?php echo DUPX_Server::$php_version ?></b>. <i>A minimum of PHP 5.2.17 is required</i>.
 			Contact your hosting provider or server administrator and let them know you would like to upgrade your PHP version.
 		</div>
@@ -295,13 +281,14 @@ VALIDATION
 		</div>
 
 		<?php if ($is_overwrite_mode) :?>
-			<!-- NOTICE 0 -->
+			<!-- NOTICE 10 -->
 			<div class="status fail">Warn</div>
-			<div class="title" data-type="toggle" data-target="#s1-notice00"><i class="fa fa-caret-right"></i> Overwrite Install</div>
-			<div class="info" id="s1-notice00">
-				Duplicator is in "Overwrite Install" mode because it has detected an existing WordPress configuration file.  This mode allows for the installer to be
-				dropped directly into an existing WordPress site and overwrite its contents.   Any content that is inside of the archive file will <u>overwrite</u> the
-				contents from where it is placed.
+			<div class="title" data-type="toggle" data-target="#s1-notice10"><i class="fa fa-caret-right"></i> Overwrite Install</div>
+			<div class="info" id="s1-notice10">
+				Duplicator is in "Overwrite Install" mode because it has detected an existing WordPress configuration file.  There are also currently
+				<?php echo "<b>[{$scancount}]</b>"; ?>  items in the deployment path <i>(<?php echo "{$GLOBALS['DUPX_ROOT']}"; ?>)</i>.
+				This mode allows for the installer to be dropped directly into an existing WordPress site and overwrite its contents.   Any content that is inside of
+				the archive file will <u>overwrite</u> the contents from where it is placed.
 				<br/><br/>
 
 				<i style="color:#025d02">
@@ -317,63 +304,38 @@ VALIDATION
 					not impact the sites operation, and the behavior is expected.
 				</i>
 			</div>
-		
 		<?php endif; ?>
 
-		<?php if (!$GLOBALS['DUPX_AC']->exportOnlyDB && ! $is_overwrite_mode) :?>
-			<!-- NOTICE 1 -->
-			<div class="status <?php echo ($notice['01'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['01']; ?></div>
-			<div class="title" data-type="toggle" data-target="#s1-notice01"><i class="fa fa-caret-right"></i> Configuration File</div>
-			<div class="info" id="s1-notice01">
-				Duplicator works best by placing the installer and archive files into an empty directory.  If a wp-config.php file is found in the extraction
-				directory it might indicate that a pre-existing WordPress site exists which can lead to a bad install. 
-				<i>If this archive was manually extracted or the mode is set to "Overwrite Install" then	this notice can be ignored.</i>
-				<br/><br/>
-				<b>Options:</b>
-				<ul style="margin-bottom: 0">
-					<li>If the archive was manually extracted then <a href="javascript:void(0)" onclick="DUPX.getManaualArchiveOpt()">[Enable Manual Archive Extraction]</a></li>
-					<li>If the wp-config file is not needed then remove it.</li>
-					<li>If the mode is "Overwrite Install" then this message can be ignored.</li> 
-				</ul>
-			</div>
-
-			<!-- NOTICE 2 -->
-			<div class="status <?php echo ($notice['02'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['02']; ?></div>
-			<div class="title" data-type="toggle" data-target="#s1-notice02"><i class="fa fa-caret-right"></i> Directory Setup</div>
-			<div class="info" id="s1-notice02">
+		<?php if ($is_wpconfarc_present) :?>
+			<!-- NOTICE 20 -->
+			<div class="status fail">Warn</div>
+			<div class="title" data-type="toggle" data-target="#s1-notice20"><i class="fa fa-caret-right"></i> Manual Extraction</div>
+			<div class="info" id="s1-notice20">
 				<b>Deployment Path:</b> <i><?php echo "{$GLOBALS['DUPX_ROOT']}"; ?></i>
 				<br/><br/>
-				There are currently <?php echo "<b>[{$scancount}]</b>"; ?>  items in the deployment path. These items will be overwritten if they also exist
-				inside the archive file.  The notice is to prevent overwriting an existing site or trying to install on-top of one which
-				can have un-intended results. <i>This notice shows if it detects more than 20 items. If this archive was manually extracted then	this notice can be ignored.</i>
+				The installer has detected that the archive file has been manually extracted to the deployment path above.  In order to skip the installer extraction process
+				<a href="javascript:void(0)" onclick="DUPX.getManaualArchiveOpt()">[Click Here to Enable the Manual Archive Extraction]</a> option from the options
+				extraction section below.  Then continue the installer process by clicking the 'Next' button at the bottom of the screen.
 				<br/><br/>
-				<b>Options:</b>
-				<ul style="margin-bottom: 0">
-					<li>If the archive was already manually extracted then <a href="javascript:void(0)" onclick="DUPX.getManaualArchiveOpt()">[Enable Manual Archive Extraction]</a></li>
-					<li>If the files/directories are not the same as those in the archive then this notice can be ignored.</li>
-					<li>Remove the files if they are not needed and refresh this page.</li>
-				</ul>
+				<small>
+					Note: For more details on this process see the 
+					<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q" target="_blank">Manual Extraction FAQ</a>.
+				</small>
 			</div>
-
 		<?php endif; ?>
 
-		<!-- NOTICE 3 -->
-		<div class="status <?php echo ($notice['03'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['03']; ?></div>
+		<!-- NOTICE 30 -->
+		<div class="status <?php echo ($notice['30'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['30']; ?></div>
 		<div class="title" data-type="toggle" data-target="#s1-notice03"><i class="fa fa-caret-right"></i> Package Age</div>
-		<div class="info" id="s1-notice03">
+		<div class="info" id="s1-notice30">
 			<?php echo "The package is {$fulldays} day(s) old. Packages older than 180 days might be considered stale"; ?>
 		</div>
 
-		<!-- NOTICE 4
-		<div class="status <?php echo ($notice['04'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['04']; ?></div>
-		<div class="title" data-type="toggle" data-target="#s1-notice04"><i class="fa fa-caret-right"></i> Placeholder</div>
-		<div class="info" id="s1-notice04">
-		</div>-->
 
-		<!-- NOTICE 5 -->
-		<div class="status <?php echo ($notice['05'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['05']; ?></div>
-		<div class="title" data-type="toggle" data-target="#s1-notice05"><i class="fa fa-caret-right"></i> PHP Version 5.2</div>
-		<div class="info" id="s1-notice05">
+		<!-- NOTICE 40 -->
+		<div class="status <?php echo ($notice['40'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['40']; ?></div>
+		<div class="title" data-type="toggle" data-target="#s1-notice40"><i class="fa fa-caret-right"></i> PHP Version 5.2</div>
+		<div class="info" id="s1-notice40">
 			<?php
 				$currentPHP = DUPX_Server::$php_version;
 				$cssStyle   = DUPX_Server::$php_version_53_plus	 ? 'color:green' : 'color:red';
@@ -388,11 +350,11 @@ VALIDATION
 			?>
 		</div>
 
-		<!-- NOTICE 6 -->
-		<div class="status <?php echo ($notice['06'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['06']; ?></div>
-		<div class="title" data-type="toggle" data-target="#s1-notice06"><i class="fa fa-caret-right"></i> PHP Open Base</div>
-		<div class="info" id="s1-notice06">
-			<b>Open BaseDir:</b> <i><?php echo $notice['06'] == 'Good' ? "<i class='dupx-pass'>Disabled</i>" : "<i class='dupx-fail'>Enabled</i>"; ?></i>
+		<!-- NOTICE 50 -->
+		<div class="status <?php echo ($notice['50'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['50']; ?></div>
+		<div class="title" data-type="toggle" data-target="#s1-notice50"><i class="fa fa-caret-right"></i> PHP Open Base</div>
+		<div class="info" id="s1-notice50">
+			<b>Open BaseDir:</b> <i><?php echo $notice['50'] == 'Good' ? "<i class='dupx-pass'>Disabled</i>" : "<i class='dupx-fail'>Enabled</i>"; ?></i>
 			<br/><br/>
 
 			If <a href="http://www.php.net/manual/en/ini.core.php#ini.open-basedir" target="_blank">open_basedir</a> is enabled and your
@@ -408,10 +370,10 @@ VALIDATION
 			hosting provider or server administrator to set this up correctly.
 		</div>
 
-		<!-- NOTICE 7 -->
-		<div class="status <?php echo ($notice['07'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['07']; ?></div>
-		<div class="title" data-type="toggle" data-target="#s1-notice07"><i class="fa fa-caret-right"></i> PHP Timeout</div>
-		<div class="info" id="s1-notice07">
+		<!-- NOTICE 60 -->
+		<div class="status <?php echo ($notice['60'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['60']; ?></div>
+		<div class="title" data-type="toggle" data-target="#s1-notice60"><i class="fa fa-caret-right"></i> PHP Timeout</div>
+		<div class="info" id="s1-notice60">
 			<b>Archive Size:</b> <?php echo DUPX_U::readableByteSize($arcSize) ?>  <small>(detection limit is set at <?php echo DUPX_U::readableByteSize($max_time_size) ?>) </small><br/>
 			<b>PHP max_execution_time:</b> <?php echo "{$max_time_ini}"; ?> <small>(zero means not limit)</small> <br/>
 			<b>PHP set_time_limit:</b> <?php echo ($max_time_zero) ? '<i style="color:green">Success</i>' : '<i style="color:maroon">Failed</i>' ?>
@@ -431,10 +393,10 @@ VALIDATION
 
 
 		<!-- NOTICE 8 -->
-		<div class="status <?php echo ($notice['08'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['08']; ?></div>
-		<div class="title" data-type="toggle" data-target="#s1-notice08"><i class="fa fa-caret-right"></i> WordPress Multisite</div>
-		<div class="info" id="s1-notice08">
-			<b>Status:</b> <?php echo $notice['08'] <= 0 ? 'This archive is not a multisite' : 'This is an unsupported multisite archive' ?>
+		<div class="status <?php echo ($notice['70'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['70']; ?></div>
+		<div class="title" data-type="toggle" data-target="#s1-notice70"><i class="fa fa-caret-right"></i> WordPress Multisite</div>
+		<div class="info" id="s1-notice70">
+			<b>Status:</b> <?php echo $notice['70'] <= 0 ? 'This archive is not a multisite' : 'This is an unsupported multisite archive' ?>
 			<br/><br/>
 
 			 Duplicator does not support WordPress multisite migrations.  We recommend using Duplicator Pro which currently supports full multisite migrations and subsite to
@@ -469,7 +431,7 @@ OPTIONS
             <td>
                 <?php $num_selections = ($archive_config->isZipArchive() ? 3 : 2); ?>
                 <select id="archive_engine" name="archive_engine" size="<?php echo $num_selections; ?>">
-					<option <?php echo ($wpconfig_arc_present ? '' : 'disabled'); ?> value="manual">Manual Archive Extraction <?php echo ($wpconfig_arc_present ? '' : '*'); ?></option>
+					<option <?php echo ($is_wpconfarc_present ? '' : 'disabled'); ?> value="manual">Manual Archive Extraction <?php echo ($is_wpconfarc_present ? '' : '*'); ?></option>
                     <?php
                         if($archive_config->isZipArchive()){
 
@@ -493,22 +455,15 @@ OPTIONS
                         echo '<option value="duparchive" selected="true">DupArchive</option>';
                     }
                     ?>
-                </select>
-
+                </select><br/>
+				<?php if(!$is_wpconfarc_present) :?>
+					<span class="sub-notes">
+						*Option enabled when archive has been pre-extracted
+						<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q" target="_blank">[more info]</a>
+					</span>
+				<?php endif ?>
             </td>
         </tr>
-
-		<?php if(!$wpconfig_arc_present) :?>
-
-		<tr>
-			<td>
-			</td>
-			<td style="padding-bottom:8px">
-				<small><i>*Option available when archive has been pre-extracted.</i></small>
-			</td>
-		<tr/>
-		<?php endif ?>
-
 		<tr>
 			<td>Permissions:</td>
 			<td>
@@ -522,7 +477,7 @@ OPTIONS
 
 	<div class="hdr-sub3">Advanced</div>
 	<table class="dupx-opts dupx-advopts">
-                <tr>
+        <tr>
 			<td>Safe Mode:</td>
 			<td>
 				<select name="exe_safe_mode" id="exe_safe_mode" onchange="DUPX.onSafeModeSwitch();" style="width:250px;">
@@ -542,7 +497,10 @@ OPTIONS
 						<option value="IGNORE">Ignore All</option>
 					</optgroup>
 				</select> <br/>
-				<small style="font-weight: normal"><i>Controls how .htaccess, .user.ini and web.config are used. See help for more details.</i></small>
+				<span class="sub-notes" style="font-weight: normal">
+					Controls how .htaccess, .user.ini and web.config are used
+					<a href="<?php echo $GLOBALS['_HELP_URL_PATH'] . '#help-s1'; ?>" target="help">[more info]</a>
+				</span>
 			</td>
 		</tr>
 		<tr>
@@ -663,7 +621,7 @@ DUPX.toggleSetupType = function ()
 DUPX.getManaualArchiveOpt = function ()
 {
 	$("html, body").animate({scrollTop: $(document).height()}, 1500);
-	$("a[data-target='#s1-area-adv-opts']").find('i.fa').removeClass('fa-plus-square').addClass('fa-minus-square');
+	$("div[data-target='#s1-area-adv-opts']").find('i.fa').removeClass('fa-plus-square').addClass('fa-minus-square');
 	$('#s1-area-adv-opts').show(1000);
 	$('select#archive_engine').val('manual').focus();
 };
