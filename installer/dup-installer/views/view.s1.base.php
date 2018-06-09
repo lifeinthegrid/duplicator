@@ -285,12 +285,12 @@ VALIDATION
 			</table>
 		</div>
 
-		<!-- NOTICE 10 -->
-		<?php if ($is_overwrite_mode) :?>
+		<!-- NOTICE 10: OVERWRITE INSTALL -->
+		<?php if ($is_overwrite_mode && $is_wordpress) :?>
 			<div class="status fail">Warn</div>
 			<div class="title" data-type="toggle" data-target="#s1-notice10"><i class="fa fa-caret-right"></i> Overwrite Install</div>
 			<div class="info" id="s1-notice10">
-				Duplicator is in "Overwrite Install" mode because it has detected an existing WordPress configuration file.  There are also currently
+				Duplicator is in "Overwrite Install" mode because it has detected an existing WordPress site.  There are also currently
 				<?php echo "<b>[{$scancount}]</b>"; ?>  items in the deployment path <i>(<?php echo "{$GLOBALS['DUPX_ROOT']}"; ?>)</i>.
 				This mode allows for the installer to be dropped directly into an existing WordPress site and overwrite its contents.   Any content that is inside of
 				the archive file will <u>overwrite</u> the contents from where it is placed.
@@ -309,34 +309,47 @@ VALIDATION
 					not impact the sites operation, and the behavior is expected.
 				</i>
 			</div>
-		<?php endif; ?>
 
-		<!-- NOTICE 20 -->
-		<?php if ($is_wpconfarc_present) :?>
+		<!-- NOTICE 20: ARCHIVE EXTRACTED -->
+		<?php elseif ($is_wpconfarc_present) :?>
 			<div class="status fail">Warn</div>
-			<div class="title" data-type="toggle" data-target="#s1-notice20"><i class="fa fa-caret-right"></i> Archive already extracted</div>
+			<div class="title" data-type="toggle" data-target="#s1-notice20"><i class="fa fa-caret-right"></i> Archive Extracted</div>
 			<div class="info" id="s1-notice20">
-				The installer has detected that the archive file has been extracted to the deployment path below. In order to skip the installer extraction process
-				<a href="javascript:void(0)" onclick="DUPX.getManaualArchiveOpt()">[click here to enable manual archive extraction]</a> option from the options
-				section below.   To run the extraction process over again keep the extraction option on either 'PHP ZipArchive' or 'Shell Exec Unzip'.  For more details
-				on this process see the	<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q" target="_blank">Manual Extraction FAQ</a>.
-				<br/><br/>
+				The installer has detected that the archive file has been extracted to the deployment path below.  To continue choose from one of these options:
+
+				<ol>
+					<li>Skip the extraction process by <a href="javascript:void(0)" onclick="DUPX.getManaualArchiveOpt()">[enabling manual archive extraction]</a> </li>
+					<li>Ignore this message and continue with the install process</li>
+				</ol>
 
 				<b>Deployment Path:</b> <i><?php echo "{$GLOBALS['DUPX_ROOT']}"; ?></i>
+				<br/><br/>
+
+				<small>Note: This test looks for a file named <i>wp-config-arc.txt</i> in the deployment path above.  If the file exists then this notice is shown.
+				The <i>wp-config-arc.txt</i> file is created with every archive and removed once the install is complete.  For more details on this process see the
+				<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q" target="_blank">manual extraction FAQ</a>.</small>
 			</div>
 		<?php endif; ?>
 
-		<!-- NOTICE 25 -->
+		<!-- NOTICE 25: DATABASE ONLY -->
 		<?php if ($is_dbonly && ! $is_wordpress) :?>
 			<div class="status fail">Warn</div>
 			<div class="title" data-type="toggle" data-target="#s1-notice25"><i class="fa fa-caret-right"></i> Database Only</div>
 			<div class="info" id="s1-notice25">
-				The archive associated with this installer was built as a Database Only archive and only includes a copy of the database.  When using
-				the 'Database Only' mode it should be placed in directory where a WordPress site already exists.  It is safe to continue with the install process, however
-				if the core WordPress directories and files are not present then the site will not be available.
-				<br/><br/>
+				The installer has detected that a WordPress site does not exist at the deployment path below. This installer is currently in 'Database Only' because that is
+				how the archive was created. To continue choose from one of these options:
+
+				<ol>
+					<li>Place this installer and its archive into a directory where WordPress is already installed. </li>
+					<li>Ignore this message and continue with the install process to install only to the database.</li>
+				</ol>
 
 				<b>Deployment Path:</b> <i><?php echo "{$GLOBALS['DUPX_ROOT']}"; ?></i>
+				<br/><br/>
+
+				<small>Note: This test simply looks for the directories <?php echo DUPX_Server::$wpCoreDirsList; ?> and a wp-config.php file.  If they are not found in the
+				deployment path above then this notice is shown.</small>
+				
 			</div>
 		<?php endif; ?>
 
