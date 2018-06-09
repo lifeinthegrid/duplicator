@@ -31,6 +31,11 @@ class DUPX_Server
      */
     public static $php_version_53_plus;
 
+	/**
+	 * A list of the core WordPress directories
+	 */
+	public static $wpCoreDirsList = "wp-admin,wp-includes,wp-content";
+
 	public static function _init()
 	{
 		self::$php_safe_mode_on	 = in_array(strtolower(@ini_get('safe_mode')), array('on', 'yes', 'true', 1, "1"));
@@ -98,13 +103,32 @@ class DUPX_Server
 		}
 		return $filepath;
 	}
-
+	
+	/**
+	* Does the site look to be a WordPress site
+	*
+	* @return bool		Returns true if the site looks like a WP site
+	*/
+	public static function isWordPress()
+	{
+		$search_list  = explode(',', self::$wpCoreDirsList);
+		$root_files   = scandir($GLOBALS['DUPX_ROOT']);
+		$search_count = count($search_list);
+		$file_count   = 0;
+		foreach ($root_files as $file) {
+			if (in_array($file, $search_list)) {
+				$file_count++;
+			} 
+		}
+		return ($search_count == $file_count);
+	}
+	
 	/**
 	* Is the web server IIS
 	*
 	* @return bool		Returns true if web server is IIS
 	*/
-	private static function isIISRunning()
+    public static function isIISRunning()
 	{
 		$sSoftware = strtolower( $_SERVER["SERVER_SOFTWARE"] );
 		if ( strpos($sSoftware, "microsoft-iis") !== false ) {
@@ -113,6 +137,8 @@ class DUPX_Server
 			return false;
 		}
 	}
+
+
 
 }
 //INIT Class Properties

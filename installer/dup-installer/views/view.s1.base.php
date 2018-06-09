@@ -12,8 +12,12 @@ $arcCheck = (file_exists($GLOBALS['FW_PACKAGE_PATH'])) ? 'Pass' : 'Fail';
 $arcSize = @filesize($GLOBALS['FW_PACKAGE_PATH']);
 $arcSize = is_numeric($arcSize) ? $arcSize : 0;
 
-$root_path		= $GLOBALS['DUPX_ROOT'];
+$root_path			  = $GLOBALS['DUPX_ROOT'];
+$installer_state	  = DUPX_InstallerState::getInstance();
 $is_wpconfarc_present = file_exists("{$root_path}/wp-config-arc.txt");
+$is_overwrite_mode    =  ($installer_state->mode === DUPX_InstallerMode::OverwriteInstall);
+$is_wordpress		  = DUPX_Server::isWordPress();
+$is_dbonly			  = $GLOBALS['DUPX_AC']->exportOnlyDB;
 
 //REQUIRMENTS
 $req = array();
@@ -37,12 +41,13 @@ $max_time_size	= 314572800;  //300MB
 $max_time_ini	= ini_get('max_execution_time');
 $max_time_warn	= (is_numeric($max_time_ini) && $max_time_ini < 31 && $max_time_ini > 0) && $arcSize > $max_time_size;
 
-$installer_state = DUPX_InstallerState::getInstance();
-$is_overwrite_mode  =  ($installer_state->mode === DUPX_InstallerMode::OverwriteInstall);
 
 $notice = array();
 $notice['10'] = ! $is_overwrite_mode				? 'Good' : 'Warn';
 $notice['20'] = ! $is_wpconfarc_present				? 'Good' : 'Warn';
+if ($is_dbonly) {
+	$notice['25'] =	$is_wordpress ? 'Good' : 'Warn';
+}
 $notice['30'] = $fulldays <= 180					? 'Good' : 'Warn';
 $notice['40'] = DUPX_Server::$php_version_53_plus	? 'Good' : 'Warn';
 $notice['50'] = empty($openbase)					? 'Good' : 'Warn';
@@ -309,13 +314,26 @@ VALIDATION
 		<!-- NOTICE 20 -->
 		<?php if ($is_wpconfarc_present) :?>
 			<div class="status fail">Warn</div>
-			<div class="title" data-type="toggle" data-target="#s1-notice20"><i class="fa fa-caret-right"></i> Manual Extraction</div>
+			<div class="title" data-type="toggle" data-target="#s1-notice20"><i class="fa fa-caret-right"></i> Archive already extracted</div>
 			<div class="info" id="s1-notice20">
-				<b>Enable Manual Archive Extraction:</b> The installer has detected that the archive file has been manually extracted to the deployment path below.
-				In order to skip the installer extraction process
-				<a href="javascript:void(0)" onclick="DUPX.getManaualArchiveOpt()">[Click Here to Enable the Manual Archive Extraction]</a> option from the options
-				section below.  Then continue the install process by clicking the 'Next' button at the bottom of the screen. For more details on this process see the
-				<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q" target="_blank">Manual Extraction FAQ</a>.
+				The installer has detected that the archive file has been extracted to the deployment path below. In order to skip the installer extraction process
+				<a href="javascript:void(0)" onclick="DUPX.getManaualArchiveOpt()">[click here to enable manual archive extraction]</a> option from the options
+				section below.   To run the extraction process over again keep the extraction option on either 'PHP ZipArchive' or 'Shell Exec Unzip'.  For more details
+				on this process see the	<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q" target="_blank">Manual Extraction FAQ</a>.
+				<br/><br/>
+
+				<b>Deployment Path:</b> <i><?php echo "{$GLOBALS['DUPX_ROOT']}"; ?></i>
+			</div>
+		<?php endif; ?>
+
+		<!-- NOTICE 25 -->
+		<?php if ($is_dbonly && ! $is_wordpress) :?>
+			<div class="status fail">Warn</div>
+			<div class="title" data-type="toggle" data-target="#s1-notice25"><i class="fa fa-caret-right"></i> Database Only</div>
+			<div class="info" id="s1-notice25">
+				The archive associated with this installer was built as a Database Only archive and only includes a copy of the database.  When using
+				the 'Database Only' mode it should be placed in directory where a WordPress site already exists.  It is safe to continue with the install process, however
+				if the core WordPress directories and files are not present then the site will not be available.
 				<br/><br/>
 
 				<b>Deployment Path:</b> <i><?php echo "{$GLOBALS['DUPX_ROOT']}"; ?></i>
