@@ -28,8 +28,6 @@ $all_req = in_array('Fail', $req)									? 'Fail' : 'Pass';
 
 //NOTICES
 $openbase	= ini_get("open_basedir");
-$scanfiles	= @scandir($GLOBALS['DUPX_ROOT']);
-$scancount	= is_array($scanfiles) ? (count($scanfiles)) : -1;
 $datetime1	= $GLOBALS['DUPX_AC']->created;
 $datetime2	= date("Y-m-d H:i:s");
 $fulldays	= round(abs(strtotime($datetime1) - strtotime($datetime2))/86400);
@@ -290,23 +288,22 @@ VALIDATION
 			<div class="status fail">Warn</div>
 			<div class="title" data-type="toggle" data-target="#s1-notice10"><i class="fa fa-caret-right"></i> Overwrite Install</div>
 			<div class="info" id="s1-notice10">
-				Duplicator is in "Overwrite Install" mode because it has detected an existing WordPress site.  There are also currently
-				<?php echo "<b>[{$scancount}]</b>"; ?>  items in the deployment path <i>(<?php echo "{$GLOBALS['DUPX_ROOT']}"; ?>)</i>.
-				This mode allows for the installer to be dropped directly into an existing WordPress site and overwrite its contents.   Any content that is inside of
-				the archive file will <u>overwrite</u> the contents from where it is placed.
+				Duplicator is in "Overwrite Install" mode because it has detected an existing WordPress site at this location <i>[<?php echo "{$GLOBALS['DUPX_ROOT']}"; ?>]</i>.
+				This mode allows for the installer to be dropped directly into an existing WordPress site and overwrite its contents.   Any content inside of the archive file
+				will <u>overwrite</u> the contents from where it is placed.  It is safe to continue with the install; please see the	information below for additional details.
+				<br/><br/>
+
+				<i style="color:maroon">
+					<b>Notice:</b> Existing content such as plugin/themes/images will still show-up after the install is complete if they did not already exist in
+					the archive file. For example if you have an SEO plugin in the current site but that same SEO plugin <u>does not exist</u> in the archive file
+					then that plugin will display as a disabled plugin after the install is completed. The same concept with themes and images applies.  This will
+					not impact the sites operation, and the behavior is expected.
+				</i>
 				<br/><br/>
 
 				<i style="color:#025d02">
 					<b>Recommendation:</b> When using this mode it is recommend to be used in conjunction it with a WordPress site that has minimal
 					setup (plugins/themes).  Typically a fresh install or a cPanel 'one click' install is the best baseline to work from when using this mode.
-				</i>
-				<br/><br/>
-
-				<i style="color:maroon">
-					<b>Note:</b> Existing content such as plugin/themes/images will still show-up after the install is complete if they did not already exist in
-					the archive file. For example if you have an SEO plugin in the current site but that same SEO plugin <u>does not exist</u> in the archive file
-					then that plugin will display as a disabled plugin after the install is completed. The same concept with themes and images applies.  This will
-					not impact the sites operation, and the behavior is expected.
 				</i>
 			</div>
 
