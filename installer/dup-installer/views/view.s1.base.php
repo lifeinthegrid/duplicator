@@ -288,23 +288,30 @@ VALIDATION
 			<div class="status fail">Warn</div>
 			<div class="title" data-type="toggle" data-target="#s1-notice10"><i class="fa fa-caret-right"></i> Overwrite Install</div>
 			<div class="info" id="s1-notice10">
-				Duplicator is in "Overwrite Install" mode because it has detected an existing WordPress site at this location <i>[<?php echo "{$GLOBALS['DUPX_ROOT']}"; ?>]</i>.
-				This mode allows for the installer to be dropped directly into an existing WordPress site and overwrite its contents.   Any content inside of the archive file
-				will <u>overwrite</u> the contents from where it is placed.  It is safe to continue with the install; please see the	information below for additional details.
+				<b>Deployment Path:</b> <i><?php echo "{$GLOBALS['DUPX_ROOT']}"; ?></i>
 				<br/><br/>
 
-				<i style="color:maroon">
+				Duplicator is in "Overwrite Install" mode because it has detected an existing WordPress site at the deployment path above.  This mode allows for the installer
+				to be dropped directly into an existing WordPress site and overwrite its contents.   Any content inside of the archive file
+				will <u>overwrite</u> the contents from the deployment path.  To continue choose one of these options:
+
+				<ol>
+					<li>Ignore this notice and continue with the install if you want to overwrite this sites files.</li>
+					<li>Move this installer and archive to another empty directory path to keep this sites files.</li>
+				</ol>
+
+				<small style="color:maroon">
 					<b>Notice:</b> Existing content such as plugin/themes/images will still show-up after the install is complete if they did not already exist in
 					the archive file. For example if you have an SEO plugin in the current site but that same SEO plugin <u>does not exist</u> in the archive file
 					then that plugin will display as a disabled plugin after the install is completed. The same concept with themes and images applies.  This will
 					not impact the sites operation, and the behavior is expected.
-				</i>
+				</small>
 				<br/><br/>
 
-				<i style="color:#025d02">
+				<small style="color:#025d02">
 					<b>Recommendation:</b> When using this mode it is recommend to be used in conjunction it with a WordPress site that has minimal
-					setup (plugins/themes).  Typically a fresh install or a cPanel 'one click' install is the best baseline to work from when using this mode.
-				</i>
+					setup (plugins/themes).  Typically a fresh install or a cPanel 'one click' install is the best baseline to work from when using this mode but is not required.
+				</small>
 			</div>
 
 		<!-- NOTICE 20: ARCHIVE EXTRACTED -->
@@ -312,15 +319,15 @@ VALIDATION
 			<div class="status fail">Warn</div>
 			<div class="title" data-type="toggle" data-target="#s1-notice20"><i class="fa fa-caret-right"></i> Archive Extracted</div>
 			<div class="info" id="s1-notice20">
-				The installer has detected that the archive file has been extracted to the deployment path below.  To continue choose from one of these options:
+				<b>Deployment Path:</b> <i><?php echo "{$GLOBALS['DUPX_ROOT']}"; ?></i>
+				<br/><br/>
+				
+				The installer has detected that the archive file has been extracted to the deployment path above.  To continue choose one of these options:
 
 				<ol>
 					<li>Skip the extraction process by <a href="javascript:void(0)" onclick="DUPX.getManaualArchiveOpt()">[enabling manual archive extraction]</a> </li>
-					<li>Ignore this message and continue with the install process</li>
+					<li>Ignore this message and continue with the install process to re-extract the archive file.</li>
 				</ol>
-
-				<b>Deployment Path:</b> <i><?php echo "{$GLOBALS['DUPX_ROOT']}"; ?></i>
-				<br/><br/>
 
 				<small>Note: This test looks for a file named <i>wp-config-arc.txt</i> in the deployment path above.  If the file exists then this notice is shown.
 				The <i>wp-config-arc.txt</i> file is created with every archive and removed once the install is complete.  For more details on this process see the
@@ -333,16 +340,18 @@ VALIDATION
 			<div class="status fail">Warn</div>
 			<div class="title" data-type="toggle" data-target="#s1-notice25"><i class="fa fa-caret-right"></i> Database Only</div>
 			<div class="info" id="s1-notice25">
-				The installer has detected that a WordPress site does not exist at the deployment path below. This installer is currently in 'Database Only' because that is
-				how the archive was created. To continue choose from one of these options:
-
-				<ol>
-					<li>Place this installer and its archive into a directory where WordPress is already installed. </li>
-					<li>Ignore this message and continue with the install process to install only to the database.</li>
-				</ol>
-
 				<b>Deployment Path:</b> <i><?php echo "{$GLOBALS['DUPX_ROOT']}"; ?></i>
 				<br/><br/>
+
+				The installer has detected that a WordPress site does not exist at the deployment path above. This installer is currently in 'Database Only' mode because that is
+				how the archive was created.  If core WordPress site files do not exist at the path above then they will need to be placed there in order for a WordPress site
+				to properly work.  To continue choose one of these options:
+
+				<ol>
+					<li>Place this installer and archive at a path where core WordPress files already exist to hide this message. </li>
+					<li>Create a new package that includes both the database and the core WordPress files.</li>
+					<li>Ignore this message and install only the database (for advanced users only).</li>
+				</ol>
 
 				<small>Note: This test simply looks for the directories <?php echo DUPX_Server::$wpCoreDirsList; ?> and a wp-config.php file.  If they are not found in the
 				deployment path above then this notice is shown.</small>
