@@ -309,10 +309,10 @@ VALIDATION
 				<br/><br/>
 
 
-				<i style="color:#025d02">
+				<small style="color:#025d02">
 					<b>Recommendation:</b> It is recommended you only overwrite WordPress sites that have a minimal	setup (plugins/themes).  Typically a fresh install or a
 					cPanel 'one click' install is the best baseline to work from when using this mode but is not required.
-				</i>
+				</small>
 			</div>
 
 		<!-- NOTICE 20: ARCHIVE EXTRACTED -->
