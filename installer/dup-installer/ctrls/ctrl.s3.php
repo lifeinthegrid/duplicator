@@ -168,13 +168,14 @@ if(isset($url_old_http)){
 }
 
 /*=============================================================
-REMOVE TRAILING SLASHE LOGIC:
-In many cases the trailing slash of a url or path causes issues so
-by default all trailing slashes have been removed.  This has worked
-well for several years.  However there are some edge cases where removing
-the trailing slash will cause issues such that the following will happen
+REMOVE TRAILING SLASH LOGIC:
+ * In many cases the trailing slash of a url or path causes issues on some
+ * enviroments so by default all trailing slashes have been removed.
+ * This has worked well for several years.  However there are some edge
+ * cases where removing he trailing slash will cause issues such that
+ * the following will happen:
 	http://www.mysite.com  >>>>  http://C:/xampp/apache/htdocs/.mysite.com
-So the edge case array is a place older for this types of issues.
+ * So the edge case array is a place older for this types of issues.
 */
 $GLOBALS['REPLACE_LIST_EDGE_CASES'] = array('/www/');
 $_dupx_tmp_replace_list = $GLOBALS['REPLACE_LIST'];
@@ -186,7 +187,7 @@ foreach ($_dupx_tmp_replace_list as $key => $val) {
 			$GLOBALS['REPLACE_LIST'][$key]['search']  = rtrim($search, '\/');
 			$GLOBALS['REPLACE_LIST'][$key]['replace'] = rtrim($replace, '\/');
 		} else {
-			DUPX_Log::info("NOTICE: Edge case for path trimming detected");
+			DUPX_Log::info("NOTICE: Edge case for path trimming detected on {$skip_val}");
 		}
 	}
 }
