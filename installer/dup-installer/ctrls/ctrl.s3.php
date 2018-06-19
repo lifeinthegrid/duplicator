@@ -167,14 +167,31 @@ if(isset($url_old_http)){
     );
 }
 
-//Remove trailing slashes
-function _dupx_array_rtrim(&$value)
-{
-	$value = rtrim($value, '\/');
+/*=============================================================
+REMOVE TRAILING SLASHE LOGIC:
+In many cases the trailing slash of a url or path causes issues so
+by default all trailing slashes have been removed.  This has worked
+well for several years.  However there are some edge cases where removing
+the trailing slash will cause issues such that the following will happen
+	http://www.mysite.com  >>>>  http://C:/xampp/apache/htdocs/.mysite.com
+So the edge case array is a place older for this types of issues.
+*/
+$GLOBALS['REPLACE_LIST_EDGE_CASES'] = array('/www/');
+$_dupx_tmp_replace_list = $GLOBALS['REPLACE_LIST'];
+foreach ($_dupx_tmp_replace_list as $key => $val) {
+	foreach ($GLOBALS['REPLACE_LIST_EDGE_CASES'] as $skip_val) {
+		$search  = $GLOBALS['REPLACE_LIST'][$key]['search'];
+		$replace = $GLOBALS['REPLACE_LIST'][$key]['replace'];
+		if (strcmp($skip_val, $search) !== 0) {
+			$GLOBALS['REPLACE_LIST'][$key]['search']  = rtrim($search, '\/');
+			$GLOBALS['REPLACE_LIST'][$key]['replace'] = rtrim($replace, '\/');
+		} else {
+			DUPX_Log::info("NOTICE: Edge case for path trimming detected");
+		}
+	}
 }
-array_walk_recursive($GLOBALS['REPLACE_LIST'], _dupx_array_rtrim);
 
-DUPX_Log::info("Final replace list: \n". print_r($GLOBALS['REPLACE_LIST'], true),3);
+DUPX_Log::info("Final replace list: \n". print_r($GLOBALS['REPLACE_LIST'], true), 2);
 $report = DUPX_UpdateEngine::load($dbh, $GLOBALS['REPLACE_LIST'], $_POST['tables'], $_POST['fullsearch']);
 
 //BUILD JSON RESPONSE
