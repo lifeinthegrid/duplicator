@@ -66,7 +66,11 @@ class DUP_Server
         $safe_ini                      = strtolower(ini_get('safe_mode'));
         $dup_tests['PHP']['SAFE_MODE'] = $safe_ini != 'on' || $safe_ini != 'yes' || $safe_ini != 'true' || ini_get("safe_mode") != 1 ? 'Pass' : 'Fail';
         $dup_tests['PHP']['VERSION']   = DUP_Util::$on_php_529_plus ? 'Pass' : 'Fail';
-        $dup_tests['PHP']['ZIP']       = class_exists('ZipArchive') ? 'Pass' : 'Fail';
+
+        if(DUP_Settings::Get('archive_build_mode') == DUP_Archive_Build_Mode::ZipArchive) {
+            $dup_tests['PHP']['ZIP']       = class_exists('ZipArchive') ? 'Pass' : 'Fail';
+        }
+
         $dup_tests['PHP']['FUNC_1']    = function_exists("file_get_contents") ? 'Pass' : 'Fail';
         $dup_tests['PHP']['FUNC_2']    = function_exists("file_put_contents") ? 'Pass' : 'Fail';
         $dup_tests['PHP']['FUNC_3']    = function_exists("mb_strlen") ? 'Pass' : 'Fail';

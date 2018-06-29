@@ -78,6 +78,7 @@ TOOL BAR: STEPS -->
     <div id="message" class="notice notice-success is-dismissible"><p><?php echo $action_response; ?></p></div>
 <?php endif; ?>	
 
+    
 <!-- ============================
 SYSTEM REQUIREMENTS -->
 <?php if (! $dup_tests['Success'] || $dup_tests['Warning']) : ?>
@@ -108,10 +109,12 @@ SYSTEM REQUIREMENTS -->
                         <td><?php printf("%s [%s]", __("PHP Version", 'duplicator'), phpversion()); ?></td>
                         <td><?php echo $dup_tests['PHP']['VERSION'] ?></td>
                     </tr>
+                    <?php if($archive_build_mode == 'zip') : ?>
                     <tr>
                         <td><?php _e('Zip Archive Enabled', 'duplicator'); ?></td>
                         <td><?php echo $dup_tests['PHP']['ZIP'] ?></td>
-                    </tr>					
+                    </tr>
+                    <?php endif; ?>
                     <tr>
                         <td><?php _e('Safe Mode Off', 'duplicator'); ?></td>
                         <td><?php echo $dup_tests['PHP']['SAFE_MODE'] ?></td>
