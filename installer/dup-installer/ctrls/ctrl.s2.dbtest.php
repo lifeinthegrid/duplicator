@@ -270,18 +270,20 @@ class DUPX_DBTest
 
 			$db_found = mysqli_select_db($this->dbh, $this->in->dbname);
 			if (!$db_found) {
-				$test['pass']	 = 0;
-				$test['info']	 = "The user <b>[{$this->in->dbuser}]</b> is unable to see the database named <b>[{$this->in->dbname}]</b>. "
-					."Be sure the database name already exists.  If you want to create a new database choose the action 'Create New Database'.";
+				$test['pass'] = 0;
+				$test['info'] = "The user '<b>[{$this->in->dbuser}]</b>' is unable to see the database named '<b>[{$this->in->dbname}]</b>'.  "
+					. "Be sure the database name already exists and check that the database user has access to the database.  "
+                                        . "If you want to create a new database choose the action 'Create New Database'.";
 			} else {
-				$test['pass']	 = 1;
-				$test['info']	 = "The database user <b>[{$this->in->dbuser}]</b> has visible access to see the database named <b>[{$this->in->dbname}]</b>";
+				$test['pass'] = 1;
+				$test['info'] = "The database user <b>[{$this->in->dbuser}]</b> has visible access to see the database named <b>[{$this->in->dbname}]</b>";
 			}
 
 		} catch (Exception $ex) {
-			$test['pass']	 = 0;
-			$test['info']	 = "The user <b>[{$this->in->dbuser}]</b> is unable to see the database named <b>[{$this->in->dbname}]</b>."
-				. "Be sure the database name already exists.  If you want to create a new database choose the action 'Create New Database'<br/>" . $this->formatError($ex);
+			$test['pass'] = 0;
+			$test['info'] = "The user '<b>[{$this->in->dbuser}]</b>' is unable to see the database named '<b>[{$this->in->dbname}]</b>'.  "
+				. "Be sure the database name already exists and check that the database user has access to the database.  "
+                                . "If you want to create a new database choose the action 'Create New Database'<br/>" . $this->formatError($ex);
 		}
 	}
 
