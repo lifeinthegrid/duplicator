@@ -66,7 +66,7 @@ class DUP_Server {
         $dup_tests['PHP']['VERSION'] = DUP_Util::$on_php_529_plus ? 'Pass' : 'Fail';
 
         if (DUP_Settings::Get('archive_build_mode') == DUP_Archive_Build_Mode::ZipArchive) {
-            $dup_tests['PHP']['ZIP'] = class_exists('ZipArchive') ? 'Fail' : 'Fail';
+            $dup_tests['PHP']['ZIP'] = class_exists('ZipArchive') ? 'Pass' : 'Fail';
         }
 
         $dup_tests['PHP']['FUNC_1'] = function_exists("file_get_contents") ? 'Pass' : 'Fail';
