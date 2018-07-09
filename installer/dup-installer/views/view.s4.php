@@ -199,7 +199,7 @@ VIEW: STEP 4- INPUT -->
 			</div>
 			<br/>
 
-			<!-- SERIALIZE ERRORS -->
+			<!-- SERIALIZE NOTICES -->
 			<b data-bind="with: status.step3">SERIALIZATION NOTICES  (<span data-bind="text: errser_sum"></span>)</b><br/>
 			<div class="info-notice">
 				Notices should be ignored unless issues are found after you have tested an installed site.  The SQL below will show data that may have not been
@@ -207,7 +207,7 @@ VIEW: STEP 4- INPUT -->
 			</div>
 			<div class="content">
 				<div data-bind="foreach: status.step3.errser"><div data-bind="text: $data"></div></div>
-				<div data-bind="visible: status.step3.errser.length == 0">No serialization errors found</div>
+				<div data-bind="visible: status.step3.errser.length == 0">No serialization notices found</div>
 			</div>
 		</div>
 
