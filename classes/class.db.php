@@ -167,10 +167,14 @@ class DUP_DB extends wpdb
 
         // Find the one which works
         foreach ($paths as $path) {
-            if(file_exists($path)) {
-				if (DUP_Util::isExecutable($path))
-					return $path;
-			}
+            $out = array();
+            $rc = -1;
+            $cmd = $custom_mysqldump_path.' --help';
+
+            $ex = exec($cmd, $out, $rc);
+            if ($rc === 0) {
+                return $path;
+            }
         }
 
         return false;

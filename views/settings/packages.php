@@ -18,7 +18,16 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
 	$mysqldump_exe_file		= isset($_POST['package_mysqldump_path']) 
 								? trim(DUP_DB::escSQL(strip_tags($_POST['package_mysqldump_path']), true))
 								: null;
-	$mysqldump_path_valid	= is_file($mysqldump_exe_file) ? true : false;
+	$mysqldump_path_valid = false;
+
+	$out = array();
+	$rc = -1;
+	$cmd = $mysqldump_exe_file.' --help';
+
+	$ex = exec($cmd, $out, $rc);
+	if ($rc === 0) {
+		$mysqldump_path_valid = true;
+	}
 	
 	DUP_Settings::Set('last_updated', date('Y-m-d-H-i-s'));
     DUP_Settings::Set('package_zip_flush', isset($_POST['package_zip_flush']) ? "1" : "0");
