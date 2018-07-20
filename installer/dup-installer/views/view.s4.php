@@ -81,17 +81,24 @@ VIEW: STEP 4- INPUT -->
 	<br/><br/>
 
 	<div class="s4-go-back">
-		Additional Notes:
+		Final Steps:
 		<ul style="margin-top: 1px">
 			<li>
-				Review <a href="<?php echo $url_new_rtrim; ?>" target="_blank">front-end</a> now or
-				re-run installer at <a href="<?php echo $url_new_rtrim; ?>/installer.php">step 1</a>
+				Review the <a href="<?php echo $url_new_rtrim; ?>" target="_blank">front-end</a> or
+				re-run installer at <a href="<?php echo "{$url_new_rtrim}/installer.php"; ?>">step 1</a>
 			</li>
-			<li>The .htaccess file was reset.  Re-save plugins that write to this file.</li>
-			<li>For additional help visit the <a href='https://snapcreek.com/duplicator/docs/' target='_blank'>online knowledge-base</a>.</li>
+			<li>Finalize installation by logging into the WordPress Admin Login and removing installation files</li>
+		</ul>
+
+		Additional Notes:
+		<ul style="margin-top: 1px">
+			<li>The .htaccess file was reset.  Resave plugins that write to this file.</li>
+			<li>
+				Visit the <a href="installer.php?help=1#troubleshoot" target="_blank">troubleshoot</a> section or
+				<a href='https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst4_step4_troubleshoot' target='_blank'>online FAQs</a> for additional help.
+			</li>
 		</ul>
 	</div>
-
 
 	<!-- ========================
 	INSTALL REPORT -->

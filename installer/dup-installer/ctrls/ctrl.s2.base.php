@@ -7,7 +7,7 @@ defined("ABSPATH") or die("");
 $_POST['dbaction']	 = isset($_POST['dbaction']) ? $_POST['dbaction'] : 'create';
 $_POST['dbhost']	 = isset($_POST['dbhost']) ? DUPX_U::sanitize(trim($_POST['dbhost'])) : null;
 $_POST['dbname']	 = isset($_POST['dbname']) ? DUPX_U::sanitize(trim($_POST['dbname'])) : null;
-$_POST['dbuser']	 = isset($_POST['dbuser']) ? trim($_POST['dbuser']) : null;
+$_POST['dbuser']	 = isset($_POST['dbuser']) ? DUPX_U::sanitize(trim($_POST['dbuser'])) : null;
 $_POST['dbpass']	 = isset($_POST['dbpass']) ? trim($_POST['dbpass']) : null;
 $_POST['dbport']	 = isset($_POST['dbhost']) ? parse_url($_POST['dbhost'], PHP_URL_PORT) : 3306;
 $_POST['dbport']	 = (!empty($_POST['dbport'])) ? $_POST['dbport'] : 3306;
