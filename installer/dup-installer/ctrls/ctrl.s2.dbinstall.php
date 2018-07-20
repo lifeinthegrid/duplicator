@@ -34,6 +34,7 @@ class DUPX_DBInstall
     public $dbcollatefb;
     public $dbobj_views;
     public $dbobj_procs;
+	public $dbFileSize = 0;
 
     public function __construct($post, $start_microtime)
     {
@@ -44,6 +45,7 @@ class DUPX_DBInstall
         $this->php_mem_range        = 1024 * 1024;
         $this->root_path            = $GLOBALS['DUPX_ROOT'];
         $this->sql_result_file_path = "{$this->root_path}/{$GLOBALS['SQL_FILE_NAME']}";
+		$this->dbFileSize			= @filesize($this->sql_file_path);
 
         //ESTABLISH CONNECTION
         $this->dbh = DUPX_DB::connect($post['dbhost'], $post['dbuser'], $post['dbpass']);
@@ -78,20 +80,6 @@ class DUPX_DBInstall
     public function prepareSQL()
     {
         $faq_url      = $GLOBALS['FAQ_URL'];
-        $db_file_size = @filesize('database.sql');
-
-        //Fatal Memory errors from file_get_contents is not catchable.
-        //Try to warn ahead of time with a buffer in memory difference
-        if ($db_file_size >= $this->php_mem_range && $this->php_mem_range != 0) {
-            $db_file_size = DUPX_U::readableByteSize($db_file_size);
-            $msg          = "\nWARNING: The database script is '{$db_file_size}' in size.  The PHP memory allocation is set\n";
-            $msg          .= "at '{$this->php_mem}'.  There is a high possibility that the installer script will fail with\n";
-            $msg          .= "a memory allocation error when trying to load the database.sql file.  It is\n";
-            $msg          .= "recommended to increase the 'memory_limit' setting in the php.ini config file.\n";
-            $msg          .= "see: {$faq_url}#faq-trouble-056-q \n";
-            DUPX_Log::info($msg);
-        }
-
         @chmod("{$this->root_path}/database.sql", 0777);
         $sql_file = file_get_contents($this->sql_file_path, true);
 

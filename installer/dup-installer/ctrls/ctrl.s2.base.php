@@ -91,6 +91,23 @@ if ($_POST['dbaction'] != 'manual') {
     }
 }
 if($not_yet_logged) {
+
+	//Fatal Memory errors from file_get_contents is not catchable.
+	//Try to warn ahead of time with a check on buffer in memory difference
+	$current_php_mem = DUPX_U::returnBytes($GLOBALS['PHP_MEMORY_LIMIT']);
+	$current_php_mem = is_numeric($current_php_mem) ? $current_php_mem : null;
+
+	if ($current_php_mem != null && $dbinstall->dbFileSize > $current_php_mem) {
+		$readable_size = DUPX_U::readableByteSize($dbinstall->dbFileSize);
+		$msg   = "\nWARNING: The database script is '{$readable_size}' in size.  The PHP memory allocation is set\n";
+		$msg  .= "at '{$GLOBALS['PHP_MEMORY_LIMIT']}'.  There is a high possibility that the installer script will fail with\n";
+		$msg  .= "a memory allocation error when trying to load the database.sql file.  It is\n";
+		$msg  .= "recommended to increase the 'memory_limit' setting in the php.ini config file.\n";
+		$msg  .= "see: {$faq_url}#faq-trouble-056-q \n";
+		DUPX_Log::info($msg);
+		unset($msg);
+	}
+
     DUPX_Log::info("--------------------------------------");
     DUPX_Log::info("DATABASE RESULTS");
     DUPX_Log::info("--------------------------------------");
