@@ -10,6 +10,7 @@
 
 	$archive_type_label		=  DUP_Settings::Get('archive_build_mode') == DUP_Archive_Build_Mode::ZipArchive ? "ZipArchive" : "DupArchive (beta)";
 	$archive_type_extension =  DUP_Settings::Get('archive_build_mode') == DUP_Archive_Build_Mode::ZipArchive ? "zip" : "daf";
+	$duparchive_max_limit   = DUP_Util::readableByteSize(DUPLICATOR_MAX_DUPARCHIVE_SIZE);
 ?>
 
 <!-- ================================================================
@@ -423,21 +424,16 @@ DATABASE -->
 	<div class="data-ll-section scan-item scan-item-last" style="display: none">
 		<div style="padding: 7px; background-color:#F3B2B7; font-weight: bold ">
 		<?php
-				printf(__('The total size of the files and database exceeds the 1GB limit Duplicator Lite can process with the DupArchive engine. &nbsp;', 'duplicator'));
-                printf(__('The build process cannot continue <a href="javascript:void(0)" onclick="jQuery(\'#data-ll-status-recommendations\').toggle()">click for recommendations</a>.', 'duplicator'));
-
+			printf(__('The total size of the files and database exceeds the %s limit Duplicator Lite can process with the DupArchive engine. &nbsp;', 'duplicator'), $duparchive_max_limit);
+            printf(__('The build process cannot continue <a href="javascript:void(0)" onclick="jQuery(\'#data-ll-status-recommendations\').toggle()">click for recommendations</a>.', 'duplicator'));
 		?>
 		</div>
-		<!--div class="title" onclick="Duplicator.Pack.toggleScanItem(this);">
-			<div class="text"><i class="fa fa-caret-right"></i> <?php _e('Overview', 'duplicator');?></div>
-			<div id="data-ll-status-totalsize"></div>
-		</div-->
 		<div class="info" id="data-ll-status-recommendations">
 			<?php
                 echo '<b>';
 				$lnk = '<a href="admin.php?page=duplicator-settings&tab=package" target="_blank">' . __('Archive Engine', 'duplicator') . '</a>';
-				printf(__("The DupArchive eninge is a custom format designed to help with build issues on budget or contrainted hosts. The '{$lnk}' setting for DupArchive is "
-						. "currently capped at 1GB for Duplicator Lite.  For sites above 1GB check out the recommendations below.", 'duplicator'));
+				printf(__("The DupArchive engine is a custom format designed to help with build issues on budget or constrained hosts. The '{$lnk}' setting for DupArchive is "
+						. "currently capped at %s for Duplicator Lite.  For sites above %s check out the recommendations below.", 'duplicator'), $duparchive_max_limit, $duparchive_max_limit );
                 echo '</b>';
 
 				echo '<br/><hr size="1" />';
@@ -494,7 +490,6 @@ DIALOGS:
 	$alert2->title		= __('Copy Quick Filter Paths', 'duplicator');
 	$alert2->message	= "<div id='arc-paths-dlg'></div>";
 	$alert2->initAlert();
-
 ?>
 
 <!-- =======================
@@ -582,7 +577,6 @@ DIALOG: Scan Results -->
 		</script>
 		<div class="hb-filter-file-list-result"></div>
 
-
 	</div>
 
 	<small>
@@ -618,7 +612,6 @@ DIALOG: PATHS COPY & PASTE -->
 </div>
 
 
-
 <script>
 jQuery(document).ready(function($)
 {
@@ -626,7 +619,6 @@ jQuery(document).ready(function($)
 	Handlebars.registerHelper('stripWPRoot', function(path) {
 		return  path.replace('<?php echo rtrim(DUPLICATOR_WPROOTPATH, "//") ?>', '');
 	});
-
 
 	//Uncheck file names if directory is checked
 	Duplicator.Pack.filesOff = function (dir)

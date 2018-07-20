@@ -4,6 +4,7 @@ global $wpdb;
 
 $action_updated = null;
 $action_response = __("Package Settings Saved", 'duplicator');
+$mysqldump_exe_file	= '';
 
 //SAVE RESULTS
 if (isset($_POST['action']) && $_POST['action'] == 'save') {
@@ -14,36 +15,33 @@ if (isset($_POST['action']) && $_POST['action'] == 'save') {
 	}
 
     //Package
-	$mysqldump_enabled		= isset($_POST['package_dbmode']) && $_POST['package_dbmode'] == 'mysql' ? "1" : "0";
-	$mysqldump_exe_file		= isset($_POST['package_mysqldump_path']) 
-								? trim(DUP_DB::escSQL(strip_tags($_POST['package_mysqldump_path']), true))
-								: null;
-	$mysqldump_path_valid	= is_file($mysqldump_exe_file) ? true : false;
-	
+	$mysqldump_enabled	= isset($_POST['package_dbmode']) && $_POST['package_dbmode'] == 'mysql' ? "1" : "0";
+	if (isset($_POST['package_mysqldump_path'])) {
+		$mysqldump_exe_file	= DUP_Util::safePath(stripslashes(trim($_POST['package_mysqldump_path'])));
+		$mysqldump_exe_file	= DUP_DB::escSQL(strip_tags($mysqldump_exe_file), true);
+	}
+
 	DUP_Settings::Set('last_updated', date('Y-m-d-H-i-s'));
     DUP_Settings::Set('package_zip_flush', isset($_POST['package_zip_flush']) ? "1" : "0");
 	DUP_Settings::Set('archive_build_mode', $_POST['archive_build_mode']);
 	DUP_Settings::Set('package_mysqldump', $mysqldump_enabled ? "1" : "0");
 	DUP_Settings::Set('package_phpdump_qrylimit', isset($_POST['package_phpdump_qrylimit']) ? $_POST['package_phpdump_qrylimit'] : "100");
-	if ($mysqldump_path_valid) {
-		$mysqldump_exe_file = DUP_Util::isWindows() ? realpath($mysqldump_exe_file) : $mysqldump_exe_file;
-		DUP_Settings::Set('package_mysqldump_path', $mysqldump_exe_file);
-	}
+	DUP_Settings::Set('package_mysqldump_path', $mysqldump_exe_file);
 	DUP_Settings::Set('package_ui_created', $_POST['package_ui_created']);
     
 	$action_updated = DUP_Settings::Save();
     DUP_Util::initSnapshotDirectory();
 }
 
-$package_zip_flush = DUP_Settings::Get('package_zip_flush');
-$phpdump_chunkopts = array("20", "100", "500", "1000", "2000");
-$phpdump_qrylimit = DUP_Settings::Get('package_phpdump_qrylimit');
-$package_mysqldump = DUP_Settings::Get('package_mysqldump');
+$package_zip_flush		= DUP_Settings::Get('package_zip_flush');
+$phpdump_chunkopts		= array("20", "100", "500", "1000", "2000");
+$phpdump_qrylimit		= DUP_Settings::Get('package_phpdump_qrylimit');
+$package_mysqldump		= DUP_Settings::Get('package_mysqldump');
 $package_mysqldump_path = trim(DUP_Settings::Get('package_mysqldump_path'));
-$package_ui_created = is_numeric(DUP_Settings::Get('package_ui_created')) ? DUP_Settings::Get('package_ui_created') : 1;
-$mysqlDumpPath = DUP_DB::getMySqlDumpPath();
-$mysqlDumpFound = ($mysqlDumpPath) ? true : false;
-$archive_build_mode = DUP_Settings::Get('archive_build_mode')
+$package_ui_created		= is_numeric(DUP_Settings::Get('package_ui_created')) ? DUP_Settings::Get('package_ui_created') : 1;
+$mysqlDumpPath			= DUP_DB::getMySqlDumpPath();
+$mysqlDumpFound			= ($mysqlDumpPath) ? true : false;
+$archive_build_mode		= DUP_Settings::Get('archive_build_mode')
 ?>
 
 <style>
@@ -134,8 +132,7 @@ $archive_build_mode = DUP_Settings::Get('archive_build_mode')
                     </p>
                 <?php else : ?>
                     <input type="radio" name="package_dbmode" value="mysql" id="package_mysqldump" <?php echo ($package_mysqldump) ? 'checked="checked"' : ''; ?> />
-                    <label for="package_mysqldump"><?php _e("Mysqldump", 'duplicator'); ?></label>
-                    <i style="font-size:12px">(<?php _e("recommended", 'duplicator'); ?>)</i> <br/>
+                    <label for="package_mysqldump"><?php _e("Mysqldump", 'duplicator'); ?></label><br/>
 
                     <div style="margin:5px 0px 0px 25px">
                         <?php if ($mysqlDumpFound) : ?>
@@ -170,13 +167,10 @@ $archive_build_mode = DUP_Settings::Get('archive_build_mode')
                         <input type="text" name="package_mysqldump_path" id="package_mysqldump_path" value="<?php echo $package_mysqldump_path; ?>" placeholder="<?php _e("/usr/bin/mypath/mysqldump", 'duplicator'); ?>" />
 						<div class="dup-feature-notfound">
 						<?php
-							if ($action_updated && $mysqldump_path_valid === false) {
-								$mysqldump_path = DUP_Util::isWindows() ? stripslashes($_POST['package_mysqldump_path']) : $_POST['package_mysqldump_path'];
-								if (strlen($mysqldump_path)) {
-									_e('<i class="fa fa-exclamation-triangle"></i> The custom path provided is not recognized as a valid mysqldump file:<br/>', 'duplicator');
-									$mysqldump_path = esc_html($mysqldump_path);
-									echo "'{$mysqldump_path}'";
-								}
+							if (!$mysqlDumpFound && strlen($mysqldump_exe_file)) {
+								_e('<i class="fa fa-exclamation-triangle"></i> The custom path provided is not recognized as a valid mysqldump file:<br/>', 'duplicator');
+								$mysqldump_path = esc_html($package_mysqldump_path);
+								echo "'{$mysqldump_path}'";
 							}
 						?>
 						</div>

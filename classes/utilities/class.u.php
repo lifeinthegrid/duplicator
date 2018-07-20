@@ -728,5 +728,24 @@ class DUP_Util
 
         return false;
     }
+
+	/**
+	 * Display human readable byte sizes
+	 *
+	 * @param string $size	The size in bytes
+	 *
+	 * @return string Human readable bytes such as 50MB, 1GB
+	 */
+	public static function readableByteSize($size)
+	{
+		try {
+			$units = array('B', 'KB', 'MB', 'GB', 'TB');
+			for ($i = 0; $size >= 1024 && $i < 4; $i++)
+				$size /= 1024;
+			return round($size, 2).$units[$i];
+		} catch (Exception $e) {
+			return "n/a";
+		}
+	}
 }
 DUP_Util::init();
