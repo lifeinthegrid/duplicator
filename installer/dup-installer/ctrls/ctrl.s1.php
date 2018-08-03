@@ -29,7 +29,7 @@ if($_POST['archive_engine'] == 'manual') {
 //ACTION VARS
 $ajax1_start		= DUPX_U::getMicrotime();
 $root_path			= $GLOBALS['DUPX_ROOT'];
-$wpconfig_ark_path	= "{$root_path}/wp-config-arc.txt";
+$wpconfig_ark_path	= "{$root_path}/dup-wp-config-arc__{$GLOBALS['DUPX_AC']->package_hash}.txt";
 $archive_path		= $GLOBALS['FW_PACKAGE_PATH'];
 $JSON				= array();
 $JSON['pass']		= 0;
