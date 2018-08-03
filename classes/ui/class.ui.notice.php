@@ -40,7 +40,7 @@ class DUP_UI_Notice
         if (DUP_Server::hasInstallerFiles()) {
 
 			$on_active_tab = isset($_GET['section'])? $_GET['section']: '';
-            echo '<div class="updated notice-success" id="dup-global-error-reserved-files"><p>';
+            echo '<div class="dup-updated notice-success" id="dup-global-error-reserved-files"><p>';
 
 			//Safe Mode Notice
 			$safe_html = '';

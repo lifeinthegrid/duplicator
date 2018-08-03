@@ -42,6 +42,12 @@ if (!isset($_GET['bootloader'])) {
 	die("Bootloader parameter not specified in query string! Please try to re-run installer.php");
 }
 
+$config_files = glob('./dup-archive__*.txt');
+$config_file_absolute_path = array_pop($config_files);
+$config_file_name = basename($config_file_absolute_path, '.txt');
+$archive_prefix_length = strlen('dup-archive__');
+$GLOBALS['package_hash'] = substr($config_file_name, $archive_prefix_length);
+
 require_once($GLOBALS['DUPX_INIT'].'/lib/snaplib/snaplib.all.php');
 require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.constants.php');
 require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.archive.config.php');
@@ -52,6 +58,9 @@ $GLOBALS['DUPX_AC'] = DUPX_ArchiveConfig::getInstance();
 if ($GLOBALS['DUPX_AC'] == null) {
 	die("Can't initialize config globals! Please try to re-run installer.php");
 }
+
+// Constants which are dependent on the $GLOBALS['DUPX_AC']
+$GLOBALS['SQL_FILE_NAME']		= "dup-installer-data__{$GLOBALS['DUPX_AC']->package_hash}.sql";
 
 if($GLOBALS["VIEW"] == "step1") {
 	$init_state = true;

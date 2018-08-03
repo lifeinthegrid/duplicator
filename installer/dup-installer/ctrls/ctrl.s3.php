@@ -274,7 +274,8 @@ $replace = array("'WP_HOME', '{$_POST['url_new']}');",
 //@todo: integrate all logic into DUPX_WPConfig::updateVars
 DUPX_WPConfig::updateVars($patterns, $replace);
 
-$wpconfig_ark_path	= "{$GLOBALS['DUPX_ROOT']}/wp-config-arc.txt";
+$root_path = $GLOBALS['DUPX_ROOT'];
+$wpconfig_ark_path	= "{$root_path}/dup-wp-config-arc__{$GLOBALS['DUPX_AC']->package_hash}.txt";
 $wpconfig_ark_contents	= @file_get_contents($wpconfig_ark_path, true);
 $wpconfig_ark_contents	= preg_replace($patterns, $replace, $wpconfig_ark_contents);
 

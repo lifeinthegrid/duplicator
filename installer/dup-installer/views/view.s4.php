@@ -32,7 +32,7 @@ $admin_login	= "{$url_new_rtrim}/{$admin_base}{$admin_url_qry}redirect_to={$admi
 VIEW: STEP 4- INPUT -->
 <form id='s4-input-form' method="post" class="content-form" style="line-height:20px">
 	<input type="hidden" name="url_new" id="url_new" value="<?php echo $url_new_rtrim; ?>" />
-	<div class="logfile-link"><a href="../installer-log.txt?now=<?php echo $GLOBALS['NOW_TIME']; ?>" target="dup-installer">installer-log.txt</a></div>
+	<div class="logfile-link"><a href="./<?php echo $GLOBALS["LOG_FILE_NAME"];?>?now=<?php echo $GLOBALS['NOW_TIME']; ?>" target="dup-installer">installer-log.txt</a></div>
 
 	<div class="hdr-main">
 		Step <span class="step">4</span> of 4: Test Site
@@ -153,7 +153,7 @@ VIEW: STEP 4- INPUT -->
 			<div class="s4-err-title">STEP 2 - INSTALL NOTICES:</div>
 			<b data-bind="with: status.step1">ERRORS (<span data-bind="text: query_errs"></span>)</b><br/>
 			<div class="info-error">
-				Queries that error during the deploy step are logged to the <a href="../installer-log.txt" target="dup-installer">install-log.txt</a> file and
+				Queries that error during the deploy step are logged to the <a href="./<?php echo $GLOBALS["LOG_FILE_NAME"];?>" target="dup-installer">install-log.txt</a> file and
 				and marked with an **ERROR** status.   If you experience a few errors (under 5), in many cases they can be ignored as long as your site is working correctly.
 				However if you see a large amount of errors or you experience an issue with your site then the error messages in the log file will need to be investigated.
 				<br/><br/>

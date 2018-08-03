@@ -30,7 +30,7 @@ VIEW: STEP 3- INPUT -->
 <form id='s3-input-form' method="post" class="content-form">
 
 	<div class="logfile-link">
-		<a href="../installer-log.txt?now=<?php echo $GLOBALS['NOW_TIME']; ?>" target="dup-installer">installer-log.txt</a>
+		<a href="./<?php echo $GLOBALS["LOG_FILE_NAME"];?>?now=<?php echo $GLOBALS['NOW_TIME']; ?>" target="dup-installer">installer-log.txt</a>
 	</div>
 	<div class="hdr-main">
 		Step <span class="step">3</span> of 4: Update Data
@@ -225,7 +225,7 @@ VIEW: STEP 3- INPUT -->
 VIEW: STEP 3 - AJAX RESULT  -->
 <form id='s3-result-form' method="post" class="content-form" style="display:none">
 
-	<div class="logfile-link"><a href="../installer-log.txt?now=<?php echo $GLOBALS['NOW_TIME']; ?>" target="dup-installer">installer-log.txt</a></div>
+	<div class="logfile-link"><a href="./<?php echo $GLOBALS["LOG_FILE_NAME"];?>?now=<?php echo $GLOBALS['NOW_TIME']; ?>" target="dup-installer">installer-log.txt</a></div>
 	<div class="hdr-main">
 		Step <span class="step">3</span> of 4: Update Data
 	</div>
@@ -347,7 +347,7 @@ DUPX.runUpdate = function()
 			status += "<b>Status:</b> "			+ xhr.statusText	+ "<br/>";
 			status += "<b>Response:</b> "		+ xhr.responseText  + "<hr/>";
 			status += "<b>Additional Troubleshooting Tips:</b><br/>";
-			status += "- Check the <a href='installer-log.txt' target='dup-installer'>installer-log.txt</a> file for warnings or errors.<br/>";
+			status += "- Check the <a href='./<?php echo $GLOBALS["LOG_FILE_NAME"];?>' target='dup-installer'>installer-log.txt</a> file for warnings or errors.<br/>";
 			status += "- Check the web server and PHP error logs. <br/>";
 			status += "- For timeout issues visit the <a href='https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-100-q' target='_blank'>Timeout FAQ Section</a><br/>";
 			$('#ajaxerr-data').html(status);

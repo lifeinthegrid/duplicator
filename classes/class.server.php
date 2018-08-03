@@ -180,7 +180,12 @@ class DUP_Server {
     public static function hasInstallerFiles() {
         $files = self::getInstallerFiles();
         foreach ($files as $file => $path) {
-            if (file_exists($path))
+            if (false !== strpos($path, '*')) {
+                $glob_files = glob($path);
+                if (!empty($glob_files)) {
+                    return true;
+                }
+            } elseif (file_exists($path))
                 return true;
         }
         return false;
@@ -192,18 +197,14 @@ class DUP_Server {
      * @return array [file_name, file_path]
      */
     public static function getInstallerFiles() {
-        //Files:   database.sql, installer.php, installer-backup.php, installer-bootlog.txt, installer-data.sql, installer-log.txt, scan.json
+        //Files:   installer.php, installer-backup.php, installer-bootlog.txt
         //Dirs:	   dup-installer
         return array(
             DUPLICATOR_INSTALL_PHP => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_PHP,
             DUPLICATOR_INSTALL_BAK => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_BAK,
-            DUPLICATOR_INSTALL_SQL => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_SQL,
-            DUPLICATOR_INSTALL_LOG => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_LOG,
-            DUPLICATOR_INSTALL_DB => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_DB,
             DUPLICATOR_INSTALL_BOOT_LOG => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_BOOT_LOG,
-            DUPLICATOR_WPCONFIG_ARK_FILENAME => DUPLICATOR_WPROOTPATH . DUPLICATOR_WPCONFIG_ARK_FILENAME,
-            DUPLICATOR_EMBEDDED_SCAN_FILENAME => DUPLICATOR_WPROOTPATH . DUPLICATOR_EMBEDDED_SCAN_FILENAME,
             basename(DUPLICATOR_INSTALLER_DIRECTORY) . ' ' . __('(directory)') => DUPLICATOR_INSTALLER_DIRECTORY,
+            'dup-wp-config-arc__[HASH].txt' => DUPLICATOR_WPROOTPATH . 'dup-wp-config-arc__*.txt',
         );
     }
 
@@ -244,5 +245,3 @@ class DUP_Server {
     }
 
 }
-
-?>

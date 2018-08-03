@@ -591,65 +591,17 @@ class DUP_Util
 
         return $filepath;
     }
+    
+    /**
+     * Is the server PHP 5.3 or better
+     *
+     * @return  bool    Returns true if the server PHP 5.3 or better
+     */
+    public static function PHP53()
+    {
+        return version_compare(PHP_VERSION, '5.3.2', '>=');
+    }
 
-
-	/**
-	 * Returns a GUIDv4 string
-	 *
-	 * Uses the best cryptographically secure method
-	 * for all supported platforms with fallback to an older,
-	 * less secure version.
-	 *
-	 * @param bool $trim	Trim '}{' curly
-	 * @param bool $nodash  Remove the dashes from the GUID
-	 * @param bool $grail	Add a 'G' to the end for status
-	 * 
-	 * @return string
-	 */
-	public static function GUIDv4($trim = true, $nodash = true, $gtrail = true)
-	{
-		// Windows
-		if (function_exists('com_create_guid') === true) {
-			if ($trim === true) {
-				$guidv4	 = trim(com_create_guid(), '{}');
-			} else {
-				$guidv4	 = com_create_guid();
-			}
-
-		//Linux
-		} elseif (function_exists('openssl_random_pseudo_bytes') === true) {
-			$data	 = openssl_random_pseudo_bytes(16);
-			$data[6] = chr(ord($data[6]) & 0x0f | 0x40);	// set version to 0100
-			$data[8] = chr(ord($data[8]) & 0x3f | 0x80);	// set bits 6-7 to 10
-			$guidv4	 = vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
-
-		// Fallback (PHP 4.2+)
-		} else {
-
-			mt_srand((double) microtime() * 10000);
-			$charid	 = strtolower(md5(uniqid(rand(), true)));
-			$hyphen	 = chr(45);				  // "-"
-			$lbrace	 = $trim ? "" : chr(123);	// "{"
-			$rbrace	 = $trim ? "" : chr(125);	// "}"
-			$guidv4	 = $lbrace.
-				substr($charid, 0, 8).$hyphen.
-				substr($charid, 8, 4).$hyphen.
-				substr($charid, 12, 4).$hyphen.
-				substr($charid, 16, 4).$hyphen.
-				substr($charid, 20, 12).
-				$rbrace;
-		}
-
-		if ($nodash) {
-			$guidv4 = str_replace('-', '', $guidv4);
-		}
-
-		if ($gtrail) {
-			$guidv4 = $guidv4.'G';
-		}
-
-		return $guidv4;
-	}
 
 	/**
      * Returns an array of the WordPress core tables.

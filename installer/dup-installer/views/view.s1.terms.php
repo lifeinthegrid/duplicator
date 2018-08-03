@@ -28,13 +28,9 @@ TERMS & NOTICES DIALOG
 		<b>After Install:</b> When you are done with the installation you must remove the these files/directories:
 		<ul>
 			<li>dup-installer</li>
-			<li>database.sql</li>
 			<li>installer.php</li>
-			<li>installer-data.sql</li>
 			<li>installer-backup.php</li>
-			<li>installer-log.txt</li>
 			<li>installer-bootlog.txt</li>
-			<li>wp-config-arc.txt</li>
 		</ul>
 
 		These files contain sensitive information and should not remain on a production system for system integrity and security protection.

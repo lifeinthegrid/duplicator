@@ -26,10 +26,7 @@ if (function_exists('plugin_dir_url'))
 	define('DUPLICATOR_SSDIR_URL',			DUPLICATOR_SITE_URL . "/" . DUPLICATOR_SSDIR_NAME);
     define('DUPLICATOR_INSTALL_PHP',		'installer.php');
 	define('DUPLICATOR_INSTALL_BAK',		'installer-backup.php');
-    define('DUPLICATOR_INSTALL_SQL',		'installer-data.sql');
-    define('DUPLICATOR_INSTALL_LOG',		'installer-log.txt');
 	define('DUPLICATOR_INSTALL_BOOT_LOG',	'installer-bootlog.txt');
-	define('DUPLICATOR_INSTALL_DB',			'database.sql');
     define('DUPLICATOR_ZIPPED_LOG_FILENAME', 'duplicator_lite_log.zip');
 	
 	//GENERAL CONSTRAINTS
@@ -52,8 +49,6 @@ if (function_exists('plugin_dir_url'))
 	define('DUPLICATOR_MAX_BUILD_RETRIES', 10);			// Max times to try a part of progressive build work
 	define('DUPLICATOR_HTACCESS_ORIG_FILENAME', 'htaccess.orig');
 	define('DUPLICATOR_WEBCONFIG_ORIG_FILENAME', 'web.config.orig');
-	define('DUPLICATOR_WPCONFIG_ARK_FILENAME',  'wp-config-arc.txt');
-    define('DUPLICATOR_EMBEDDED_SCAN_FILENAME', 'scan.json');
 	define("DUPLICATOR_INSTALLER_DIRECTORY", DUPLICATOR_WPROOTPATH . 'dup-installer');
     define('DUPLICATOR_MAX_LOG_SIZE', 400000);    // The higher this is the more overhead
 	

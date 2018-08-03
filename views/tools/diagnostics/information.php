@@ -5,7 +5,21 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/classes/class.io.php');
 
 $installer_files	= DUP_Server::getInstallerFiles();
 $package_name		= (isset($_GET['package'])) ?  esc_html($_GET['package']) : '';
-$package_path		= (isset($_GET['package'])) ?  DUPLICATOR_WPROOTPATH . esc_html($_GET['package']) : '';
+// For auto detect archive file name logic
+if (empty($package_name)) {
+    $installer_file_path = DUPLICATOR_WPROOTPATH . 'installer.php';
+    if (file_exists($installer_file_path)) {
+        $installer_file_data = file_get_contents($installer_file_path);
+        if (preg_match("/const ARCHIVE_FILENAME	 = '(.*?)';/", $installer_file_data, $match)) {
+            $temp_archive_file = esc_html($match[1]);
+            $temp_archive_file_path = DUPLICATOR_WPROOTPATH . $temp_archive_file;
+            if (file_exists($temp_archive_file_path)) {
+                $package_name = $temp_archive_file;
+            }
+        }
+    }
+}
+$package_path        = empty($package_name) ? '' : DUPLICATOR_WPROOTPATH.$package_name;
 
 $txt_found		 = __('File Found', 'duplicator');
 $txt_removed	 = __('File Removed', 'duplicator');
@@ -49,15 +63,19 @@ if ($section == "info" || $section == '') {
 					//REMOVE CORE INSTALLER FILES
 					$installer_files = DUP_Server::getInstallerFiles();
 					foreach ($installer_files as $file => $path) {
-						if (! is_dir($path)) {
+						if (false !== strpos($path, '*')) {
+							$glob_files = glob($path);
+							if (!empty($glob_files)) {
+								foreach ($glob_files as $glob_file) {
+									DUP_IO::deleteFile($glob_file);
+								}
+							}
+						} else if (is_file($path)) {
 							DUP_IO::deleteFile($path);
-
 						} elseif (is_dir($path)) {
 							// Extra protection to ensure we only are deleting the installer directory
 							if(SnapLibStringU::contains($path, 'dup-installer')) {
-								if(file_exists("{$path}/archive.cfg")) {
-									DUP_IO::deleteTree($path);
-								}
+								DUP_IO::deleteTree($path);
 							}
 						}
 

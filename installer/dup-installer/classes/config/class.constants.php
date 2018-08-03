@@ -59,13 +59,12 @@ class DUPX_Constants
 
 		//GLOBALS
 		$GLOBALS["VIEW"]				= isset($_GET["view"]) ? $_GET["view"] : $_POST["view"];
-        $GLOBALS['INIT']                = ($GLOBALS['VIEW'] === 'secure');
-		$GLOBALS['SQL_FILE_NAME']		= "installer-data.sql";
-		$GLOBALS["LOG_FILE_NAME"]		= "installer-log.txt";
+		$GLOBALS['INIT']                = ($GLOBALS['VIEW'] === 'secure');
+ 		$GLOBALS["LOG_FILE_NAME"]		= "dup-installer-log__{$GLOBALS['package_hash']}.txt";
 		$GLOBALS['SEPERATOR1']			= str_repeat("********", 10);
 		$GLOBALS['LOGGING']				= isset($_POST['logging']) ? $_POST['logging'] : 1;
 		$GLOBALS['CURRENT_ROOT_PATH']	= str_replace('\\', '/', realpath(dirname(__FILE__) . "/../../../"));
-		$GLOBALS['LOG_FILE_PATH']		= $GLOBALS['CURRENT_ROOT_PATH'] . '/' . $GLOBALS["LOG_FILE_NAME"];
+		$GLOBALS['LOG_FILE_PATH']		= $GLOBALS['DUPX_INIT'] . '/' . $GLOBALS["LOG_FILE_NAME"];
 		$GLOBALS['CHOWN_ROOT_PATH']		= @chmod("{$GLOBALS['CURRENT_ROOT_PATH']}", 0755);
 		$GLOBALS['CHOWN_LOG_PATH']		= @chmod("{$GLOBALS['CURRENT_ROOT_PATH']}/{$GLOBALS['LOG_FILE_NAME']}", 0644);
 		$GLOBALS['URL_SSL']				= (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == 'on') ? true : false;

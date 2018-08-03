@@ -244,6 +244,13 @@ class DUPX_Bootstrap
 			self::log("Didn't need to extract the installer.");
 		}
 
+		$config_files = glob('./dup-installer/dup-archive__*.txt');
+		$config_file_absolute_path = array_pop($config_files);
+		if (!file_exists($config_file_absolute_path)) {
+			$error = '<b>Archive config file not found in dup-installer folder.</b> <br><br>';
+			return $error;
+		}
+		
 		$is_https = $this->isHttps();
 
 		if($is_https) {

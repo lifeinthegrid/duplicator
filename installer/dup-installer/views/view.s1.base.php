@@ -14,7 +14,7 @@ $arcSize = is_numeric($arcSize) ? $arcSize : 0;
 
 $root_path			  = $GLOBALS['DUPX_ROOT'];
 $installer_state	  = DUPX_InstallerState::getInstance();
-$is_wpconfarc_present = file_exists("{$root_path}/wp-config-arc.txt");
+$is_wpconfarc_present = file_exists("{$root_path}/dup-wp-config-arc__{$GLOBALS['DUPX_AC']->package_hash}.txt");
 $is_overwrite_mode    =  ($installer_state->mode === DUPX_InstallerMode::OverwriteInstall);
 $is_wordpress		  = DUPX_Server::isWordPress();
 $is_dbonly			  = $GLOBALS['DUPX_AC']->exportOnlyDB;
@@ -330,8 +330,8 @@ VALIDATION
 					<li>Ignore this message and continue with the install process to re-extract the archive file.</li>
 				</ol>
 
-				<small>Note: This test looks for a file named <i>wp-config-arc.txt</i> in the deployment path above.  If the file exists then this notice is shown.
-				The <i>wp-config-arc.txt</i> file is created with every archive and removed once the install is complete.  For more details on this process see the
+				<small>Note: This test looks for a file named <i>dup-wp-config-arc__[HASH].txt</i> in the dup-installer directory.  If the file exists then this notice is shown.
+				The <i>dup-wp-config-arc__[HASH].txt</i> file is created with every archive and removed once the install is complete.  For more details on this process see the
 				<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-015-q" target="_blank">manual extraction FAQ</a>.</small>
 			</div>
 		<?php endif; ?>
@@ -605,7 +605,7 @@ Auto Posts to view.step2.php
 ========================================= -->
 <form id='s1-result-form' method="post" class="content-form" style="display:none">
 
-    <div class="dupx-logfile-link"><a href="../installer-log.txt" target="dup-installer">installer-log.txt</a></div>
+    <div class="dupx-logfile-link"><a href="./<?php echo $GLOBALS["LOG_FILE_NAME"];?>" target="dup-installer">installer-log.txt</a></div>
     <div class="hdr-main">
         Step <span class="step">1</span> of 4: Extraction
     </div>

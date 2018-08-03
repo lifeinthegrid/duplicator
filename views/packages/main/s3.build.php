@@ -369,6 +369,7 @@ jQuery(document).ready(function ($)
 
 		$.ajax({
 			type: "POST",
+			cache: false,
 			url: ajaxurl,
 			dataType: "json",
 			timeout: 10000000,

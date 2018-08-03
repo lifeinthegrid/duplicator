@@ -12,8 +12,6 @@ defined("ABSPATH") or die("");
 
 class DUPX_ArchiveConfig
 {
-	const Config_Filename = 'archive.cfg';
-
 	//READ-ONLY: COMPARE VALUES
 	public $created;
 	public $version_dup;
@@ -28,6 +26,7 @@ class DUPX_ArchiveConfig
 	public $secure_pass;
 	public $skipscan;
 	public $package_name;
+	public $package_hash;
 	public $package_notes;
 	public $wp_tableprefix;
 	public $blogname;
@@ -54,7 +53,7 @@ class DUPX_ArchiveConfig
 	private static $instance = null;
 
 	/**
-	 * Loads a usable object from the archive.cfg file found in the dup-installer root
+	 * Loads a usable object from the archive.txt file found in the dup-installer root
 	 *
 	 * @param string $path		The root path to the location of the server config files
 	 *
@@ -63,9 +62,8 @@ class DUPX_ArchiveConfig
 	public static function getInstance()
 	{
 		if (self::$instance == null) {
-			$config_filepath = realpath(dirname(__FILE__).'/../../'.self::Config_Filename);
-
-			if (file_exists($config_filepath)) {
+			$config_filepath = realpath(dirname(__FILE__).'/../../dup-archive__'.$GLOBALS['package_hash'].'.txt');
+			if (file_exists($config_filepath )) {
 				self::$instance = new DUPX_ArchiveConfig();
 
 				$file_contents = file_get_contents($config_filepath);

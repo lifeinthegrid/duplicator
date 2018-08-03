@@ -112,13 +112,13 @@ class DUP_Installer
         return $success;
     }
 
-    /* Create archive.cfg file */
+    /* Create archive.txt file */
     private function create_archive_config_file()
     {
         global $wpdb;
        
         $success                 = true;
-        $archive_config_filepath = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP)."/{$this->Package->NameHash}_archive.cfg";
+        $archive_config_filepath = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP)."/{$this->Package->NameHash}_archive.txt";
         $ac                      = new DUP_Archive_Config();
         $extension               = strtolower($this->Package->Archive->Format);
 
@@ -135,6 +135,7 @@ class DUP_Installer
        // $ac->installer_base_name  = $global->installer_base_name;
 		$ac->installer_base_name  = 'installer.php';
         $ac->package_name         = "{$this->Package->NameHash}_archive.{$extension}";
+        $ac->package_hash         = $this->Package->get_package_hash();
         $ac->package_notes        = $this->Package->Notes;
         $ac->url_old              = get_option('siteurl');
         $ac->opts_delete          = json_encode($GLOBALS['DUPLICATOR_OPTS_DELETE']);
@@ -182,7 +183,7 @@ class DUP_Installer
         $scan_filepath           = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP)."/{$this->Package->NameHash}_scan.json";
         $sql_filepath            = DUP_Util::safePath("{$this->Package->StorePath}/{$this->Package->Database->File}");
         $archive_filepath        = DUP_Util::safePath("{$this->Package->StorePath}/{$this->Package->Archive->File}");
-        $archive_config_filepath = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP)."/{$this->Package->NameHash}_archive.cfg";
+        $archive_config_filepath = DUP_Util::safePath(DUPLICATOR_SSDIR_PATH_TMP)."/{$this->Package->NameHash}_archive.txt";
 
         DUP_Log::Info("add_extra_files1");
 
@@ -247,7 +248,8 @@ class DUP_Installer
 
             DupArchiveEngine::init($logger, 'DUP_Log::profile');
 
-            DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $scan_filepath, DUPLICATOR_EMBEDDED_SCAN_FILENAME);
+            $embedded_scan_ark_file_path = $this->getEmbeddedScanFilePath();
+            DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $scan_filepath, $embedded_scan_ark_file_path);
             $this->numFilesAdded++;
 
 			if(file_exists($htaccess_filepath)) {
@@ -269,7 +271,8 @@ class DUP_Installer
 			}
 
 			if(file_exists($wpconfig_filepath)) {
-				DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $wpconfig_filepath, DUPLICATOR_WPCONFIG_ARK_FILENAME);
+				$conf_ark_file_path = $this->getWPConfArkFilePath();
+                DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $wpconfig_filepath, $conf_ark_file_path);
 				$this->numFilesAdded++;
 			}
 
@@ -309,7 +312,7 @@ class DUP_Installer
         $this->numFilesAdded += $counts->numFilesAdded;
         $this->numDirsAdded += $counts->numDirsAdded;
 
-        $archive_config_relative_path = 'dup-installer/archive.cfg';
+        $archive_config_relative_path = $this->getArchiveTxtFilePath();
 
         DupArchiveEngine::addRelativeFileToArchiveST($archive_filepath, $archive_config_filepath, $archive_config_relative_path);
         $this->numFilesAdded++;
@@ -355,10 +358,12 @@ class DUP_Installer
 			}
 
 			if(file_exists($wpconfig_filepath)) {
-				DUP_Zip_U::addFileToZipArchive($zipArchive, $wpconfig_filepath, DUPLICATOR_WPCONFIG_ARK_FILENAME, true);
+                $conf_ark_file_path = $this->getWPConfArkFilePath();
+				DUP_Zip_U::addFileToZipArchive($zipArchive, $wpconfig_filepath, $conf_ark_file_path, true);
 			}
 
-            if (DUP_Zip_U::addFileToZipArchive($zipArchive, $scan_filepath, DUPLICATOR_EMBEDDED_SCAN_FILENAME, true)) {
+            $embedded_scan_file_path = $this->getEmbeddedScanFilePath();
+            if (DUP_Zip_U::addFileToZipArchive($zipArchive, $scan_filepath, $embedded_scan_file_path, true)) {
                 if ($this->add_installer_files_using_zip_archive($zipArchive, $installer_filepath, $archive_config_filepath, true)) {
                     DUP_Log::info("Installer files added to archive");
                     DUP_Log::info("Added to archive");
@@ -401,7 +406,7 @@ class DUP_Installer
 
 
             if (DUP_Zip_U::addDirWithZipArchive($zip_archive, $installer_directory, true, '', $is_compressed)) {
-                $archive_config_local_name = 'dup-installer/archive.cfg';
+                $archive_config_local_name = $this->getArchiveTxtFilePath();
 
                 // if ($zip_archive->addFile($archive_config_filepath, $archive_config_local_name)) {
                 if (DUP_Zip_U::addFileToZipArchive($zip_archive, $archive_config_filepath, $archive_config_local_name, true)) {
@@ -430,5 +435,46 @@ class DUP_Installer
 
         return $success;
     }
+
+    /**
+     * Get wp-config.php file path along with name in archive file
+     */
+    private function getWPConfArkFilePath()
+    {
+        $package_hash = $this->Package->get_package_hash();
+        $conf_ark_file_path = 'dup-wp-config-arc__'.$package_hash.'.txt';
+        return $conf_ark_file_path;
+    }
+
+     private function getEmbeddedScanFileList() {
+        $package_hash = $this->Package->get_package_hash();
+        $embedded_filepath = 'dup-installer/dup-scanned-files__'.$package_hash.'.txt';
+        return $embedded_filepath;
+    }
+
+     private function getEmbeddedScanDirList() {
+        $package_hash = $this->Package->get_package_hash();
+        $embedded_filepath = 'dup-installer/dup-scanned-dirs__'.$package_hash.'.txt';
+        return $embedded_filepath;
+    }
+
+
+    /**
+     * Get scan.json file path along with name in archive file
+     */
+    private function getEmbeddedScanFilePath() {
+        $package_hash = $this->Package->get_package_hash();
+        $embedded_scan_ark_file_path = 'dup-installer/dup-scan__'.$package_hash.'.json';
+        return $embedded_scan_ark_file_path;
+    }
+
+    /**
+     * Get archive.txt file path along with name in archive file
+     */
+    private function getArchiveTxtFilePath() {
+        $package_hash = $this->Package->get_package_hash();
+        $archive_txt_file_path = 'dup-installer/dup-archive__'.$package_hash.'.txt';
+        return $archive_txt_file_path;
+    }
+
 }
-?>

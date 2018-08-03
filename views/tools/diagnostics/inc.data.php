@@ -37,7 +37,21 @@ OPTIONS DATA -->
 								echo "<br/><br/>";
 
 								foreach ($installer_files as $file => $path) {
-									echo (file_exists($path)) ? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - {$file}</div>" : "<div class='success'><i class='fa fa-check'></i> {$txt_removed} - {$file}</div>";
+									if (false !== strpos($path, '*')) {
+										$glob_files = glob($path);
+										if (!empty($glob_files)) {
+											foreach ($glob_files as $glob_file) {
+												$base_file_name = basename($glob_file);
+												echo "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - {$base_file_name}  </div>";
+											}
+										} else {
+											echo "<div class='success'> <i class='fa fa-check'></i> {$txt_not_found} - {$file}	</div>";
+										}
+									} else {
+										echo (file_exists($path))
+											? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - {$file}  </div>"
+											: "<div class='success'> <i class='fa fa-check'></i> {$txt_not_found} - {$file}	</div>";
+									}
 								}
 								echo "<br/>";
 								echo $txt_archive_msg;

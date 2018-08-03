@@ -21,9 +21,9 @@ class DUPX_WPConfig
 	 */
 	public static function updateVars(&$patterns, &$replace)
 	{
-		$root_path		=  $GLOBALS['DUPX_ROOT'];
+		//$root_path		=  $GLOBALS['DUPX_ROOT'];
 		//$wpconfig_path	= "{$root_path}/wp-config.php";
-		$wpconfig_arkpath	= "{$root_path}/wp-config-arc.txt";
+		$wpconfig_arkpath	= "{$GLOBALS['DUPX_ROOT']}/dup-wp-config-arc__{$GLOBALS['DUPX_AC']->package_hash}.txt";
 		$wpconfig		= @file_get_contents($wpconfig_arkpath, true);
 
 		//--------------------

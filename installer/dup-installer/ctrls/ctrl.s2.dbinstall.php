@@ -39,12 +39,12 @@ class DUPX_DBInstall
     public function __construct($post, $start_microtime)
     {
         $this->post                 = $post;
-        $this->sql_file_path        = $GLOBALS['DUPX_ROOT'].'/database.sql';
         $this->php_mem              = $GLOBALS['PHP_MEMORY_LIMIT'];
         $this->php_used_mem         = memory_get_usage();
         $this->php_mem_range        = 1024 * 1024;
         $this->root_path            = $GLOBALS['DUPX_ROOT'];
-        $this->sql_result_file_path = "{$this->root_path}/{$GLOBALS['SQL_FILE_NAME']}";
+        $this->sql_file_path        = $this->sql_file_path        = "{$GLOBALS['DUPX_INIT']}/dup-database__{$GLOBALS['DUPX_AC']->package_hash}.sql";
+        $this->sql_result_file_path = "{$GLOBALS['DUPX_INIT']}/{$GLOBALS['SQL_FILE_NAME']}";
 		$this->dbFileSize			= @filesize($this->sql_file_path);
 
         //ESTABLISH CONNECTION
@@ -80,20 +80,21 @@ class DUPX_DBInstall
     public function prepareSQL()
     {
         $faq_url      = $GLOBALS['FAQ_URL'];
-        @chmod("{$this->root_path}/database.sql", 0777);
+        @chmod($this->sql_file_path , 0777);
         $sql_file = file_get_contents($this->sql_file_path, true);
 
         //ERROR: Reading database.sql file
         if ($sql_file === false || strlen($sql_file) < 10) {
             $spacer = str_repeat("&nbsp;", 5);
+            $sql_file_rel_path = "dup-installer/dup-database__{$GLOBALS['DUPX_AC']->package_hash}.sql";
             $msg    = <<<EOT
-<b>Unable to read/find the database.sql file from the archive.</b><br/>
+<b>Unable to read/find the {$sql_file_rel_path} file from the archive.</b><br/>
 Please check these items: <br/><br/>
 1. Validate permissions and/or group-owner rights on these items: <br/>
-{$spacer}- File: database.sql <br/>
+{$spacer}- File: dup-database__{$GLOBALS['DUPX_AC']->package_hash}.sql file in dup-installer folder<br/>
 {$spacer}- Directory: [{$this->root_path}] <br/>
 {$spacer}<small>See: <a href='{$faq_url}#faq-trouble-055-q' target='_blank'>{$faq_url}#faq-trouble-055-q</a></small><br/><br/>
-2. Validate the database.sql file exists and is in the root of the archive.zip file <br/>
+2. Validate the dup-database__{$GLOBALS['DUPX_AC']->package_hash}.sql file exists and is in the dup-installer folder of the archive.zip file <br/>
 {$spacer}<small>See: <a href='{$faq_url}#faq-installer-020-q' target='_blank'>{$faq_url}#faq-installer-020-q</a></small><br/><br/>
 EOT;
             DUPX_Log::error($msg);
@@ -104,19 +105,18 @@ EOT;
         $sql_file = $this->nbspFix($sql_file);
 
         //Write new contents to install-data.sql
-
         @chmod($this->sql_result_file_path, 0777);
         $sql_file_copy_status         = file_put_contents($this->sql_result_file_path, $sql_file);
         $this->sql_result_data        = explode(";\n", $sql_file);
         $this->sql_result_data_length = count($this->sql_result_data);
         $sql_file                     = null;
 
-
         //WARNING: Create installer-data.sql failed
         if ($sql_file_copy_status === false || filesize($this->sql_result_file_path) == 0 || !is_readable($this->sql_result_file_path)) {
-            $sql_file_size = DUPX_U::readableByteSize(filesize('database.sql'));
-            $msg           = "\nWARNING: Unable to properly copy database.sql ({$sql_file_size}) to {$GLOBALS['SQL_FILE_NAME']}.  Please check these items:\n";
-            $msg           .= "- Validate permissions and/or group-owner rights on database.sql and directory [{$this->root_path}] \n";
+            $sql_file_path = "{$GLOBALS['DUPX_INIT']}/dup-database__{$GLOBALS['DUPX_AC']->package_hash}.sql";
+            $sql_file_size = DUPX_U::readableByteSize(filesize($sql_file_path));
+            $msg           = "\nWARNING: Unable to properly copy dup-installer/dup-database__{$GLOBALS['DUPX_AC']->package_hash}.sql ({$sql_file_size}) to {$GLOBALS['SQL_FILE_NAME']}.  Please check these items:\n";
+            $msg           .= "- Validate permissions and/or group-owner rights on dup-database__{$GLOBALS['DUPX_AC']->package_hash}.sql and directory [{$GLOBALS['DUPX_INIT']}/] \n";
             $msg           .= "- see: {$faq_url}#faq-trouble-055-q \n";
             DUPX_Log::info($msg);
         }
@@ -151,7 +151,7 @@ EOT;
         //Set defaults incase the variable could not be read
         $this->drop_tbl_log   = 0;
         $this->rename_tbl_log = 0;
-        $sql_file_size1       = DUPX_U::readableByteSize(@filesize("{$this->root_path}/database.sql"));
+        $sql_file_size1       = DUPX_U::readableByteSize(@filesize("{$GLOBALS['DUPX_INIT']}/dup-database__{$GLOBALS['DUPX_AC']->package_hash}.sql"));
         $sql_file_size2       = DUPX_U::readableByteSize(@filesize("{$this->root_path}/{$GLOBALS['SQL_FILE_NAME']}"));
         $collate_fb           = $this->dbcollatefb ? 'On' : 'Off';
 
@@ -159,7 +159,7 @@ EOT;
         DUPX_Log::info('DATABASE-ENVIRONMENT');
         DUPX_Log::info("--------------------------------------");
         DUPX_Log::info("MYSQL VERSION:\tThis Server: {$this->dbvar_version} -- Build Server: {$GLOBALS['DUPX_AC']->version_db}");
-        DUPX_Log::info("FILE SIZE:\tdatabase.sql ({$sql_file_size1}) - installer-data.sql ({$sql_file_size2})");
+        DUPX_Log::info("FILE SIZE:\tdup-database__{$GLOBALS['DUPX_AC']->package_hash}.sql ({$sql_file_size1}) - installer-data.sql ({$sql_file_size2})");
         DUPX_Log::info("TIMEOUT:\t{$this->dbvar_maxtime}");
         DUPX_Log::info("MAXPACK:\t{$this->dbvar_maxpacks}");
         DUPX_Log::info("SQLMODE:\t{$this->dbvar_sqlmode}");
@@ -184,13 +184,9 @@ EOT;
 
             //DROP DB TABLES:  DROP TABLE statement does not support views
             case "empty":
-                //Drop all tables
+                //Drop all tables, views and procs
                 $this->dropTables();
-
-                //Drop all views
                 $this->dropViews();
-
-                //Drop all procedures
                 $this->dropProcs();
                 break;
 

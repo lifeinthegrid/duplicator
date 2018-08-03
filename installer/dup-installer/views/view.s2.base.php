@@ -17,7 +17,7 @@ $cpnl_supported =  DUPX_U::$on_php_53_plus ? true : false;
 
 <form id='s2-input-form' method="post" class="content-form"  data-parsley-validate="true" data-parsley-excluded="input[type=hidden], [disabled], :hidden">
 	<div class="dupx-logfile-link">
-		<a href="../installer-log.txt?now=<?php echo $GLOBALS['NOW_TIME']; ?>" target="dup-installer">installer-log.txt</a>
+		<a href="./<?php echo $GLOBALS["LOG_FILE_NAME"];?>?now=<?php echo $GLOBALS['NOW_TIME']; ?>" target="dup-installer">installer-log.txt</a>
 	</div>
 	<div class="hdr-main">
 		Step <span class="step">2</span> of 4: Install Database
@@ -88,7 +88,7 @@ VIEW: STEP 2 - AJAX RESULT
 Auto Posts to view.step3.php  -->
 <form id='s2-result-form' method="post" class="content-form" style="display:none">
 
-	<div class="dupx-logfile-link"><a href="../installer-log.txt" target="dup-installer">installer-log.txt</a></div>
+	<div class="dupx-logfile-link"><a href="./<?php echo $GLOBALS["LOG_FILE_NAME"];?>" target="dup-installer">installer-log.txt</a></div>
 	<div class="hdr-main">
 		Step <span class="step">2</span> of 4: Install Database
 	</div>

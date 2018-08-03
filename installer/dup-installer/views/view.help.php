@@ -184,7 +184,7 @@ STEP 1
 		<tr>
 			<td>Logging</td>
 			<td>
-				The level of detail that will be sent to the log file (installer-log.txt).  The recommend setting for most installs should be 'Light'.
+				The level of detail that will be sent to the log file <?php echo $GLOBALS['DUPX_INIT'];?>\dup-installer-log__<?php echo $GLOBALS['DUPX_AC']->package_hash;?>.txt).  The recommend setting for most installs should be 'Light'.
 				Note if you use Debug the amount of data written can be very large.  Debug is only recommended for support.
 			</td>
 		</tr>
@@ -277,7 +277,7 @@ STEP 2
 				<br/><br/>
 
 				<b>Manual SQL Execution:</b><sup>pro</sup> This options requires that you manually run your own SQL import to an existing database before running the installer.
-				When this action is selected the database.sql file found inside the archive.zip file will NOT be ran.   The database your connecting to should already
+				When this action is selected the dup-database__<?php echo $GLOBALS['DUPX_AC']->package_hash;?>.sql file found inside the archive.zip file will NOT be ran.   The database your connecting to should already
 				be a valid WordPress installed database.  This option is viable when you need to run advanced search and replace options on the database.
 				<br/><br/>
 

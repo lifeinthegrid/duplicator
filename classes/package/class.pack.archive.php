@@ -92,7 +92,7 @@ class DUP_Archive
                 break;
 
               default:
-                if (class_exists(ZipArchive)) {
+                if (class_exists('ZipArchive')) {
                     $this->Format = 'ZIP';
                     DUP_Zip::create($this, $this->Package->BuildProgress);
                     $completed = true;

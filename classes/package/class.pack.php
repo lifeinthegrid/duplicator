@@ -764,7 +764,7 @@ class DUP_Package
         $info .= "NOTICE: Do NOT post to public sites or forums \n";
         $info .= "********************************************************************************\n";
         $info .= "VERSION:\t".DUPLICATOR_VERSION."\n";
-        $info .= "WORDPRESS:\t{$wp_version}\n";
+        $info .= "WORDPRESS:\t{$GLOBALS['wp_version']}\n";
         $info .= "PHP INFO:\t".phpversion().' | '.'SAPI: '.php_sapi_name()."\n";
         $info .= "SERVER:\t\t{$_SERVER['SERVER_SOFTWARE']} \n";
         $info .= "PHP TIME LIMIT: {$php_max_time} \n";
@@ -916,7 +916,7 @@ class DUP_Package
 
         $table = $wpdb->prefix."duplicator_packages";
         $qry   = $wpdb->get_row("SELECT ID, hash FROM `{$table}` WHERE hash = '{$hash}'");
-        if (strlen($qry->hash) == 0) {
+        if (is_null($qry) || strlen($qry->hash) == 0) {
             return 0;
         } else {
             return $qry->ID;
@@ -924,22 +924,21 @@ class DUP_Package
     }
 
     /**
-     *  Makes the hashkey for the package files
-	 *  Rare cases will need to fall back to GUID
+     * Makes the hashkey for the package files
      *
-     *  @return string  Returns a unique hashkey
+     * @return string A unique hashkey
      */
     public function makeHash()
     {
-		try {
-			if (function_exists('random_bytes') && DUP_Util::$on_php_53_plus) {
-				return bin2hex(random_bytes(8)).mt_rand(1000, 9999).date("ymdHis");
-			} else {
-				return DUP_Util::GUIDv4();
-			}
-		} catch (Exception $exc) {
-			return DUP_Util::GUIDv4();
-		}
+        try {
+            if (function_exists('random_bytes') && DUP_Util::PHP53()) {
+                return bin2hex(random_bytes(8)) . mt_rand(1000, 9999) . '_' . date("YmdHis");
+            } else {
+                return strtolower(md5(uniqid(rand(), true))) . '_' . date("YmdHis");
+            }
+        } catch (Exception $exc) {
+            return strtolower(md5(uniqid(rand(), true))) . '_' . date("YmdHis");
+        }
     }
 
     /**
@@ -1102,5 +1101,30 @@ class DUP_Package
             }
         }
     }
+
+    /**
+     * Get package hash
+     * 
+     * @return string package hash
+     */
+    public function get_package_hash() {
+        $hashParts = explode('_', $this->Hash);
+        $firstPart = substr($hashParts[0], 0, 7);
+        $secondPart = substr($hashParts[1], -8);
+        $package_hash = $firstPart.'-'.$secondPart;
+        return $package_hash;
+    }
+
+    /**
+     *  Provides the full sql file path in archive
+     *
+     *  @return the full sql file path in archive
+     */
+    public function get_sql_ark_file_path()
+    {
+        $package_hash = $this->get_package_hash();
+        $sql_ark_file_Path = 'dup-installer/dup-database__'.$package_hash.'.sql';
+        return $sql_ark_file_Path;
+    }    
 }
 ?>
