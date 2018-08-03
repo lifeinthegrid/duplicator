@@ -19,6 +19,13 @@ class DUPX_Constants
 	 */
 	public static function init()
 	{
+		$dup_installer_dir_absolute_path = dirname(dirname(dirname(__FILE__)));
+		$config_files = glob($dup_installer_dir_absolute_path.'/dup-archive__*.txt');
+		$config_file_absolute_path = array_pop($config_files);
+		$config_file_name = basename($config_file_absolute_path, '.txt');
+		$archive_prefix_length = strlen('dup-archive__');
+		$GLOBALS['PACKAGE_HASH'] = substr($config_file_name, $archive_prefix_length); 
+
 		$GLOBALS['BOOTLOADER_NAME'] = isset($_GET['bootloader'])  ? $_GET['bootloader'] : null ;
         $GLOBALS['FW_PACKAGE_PATH'] = isset($_GET['archive'])     ? $_GET['archive']    : null; // '%fwrite_package_name%';
         $GLOBALS['FW_ENCODED_PACKAGE_PATH'] = urlencode($GLOBALS['FW_PACKAGE_PATH']);
@@ -60,7 +67,7 @@ class DUPX_Constants
 		//GLOBALS
 		$GLOBALS["VIEW"]				= isset($_GET["view"]) ? $_GET["view"] : $_POST["view"];
 		$GLOBALS['INIT']                = ($GLOBALS['VIEW'] === 'secure');
- 		$GLOBALS["LOG_FILE_NAME"]		= "dup-installer-log__{$GLOBALS['package_hash']}.txt";
+ 		$GLOBALS["LOG_FILE_NAME"]		= "dup-installer-log__{$GLOBALS['PACKAGE_HASH']}.txt";
 		$GLOBALS['SEPERATOR1']			= str_repeat("********", 10);
 		$GLOBALS['LOGGING']				= isset($_POST['logging']) ? $_POST['logging'] : 1;
 		$GLOBALS['CURRENT_ROOT_PATH']	= str_replace('\\', '/', realpath(dirname(__FILE__) . "/../../../"));

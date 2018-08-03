@@ -62,7 +62,7 @@ class DUPX_ArchiveConfig
 	public static function getInstance()
 	{
 		if (self::$instance == null) {
-			$config_filepath = realpath(dirname(__FILE__).'/../../dup-archive__'.$GLOBALS['package_hash'].'.txt');
+			$config_filepath = realpath(dirname(__FILE__).'/../../dup-archive__'.$GLOBALS['PACKAGE_HASH'].'.txt');
 			if (file_exists($config_filepath )) {
 				self::$instance = new DUPX_ArchiveConfig();
 
