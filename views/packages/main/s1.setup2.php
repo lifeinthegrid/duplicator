@@ -58,7 +58,7 @@
 	ul.add-menu-item-tabs li, ul.category-tabs li {padding:3px 30px 5px}
 </style>
 
-<form id="dup-form-opts" method="post" action="?page=duplicator&tab=new2<?php echo "&retry={$retry_state}"; ?>" data-validate="parsley">
+<form id="dup-form-opts" method="post" action="?page=duplicator&tab=new2<?php echo "&retry={$retry_state}"; ?>" data-parsley-validate="">
 <input type="hidden" id="dup-form-opts-action" name="action" value="">
 <?php wp_nonce_field('dup_form_opts', 'dup_form_opts_nonce_field', false); ?>
 
