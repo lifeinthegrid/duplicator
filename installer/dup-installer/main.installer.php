@@ -56,7 +56,7 @@ if ($GLOBALS['DUPX_AC'] == null) {
 
 //Password Check
 $_POST['secure-pass'] = isset($_POST['secure-pass']) ? $_POST['secure-pass'] : '';
-if ($GLOBALS['DUPX_AC']->secure_on) {
+if ($GLOBALS['DUPX_AC']->secure_on && $GLOBALS['VIEW'] != 'help') {
 	$pass_hasher = new DUPX_PasswordHash(8, FALSE);
 	$pass_check  = $pass_hasher->CheckPassword(base64_encode($_POST['secure-pass']), $GLOBALS['DUPX_AC']->secure_pass);
 	if (! $pass_check) {
@@ -160,7 +160,7 @@ if (isset($_POST['ctrl_action'])) {
 			<?php
 				$help_url = "?view=help&archive={$GLOBALS['FW_ENCODED_PACKAGE_PATH']}&bootloader={$GLOBALS['BOOTLOADER_NAME']}&basic";
 				echo ($GLOBALS['DUPX_AC']->secure_on) 
-					? "<a href='?help=1#secure' target='_blank'><i class='fa fa-lock'></i></a>"
+					? "<a href='{$help_url}#secure' target='_blank'><i class='fa fa-lock'></i></a>"
 					: "<a href='{$help_url}#secure' target='_blank'><i class='fa fa-unlock-alt'></i></a>" ;
 			?>
 			

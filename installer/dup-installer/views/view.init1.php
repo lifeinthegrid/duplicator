@@ -55,14 +55,13 @@ VIEW: STEP 0 - PASSWORD -->
 		<div class="i1-pass-area">
 			<label for="secure-pass">Enter Password</label>
 			<div id="i1-pass-input">
-				<input type="password" name="secure-pass" id="secure-pass" required="required"  autocomplete="oldpassword" /><br/>
-				<div style="margin-top:7px">
-					<input type="checkbox" class="pass-toggle" id="secure-lock" onclick="DUPX.togglePassword()" title="Show/Hide the password">
-					<label class="secure-lock" for="secure-lock">Show Password</label>
-				</div>
+				<div id="i1-pass-toggle">
+					<input type="password" name="secure-pass" id="secure-pass" required="required" />
+					<button type="button" id="secure-btn" class="pass-toggle" onclick="DUPX.togglePassword()" title="Show/Hide Password"><i class="fa fa-eye"></i></button>
+				</div><br/>
 			</div>
 			<div style="margin-top: 15px">
-				<button type="button" class="default-btn" name="secure-btn" id="secure-btn" onclick="DUPX.checkPassword()">Submit</button>
+				<button type="button" class="default-btn" name="submit-btn" id="submit-btn" onclick="DUPX.checkPassword()">Submit</button>
 			</div>
 		</div>
 	</div>
@@ -88,12 +87,12 @@ VIEW: STEP 0 - PASSWORD -->
 	DUPX.togglePassword = function()
 	{
 		var $input = $('#secure-pass');
-		var $lock  = $('#secure-lock');
+		var $lock  = $('#secure-btn');
 		if (($input).attr('type') == 'text') {
-			//$lock.html('<i class="fa fa-lock"></i>');
+			$lock.html('<i class="fa fa-eye"></i>');
 			$input.attr('type', 'password');
 		} else {
-			//$lock.html('<i class="fa fa-unlock"></i>');
+			$lock.html('<i class="fa fa-eye-slash"></i>');
 			$input.attr('type', 'text');
 		}
 	}
