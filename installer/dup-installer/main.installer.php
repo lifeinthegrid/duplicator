@@ -47,10 +47,21 @@ require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.constants.php');
 require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.archive.config.php');
 require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.conf.wp.php');
 require_once($GLOBALS['DUPX_INIT'].'/classes/class.installer.state.php');
+require_once($GLOBALS['DUPX_INIT'].'/classes/class.password.php');
 
 $GLOBALS['DUPX_AC'] = DUPX_ArchiveConfig::getInstance();
 if ($GLOBALS['DUPX_AC'] == null) {
 	die("Can't initialize config globals! Please try to re-run installer.php");
+}
+
+//Password Check
+$_POST['secure-pass'] = isset($_POST['secure-pass']) ? $_POST['secure-pass'] : '';
+if ($GLOBALS['DUPX_AC']->secure_on) {
+	$pass_hasher = new DUPX_PasswordHash(8, FALSE);
+	$pass_check  = $pass_hasher->CheckPassword(base64_encode($_POST['secure-pass']), $GLOBALS['DUPX_AC']->secure_pass);
+	if (! $pass_check) {
+		$GLOBALS['VIEW'] = 'secure';
+	}
 }
 
 // Constants which are dependent on the $GLOBALS['DUPX_AC']
@@ -89,6 +100,15 @@ if (!chdir($GLOBALS['DUPX_INIT'])) {
 
 if (isset($_POST['ctrl_action'])) {
 	require_once($GLOBALS['DUPX_INIT'].'/ctrls/ctrl.base.php');
+
+	//PASSWORD CHECK
+	if ($GLOBALS['DUPX_AC']->secure_on) {
+		$pass_hasher = new DUPX_PasswordHash(8, FALSE);
+		$pass_check  = $pass_hasher->CheckPassword(base64_encode($_POST['secure-pass']), $GLOBALS['DUPX_AC']->secure_pass);
+		if (! $pass_check) {
+			die("Unauthorized Access:  Please provide a password!");
+		}
+	}
 
 	switch ($_POST['ctrl_action']) {
 		case "ctrl-step1" :
@@ -136,10 +156,17 @@ if (isset($_POST['ctrl_action'])) {
 			<div class="dupx-branding-header">Duplicator</div>
 		</td>
 		<td class="wiz-dupx-version">
-			version:	<?php echo $GLOBALS['DUPX_AC']->version_dup ?> <br/>
-			&raquo; <a href="javascript:void(0)" onclick="DUPX.openServerDetails()">info</a>&nbsp;
-			&raquo; <a href="?view=help&archive=<?php echo $GLOBALS['FW_ENCODED_PACKAGE_PATH']?>&bootloader=<?php echo $GLOBALS['BOOTLOADER_NAME']?>&basic" target="_blank">help</a>&nbsp;
-			<a href="<?php echo $GLOBALS['_HELP_URL_PATH'];?>" target="_blank"><i class="fa fa-question-circle"></i></a>
+			<a href="javascript:void(0)" onclick="DUPX.openServerDetails()">version:<?php echo $GLOBALS['DUPX_AC']->version_dup; ?></a>&nbsp;
+			<?php
+				$help_url = "?view=help&archive={$GLOBALS['FW_ENCODED_PACKAGE_PATH']}&bootloader={$GLOBALS['BOOTLOADER_NAME']}&basic";
+				echo ($GLOBALS['DUPX_AC']->secure_on) 
+					? "<a href='?help=1#secure' target='_blank'><i class='fa fa-lock'></i></a>"
+					: "<a href='{$help_url}#secure' target='_blank'><i class='fa fa-unlock-alt'></i></a>" ;
+			?>
+			
+			<div style="padding: 6px 0">
+				<a href="<?php echo $help_url;?>" target="_blank">help</a> <i class="fa fa-question-circle"></i>
+			</div>
 		</td>
 	</tr>
 </table>
@@ -162,7 +189,7 @@ FORM DATA: User-Interface views -->
 	<?php
 		switch ($GLOBALS["VIEW"]) {
 			case "secure" :
-                echo 'Password protection is available only in Duplicator Pro';
+               require_once($GLOBALS['DUPX_INIT'] . '/views/view.init1.php');
 				break;
 
 			case "step1"   :

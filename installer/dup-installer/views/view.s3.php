@@ -47,6 +47,7 @@ VIEW: STEP 3- INPUT -->
 		<i>Step 3 - Page Load</i>
 		<input type="hidden" name="ctrl_action"	  value="ctrl-step3" />
 		<input type="hidden" name="view"		  value="step3" />
+		<input type="hidden" name="secure-pass"   value="<?php echo $_POST['secure-pass']; ?>" />
 		<input type="hidden" name="logging"		  value="<?php echo $_POST['logging'] ?>" />
 		<input type="hidden" name="dbhost"		  value="<?php echo $_POST['dbhost'] ?>" />
 		<input type="hidden" name="dbuser" 		  value="<?php echo $_POST['dbuser'] ?>" />
@@ -234,6 +235,7 @@ VIEW: STEP 3 - AJAX RESULT  -->
 	<div class="dupx-debug">
 		<i>Step 3 - AJAX Response</i>
 		<input type="hidden" name="view"  value="step4" />
+		<input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
 		<input type="hidden" name="logging" id="logging" value="<?php echo $_POST['logging']; ?>" />
 		<input type="hidden" name="url_new" id="ajax-url_new"  />
 		<input type="hidden" name="exe_safe_mode" id="ajax-exe-safe-mode" />

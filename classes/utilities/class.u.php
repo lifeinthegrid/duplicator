@@ -440,6 +440,32 @@ class DUP_Util
         return false;
     }
 
+		 /**
+     * Wrap to prevent malware scanners from reporting false/positive
+     * Switched from our old method to avoid WordFence reporting a false positive
+     *
+     * @param string $string The string to decrypt i.e. base64_decode
+     *
+     * @return string Returns the string base64 decoded
+     */
+    public static function installerUnscramble($string)
+    {
+        return base64_decode($string);
+    }
+
+	/**
+     * Wrap to prevent malware scanners from reporting false/positive
+     * Switched from our old method to avoid WordFence reporting a false positive
+     *
+     * @param string $string The string to decrypt i.e. base64_encode
+     *
+     * @return string Returns the string base64 encode
+     */
+    public static function installerScramble($string)
+    {
+        return base64_encode($string);
+    }
+
     /**
      * Does the current user have the capability
      *

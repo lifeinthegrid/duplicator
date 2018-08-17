@@ -68,6 +68,7 @@ $archive_config  = DUPX_ArchiveConfig::getInstance();
 <form id="s1-input-form" method="post" class="content-form">
 <input type="hidden" name="view" value="step1" />
 <input type="hidden" name="ctrl_action" value="ctrl-step1" />
+<input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
 <input type="hidden" id="s1-input-form-extra-data" name="extra_data" />
 
 <div class="hdr-main">
@@ -614,6 +615,7 @@ Auto Posts to view.step2.php
     <div class="dupx-debug">
 		<i>Step 1 - AJAX Response</i>
         <input type="hidden" name="view" value="step2" />
+		<input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
 		<input type="hidden" name="logging" id="ajax-logging"  />
         <input type="hidden" name="archive_name" value="<?php echo $GLOBALS['FW_PACKAGE_NAME'] ?>" />
         <input type="hidden" name="config_mode" id="ajax-config-mode" />

@@ -827,10 +827,12 @@ class DUP_Package
 			 $this->Archive->FilterFiles    = DUP_Util::escSanitizeTextAreaField($filter_files);
             $this->Archive->FilterExts      = str_replace(array('.', ' '), '', DUP_Util::escSanitizeTextAreaField($filter_exts));
             //INSTALLER
-            $this->Installer->OptsDBHost    = DUP_Util::escSanitizeTextField($post['dbhost']);
-            $this->Installer->OptsDBPort    = DUP_Util::escSanitizeTextField($post['dbport']);
-            $this->Installer->OptsDBName    = DUP_Util::escSanitizeTextField($post['dbname']);
-            $this->Installer->OptsDBUser    = DUP_Util::escSanitizeTextField($post['dbuser']);
+            $this->Installer->OptsDBHost		= DUP_Util::escSanitizeTextField($post['dbhost']);
+            $this->Installer->OptsDBPort		= DUP_Util::escSanitizeTextField($post['dbport']);
+            $this->Installer->OptsDBName		= DUP_Util::escSanitizeTextField($post['dbname']);
+            $this->Installer->OptsDBUser		= DUP_Util::escSanitizeTextField($post['dbuser']);
+			$this->Installer->OptsSecureOn		= isset($post['secure-on']) ? 1 : 0;
+			$this->Installer->OptsSecurePass	= DUP_Util::installerScramble($post['secure-pass']);
             //DATABASE
             $this->Database->FilterOn       = isset($post['dbfilter-on']) ? 1 : 0;
             $this->Database->FilterTables   = esc_html($tablelist);

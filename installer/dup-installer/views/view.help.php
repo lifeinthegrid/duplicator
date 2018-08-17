@@ -1,21 +1,54 @@
+<?php
+	//The help for both pro and lite are shared.  Pro is where the master lives.  Use the flag below to
+    //indicate if this help lives in lite or pro
+	$pro_version = false;
+?>
 <!-- =========================================
 HELP FORM -->
 <div id="main-help">
-<div class="help-online">
-	<i class="fa fa-file-text-o"></i> For additional help visit the<br/> <a href="https://snapcreek.com/support/docs/" target="_blank">Online Knowledge-Base</a><br/>
+<div class="help-online"><br/>
+	<i class="fa fa-file-text-o"></i> For complete help visit the
+	<a href="https://snapcreek.com/support/docs/" target="_blank">Online Knowledge-Base</a> <br/>
 	<small>Features available only in Duplicator Pro are flagged with a <sup>pro</sup> tag.</small>
 </div>
 
 <h2>Installer Security</h2>
 <a name="help-s1-init"></a>
 <div id="dup-help-installer" class="help-page">
-    The installer security screen <sup>pro</sup> will allow for basic password protection on the installer. The password is set at package creation time.  The password
+    The installer security screen will allow for basic password protection on the installer. The password is set at package creation time.  The password
 	input on this screen must be entered before proceeding with an install.   This setting is optional and can be turned on/off via the package creation screens.
     <br/><br/>
 
     If you do not recall the password then login to the site where the package was created and click the details of the package to view the original password.
-    To validate the password just typed you can toggle the view by clicking on the lock icon.
-    <br/><br/>
+    To validate the password just typed you can toggle the view by clicking on the lock icon.	For detail on how to override this setting visit the online FAQ for
+	<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-030-q" target="_blank">more details</a>.
+
+	<table class="help-opt">
+		<tr>
+			<th>Option</th>
+			<th>Details</th>
+		</tr>
+		<tr>
+			<td>Locked</td>
+			<td>
+				"Locked" means a password is protecting each step of the installer.  This option is recommended on all installers
+				that are accessible via a public URL but not required.
+			</td>
+		</tr>
+		<tr>
+			<td>Unlocked</td>
+			<td>
+				"Unlocked" means that if your installer is on a public server that anyone can access it.  This is a less secure way to run your installer. If you are running the
+				installer very quickly then removing all the installer files, then the chances of exposing it is going to be low depending	on your sites access history.
+				<br/><br/>
+
+				While it is not required to	have a password set it is recommended.  If your URL has little to no traffic or has never been the target of an attack
+				then running the installer without a password is going to be relatively safe if ran quickly.  However, a password is always a good idea.  Also, it is
+				absolutely required and recommended to remove <u>all</u> installer files after installation is completed by logging into the WordPress admin and
+				following the Duplicator prompts.
+			</td>
+		</tr>
+	</table>
 </div>
 
 <!-- ============================================
@@ -45,20 +78,22 @@ STEP 1
 			at this location.
 		</td>
 	</tr>
-	<tr>
-		<td>Overwrite Install</td>
-		<td>
-			This mode indicates that the installer was started in a location that contains an existing site -or- the archive file was imported into an existing site using
-			Duplicator Pro on the destination site (see Duplicator Pro &gt; Tools &gt; Import). In both cases <b>the existing site will be overwritten.</b>
-		</td>
-	</tr>
-	<tr>
-		<td>Overwrite Install <br/> Database Only</td>
-		<td>
-			This mode indicates that the installer was started in a location that contains an existing site -or- the archive file was imported into an existing site using
-			Duplicator Pro on the destination site (see Duplicator Pro &gt; Tools &gt; Import).  In both cases <b>the existing site's database will be overwritten.</b>
-		</td>
-	</tr>
+	<?php if ($pro_version) : ?>
+		<tr>
+			<td>Overwrite Install</td>
+			<td>
+				This mode indicates that the installer was started in a location that contains an existing site -or- the archive file was imported into an existing site using
+				Duplicator Pro on the destination site (see Duplicator Pro &gt; Tools &gt; Import). In both cases <b>the existing site will be overwritten.</b>
+			</td>
+		</tr>
+		<tr>
+			<td>Overwrite Install <br/> Database Only</td>
+			<td>
+				This mode indicates that the installer was started in a location that contains an existing site -or- the archive file was imported into an existing site using
+				Duplicator Pro on the destination site (see Duplicator Pro &gt; Tools &gt; Import).  In both cases <b>the existing site's database will be overwritten.</b>
+			</td>
+		</tr>
+	<?php endif; ?>
 	</table>
 	<br/><br/>
 
@@ -163,9 +198,9 @@ STEP 1
 				handle the new server environment.  This is an	advanced option and should only be used if you know how to properly configure your web servers configuration.
 				<br/><br/>
 
-				<b>Ignore All:</b> This option simply does nothing.  No files are backed up, nothing is renamed or created.  This advanced option assumes you already have your
+<!--				<b>Ignore All:</b> This option simply does nothing.  No files are backed up, nothing is renamed or created.  This advanced option assumes you already have your
 				config files setup and know how they should behave in the new environment.
-				<br/><br/>
+				<br/><br/>-->
 
 				<small>
 				<b>Additional Notes:</b>
@@ -184,7 +219,7 @@ STEP 1
 		<tr>
 			<td>Logging</td>
 			<td>
-				The level of detail that will be sent to the log file <?php echo $GLOBALS['DUPX_INIT'];?>\dup-installer-log__<?php echo $GLOBALS['DUPX_AC']->package_hash;?>.txt).  The recommend setting for most installs should be 'Light'.
+				The level of detail that will be sent to the log file (installer-log.txt).  The recommend setting for most installs should be 'Light'.
 				Note if you use Debug the amount of data written can be very large.  Debug is only recommended for support.
 			</td>
 		</tr>
@@ -277,7 +312,7 @@ STEP 2
 				<br/><br/>
 
 				<b>Manual SQL Execution:</b><sup>pro</sup> This options requires that you manually run your own SQL import to an existing database before running the installer.
-				When this action is selected the dup-database__<?php echo $GLOBALS['DUPX_AC']->package_hash;?>.sql file found inside the archive.zip file will NOT be ran.   The database your connecting to should already
+				When this action is selected the dup-database__[hash].sql file found inside the dup-installer folder of the archive.zip file will NOT be ran.   The database your connecting to should already
 				be a valid WordPress installed database.  This option is viable when you need to run advanced search and replace options on the database.
 				<br/><br/>
 
@@ -498,8 +533,17 @@ STEP 4
 	After the install is complete run through your entire site and test all pages and posts.
 	<br/><br/>
 
-	<b>Security Cleanup</b><br/>
-	When you're completed with the installation please delete all installation files.  Leaving these files on your server can impose a security risk!
+	<b>Final Security Cleanup</b><br/>
+	When completed with the installation please delete all installation files.  Leaving these files on your server can impose a security risk!   You can remove
+	all the security files by logging into your WordPress admin and following the remove notification links.   Be sure these files/directories are removed.  Optionally
+	it is also recommended to remove the archive.zip/daf file.
+	<ul>
+		<li>dup-installer</li>
+		<li>installer.php</li>
+		<li>installer-backup.php</li>
+		<li>installer-bootlog.txt</li>
+		<li>archive.zip/daf</li>
+	</ul>
 	<br/><br/>
 
 </div>

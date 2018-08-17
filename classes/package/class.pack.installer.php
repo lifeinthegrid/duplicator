@@ -4,6 +4,7 @@ if (!defined('DUPLICATOR_VERSION')) exit; // Exit if accessed directly
 require_once(DUPLICATOR_PLUGIN_PATH . '/classes/class.archive.config.php');
 require_once(DUPLICATOR_PLUGIN_PATH . '/classes/utilities/class.u.zip.php');
 require_once(DUPLICATOR_PLUGIN_PATH . '/classes/utilities/class.u.multisite.php');
+require_once(DUPLICATOR_PLUGIN_PATH . '/classes/class.password.php');
 
 class DUP_Installer
 {
@@ -14,11 +15,13 @@ class DUP_Installer
     public $OptsDBPort;
     public $OptsDBName;
     public $OptsDBUser;
-    //PROTECTED
-    protected $Package;
-
+	public $OptsSecureOn = 0;
+	public $OptsSecurePass;
     public $numFilesAdded = 0;
     public $numDirsAdded = 0;
+
+	//PROTECTED
+    protected $Package;
 
     /**
      *  Init this object
@@ -122,6 +125,9 @@ class DUP_Installer
         $ac                      = new DUP_Archive_Config();
         $extension               = strtolower($this->Package->Archive->Format);
 
+		$hasher = new DUP_PasswordHash(8, FALSE);
+		$pass_hash = $hasher->HashPassword($this->Package->Installer->OptsSecurePass);
+
         //READ-ONLY: COMPARE VALUES
         $ac->created     = $this->Package->Created;
         $ac->version_dup = DUPLICATOR_VERSION;
@@ -147,7 +153,7 @@ class DUP_Installer
 
         //PRE-FILLED: GENERAL
         $ac->secure_on   = $this->Package->Installer->OptsSecureOn;
-        $ac->secure_pass = '';
+        $ac->secure_pass = $pass_hash;
         $ac->skipscan    = false;
         $ac->dbhost      = $this->Package->Installer->OptsDBHost;
         $ac->dbname      = $this->Package->Installer->OptsDBName;

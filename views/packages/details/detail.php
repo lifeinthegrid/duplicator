@@ -17,6 +17,8 @@ $mysqlcompat_on  = isset($Package->Database->Compatible) && strlen($Package->Dat
 $mysqlcompat_on  = ($mysqldump_on && $mysqlcompat_on) ? true : false;
 $dbbuild_mode    = ($mysqldump_on) ? 'mysqldump' : 'PHP';
 $archive_build_mode = ($package->Archive->Format === 'ZIP') ? 'ZipArchive (zip)' : 'DupArchive (daf)';
+$dup_install_secure_on   = isset($package->Installer->OptsSecureOn) ? $package->Installer->OptsSecureOn : 0;
+$dup_install_secure_pass = isset($package->Installer->OptsSecurePass) ? DUP_Util::installerUnscramble($package->Installer->OptsSecurePass) : '';
 ?>
 
 <style>
@@ -46,6 +48,12 @@ $archive_build_mode = ($package->Archive->Format === 'ZIP') ? 'ZipArchive (zip)'
 	div#dup-downloads-msg {margin-bottom:-5px; font-style: italic}
 	div.sub-section {padding:7px 0 0 0}
 	textarea.file-info {width:100%; height:100px; font-size:12px }
+	
+	/*INSTALLER*/
+	div#dup-pass-toggle {position: relative; margin:0; width:273px}
+	input#secure-pass {border-radius:4px 0 0 4px; width:250px; height: 23px; margin:0}
+	button#secure-btn {height:23px; width:27px; position:absolute; top:0px; right:0px;border:1px solid silver;  border-radius:0 4px 4px 0; cursor:pointer}
+	div.dup-installer-header-2 {font-weight:bold; border-bottom:1px solid #dfdfdf; padding-bottom:2px; width:100%}
 </style>
 
 <?php if ($package_id == 0) :?>
@@ -316,7 +324,34 @@ INSTALLER -->
 	<div class="dup-box-arrow"></div>
 </div>			
 <div class="dup-box-panel" id="dup-package-dtl-install-panel" style="<?php echo $ui_css_install ?>">
+
 	<table class='dup-dtl-data-tbl'>
+		<tr>
+            <td colspan="2"><div class="dup-installer-header-2"><?php _e(" Security", 'duplicator') ?></div></td>
+        </tr>
+		<tr>
+			<td colspan="2">
+				<?php _e("Password Protection", 'duplicator');?>:
+				<?php echo $dup_install_secure_on ? "&nbsp; On" : "&nbsp; Off" ?>
+			</td>
+		</tr>
+		<?php if ($dup_install_secure_on) :?>
+			<tr>
+				<td colspan="2">
+					<div id="dup-pass-toggle">
+						<input type="password" name="secure-pass" id="secure-pass" readonly="true" value="<?php echo $dup_install_secure_pass;  ?>" />
+						<button type="button" id="secure-btn" onclick="Duplicator.Pack.TogglePassword()" title="<?php _e('Show/Hide Password', 'duplicator'); ?>"><i class="fa fa-eye"></i></button>
+					</div>
+				</td>
+			</tr>
+		<?php endif; ?>
+	</table>
+	<br/><br/>
+
+	<table class='dup-dtl-data-tbl'>
+		<tr>
+			<td colspan="2"><div class="dup-installer-header-2"><?php _e(" MySQL Server", 'duplicator') ?></div></td>
+		</tr>
 		<tr>
 			<td><?php _e('Host', 'duplicator') ?>:</td>
 			<td><?php echo strlen($package->Installer->OptsDBHost) ? $package->Installer->OptsDBHost : __('- not set -', 'duplicator') ?></td>
@@ -382,5 +417,18 @@ jQuery(document).ready(function($)
 				$( this ).find('div.dup-box-title').trigger("click");
 		 });
 	};
+
+	Duplicator.Pack.TogglePassword = function()
+	{
+		var $input  = $('#secure-pass');
+		var $button =  $('#secure-btn');
+		if (($input).attr('type') == 'text') {
+			$input.attr('type', 'password');
+			$button.html('<i class="fa fa-eye"></i>');
+		} else {
+			$input.attr('type', 'text');
+			$button.html('<i class="fa fa-eye-slash"></i>');
+		}
+	}
 });
 </script>
