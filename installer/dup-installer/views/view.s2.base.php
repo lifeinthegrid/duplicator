@@ -10,23 +10,26 @@ require_once($GLOBALS['DUPX_INIT'] . '/classes/config/class.archive.config.php')
 $_POST['dbcharset'] = isset($_POST['dbcharset']) ? trim($_POST['dbcharset']) : $GLOBALS['DBCHARSET_DEFAULT'];
 $_POST['dbcollate'] = isset($_POST['dbcollate']) ? trim($_POST['dbcollate']) : $GLOBALS['DBCOLLATE_DEFAULT'];
 $_POST['exe_safe_mode'] = (isset($_POST['exe_safe_mode'])) ? DUPX_U::sanitize($_POST['exe_safe_mode']) : 0;
+$is_dbtest_mode = isset($_POST['dbonlytest']) ? 1 : 0;
 
 $_POST['logging'] = isset($_POST['logging']) ? trim(DUPX_U::sanitize($_POST['logging'])) : 1;
 $cpnl_supported =  DUPX_U::$on_php_53_plus ? true : false;
 ?>
 
 <form id='s2-input-form' method="post" class="content-form"  data-parsley-validate="true" data-parsley-excluded="input[type=hidden], [disabled], :hidden">
-	<div class="dupx-logfile-link">
-		<a href="./<?php echo $GLOBALS["LOG_FILE_NAME"];?>?now=<?php echo $GLOBALS['NOW_TIME']; ?>" target="dup-installer">installer-log.txt</a>
-	</div>
-	<div class="hdr-main">
-		Step <span class="step">2</span> of 4: Install Database
-	</div>
 
-	<div class="s2-btngrp">
-		<input id="s2-basic-btn" type="button" value="Basic" class="active" onclick="DUPX.togglePanels('basic')" />
-		<input id="s2-cpnl-btn" type="button" value="cPanel" class="in-active" onclick="DUPX.togglePanels('cpanel')" />
-	</div>
+	<?php if ($is_dbtest_mode) : ?>
+		<div class="hdr-main">Database Validation	</div>
+	<?php else : ?>
+		<div class="dupx-logfile-link">
+			<a href="./<?php echo $GLOBALS["LOG_FILE_NAME"];?>?now=<?php echo $GLOBALS['NOW_TIME']; ?>" target="dup-installer">installer-log.txt</a>
+		</div>
+		<div class="hdr-main">Step <span class="step">2</span> of 4: Install Database	</div>
+		<div class="s2-btngrp">
+			<input id="s2-basic-btn" type="button" value="Basic" class="active" onclick="DUPX.togglePanels('basic')" />
+			<input id="s2-cpnl-btn" type="button" value="cPanel" class="in-active" onclick="DUPX.togglePanels('cpanel')" />
+		</div>
+	<?php endif; ?>
 
 	<!--  POST PARAMS -->
 	<div class="dupx-debug">
@@ -138,8 +141,6 @@ Auto Posts to view.step3.php  -->
 </form>
 
 <script>
-
-
 	/**
 	 *  Toggles the cpanel Login area  */
 	DUPX.togglePanels = function (pane)

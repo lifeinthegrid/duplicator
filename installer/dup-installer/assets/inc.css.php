@@ -70,7 +70,7 @@
 	div.error-pane {border:1px solid #efefef; border-left:4px solid #D54E21; padding:0 0 0 10px; margin:2px 0 10px 0}
 	div.dupx-ui-error {padding-top:2px; font-size:13px; line-height: 20px}
 
-	div.footer-buttons {position:absolute; bottom:10px; padding:10px;  right:0}
+	div.footer-buttons {position:absolute; bottom:10px; padding:10px;  right:0; width:100%; text-align:right}
 	div.footer-buttons  input:hover, button:hover {border:1px solid #000}
 	div.footer-buttons input[disabled=disabled], button[disabled=disabled]{background-color:#F4F4F4; color:silver; border:1px solid silver;}
 	form#form-debug {display:block; margin:10px auto; width:750px;}

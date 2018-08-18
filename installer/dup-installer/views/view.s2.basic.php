@@ -99,54 +99,56 @@ BASIC PANEL -->
 </div>
 <br/><br/>
 
-<!-- =========================================
-OPTIONS -->
-<div class="hdr-sub1 toggle-hdr" id="s2-opts-hdr-basic" data-type="toggle" data-target="#s2-opts-basic">
-	<a href="javascript:void(0)"><i class="fa fa-plus-square"></i>Options</a>
-</div>
-<div id="s2-opts-basic" class="s2-opts" style="display:none;padding-top:0">
-	<div class="help-target">
-		<a href="<?php echo $GLOBALS['_HELP_URL_PATH'];?>#help-s2" target="_blank"><i class="fa fa-question-circle"></i></a>
+<?php if (! $is_dbtest_mode) : ?>
+	<!-- =========================================
+	OPTIONS -->
+	<div class="hdr-sub1 toggle-hdr" id="s2-opts-hdr-basic" data-type="toggle" data-target="#s2-opts-basic">
+		<a href="javascript:void(0)"><i class="fa fa-plus-square"></i>Options</a>
 	</div>
+	<div id="s2-opts-basic" class="s2-opts" style="display:none;padding-top:0">
+		<div class="help-target">
+			<a href="<?php echo $GLOBALS['_HELP_URL_PATH'];?>#help-s2" target="_blank"><i class="fa fa-question-circle"></i></a>
+		</div>
 
-	<table class="dupx-opts dupx-advopts dupx-advopts-space">
-		<tr>
-			<td>Legacy:</td>
-			<td><input type="checkbox" name="dbcollatefb" id="dbcollatefb" value="1" /> <label for="dbcollatefb">Apply legacy collation fallback support for unknown collations types</label></td>
-		</tr>
-		<tr>
-			<td>Spacing:</td>
-			<td><input type="checkbox" name="dbnbsp" id="dbnbsp" value="1" /> <label for="dbnbsp">Fix non-breaking space characters</label></td>
-		</tr>
-		<tr>
-			<td style="vertical-align:top">Mode:</td>
-			<td>
-				<input type="radio" name="dbmysqlmode" id="dbmysqlmode_1" checked="true" value="DEFAULT"/> <label for="dbmysqlmode_1">Default</label> &nbsp;
-				<input type="radio" name="dbmysqlmode" id="dbmysqlmode_2" value="DISABLE"/> <label for="dbmysqlmode_2">Disable</label> &nbsp;
-				<input type="radio" name="dbmysqlmode" id="dbmysqlmode_3" value="CUSTOM"/> <label for="dbmysqlmode_3">Custom</label> &nbsp;
-				<div id="dbmysqlmode_3_view" style="display:none; padding:5px">
-					<input type="text" name="dbmysqlmode_opts" value="" /><br/>
-					<small>Separate additional <a href="<?php echo $GLOBALS['_HELP_URL_PATH'];?>#help-mysql-mode" target="_blank">sql modes</a> with commas &amp; no spaces.<br/>
-						Example: <i>NO_ENGINE_SUBSTITUTION,NO_ZERO_IN_DATE,...</i>.</small>
-				</div>
-			</td>
-		</tr>
-	</table>
+		<table class="dupx-opts dupx-advopts dupx-advopts-space">
+			<tr>
+				<td>Legacy:</td>
+				<td><input type="checkbox" name="dbcollatefb" id="dbcollatefb" value="1" /> <label for="dbcollatefb">Apply legacy collation fallback support for unknown collations types</label></td>
+			</tr>
+			<tr>
+				<td>Spacing:</td>
+				<td><input type="checkbox" name="dbnbsp" id="dbnbsp" value="1" /> <label for="dbnbsp">Fix non-breaking space characters</label></td>
+			</tr>
+			<tr>
+				<td style="vertical-align:top">Mode:</td>
+				<td>
+					<input type="radio" name="dbmysqlmode" id="dbmysqlmode_1" checked="true" value="DEFAULT"/> <label for="dbmysqlmode_1">Default</label> &nbsp;
+					<input type="radio" name="dbmysqlmode" id="dbmysqlmode_2" value="DISABLE"/> <label for="dbmysqlmode_2">Disable</label> &nbsp;
+					<input type="radio" name="dbmysqlmode" id="dbmysqlmode_3" value="CUSTOM"/> <label for="dbmysqlmode_3">Custom</label> &nbsp;
+					<div id="dbmysqlmode_3_view" style="display:none; padding:5px">
+						<input type="text" name="dbmysqlmode_opts" value="" /><br/>
+						<small>Separate additional <a href="<?php echo $GLOBALS['_HELP_URL_PATH'];?>#help-mysql-mode" target="_blank">sql modes</a> with commas &amp; no spaces.<br/>
+							Example: <i>NO_ENGINE_SUBSTITUTION,NO_ZERO_IN_DATE,...</i>.</small>
+					</div>
+				</td>
+			</tr>
+		</table>
 
-	<table class="dupx-opts dupx-advopts">
-		<tr>
-			<td style="width:130px">Objects:</td>
-			<td><input type="checkbox" name="dbobj_views" id="dbobj_views" checked="true" /><label for="dbobj_views">Enable View Creation</label></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td><input type="checkbox" name="dbobj_procs" id="dbobj_procs" checked="true" /><label for="dbobj_procs">Enable Stored Procedure Creation</label></td>
-		</tr>
-		<tr><td>Charset:</td><td><input type="text" name="dbcharset" id="dbcharset" value="<?php echo $_POST['dbcharset'] ?>" /> </td></tr>
-		<tr><td>Collation: </td><td><input type="text" name="dbcollate" id="dbcollate" value="<?php echo $_POST['dbcollate'] ?>" /> </tr>
-	</table>
-</div>
-<br/><br/>
+		<table class="dupx-opts dupx-advopts">
+			<tr>
+				<td style="width:130px">Objects:</td>
+				<td><input type="checkbox" name="dbobj_views" id="dbobj_views" checked="true" /><label for="dbobj_views">Enable View Creation</label></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="checkbox" name="dbobj_procs" id="dbobj_procs" checked="true" /><label for="dbobj_procs">Enable Stored Procedure Creation</label></td>
+			</tr>
+			<tr><td>Charset:</td><td><input type="text" name="dbcharset" id="dbcharset" value="<?php echo $_POST['dbcharset'] ?>" /> </td></tr>
+			<tr><td>Collation: </td><td><input type="text" name="dbcollate" id="dbcollate" value="<?php echo $_POST['dbcollate'] ?>" /> </tr>
+		</table>
+	</div>
+	<br/><br/>
+<?php endif; ?>
 
 <!-- =========================================
 BASIC: DB VALIDATION -->
@@ -171,11 +173,20 @@ BASIC: DB VALIDATION -->
 <br/><br/><br/>
 
 <div class="footer-buttons">
-	<button id="s2-dbtest-btn-basic" type="button" onclick="DUPX.testDBConnect()" class="default-btn" /><i class="fa fa-database"></i> Test Database</button>
-	<button id="s2-next-btn-basic" type="button" onclick="DUPX.confirmDeployment()" class="default-btn disabled" disabled="true"
-			title="The 'Test Database' connectivity requirements must pass to continue with install!">
-		Next <i class="fa fa-caret-right"></i>
-	</button>
+	<?php if ($is_dbtest_mode) : ?>
+		<div style="text-align: center; font-size:11px; margin-top: -20px">
+			<button id="s2-dbtest-btn-basic" type="button" onclick="DUPX.testDBConnect()" class="default-btn" /><i class="fa fa-database"></i> Test Database</button>
+			<br/><br/>
+			Notice: This a database only connection view.<br/>  
+			To continue with the install, close this browser window/tab.
+		</div>
+	<?php else : ?>
+		<button id="s2-dbtest-btn-basic" type="button" onclick="DUPX.testDBConnect()" class="default-btn" /><i class="fa fa-database"></i> Test Database</button>
+		<button id="s2-next-btn-basic" type="button" onclick="DUPX.confirmDeployment()" class="default-btn disabled" disabled="true"
+				title="The 'Test Database' connectivity requirements must pass to continue with install!">
+			Next <i class="fa fa-caret-right"></i>
+		</button>
+	<?php endif; ?>
 </div>
 
 <script>
@@ -187,8 +198,7 @@ DUPX.basicDBActionChange = function ()
 	$('#s2-basic-pane .s2-warning-manualdb').hide();
 	$('#s2-basic-pane .s2-warning-emptydb').hide();
 	$('#s2-basic-pane .s2-warning-renamedb').hide();
-	switch (action)
-	{
+	switch (action) {
 		case 'create'  :	break;
 		case 'empty'   : $('#s2-basic-pane .s2-warning-emptydb').show(300);		break;
 		case 'rename'  : $('#s2-basic-pane .s2-warning-renamedb').show(300);	break;

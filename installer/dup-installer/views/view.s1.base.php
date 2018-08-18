@@ -447,6 +447,10 @@ VALIDATION
 		</div>
 
 	</div>
+
+	<div style="text-align:center; margin: auto; padding:10px">
+		<a href="javascript:void(0)" target="db-test" onclick="DUPX.openDBValidationWindow()">[Quick Database Connection Test]</a>
+	</div>
 </div>
 <br/><br/>
 
@@ -599,6 +603,15 @@ OPTIONS
 
 </form>
 
+<!-- =========================================
+VIEW: STEP 1 - DB QUICK TEST
+========================================= -->
+<form id="s1-dbtest-form" method="post" target="_blank">
+	<input type="hidden" name="dbonlytest" value="1" />
+	<input type="hidden" name="view" value="step2" />
+	<input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
+</form>
+
 
 <!-- =========================================
 VIEW: STEP 1 - AJAX RESULT
@@ -650,6 +663,12 @@ Auto Posts to view.step2.php
 </form>
 
 <script>
+DUPX.openDBValidationWindow = function()
+{
+	console.log('test');
+	$('#s1-dbtest-form').submit();
+}
+
 DUPX.toggleSetupType = function ()
 {
 	var val = $("input:radio[name='setup_type']:checked").val();

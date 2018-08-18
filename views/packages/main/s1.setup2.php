@@ -48,7 +48,6 @@
     table.dup-installer-tbl {width:97%; margin-left:20px}
 	div.dup-installer-panel-optional {text-align: center; font-style: italic; font-size: 12px; color:maroon}
 	div.secure-pass-area {}
-	input#secure-pass
 	label.secure-pass-lbl {display:inline-block; width:125px}
 	div#dup-pass-toggle {position: relative; margin:8px 0 0 0; width:243px}
 	input#secure-pass {border-radius:4px 0 0 4px; width:220px; height: 23px; margin:0}
@@ -58,7 +57,7 @@
 	ul.add-menu-item-tabs li, ul.category-tabs li {padding:3px 30px 5px}
 </style>
 
-<form id="dup-form-opts" method="post" action="?page=duplicator&tab=new2<?php echo "&retry={$retry_state}"; ?>" data-parsley-validate="">
+<form id="dup-form-opts" method="post" action="?page=duplicator&tab=new2<?php echo "&retry={$retry_state}"; ?>" data-parsley-validate="" autocomplete="oldpassword">
 <input type="hidden" id="dup-form-opts-action" name="action" value="">
 <?php wp_nonce_field('dup_form_opts', 'dup_form_opts_nonce_field', false); ?>
 
@@ -415,7 +414,6 @@ INSTALLER -->
 		</table>
 
 
-	
         <table class="dup-installer-tbl">
             <tr>
                 <td colspan="2"><div class="dup-installer-header-2"><?php _e(" MySQL Server", 'duplicator') ?></div></td>
@@ -464,7 +462,6 @@ INSTALLER -->
 <!-- ==========================================
 THICK-BOX DIALOGS: -->
 <?php	
-
 	$confirm1 = new DUP_UI_Dialog();
 	$confirm1->title			= __('Reset Package Settings?', 'duplicator');
 	$confirm1->message			= __('This will clear and reset all of the current package settings.  Would you like to continue?', 'duplicator');
@@ -473,7 +470,6 @@ THICK-BOX DIALOGS: -->
 
 	$default_name1 = DUP_Package::getDefaultName();
 	$default_name2 = DUP_Package::getDefaultName(false);
-
 ?>
 <script>
 jQuery(document).ready(function ($) 
