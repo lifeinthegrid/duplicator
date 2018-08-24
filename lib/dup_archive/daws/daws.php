@@ -245,17 +245,17 @@ class DAWS
         echo $jsonRetVal;
     }
 
-    private function getStatus($expandState)
+    private function getStatus($state)
     {
-        /* @var $expandState DAWSExpandState */
+        /* @var $state DupArchiveStateBase */
 
         $ret_val = new stdClass();
 
-        $ret_val->archive_offset = $expandState->archiveOffset;
-        $ret_val->archive_size = @filesize($expandState->archivePath);
-        $ret_val->failures = $expandState->failures;
-        $ret_val->file_index = $expandState->fileWriteCount;
-        $ret_val->is_done = !$expandState->working;
+        $ret_val->archive_offset = $state->archiveOffset;
+        $ret_val->archive_size = @filesize($state->archivePath);
+        $ret_val->failures = $state->failures;
+        $ret_val->file_index = $state->fileWriteCount;
+        $ret_val->is_done = !$state->working;
         $ret_val->timestamp = time();
 
         return $ret_val;

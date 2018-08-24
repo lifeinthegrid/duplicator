@@ -109,23 +109,15 @@ abstract class DupArchiveStateBase
 
     public function timedOut()
     {
-        $timedout = false;
-
         if ($this->timerEnabled) {
             if ($this->timeoutTimestamp != -1) {
-                $timedout = time() >= $this->timeoutTimestamp;
+                return time() >= $this->timeoutTimestamp;
             } else {
-                $timedout = false;
+                return false;
             }
         } else {
-            $timedout = false;
+            return false;
         }
-
-        if($timedout) {
-            DupArchiveUtil::log("#### TIMEOUT! ");
-        }
-
-        return $timedout;
     }
     //   abstract public function save();
 }

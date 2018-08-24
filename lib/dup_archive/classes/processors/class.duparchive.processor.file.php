@@ -204,6 +204,10 @@ class DupArchiveFileProcessor
             // 0 length file so just touch it
             $moreGlobstoProcess = false;
 
+            if(file_exists($destFilepath)) {
+                @unlink($destFilepath);
+            }
+            
             if (touch($destFilepath) === false) {
                 throw new Exception("Couldn't create {$destFilepath}");
             }
@@ -269,7 +273,6 @@ class DupArchiveFileProcessor
 
         if (!$moreGlobstoProcess) {
 
-         //   DupArchiveUtil::logObject("#### standard validate not processing globs from the get go!" , $expandState);
             // Not a 'real' write but indicates that we actually did fully process a file in the archive
             $expandState->fileWriteCount++;
         } else {
@@ -290,10 +293,6 @@ class DupArchiveFileProcessor
 
                 $hash = hash('crc32b', $globContents);    
 
-//                if(rand(0, 10) == 1) {
-//                  $hash = 0;//RSR purposely injecting hash errors into system for test purposes
-//                }
-                
                 if ($hash != $globHeader->hash) {
                     $expandState->addFailure(DupArchiveFailureTypes::File, $expandState->currentFileHeader->relativePath, 'Hash mismatch on DupArchive file entry', true);
                     DupArchiveUtil::tlog("Glob hash mismatch during standard check of {$expandState->currentFileHeader->relativePath}");
@@ -311,7 +310,6 @@ class DupArchiveFileProcessor
 
                 if (!$moreGlobstoProcess) {
 
-                    DupArchiveUtil::log("#### file was completed so resetting file header in standard validate");
 
                     $expandState->fileWriteCount++;
 

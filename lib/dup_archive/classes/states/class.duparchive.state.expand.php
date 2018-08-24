@@ -24,7 +24,7 @@ if (!class_exists('DupArchiveExpandState')) {
 		public $archiveHeader			 = null;
 		public $currentFileHeader		 = null;
 		public $validateOnly			 = false;
-		public $validationType			 = DupArchiveValidationTypes::Full;
+		public $validationType			 = DupArchiveValidationTypes::Standard;
 		public $fileWriteCount			 = 0;
 		public $directoryWriteCount		 = 0;
 		public $expectedFileCount		 = -1;

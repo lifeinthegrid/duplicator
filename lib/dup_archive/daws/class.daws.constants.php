@@ -13,7 +13,7 @@ class DAWSConstants
     public static $DUPARCHIVE_CLASSES_DIR;
     public static $DUPARCHIVE_STATES_DIR;
     public static $DUPARCHIVE_UTIL_DIR;
-    public static $DEFAULT_WORKER_TIME = 14;
+    public static $DEFAULT_WORKER_TIME = 18;
 
     public static $LIB_DIR;
 
