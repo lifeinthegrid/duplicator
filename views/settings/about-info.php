@@ -16,15 +16,13 @@
     }
     table.dup-support-hlp-hdrs td img{margin-left:7px}
     div.dup-support-hlp-txt{padding:10px 4px 4px 4px; text-align:center}
-    div.dup-support-give-area {width:400px; height:185px; float:left; border:1px solid #dfdfdf; border-radius:4px; margin:10px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
+    div.dup-support-give-area {width:400px; height:165px; float:left; border:1px solid #dfdfdf; border-radius:4px; margin:10px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
     div.dup-spread-word {display:inline-block; border:1px solid red; text-align:center}
 
     img#dup-support-approved { -webkit-animation:approve-keyframe 12s 1s infinite alternate backwards}
     img#dup-img-5stars {opacity:0.7;}
     img#dup-img-5stars:hover {opacity:1.0;}
-	div.social-images img { width: auto; margin-right: 10px}
-	div.social-images a { text-decoration: none; outline: 0 !important;}
-	div.social-images a:focus {outline: 0  !important;}
+	div.social-item {float:right; width: 170px; padding:10px 10px 20px 0px; border:0px solid red; text-align: left; font-size:20px}
 
 	/* EMAIL AREA */
 	div.dup-support-email-area {width:825px; height:355px; border:1px solid #dfdfdf; border-radius:4px; margin:10px; line-height:18px;box-shadow: 0 8px 6px -6px #ccc;}
@@ -67,14 +65,14 @@
                     <td valign="top">
                         <a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" target="vote-wp"><img id="dup-img-5stars" src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/5star.png" /></a>
                         <div  style=" font-size: 16px; font-weight: bold">
-							<a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" target="vote-wp"><?php _e('Leave 5 Stars', 'duplicator') ?></a>
+							<a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" target="vote-wp"><?php _e('Support us with a 5 star review!', 'duplicator') ?></a>
 						</div>
                     </td>
                 </tr>
             </table>
         </div>
 
-        <!-- SPREAD THE WORD  -->
+		<!-- SPREAD THE WORD  -->
         <div class="dup-support-give-area">
             <table class="dup-support-hlp-hdrs">
                 <tr>
@@ -84,23 +82,20 @@
                 </tr>
             </table>
             <div class="dup-support-hlp-txt">
-				<br/>
 				<div class="social-images">
 					<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//snapcreek.com/duplicator/duplicator-free/" target="_blank">
-						<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/social-facebook.png" alt="facebook" />
+						<div class="social-item"><i class="fa fa-facebook-square fa-lg"></i> <?php _e('Facebook', 'duplicator') ?></div>
 					</a>
 					<a href="https://twitter.com/home?status=Checkout%20the%20WordPress%20Duplicator%20plugin!%20%0Ahttps%3A//snapcreek.com/duplicator/duplicator-free/"  target="_blank">
-						<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/social-twitter.png" alt="twitter" />
+						<div class="social-item"><i class="fa fa-twitter-square fa-lg"></i> <?php _e('Twitter', 'duplicator') ?></div>
 					</a>
 					<a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A//snapcreek.com/duplicator/duplicator-free/&title=WordPress%20Duplicator%20Plugin&summary=&source=" target="_blank">
-						<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/social-linkin.png" alt="linkedin" />
+						<div class="social-item"><i class="fa fa-linkedin-square fa-lg"></i> <?php _e('LinkedIn', 'duplicator') ?></div>
 					</a>
 					<a href="https://plus.google.com/share?url=https%3A//snapcreek.com/duplicator/duplicator-free/" target="_blank">
-						<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/social-google.png" alt="google+" />
+						<div class="social-item"><i class="fa fa-google-plus-square fa-lg"></i> <?php _e('Google+', 'duplicator') ?></div>
 					</a>
 				</div>
-				
-				
             </div>
         </div>
         <br style="clear:both" /><br/>
