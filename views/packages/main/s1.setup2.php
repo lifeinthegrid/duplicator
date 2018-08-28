@@ -582,7 +582,7 @@ jQuery(document).ready(function ($)
 		}
 	}
 
-		Duplicator.Pack.EnableInstallerPassword = function ()
+	Duplicator.Pack.EnableInstallerPassword = function ()
 	{
 		var $button =  $('#secure-btn');
 		if ($('#secure-on').is(':checked')) {
