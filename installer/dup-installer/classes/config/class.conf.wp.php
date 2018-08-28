@@ -13,7 +13,6 @@ defined("ABSPATH") or die("");
  */
 class DUPX_WPConfig
 {
-
 	/**
 	 * Updates the standard WordPress config file settings
 	 *
@@ -21,10 +20,14 @@ class DUPX_WPConfig
 	 */
 	public static function updateVars(&$patterns, &$replace)
 	{
-		//$root_path		=  $GLOBALS['DUPX_ROOT'];
-		//$wpconfig_path	= "{$root_path}/wp-config.php";
 		$wpconfig_arkpath	= "{$GLOBALS['DUPX_ROOT']}/dup-wp-config-arc__{$GLOBALS['DUPX_AC']->package_hash}.txt";
 		$wpconfig		= @file_get_contents($wpconfig_arkpath, true);
+
+		$db_port    = is_int($_POST['dbport'])   ? $_POST['dbport'] : 3306;
+		$db_host	= ($db_port == 3306) ? $_POST['dbhost'] : "{$_POST['dbhost']}:{$db_port}";
+		$db_name	= isset($_POST['dbname']) ? DUPX_U::safeQuote($_POST['dbname']) : null;
+		$db_user	= isset($_POST['dbuser']) ? DUPX_U::safeQuote($_POST['dbuser']) : null;
+       	$db_pass	= isset($_POST['dbpass']) ? DUPX_U::safeQuote($_POST['dbpass']) : null;
 
 		//--------------------
 		//LEGACY PARSER LOGIC:
@@ -35,10 +38,11 @@ class DUPX_WPConfig
 			"/'DB_HOST',\s*'.*?'/"));
 
 		$replace = array_merge($replace, array(
-			"'DB_NAME', ".'\''.$_POST['dbname'].'\'',
-			"'DB_USER', ".'\''.$_POST['dbuser'].'\'',
-			"'DB_PASSWORD', ".'\''.DUPX_U::pregReplacementQuote($_POST['dbpass']).'\'',
-			"'DB_HOST', ".'\''.$_POST['dbhost'].'\''));
+			"'DB_NAME', "		. "'{$db_name}'",
+			"'DB_USER', "		. "'{$db_user}'",
+			"'DB_PASSWORD', "	. "'{$db_pass}'",
+			"'DB_HOST', "		. "'{$db_host}'"
+		));
 
 		//SSL CHECKS
 		if ($_POST['ssl_admin']) {
@@ -107,8 +111,8 @@ class DUPX_WPConfig
 	 * @return array	Returns and array of defines with the names
 	 *					as the key and the value as the value.
 	 */
-	public static function parseDefines($wpconfigPath) {
-
+	public static function parseDefines($wpconfigPath)
+	{
 		$defines = array();
 		$wpconfig_file = @file_get_contents($wpconfigPath);
 		
@@ -153,7 +157,6 @@ class DUPX_WPConfig
 		}
 
 		return $defines;
-
 	}
 
 	/**

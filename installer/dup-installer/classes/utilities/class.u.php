@@ -402,6 +402,19 @@ class DUPX_U
 	}
 
 	/**
+     *  Filter the string to escape the quote
+     *
+     *  @param string $val		The value to escape quote
+     *
+     *  @return string Returns the input value escaped
+     */
+    public static function safeQuote($val)
+    {
+		$val = addslashes($val);
+        return $val;
+    }
+
+	/**
 	 *  Makes path safe for any OS for PHP
 	 *
 	 *  Paths should ALWAYS READ be "/"

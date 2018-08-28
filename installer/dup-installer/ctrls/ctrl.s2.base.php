@@ -5,13 +5,13 @@ defined("ABSPATH") or die("");
 /* @var $GLOBALS['DUPX_AC'] DUPX_ArchiveConfig */
 
 $_POST['dbaction']	 = isset($_POST['dbaction']) ? $_POST['dbaction'] : 'create';
-$_POST['dbhost']	 = isset($_POST['dbhost']) ? DUPX_U::sanitize(trim($_POST['dbhost'])) : null;
-$_POST['dbname']	 = isset($_POST['dbname']) ? DUPX_U::sanitize(trim($_POST['dbname'])) : null;
-$_POST['dbuser']	 = isset($_POST['dbuser']) ? DUPX_U::sanitize(trim($_POST['dbuser'])) : null;
-$_POST['dbpass']	 = isset($_POST['dbpass']) ? trim($_POST['dbpass']) : null;
-$_POST['dbport']	 = isset($_POST['dbhost']) ? parse_url($_POST['dbhost'], PHP_URL_PORT) : 3306;
-$_POST['dbport']	 = (!empty($_POST['dbport'])) ? $_POST['dbport'] : 3306;
-$_POST['dbnbsp']	 = (isset($_POST['dbnbsp']) && $_POST['dbnbsp'] == '1') ? true : false;
+$_POST['dbhost']		= isset($_POST['dbhost'])    ? DUPX_U::sanitize(trim($_POST['dbhost'])) : null;
+$_POST['dbname']		= isset($_POST['dbname'])    ? trim($_POST['dbname']) : null;
+$_POST['dbuser']		= isset($_POST['dbuser'])    ? $_POST['dbuser'] : null;
+$_POST['dbpass']		= isset($_POST['dbpass'])    ? $_POST['dbpass'] : null;
+$_POST['dbport']		= isset($_POST['dbhost']) ? parse_url($_POST['dbhost'], PHP_URL_PORT) : 3306;
+$_POST['dbport']		= (!empty($_POST['dbport'])) ? $_POST['dbport'] : 3306;
+$_POST['dbnbsp']		= (isset($_POST['dbnbsp']) && $_POST['dbnbsp'] == '1') ? true : false;
 $_POST['dbcharset']		= isset($_POST['dbcharset']) ? DUPX_U::sanitize(trim($_POST['dbcharset'])) : $GLOBALS['DBCHARSET_DEFAULT'];
 $_POST['dbcollate']		= isset($_POST['dbcollate']) ? DUPX_U::sanitize(trim($_POST['dbcollate'])) : $GLOBALS['DBCOLLATE_DEFAULT'];
 $_POST['dbcollatefb']	= (isset($_POST['dbcollatefb']) && $_POST['dbcollatefb'] == '1') ? true : false;
