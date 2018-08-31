@@ -398,7 +398,11 @@ INSTALLER -->
 			<td>
 				<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_branding&utm_campaign=duplicator_pro" target="_blank">
 					<span class="dup-pro-text"><?php _e('Available with Duplicator Pro - Freelancer!', 'duplicator'); ?></span>
-				</a><br/><br/>
+				</a> 
+				<i class="fa fa-question-circle"
+					   data-tooltip-title="<?php _e("Branding", 'duplicator'); ?>:"
+					   data-tooltip="<?php _e('Branding is a way to customize the installer look and feel.  With branding you can create multiple brands of installers.', 'duplicator'); ?>"></i>
+				<br/><br/>
 			</td>
 		</tr>
 		<tr>
