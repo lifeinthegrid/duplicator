@@ -53,7 +53,7 @@ $dup_install_secure_pass = isset($package->Installer->OptsSecurePass) ? DUP_Util
 	div#dup-pass-toggle {position: relative; margin:0; width:273px}
 	input#secure-pass {border-radius:4px 0 0 4px; width:250px; height: 23px; margin:0}
 	button#secure-btn {height:23px; width:27px; position:absolute; top:0px; right:0px;border:1px solid silver;  border-radius:0 4px 4px 0; cursor:pointer}
-	div.dup-installer-header-2 {font-weight:bold; border-bottom:1px solid #dfdfdf; padding-bottom:2px; width:100%}
+	div.dup-install-hdr-2 {font-weight:bold; border-bottom:1px solid #dfdfdf; padding-bottom:2px; width:100%}
 </style>
 
 <?php if ($package_id == 0) :?>
@@ -327,7 +327,7 @@ INSTALLER -->
 
 	<table class='dup-dtl-data-tbl'>
 		<tr>
-            <td colspan="2"><div class="dup-installer-header-2"><?php _e(" Security", 'duplicator') ?></div></td>
+            <td colspan="2"><div class="dup-install-hdr-2"><?php _e(" Security", 'duplicator') ?></div></td>
         </tr>
 		<tr>
 			<td colspan="2">
@@ -350,7 +350,7 @@ INSTALLER -->
 
 	<table class='dup-dtl-data-tbl'>
 		<tr>
-			<td colspan="2"><div class="dup-installer-header-2"><?php _e(" MySQL Server", 'duplicator') ?></div></td>
+			<td colspan="2"><div class="dup-install-hdr-2"><?php _e(" MySQL Server", 'duplicator') ?></div></td>
 		</tr>
 		<tr>
 			<td><?php _e('Host', 'duplicator') ?>:</td>

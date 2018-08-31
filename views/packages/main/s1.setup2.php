@@ -41,11 +41,12 @@
 
     /*INSTALLER SECTION*/
     div.dup-installer-header-1 {font-weight:bold; padding-bottom:2px; width:100%}
-    div.dup-installer-header-2 {font-weight:bold; border-bottom:1px solid #dfdfdf; padding-bottom:2px; width:100%}
+    div.dup-install-hdr-2 {font-weight:bold; border-bottom:1px solid #dfdfdf; padding-bottom:2px; width:100%}
 	span#dup-installer-secure-lock {color:#A62426; display:none; font-size:14px}
 	span#dup-installer-secure-unlock {color:#A62426; display:none; font-size:14px}
     label.chk-labels {display:inline-block; margin-top:1px}
-    table.dup-installer-tbl {width:97%; margin-left:20px}
+	table.dup-install-setup {width:100%; margin-left:2px}
+	table.dup-install-setup tr{vertical-align: top}
 	div.dup-installer-panel-optional {text-align: center; font-style: italic; font-size: 12px; color:maroon}
 	div.secure-pass-area {}
 	label.secure-pass-lbl {display:inline-block; width:125px}
@@ -55,6 +56,7 @@
 	
 	/*TABS*/
 	ul.add-menu-item-tabs li, ul.category-tabs li {padding:3px 30px 5px}
+	div.dup-install-prefill-tab-pnl {min-height:180px !important; }
 </style>
 
 <form id="dup-form-opts" method="post" action="?page=duplicator&tab=new2<?php echo "&retry={$retry_state}"; ?>" data-parsley-validate="" autocomplete="oldpassword">
@@ -368,87 +370,117 @@ ARCHIVE -->
 <!-- ============================
 INSTALLER -->
 <div class="dup-box">
-    <div class="dup-box-title">
-        <i class="fa fa-bolt"></i> <?php _e('Installer', 'duplicator') ?> &nbsp;
-		<span id="dup-installer-secure-lock" title="<?php _e('Installer password protection is on', 'duplicator') ?>"><i class="fa fa-lock"></i> </span>
-		<span id="dup-installer-secure-unlock" title="<?php _e('Installer password protection is off', 'duplicator') ?>"><i class="fa fa-unlock-alt"></i> </span>
-        <div class="dup-box-arrow"></div>
-    </div>			
-	
-    <div class="dup-box-panel" id="dup-pack-installer-panel" style="<?php echo $ui_css_installer ?>">
+<div class="dup-box-title">
+	<i class="fa fa-bolt"></i> <?php _e('Installer', 'duplicator') ?> &nbsp;
+	<span id="dup-installer-secure-lock" title="<?php _e('Installer password protection is on', 'duplicator') ?>"><i class="fa fa-lock"></i> </span>
+	<span id="dup-installer-secure-unlock" title="<?php _e('Installer password protection is off', 'duplicator') ?>"><i class="fa fa-unlock-alt"></i> </span>
+	<div class="dup-box-arrow"></div>
+</div>			
+
+<div class="dup-box-panel" id="dup-pack-installer-panel" style="<?php echo $ui_css_installer ?>">
+
+	<div class="dup-installer-panel-optional">
+		<b><?php _e('All values in this section are', 'duplicator'); ?> <u><?php _e('optional', 'duplicator'); ?></u></b>
+		<i class="fa fa-question-circle"
+				data-tooltip-title="<?php _e("Setup/Prefills", 'duplicator'); ?>"
+				data-tooltip="<?php _e('All values in this section are OPTIONAL! If you know ahead of time the database input fields the installer will use, then you can '
+					. 'optionally enter them here and they will be prefilled at install time.  Otherwise you can just enter them in at install time and ignore all these '
+					. 'options in the Installer section.', 'duplicator'); ?>">
+		</i>
+	</div>
+
+	<table class="dup-install-setup" style="margin-top: -10px">
+		<tr>
+			<td colspan="2"><div class="dup-install-hdr-2"><?php _e("Setup", 'duplicator') ?></div></td>
+		</tr>
+		<tr>
+			<td style="width:130px;"><b><?php _e("Branding", 'duplicator') ?></b></td>
+			<td>
+				<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_branding&utm_campaign=duplicator_pro" target="_blank">
+					<span class="dup-pro-text"><?php _e('Available with Duplicator Pro - Freelancer!', 'duplicator'); ?></span>
+				</a><br/><br/>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:130px"><b><?php _e("Security", 'duplicator') ?></b></td>
+			<td>
+				<?php
+					$dup_install_secure_on = isset($Package->Installer->OptsSecureOn) ? $Package->Installer->OptsSecureOn : 0;
+					$dup_install_secure_pass = isset($Package->Installer->OptsSecurePass) ? DUP_Util::installerUnscramble($Package->Installer->OptsSecurePass) : '';
+				?>
+				<input type="checkbox" name="secure-on" id="secure-on" onclick="Duplicator.Pack.EnableInstallerPassword()" <?php  echo ($dup_install_secure_on) ? 'checked' : ''; ?> />
+				<label for="secure-on"><?php _e("Enable Password Protection", 'duplicator') ?></label>
+				<i class="fa fa-question-circle"
+				   data-tooltip-title="<?php _e("Security:", 'duplicator'); ?>"
+				   data-tooltip="<?php _e('Enabling this option will allow for basic password protection on the installer. Before running the installer the '
+						   . 'password below must be entered before proceeding with an install.  This password is a general deterrent and should not be substituted for properly '
+						   . 'keeping your files secure.', 'duplicator'); ?>"></i>
+
+				<div id="dup-pass-toggle">
+					<input type="password" name="secure-pass" id="secure-pass" required="required" value="<?php echo $dup_install_secure_pass; ?>" />
+					<button type="button" id="secure-btn" class="pass-toggle" onclick="Duplicator.Pack.ToggleInstallerPassword()" title="<?php _e('Show/Hide Password', 'duplicator'); ?>"><i class="fa fa-eye"></i></button>
+				</div>
+				<br/>
+			</td>
+		</tr>
+	</table>
+
+	<table style="width:100%">
+		<tr>
+			<td colspan="2"><div class="dup-install-hdr-2"><?php _e("Prefills", 'duplicator') ?></div></td>
+		</tr>
+	</table>
+
+	<!-- ===================
+	BASIC/CPANEL TABS -->
+	<div data-dup-tabs="true">
+		<ul>
+			<li><?php _e('Basic', 'duplicator') ?></li>
+			<li id="dpro-cpnl-tab-lbl"><?php _e('cPanel', 'duplicator') ?></li>
+		</ul>
+
+		<!-- ===================
+		TAB1: Basic -->
+		<div class="dup-install-prefill-tab-pnl">
+			<table class="dup-install-setup">
+				<tr>
+					<td colspan="2"><div class="dup-install-hdr-2"><?php _e(" MySQL Server", 'duplicator') ?></div></td>
+				</tr>
+				<tr>
+					<td style="width:130px"><?php _e("Host", 'duplicator') ?></td>
+					<td><input type="text" name="dbhost" id="dbhost" value="<?php echo $Package->Installer->OptsDBHost ?>"  maxlength="200" placeholder="<?php _e('example: localhost (value is optional)', 'duplicator'); ?>"/></td>
+				</tr>
+				<tr>
+					<td><?php _e("Host Port", 'duplicator') ?></td>
+					<td><input type="text" name="dbport" id="dbport" value="<?php echo $Package->Installer->OptsDBPort ?>"  maxlength="200" placeholder="<?php _e('example: 3306 (value is optional)', 'duplicator'); ?>"/></td>
+				</tr>
+				<tr>
+					<td><?php _e("Database", 'duplicator') ?></td>
+					<td><input type="text" name="dbname" id="dbname" value="<?php echo $Package->Installer->OptsDBName ?>" maxlength="100" placeholder="<?php _e('example: DatabaseName (value is optional)', 'duplicator'); ?>" /></td>
+				</tr>
+				<tr>
+					<td><?php _e("User", 'duplicator') ?></td>
+					<td><input type="text" name="dbuser" id="dbuser" value="<?php echo $Package->Installer->OptsDBUser ?>"  maxlength="100" placeholder="<?php _e('example: DatabaseUserName (value is optional)', 'duplicator'); ?>" /></td>
+				</tr>
+			</table><br />
+		</div>
 		
-		<div class="dup-installer-panel-optional">
-			<b><?php _e('All values in this section are', 'duplicator'); ?> <u><?php _e('optional', 'duplicator'); ?></u>.</b> <br/>
-			<?php _e("The installer can have these fields pre-filled at install time.", 'duplicator'); ?>
-            <i class="fa fa-question-circle"
-					data-tooltip-title="<?php _e("MySQL Server Prefills", 'duplicator'); ?>"
-					data-tooltip="<?php _e('The values in this section are NOT required! If you know ahead of time the database input fields the installer will use, then you can optionally enter them here.  Otherwise you can just enter them in at install time.', 'duplicator'); ?>">
-			</i>
+		<!-- ===================
+		TAB2: cPanel -->
+		<div class="dup-install-prefill-tab-pnl">
+			<div style="padding:10px 0 0 12px;">
+					<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/cpanel-48.png" style="width:16px; height:12px" />
+					<?php _e("Create the database and database user at install time without leaving the installer!", 'duplicator'); ?><br/>
+					<?php _e("This feature is only availble in ", 'duplicator'); ?>
+					<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_cpanel&utm_campaign=duplicator_pro" target="_blank"><?php _e('Duplicator Pro!', 'duplicator');?></a><br/>
+					<small><i><?php _e("This feature works only with hosts that support cPanel.", 'duplicator'); ?></i></small>
+			</div>
 		</div>
 
-		<table class="dup-installer-tbl">
-			<tr>
-                <td colspan="2"><div class="dup-installer-header-2"><?php _e(" Security", 'duplicator') ?></div></td>
-            </tr>
-			<tr>
-				<td>
-					<?php
-						$dup_install_secure_on = isset($Package->Installer->OptsSecureOn) ? $Package->Installer->OptsSecureOn : 0;
-						$dup_install_secure_pass = isset($Package->Installer->OptsSecurePass) ? DUP_Util::installerUnscramble($Package->Installer->OptsSecurePass) : '';
-					?>
-					<input type="checkbox" name="secure-on" id="secure-on" onclick="Duplicator.Pack.EnableInstallerPassword()" <?php  echo ($dup_install_secure_on) ? 'checked' : ''; ?> />
-					<label for="secure-on"><?php _e("Enable Password Protection", 'duplicator') ?></label>
-					<i class="fa fa-question-circle"
-					   data-tooltip-title="<?php _e("Password Protection:", 'duplicator'); ?>"
-					   data-tooltip="<?php _e('Enabling this option will allow for basic password protection on the installer. Before running the installer the '
-							   . 'password below must be entered before proceeding with an install.  This password is a general deterrent and should not be substituted for properly '
-							   . 'keeping your files secure.', 'duplicator'); ?>"></i>
-
-					<div id="dup-pass-toggle">
-						<input type="password" name="secure-pass" id="secure-pass" required="required" value="<?php echo $dup_install_secure_pass; ?>" />
-						<button type="button" id="secure-btn" class="pass-toggle" onclick="Duplicator.Pack.ToggleInstallerPassword()" title="<?php _e('Show/Hide Password', 'duplicator'); ?>"><i class="fa fa-eye"></i></button>
-					</div>
-					<br/>
-				</td>
-			</tr>
-		</table>
+	</div>
 
 
-        <table class="dup-installer-tbl">
-            <tr>
-                <td colspan="2"><div class="dup-installer-header-2"><?php _e(" MySQL Server", 'duplicator') ?></div></td>
-            </tr>
-            <tr>
-                <td style="width:130px"><?php _e("Host", 'duplicator') ?></td>
-                <td><input type="text" name="dbhost" id="dbhost" value="<?php echo $Package->Installer->OptsDBHost ?>"  maxlength="200" placeholder="<?php _e('example: localhost (value is optional)', 'duplicator'); ?>"/></td>
-            </tr>
-			<tr>
-                <td><?php _e("Host Port", 'duplicator') ?></td>
-                <td><input type="text" name="dbport" id="dbport" value="<?php echo $Package->Installer->OptsDBPort ?>"  maxlength="200" placeholder="<?php _e('example: 3306 (value is optional)', 'duplicator'); ?>"/></td>
-            </tr>
-            <tr>
-                <td><?php _e("Database", 'duplicator') ?></td>
-                <td><input type="text" name="dbname" id="dbname" value="<?php echo $Package->Installer->OptsDBName ?>" maxlength="100" placeholder="<?php _e('example: DatabaseName (value is optional)', 'duplicator'); ?>" /></td>
-            </tr>							
-            <tr>
-                <td><?php _e("User", 'duplicator') ?></td>
-                <td><input type="text" name="dbuser" id="dbuser" value="<?php echo $Package->Installer->OptsDBUser ?>"  maxlength="100" placeholder="<?php _e('example: DatabaseUserName (value is optional)', 'duplicator'); ?>" /></td>
-            </tr>
-        </table><br />
-
-		<div style="padding:10px 0 0 12px;">
-			<span class="dup-pro-text">
-				<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/cpanel-48.png" style="width:16px; height:12px" />
-				<?php _e("Create the database and users directly at install time with ", 'duplicator'); ?>
-				<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_cpanel&utm_campaign=duplicator_pro" target="_blank"><?php _e('Duplicator Pro', 'duplicator');?></a>
-				<i class="fa fa-lightbulb-o"
-					data-tooltip-title="<?php _e("cPanel Access:", 'duplicator'); ?>" 
-					data-tooltip="<?php _e('If your server supports cPanel API access then you can create new databases and select existing ones with Duplicator Pro at install time.', 'duplicator'); ?>">
-				</i>
-			</span>
-		</div>
-
-    </div>		
+</div>		
 </div><br/>
 
 
