@@ -80,7 +80,7 @@
     /*Dialog Info */
 	div.dlg-serv-info {line-height:22px; font-size:12px}
 	div.dlg-serv-info label {display:inline-block; width:200px; font-weight: bold}
-    div.dlg-serv-info div.hdr {background-color: #dfdfdf; font-weight: bold; margin-top:5px; border-radius: 4px; padding:2px 5px 2px 5px; border: 1px solid silver; font-size:13px}
+    div.dlg-serv-info div.hdr {font-weight: bold; margin-top:5px; padding:2px 5px 2px 0; border-bottom: 1px solid #777; font-size:14px}
 	div.dupx-modes {color:#999; font-weight:normal; font-style:italic; font-size:11px; padding:5px 10px 0 0; text-align:right}
 
 	/* ============================

@@ -230,7 +230,7 @@ FORM DATA: User-Interface views -->
 			$ini_memory 	= ini_get('memory_limit');
 			$ini_error_path = ini_get('error_log');
 		?>
-         <div class="hdr">Server Information</div>
+         <div class="hdr">SERVER DETAILS</div>
 		<label>Try CDN Request:</label> 		<?php echo ( DUPX_U::tryCDN("ajax.aspnetcdn.com", 443) && DUPX_U::tryCDN("ajax.googleapis.com", 443)) ? 'Yes' : 'No'; ?> <br/>
 		<label>Web Server:</label>  			<?php echo $_SERVER['SERVER_SOFTWARE']; ?><br/>
         <label>PHP Version:</label>  			<?php echo DUPX_Server::$php_version; ?><br/>
@@ -242,7 +242,7 @@ FORM DATA: User-Interface views -->
 		<label>Error Log Path:</label>  		<?php echo empty($ini_error_path)      ? 'unable to find' : $ini_error_path; ?><br/>
 
         <br/>
-        <div class="hdr">Package Build Information</div>
+        <div class="hdr">PACKAGE BUILD DETAILS</div>
         <label>Plugin Version:</label>  		<?php echo $GLOBALS['DUPX_AC']->version_dup; ?><br/>
         <label>WordPress Version:</label>  		<?php echo $GLOBALS['DUPX_AC']->version_wp; ?><br/>
         <label>PHP Version:</label>             <?php echo $GLOBALS['DUPX_AC']->version_php; ?><br/>
