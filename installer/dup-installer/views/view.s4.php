@@ -38,22 +38,20 @@ VIEW: STEP 4- INPUT -->
 		Step <span class="step">4</span> of 4: Test Site
 	</div><br/>
 
-		<!--  POST PARAMS -->
+	<!--  POST PARAMS -->
 	<div class="dupx-debug">
 		<i>Step 4 - Page Load</i>
-		<input type="hidden" name="view"		  value="step4" />
+		<input type="hidden" name="view" value="step4" />
 		<input type="hidden" name="exe_safe_mode" id="exe-safe-mode" value="<?php echo $_POST['exe_safe_mode'] ?>" />
 	</div>
 
-<!--	<div class="hdr-sub3">
-		<div class="s4-final-title">Final Steps</div>
-	</div><br/>-->
-
 	<table class="s4-final-step">
 		<tr style="vertical-align: top">
-			<td style="padding-top:10px"><a class="s4-final-btns" href="javascript:void(0)" onclick="DUPX.getAdminLogin()">Site Login</a></td>
+			<td style="padding-top:10px">
+				<button type="button" class="s4-final-btns" onclick="DUPX.getAdminLogin()"><i class="fa fa-wordpress"></i> Admin Login</button>
+			</td>
 			<td>
-				<i>Login to finalize the setup</i><br/>
+				Login to the WordPress Admin to finalize this install.<br/>
 				<input type="checkbox" name="auto-delete" id="auto-delete" checked="true"/>
 				<label for="auto-delete">Auto delete installer files after login <small>(recommended)</small></label>
 				<br/><br/>
@@ -66,37 +64,33 @@ VIEW: STEP 4- INPUT -->
 				</div>
 			</td>
 		</tr>
-		<tr>
-			<td class='step'><a class='s4-final-btns' href="javascript:void(0)" onclick="$('#s4-install-report').toggle(400)">Show Report</a></td>
-			<td>
-				<i>Optionally review migration report.</i><br/>
+	</table>
+	<i style="color:maroon; font-size:12px">
+		<i class="fa fa-exclamation-triangle"></i> IMPORTANT FINAL STEPS: Login into the WordPress Admin to remove all
+		<a href="?view=help&archive=<?php echo $GLOBALS['FW_ENCODED_PACKAGE_PATH']?>&bootloader=<?php echo $GLOBALS['BOOTLOADER_NAME']?>&basic#help-s4" target="_blank">installation files</a>
+		and keep this site secure.   This install is not complete until the installer files are removed.
+	</i>
+	<br/><br/><br/>
+
+
+	<div class="s4-go-back">
+		Additional Notes:
+		<ul style="margin-top: 1px">
+			<li>
+				<a href="javascript:void(0)" onclick="$('#s4-install-report').toggle(400)">Review Migration Report</a><br/>
+				&nbsp; &nbsp;
 				<i id="s4-install-report-count">
 					<span data-bind="with: status.step1">Install Notices:(<span data-bind="text: query_errs"></span>)</span> &nbsp;
 					<span data-bind="with: status.step3">Replace Notices:(<span data-bind="text: err_all"></span>)</span> &nbsp; &nbsp;
 					<span data-bind="with: status.step3" style="color:#888"><b>General Notices:</b>(<span data-bind="text: warn_all"></span>)</span>
 				</i>
-			</td>
-		</tr>
-	</table>
-	<br/><br/>
-
-	<div class="s4-go-back">
-		Final Steps:
-		<ul style="margin-top: 1px">
-			<li>
-				Review the <a href="<?php echo $url_new_rtrim; ?>" target="_blank">front-end</a> or
-				re-run installer at <a href="<?php echo "{$url_new_rtrim}/installer.php"; ?>">step 1</a>
 			</li>
-			<li>Finalize installation by logging into the WordPress Admin Login and removing installation files</li>
-		</ul>
-
-		Additional Notes:
-		<ul style="margin-top: 1px">
-			<li>The .htaccess file was reset.  Resave plugins that write to this file.</li>
 			<li>
-				Visit the <a href="installer.php?help=1#troubleshoot" target="_blank">troubleshoot</a> section or
-				<a href='https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst4_step4_troubleshoot' target='_blank'>online FAQs</a> for additional help.
+				Review this sites <a href="<?php echo $url_new_rtrim; ?>" target="_blank">front-end</a> or
+				re-run the installer and <a href="<?php echo "{$url_new_rtrim}/installer.php"; ?>">go back to step 1</a>.
 			</li>
+			<li>If the .htaccess file was reset some plugin settings might need to be re-saved.</li>
+			<li>For additional help and questions visit the <a href='https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst4_step4_troubleshoot' target='_blank'>online FAQs</a>.</li>
 		</ul>
 	</div>
 
@@ -272,6 +266,7 @@ VIEW: STEP 4- INPUT -->
 <?php
 	//Sanitize
 	$json_result = true;
+	$_POST['json'] = isset($_POST['json']) ? $_POST['json'] : 'json data not set';
 	$json_data   = utf8_decode(urldecode($_POST['json']));
 	$json_decode = json_decode($json_data);
 	if ($json_decode == NULL || $json_decode == FALSE) {
