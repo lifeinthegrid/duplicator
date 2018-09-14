@@ -377,33 +377,16 @@ mysqli_close($dbh);
 
 
 //-- Finally, back up the old wp-config and rename the new one
-
 $wpconfig_path	= "{$GLOBALS['DUPX_ROOT']}/wp-config.php";
 $wpconfig_orig_path	= "{$GLOBALS['DUPX_ROOT']}/wp-config.orig";
 
-if(file_exists($wpconfig_path)) {	
-	if (!is_writable($wpconfig_path)) {
-		$err_log = "\nWARNING: Unable to update file permissions and write to {$wpconfig_path}.  ";
-		$err_log .= "Check that the wp-config.php is in the archive.zip and check with your host or administrator to enable PHP to write to the wp-config.php file.  ";
-		$err_log .= "If performing a 'Manual Extraction' please be sure to select the 'Manual Archive Extraction' option on step 1 under options.";
-		chmod($wpconfig_path, 0644) ? DUPX_Log::info("File Permission Update: {$wpconfig_path} set to 0644") : DUPX_Log::error("{$err_log}");
-	}
-
-	if(rename($wpconfig_path, $wpconfig_orig_path) === false) {
-		DUPX_Log::error("Unable to rename {$wpconfig_path} top {$wpconfig_orig_path}");
-	}
-}
-
 if(copy($wpconfig_ark_path, $wpconfig_path) === false) {
-
 	if(file_exists($wpconfig_orig_path)) {
-
 		// If orig exists restore that.
 		if(rename($wpconfig_orig_path, $wpconfig_path) === false) {
 			DUPX_Log::info("Unable to rename {$wpconfig_orig_path} to {$wpconfig_path}");
 		}
 	}
-
 	DUPX_Log::error("Unable to copy {$wpconfig_ark_path} to {$wpconfig_path}");
 }
 

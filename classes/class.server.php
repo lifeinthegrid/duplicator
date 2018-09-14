@@ -197,7 +197,7 @@ class DUP_Server {
      * @return array [file_name, file_path]
      */
     public static function getInstallerFiles() {
-        //Files:   installer.php, installer-backup.php, installer-bootlog.txt
+        //Files:   installer.php, installer-backup.php, installer-bootlog.txt, wp-config.orig (legacy support)
         //Dirs:	   dup-installer
         return array(
             DUPLICATOR_INSTALL_PHP => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_PHP,
@@ -205,6 +205,7 @@ class DUP_Server {
             DUPLICATOR_INSTALL_BOOT_LOG => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_BOOT_LOG,
             basename(DUPLICATOR_INSTALLER_DIRECTORY) . ' ' . __('(directory)') => DUPLICATOR_INSTALLER_DIRECTORY,
             'dup-wp-config-arc__[HASH].txt' => DUPLICATOR_WPROOTPATH . 'dup-wp-config-arc__*.txt',
+			'wp-config.orig' => DUPLICATOR_WPROOTPATH . 'wp-config.orig'
         );
     }
 
