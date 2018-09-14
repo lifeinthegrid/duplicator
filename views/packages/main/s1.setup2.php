@@ -397,8 +397,7 @@ INSTALLER -->
 			<td style="width:130px;"><b><?php _e("Branding", 'duplicator') ?></b></td>
 			<td>
 				<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_branding&utm_campaign=duplicator_pro" target="_blank">
-					<span class="dup-pro-text"><?php _e('Available with Duplicator Pro - Freelancer!', 'duplicator'); ?></span>
-				</a> 
+					<span class="dup-pro-text"><?php _e('Available with Duplicator Pro - Freelancer!', 'duplicator'); ?></span></a> 
 				<i class="fa fa-question-circle"
 					   data-tooltip-title="<?php _e("Branding", 'duplicator'); ?>:"
 					   data-tooltip="<?php _e('Branding is a way to customize the installer look and feel.  With branding you can create multiple brands of installers.', 'duplicator'); ?>"></i>
@@ -417,8 +416,8 @@ INSTALLER -->
 				<i class="fa fa-question-circle"
 				   data-tooltip-title="<?php _e("Security:", 'duplicator'); ?>"
 				   data-tooltip="<?php _e('Enabling this option will allow for basic password protection on the installer. Before running the installer the '
-						   . 'password below must be entered before proceeding with an install.  This password is a general deterrent and should not be substituted for properly '
-						   . 'keeping your files secure.', 'duplicator'); ?>"></i>
+							   . 'password below must be entered before proceeding with an install.  This password is a general deterrent and should not be substituted for properly '
+							   . 'keeping your files secure.  Be sure to remove all installer files when the install process is completed.', 'duplicator'); ?>"></i>
 
 				<div id="dup-pass-toggle">
 					<input type="password" name="secure-pass" id="secure-pass" required="required" value="<?php echo $dup_install_secure_pass; ?>" />

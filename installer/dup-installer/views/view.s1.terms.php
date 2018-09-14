@@ -25,7 +25,7 @@ TERMS & NOTICES DIALOG
 		Manual extraction is only needed when your server does not support the ZipArchive extension.  Please see the online help for more details.
 		<br/><br/>
 
-		<b>After Install:</b> When you are done with the installation you must remove the these files/directories:
+		<b>After Install:</b> When you are done with the installation you must remove these files/directories:
 		<ul>
 			<li>dup-installer</li>
 			<li>installer.php</li>

@@ -49,6 +49,9 @@ HELP FORM -->
 			</td>
 		</tr>
 	</table>
+	<br/>
+	Note: Even though the installer has a password protection feature, it should only be used for the short term while the installer is being used. All installer files should and
+	must be removed after the install is completed.  Files should not to be left on the server for any long duration of time to prevent any security related issues.
 </div>
 
 <!-- ============================================

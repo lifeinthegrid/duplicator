@@ -445,12 +445,8 @@ VALIDATION
 
 			 <i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_is_mu_warn_exe&utm_campaign=duplicator_pro' target='_blank'>[upgrade to pro]</a></i>
 		</div>
-
 	</div>
 
-	<div style="text-align:center; margin: auto; padding:10px">
-		<a href="javascript:void(0)" target="db-test" onclick="DUPX.openDBValidationWindow()">[Quick Database Connection Test]</a>
-	</div>
 </div>
 <br/><br/>
 
@@ -571,6 +567,12 @@ OPTIONS
 			</td>
 		</tr>
 		<?php endif;?>
+		<tr>
+			<td>Testing:</td>
+			<td>
+				<a href="javascript:void(0)" target="db-test" onclick="DUPX.openDBValidationWindow()">[Quick Database Connection Test]</a>
+			</td>
+		</tr>
 	</table>
 </div><br/>
 
