@@ -197,7 +197,7 @@ class DUP_Server {
 	 * @remarks
 	 *  FILES:		installer.php, installer-backup.php, installer-bootlog.txt
 	 * 	DIRS:		dup-installer
-	 * 	DEV FILES:	wp-config.bak, .old, .orig, .org
+	 * 	DEV FILES:	wp-config.orig
 	 * 	Last set is for lazy developer cleanup files that a developer may have
 	 *  accidently left around lets be proactive for the user just in case.
 	 *
@@ -211,10 +211,7 @@ class DUP_Server {
             basename(DUPLICATOR_INSTALLER_DIRECTORY) . ' ' . __('(directory)') => DUPLICATOR_INSTALLER_DIRECTORY,
             'dup-wp-config-arc__[HASH].txt' => DUPLICATOR_WPROOTPATH . 'dup-wp-config-arc__*.txt',
 			//Lazy Developer Files
-			'wp-config.bak'		=> DUPLICATOR_WPROOTPATH . 'wp-config.bak',
-			'wp-config.old'		=> DUPLICATOR_WPROOTPATH . 'wp-config.old',
-			'wp-config.orig'	=> DUPLICATOR_WPROOTPATH . 'wp-config.orig',
-			'wp-config.org'		=> DUPLICATOR_WPROOTPATH . 'wp-config.org'
+			'wp-config.orig'	=> DUPLICATOR_WPROOTPATH . 'wp-config.orig'
         );
     }
 
