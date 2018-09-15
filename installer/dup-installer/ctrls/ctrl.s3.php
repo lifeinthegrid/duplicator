@@ -378,16 +378,26 @@ mysqli_close($dbh);
 
 //-- Finally, back up the old wp-config and rename the new one
 $wpconfig_path	= "{$GLOBALS['DUPX_ROOT']}/wp-config.php";
-$wpconfig_orig_path	= "{$GLOBALS['DUPX_ROOT']}/wp-config.orig";
-
 if(copy($wpconfig_ark_path, $wpconfig_path) === false) {
-	if(file_exists($wpconfig_orig_path)) {
-		// If orig exists restore that.
-		if(rename($wpconfig_orig_path, $wpconfig_path) === false) {
-			DUPX_Log::info("Unable to rename {$wpconfig_orig_path} to {$wpconfig_path}");
+	DUPX_Log::error("ERROR: Unable to copy '{$wpconfig_ark_path}' to '{$wpconfig_path}'.  "
+	. "Check server permissions for more details see FAQ: https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-055-q");
+}
+
+//Cleanup any tmp files a developer may have forgotten about
+//Lets be proactive for the developer just in case
+$wpconfig_path_bak	= "{$GLOBALS['DUPX_ROOT']}/wp-config.bak";
+$wpconfig_path_old	= "{$GLOBALS['DUPX_ROOT']}/wp-config.old";
+$wpconfig_path_org	= "{$GLOBALS['DUPX_ROOT']}/wp-config.org";
+$wpconfig_path_orig	= "{$GLOBALS['DUPX_ROOT']}/wp-config.orig";
+$wpconfig_safe_check = array($wpconfig_path_bak, $wpconfig_path_old, $wpconfig_path_org, $wpconfig_path_orig);
+
+foreach ($wpconfig_safe_check as $file) {
+	if(file_exists($file)) {
+		$tmp_newfile = $file . uniqid('_');
+		if(rename($file, $tmp_newfile) === false) {
+			DUPX_Log::info("WARNING: Unable to rename '{$file}' to '{$tmp_newfile}'");
 		}
 	}
-	DUPX_Log::error("Unable to copy {$wpconfig_ark_path} to {$wpconfig_path}");
 }
 
 $ajax3_sum = DUPX_U::elapsedTime(DUPX_U::getMicrotime(), $ajax3_start);

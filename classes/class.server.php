@@ -193,19 +193,28 @@ class DUP_Server {
 
     /**
      * Gets a list of all the installer files by name and full path
-     *
+	 *
+	 * @remarks
+	 *  FILES:		installer.php, installer-backup.php, installer-bootlog.txt
+	 * 	DIRS:		dup-installer
+	 * 	DEV FILES:	wp-config.bak, .old, .orig, .org
+	 * 	Last set is for lazy developer cleanup files that a developer may have
+	 *  accidently left around lets be proactive for the user just in case.
+	 *
      * @return array [file_name, file_path]
      */
     public static function getInstallerFiles() {
-        //Files:   installer.php, installer-backup.php, installer-bootlog.txt, wp-config.orig (legacy support)
-        //Dirs:	   dup-installer
         return array(
             DUPLICATOR_INSTALL_PHP => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_PHP,
             DUPLICATOR_INSTALL_BAK => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_BAK,
             DUPLICATOR_INSTALL_BOOT_LOG => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_BOOT_LOG,
             basename(DUPLICATOR_INSTALLER_DIRECTORY) . ' ' . __('(directory)') => DUPLICATOR_INSTALLER_DIRECTORY,
             'dup-wp-config-arc__[HASH].txt' => DUPLICATOR_WPROOTPATH . 'dup-wp-config-arc__*.txt',
-			'wp-config.orig' => DUPLICATOR_WPROOTPATH . 'wp-config.orig'
+			//Lazy Developer Files
+			'wp-config.bak'		=> DUPLICATOR_WPROOTPATH . 'wp-config.bak',
+			'wp-config.old'		=> DUPLICATOR_WPROOTPATH . 'wp-config.old',
+			'wp-config.orig'	=> DUPLICATOR_WPROOTPATH . 'wp-config.orig',
+			'wp-config.org'		=> DUPLICATOR_WPROOTPATH . 'wp-config.org'
         );
     }
 

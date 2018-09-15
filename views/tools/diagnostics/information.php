@@ -103,8 +103,9 @@ if ($section == "info" || $section == '') {
 
 				<div style="font-style: italic; max-width:900px">
 					<b><?php _e('Security Notes', 'duplicator')?>:</b>
-					<?php _e('If the installer files do not successfully get removed with this action, then they WILL need to be removed manually through your hosts control panel,  '
-						 . ' file system or FTP.  Please remove all installer files listed above to avoid leaving open security issues on your server.', 'duplicator')?>
+					<?php _e('If the installer files do not successfully get removed with this action, then they WILL need to be removed manually through your hosts control panel, '
+						 . 'file system or FTP.  Please remove all installer files listed above to avoid leaving open security issues on your server.  The remove process '
+						. ' will also look for other non-installer files that could be a security issue and removes them as well.', 'duplicator'); ?>
 					<br/><br/>
 					<?php echo $txt_archive_msg; ?>
 					<br/><br/>
