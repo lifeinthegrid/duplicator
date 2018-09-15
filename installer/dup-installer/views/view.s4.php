@@ -21,9 +21,9 @@ $admin_login	= "{$url_new_rtrim}/{$admin_base}{$admin_url_qry}redirect_to={$admi
     {
 		if ($('input#auto-delete').is(':checked')) {
 			var action = encodeURIComponent('&action=installer');
-			window.open('<?php echo $admin_login; ?>' + action, 'wp-admin');
+			window.open('<?php echo $admin_login; ?>' + action, '_blank');
 		} else {
-			window.open('<?php echo $admin_login; ?>', 'wp-admin');
+			window.open('<?php echo $admin_login; ?>', '_blank');
 		}
 	};
 </script>
