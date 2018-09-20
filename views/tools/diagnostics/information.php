@@ -32,7 +32,6 @@ $section  = (isset($_GET['section'])) ?$_GET['section']:'';
 
 if ($section == "info" || $section == '') {
 
-	$ajax_nonce	= wp_create_nonce('DUP_CTRL_Tools_deleteInstallerFiles');
 	$_GET['action'] = isset($_GET['action']) ? $_GET['action'] : 'display';
 
 	if (isset($_REQUEST['_wpnonce'])) {
@@ -59,45 +58,51 @@ if ($section == "info" || $section == '') {
 			<?php if ( $_GET['action'] == 'installer') :  ?>
 				<?php
 					$html = "";
-
 					//REMOVE CORE INSTALLER FILES
 					$installer_files = DUP_Server::getInstallerFiles();
+					$removed_files = false;
 					foreach ($installer_files as $file => $path) {
-						if (false !== strpos($path, '*')) {
+						$file_path = '';
+						if (false !== stripos($file, '[hash]')) {
 							$glob_files = glob($path);
 							if (!empty($glob_files)) {
-								foreach ($glob_files as $glob_file) {
-									DUP_IO::deleteFile($glob_file);
-								}
+								$file_path = $glob_files[0];
+								
 							}
-						} else if (is_file($path)) {
-							DUP_IO::deleteFile($path);
-						} elseif (is_dir($path)) {
-							// Extra protection to ensure we only are deleting the installer directory
-							if(SnapLibStringU::contains($path, 'dup-installer')) {
-								DUP_IO::deleteTree($path);
-							}
+						} elseif (file_exists($path)) {
+							$file_path = $path;                            
 						}
-
-						echo (file_exists($path))
-							? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - {$path}  </div>"
-							: "<div class='success'> <i class='fa fa-check'></i> {$txt_removed} - {$path}	</div>";
+                        if (!empty($file_path)) {
+							if (is_dir($file_path)) {
+								DUP_IO::deleteTree($file_path);
+							} else {
+								DUP_IO::deleteFile($file_path);
+							}
+							                            
+                            if (file_exists($file_path)) {
+								echo "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - {$file_path}  </div>";
+							} else {
+								$removed_files = true;
+								echo "<div class='success'> <i class='fa fa-check'></i> {$txt_removed} - {$file_path}	</div>";
+							}
+                        }
 					}
-
+					if (!$removed_files) {
+						echo '<div><strong>'.__('No Duplicator files were found on this WordPress Site.', 'duplicator').'</strong></div>';
+					}
 					//No way to know exact name of archive file except from installer.
 					//The only place where the package can be removed is from installer
 					//So just show a message if removing from plugin.
 					if (file_exists($package_path)) {
 						$path_parts	 = pathinfo($package_name);
 						$path_parts	 = (isset($path_parts['extension'])) ? $path_parts['extension'] : '';
-						$valid_ext   = ($path_parts == "zip" || $path_parts == "daf");
-						if ($valid_ext  && !is_dir($package_path)) {
+						$valid_ext = ($path_parts == "zip" || $path_parts == "daf");
+						if ($valid_ext && !is_dir($package_path)) {
 							$html .= (@unlink($package_path))
 										? "<div class='success'><i class='fa fa-check'></i> {$txt_removed} - {$package_path}</div>"
 										: "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - {$package_path}</div>";
-						}
+						} 
 					}
-
 					echo $html;
 				 ?><br/>
 
