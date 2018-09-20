@@ -37,7 +37,8 @@ class DUP_UI_Notice
         if (!isset($screen))
 			return;
   
-        if (DUP_Server::hasInstallerFiles()) {
+		$is_installer_cleanup_req = ($screen->id == 'duplicator_page_duplicator-tools' && isset($_GET['action']) && $_GET['action'] == 'installer');
+        if (DUP_Server::hasInstallerFiles() && !$is_installer_cleanup_req) {
 
 			$on_active_tab = isset($_GET['section'])? $_GET['section']: '';
             echo '<div class="dup-updated notice-success" id="dup-global-error-reserved-files"><p>';

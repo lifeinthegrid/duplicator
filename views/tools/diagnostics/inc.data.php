@@ -36,23 +36,8 @@ OPTIONS DATA -->
 									."These files should not be left on production systems for security reasons.", 'duplicator');
 								echo "<br/><br/>";
 
-								foreach ($installer_files as $file => $path) {
-									if (false !== strpos($path, '*')) {
-										$glob_files = glob($path);
-										if (!empty($glob_files)) {
-											foreach ($glob_files as $glob_file) {
-												$base_file_name = basename($glob_file);
-												echo "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - {$base_file_name}  </div>";
-											}
-										} else {
-											echo "<div class='success'> <i class='fa fa-check'></i> {$txt_not_found} - {$file}	</div>";
-										}
-									} else {
-										echo (file_exists($path))
-											? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - {$file}  </div>"
-											: "<div class='success'> <i class='fa fa-check'></i> {$txt_not_found} - {$file}	</div>";
-									}
-								}
+								$installer_files = array_keys($installer_files);
+								echo '<div class="success">'.implode('</div><div class="success">', $installer_files).'</div>';
 								echo "<br/>";
 								echo $txt_archive_msg;
 								?>
@@ -149,24 +134,9 @@ jQuery(document).ready(function($)
 
 Duplicator.Tools.deleteInstallerFiles = function()
 {
-	var data = {
-		action: 'DUP_CTRL_Tools_deleteInstallerFiles',
-		'archive-name'  : '<?php echo $package_name; ?>'
-	};
-
-	jQuery.ajax({
-		type: "POST",
-		url: ajaxurl,
-		dataType: "json",
-		data: data,
-		complete: function() {
-		<?php
-			$url = "?page=duplicator-tools&tab=diagnostics&action=installer&_wpnonce={$nonce}&package={$package_name}";
-			echo "window.location = '{$url}';";
-		?>
-		},
-		error: function(data) {console.log(data)},
-		done: function(data) {console.log(data)}
-	});
+	<?php
+	$url = "?page=duplicator-tools&tab=diagnostics&action=installer&_wpnonce={$nonce}&package={$package_name}";
+	echo "window.location = '{$url}';";
+	?>
 }
 </script>
