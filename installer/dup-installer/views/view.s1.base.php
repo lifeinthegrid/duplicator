@@ -632,7 +632,6 @@ Auto Posts to view.step2.php
         <input type="hidden" name="view" value="step2" />
 		<input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
 		<input type="hidden" name="logging" id="ajax-logging"  />
-        <input type="hidden" name="archive_name" value="<?php echo $GLOBALS['FW_PACKAGE_NAME'] ?>" />
         <input type="hidden" name="config_mode" id="ajax-config-mode" />
         <input type="hidden" name="exe_safe_mode" id="exe-safe-mode"  value="0" />
 		<input type="hidden" name="json" id="ajax-json" />

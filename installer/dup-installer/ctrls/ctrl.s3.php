@@ -34,7 +34,7 @@ $dbConnError = (mysqli_connect_error()) ? 'Error: '.mysqli_connect_error() : 'Un
 
 if (!$dbh) {
 	$msg = "Unable to connect with the following parameters: <br/> <b>HOST:</b> {$_POST['dbhost']}<br/> <b>DATABASE:</b> {$_POST['dbname']}<br/>";
-	$msg .= "<b>Connection Error:</b> {$dbConnError}";
+	$msg .= "<b>Connection Error:</b> ".htmlentities($dbConnError);
 	DUPX_Log::error($msg);
 }
 
@@ -300,8 +300,8 @@ switch ($_POST['config_mode']) {
 		DUPX_Log::info("process choose 'Create New' for the 'Config Files' options");
 		break;
 	case 'IGNORE':
-		DUPX_Log::info("\nWARNING: Choseing the option to ignore the .htaccess, web.config and .user.ini files");
-		DUPX_Log::info("can lead to install issues.  The 'Ignore All' opition is designed for advanced users.");
+		DUPX_Log::info("\nWARNING: Choosing the option to ignore the .htaccess, web.config and .user.ini files");
+		DUPX_Log::info("can lead to install issues.  The 'Ignore All' option is designed for advanced users.");
 		break;
 }
 
