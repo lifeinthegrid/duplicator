@@ -1,12 +1,7 @@
 <?php
 
 	$sql = "SELECT * FROM `{$wpdb->prefix}options` WHERE  `option_name` LIKE  '%duplicator_%' AND  `option_name` NOT LIKE '%duplicator_pro%' ORDER BY option_name";
-
-	$txt_archive_msg = __("<b>Archive File:</b> The archive file has a unique hashed name when downloaded.  Leaving the archive file on your server does not impose a security"
-						. " risk if the file was not renamed.  It is still recommended to remove the archive file after install,"
-						. " especially if it was renamed.", 'duplicator');
 ?>
-
 
 <!-- ==============================
 OPTIONS DATA -->
@@ -39,7 +34,6 @@ OPTIONS DATA -->
 								$installer_files = array_keys($installer_files);
 								echo '<div class="success">'.implode('</div><div class="success">', $installer_files).'</div>';
 								echo "<br/>";
-								echo $txt_archive_msg;
 								?>
 							</div>
 						</td>

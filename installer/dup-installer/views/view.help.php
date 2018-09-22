@@ -545,7 +545,8 @@ STEP 4
 		<li>installer.php</li>
 		<li>installer-backup.php</li>
 		<li>installer-bootlog.txt</li>
-		<li>archive.zip/daf</li>
+		<li>dup-wp-config-arc_[HASH].txt</li>
+		<li>[HASH]_archive.zip/daf</li>
 	</ul>
 	<br/><br/>
 
