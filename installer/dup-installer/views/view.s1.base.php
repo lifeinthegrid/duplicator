@@ -169,33 +169,39 @@ ARCHIVE
 				<td colspan="2"><div class="hdr-sub3">File Details</div></td>
 			</tr>
 			<tr>
-				<td>Size:</td>
-				<td><?php echo DUPX_U::readableByteSize($arcSize);?> </td>
-			</tr>
-			<tr>
-				<td>Name:</td>
-				<td><?php echo "{$GLOBALS['FW_PACKAGE_NAME']}"; ?> </td>
+				<td style="vertical-align:top">Status:</td>
+				<td>
+					<?php if ($arcCheck != 'Fail') : ?>
+						<span class="dupx-pass">Archive file successfully detected.</span>
+					<?php else : ?>
+						<div class="s1-archive-failed-msg">
+						<b class="dupx-fail">Archive File Not Found!</b><br/>
+							The installer file and the archive are bound together as a package when the archive is built.  They must be downloaded together and used
+							together at install time.  The archive file name should <u>not</u> be changed when it is downloaded because the file name is strongly bound
+							to the installer. When downloading the package files make sure both files are from the same package line in the packages view within the
+							Duplicator WordPress admin.
+							<br/><br/>
+
+							The full archive file name must be <u>exactly</u> the same as when it was built (character for character), or the installer will not work properly.
+							To find out the exact archive name that is bound to this installer open the dup_installer/dup-archive_[HASH].txt file with a text editor and search for
+							the text "package_name":"[HASH]_archive.zip/daf".  Check to see what that value is assigned to and that should be the name of the archive file
+							placed in the same path	as this installer.
+							<br/><br/>
+
+							If the contents of the archive were manually transferred to this location without the archive file then simply create a temp file named the same
+							archive bound to this installer and place the file in the same directory as the installer.php file.  The temp file will not need to contain any data.
+							Afterward, refresh this page and continue with the install process.
+						</div>
+					<?php endif; ?>
+				</td>
 			</tr>
 			<tr>
 				<td>Path:</td>
 				<td><?php echo $root_path; ?> </td>
 			</tr>
 			<tr>
-				<td style="vertical-align:top">Status:</td>
-				<td>
-					<?php if ($arcCheck != 'Fail') : ?>
-						<span class="dupx-pass">Archive file successfully detected.</span>
-						<?php else : ?>
-						<span class="dupx-fail" style="font-style:italic">
-							The archive file named above must be the <u>exact</u> name of the archive file placed in the root path (character for character).
-							When downloading the package files make sure both files are from the same package line.  <br/><br/>
-
-							If the contents of the archive were manually transferred to this location without the archive file then simply create a temp file named with
-							the exact name shown above and place the file in the same directory as the installer.php file.  The temp file will not need to contain any data.
-							Afterward, refresh this page and continue with the install process.
-						</span>
-					<?php endif; ?>
-				</td>
+				<td>Size:</td>
+				<td><?php echo DUPX_U::readableByteSize($arcSize);?> </td>
 			</tr>
 		</table>
 
