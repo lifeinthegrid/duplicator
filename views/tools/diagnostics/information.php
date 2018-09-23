@@ -5,6 +5,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/classes/class.io.php');
 
 $installer_files	= DUP_Server::getInstallerFiles();
 $package_name		= (isset($_GET['package'])) ?  esc_html($_GET['package']) : '';
+
 // For auto detect archive file name logic
 if (empty($package_name)) {
     $installer_file_path = DUPLICATOR_WPROOTPATH . 'installer.php';
@@ -21,7 +22,7 @@ if (empty($package_name)) {
 }
 $package_path	= empty($package_name) ? '' : DUPLICATOR_WPROOTPATH.$package_name;
 $txt_found		= __('File Found: Unable to remove', 'duplicator');
-$txt_removed	= __('File Removed', 'duplicator');
+$txt_removed	= __('Removed', 'duplicator');
 $nonce			= wp_create_nonce('duplicator_cleanup_page');
 $section		= (isset($_GET['section'])) ?$_GET['section']:'';
 
