@@ -627,7 +627,7 @@ Auto Posts to view.step2.php
 ========================================= -->
 <form id='s1-result-form' method="post" class="content-form" style="display:none">
 
-    <div class="dupx-logfile-link"><a href="./<?php echo $GLOBALS["LOG_FILE_NAME"];?>" target="dup-installer">installer-log.txt</a></div>
+    <div class="dupx-logfile-link"><a href="./<?php echo $GLOBALS["LOG_FILE_NAME"];?>" target="dup-installer">dup-installer-log.txt</a></div>
     <div class="hdr-main">
         Step <span class="step">1</span> of 4: Extraction
     </div>
@@ -660,7 +660,7 @@ Auto Posts to view.step2.php
     <div id="ajaxerr-area" style="display:none">
         <p>Please try again an issue has occurred.</p>
         <div style="padding: 0px 10px 10px 0px;">
-            <div id="ajaxerr-data">An unknown issue has occurred with the file and database setup process.  Please see the installer-log.txt file for more details.</div>
+            <div id="ajaxerr-data">An unknown issue has occurred with the file and database setup process.  Please see the dup-installer-log.txt file for more details.</div>
             <div style="text-align:center; margin:10px auto 0px auto">
                 <input type="button" class="default-btn" onclick="DUPX.hideErrorResult()" value="&laquo; Try Again" /><br/><br/>
                 <i style='font-size:11px'>See online help for more details at <a href='https://snapcreek.com/ticket' target='_blank'>snapcreek.com</a></i>
