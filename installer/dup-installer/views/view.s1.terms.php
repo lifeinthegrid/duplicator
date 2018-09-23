@@ -31,6 +31,8 @@ TERMS & NOTICES DIALOG
 			<li>installer.php</li>
 			<li>installer-backup.php</li>
 			<li>installer-bootlog.txt</li>
+			<li>dup-wp-config-arc_[HASH].txt</li>
+			<li>[HASH]_archive.zip/daf</li>
 		</ul>
 
 		These files contain sensitive information and should not remain on a production system for system integrity and security protection.
