@@ -33,7 +33,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 </style>
 
 <div class="dup-pro-area">
-	<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/logo-dpro-300x50.png"  /> 
+	<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/logo-dpro-300x50-nosnap.png"  /> 
 	<div style="font-size:18px; font-style:italic; color:gray">
 		<?php _e('The simplicity of Duplicator', 'duplicator') ?>
 		<?php _e('with power for the professional.', 'duplicator') ?>
@@ -104,18 +104,18 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
-				<tr>
+		<tr>
 			<td class="feature-column">
-				<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/onedrive-48px.png" style='height:16px; width:16px'  />
-				<?php _e('Microsoft One Drive Storage', 'duplicator') ?>
+				<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/ftp-64.png" style='height:16px; width:16px'  /> 
+				<?php _e('FTP/SFTP Storage', 'duplicator') ?>
 			</td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
-		<tr>
+        		<tr>
 			<td class="feature-column">
-				<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/ftp-64.png" style='height:16px; width:16px'  /> 
-				<?php _e('Remote FTP/SFTP Storage', 'duplicator') ?>
+				<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/onedrive-48px.png" style='height:16px; width:16px'  />
+				<?php _e('OneDrive Storage', 'duplicator') ?>
 			</td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
@@ -126,6 +126,15 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 		<tr>
 			<td colspan="3" class="group-header"><?php _e('Improved Processing', 'duplicator') ?></td>
 		</tr>-->
+        <tr>
+            <td class="feature-column"><?php _e('Overwrite Live Site', 'duplicator') ?><sup>
+					<i class="fa fa-question-circle dup-gopro-help"
+						data-tooltip-title="<?php _e("Overwrite Existing Site", 'duplicator'); ?>"
+                        data-tooltip="<?php _e('Overwrite a live site. Makes installing super-fast!', 'duplicator'); ?>"/></i></sup>
+			</td>
+			<td class="check-column"></td>
+			<td class="check-column"><i class="fa fa-check"></i></td>
+		</tr>
 		<tr>
             <td class="feature-column"><?php _e('Large Site Support', 'duplicator') ?><sup>
 					<i class="fa fa-question-circle dup-gopro-help"
