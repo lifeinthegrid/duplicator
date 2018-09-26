@@ -1,12 +1,7 @@
 <?php
 
 	$sql = "SELECT * FROM `{$wpdb->prefix}options` WHERE  `option_name` LIKE  '%duplicator_%' AND  `option_name` NOT LIKE '%duplicator_pro%' ORDER BY option_name";
-
-	$txt_archive_msg = __("<b>Archive File:</b> The archive file has a unique hashed name when downloaded.  Leaving the archive file on your server does not impose a security"
-						. " risk if the file was not renamed.  It is still recommended to remove the archive file after install,"
-						. " especially if it was renamed.", 'duplicator');
 ?>
-
 
 <!-- ==============================
 OPTIONS DATA -->
@@ -32,29 +27,14 @@ OPTIONS DATA -->
 
 							<div id="dup-tools-delete-moreinfo">
 								<?php
-								_e("Clicking on the 'Remove Installation Files' button will remove the files used by Duplicator to install this site.  "
-									."These files should not be left on production systems for security reasons.", 'duplicator');
-								echo "<br/><br/>";
+									_e("Clicking on the 'Remove Installation Files' button will attempt to remove the installer files used by Duplicator.  These files should not "
+									. "be left on production systems for security reasons. Below are the files that should be removed.", 'duplicator');
+									echo "<br/><br/>";
 
-								foreach ($installer_files as $file => $path) {
-									if (false !== strpos($path, '*')) {
-										$glob_files = glob($path);
-										if (!empty($glob_files)) {
-											foreach ($glob_files as $glob_file) {
-												$base_file_name = basename($glob_file);
-												echo "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - {$base_file_name}  </div>";
-											}
-										} else {
-											echo "<div class='success'> <i class='fa fa-check'></i> {$txt_not_found} - {$file}	</div>";
-										}
-									} else {
-										echo (file_exists($path))
-											? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - {$file}  </div>"
-											: "<div class='success'> <i class='fa fa-check'></i> {$txt_not_found} - {$file}	</div>";
-									}
-								}
-								echo "<br/>";
-								echo $txt_archive_msg;
+									$installer_files = array_keys($installer_files);
+									array_push($installer_files, '[HASH]_archive.zip/daf');
+									echo '<i>' . implode('<br/>', $installer_files) . '</i>';
+									echo "<br/><br/>";
 								?>
 							</div>
 						</td>
@@ -149,24 +129,9 @@ jQuery(document).ready(function($)
 
 Duplicator.Tools.deleteInstallerFiles = function()
 {
-	var data = {
-		action: 'DUP_CTRL_Tools_deleteInstallerFiles',
-		'archive-name'  : '<?php echo $package_name; ?>'
-	};
-
-	jQuery.ajax({
-		type: "POST",
-		url: ajaxurl,
-		dataType: "json",
-		data: data,
-		complete: function() {
-		<?php
-			$url = "?page=duplicator-tools&tab=diagnostics&action=installer&_wpnonce={$nonce}&package={$package_name}";
-			echo "window.location = '{$url}';";
-		?>
-		},
-		error: function(data) {console.log(data)},
-		done: function(data) {console.log(data)}
-	});
+	<?php
+	$url = "?page=duplicator-tools&tab=diagnostics&action=installer&_wpnonce={$nonce}&package={$package_name}";
+	echo "window.location = '{$url}';";
+	?>
 }
 </script>

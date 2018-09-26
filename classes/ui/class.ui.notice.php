@@ -37,7 +37,8 @@ class DUP_UI_Notice
         if (!isset($screen))
 			return;
   
-        if (DUP_Server::hasInstallerFiles()) {
+		$is_installer_cleanup_req = ($screen->id == 'duplicator_page_duplicator-tools' && isset($_GET['action']) && $_GET['action'] == 'installer');
+        if (DUP_Server::hasInstallerFiles() && !$is_installer_cleanup_req) {
 
 			$on_active_tab = isset($_GET['section'])? $_GET['section']: '';
             echo '<div class="dup-updated notice-success" id="dup-global-error-reserved-files"><p>';
@@ -60,9 +61,9 @@ class DUP_UI_Notice
 									. 'Click the link above or button below to remove all installer files and complete the migration.', 'duplicator');
 
 				echo "<b class='pass-msg'><i class='fa fa-check-circle'></i> {$title}</b> <br/> {$safe_html} <b>{$msg1}</b> <br/>";
-				printf("1. <a href='https://wordpress.org/support/plugin/duplicator/reviews/?filter=5' target='wporg'>%s</a> <br/> ", __('Optionally, Review Duplicator at WordPress.org...', 'duplicator'));
-				printf("2. <a href='javascript:void(0)' onclick='jQuery(\"#dup-remove-installer-files-btn\").click()'>%s</a><br/>", __('Remove Installation Files Now!', 'duplicator'));
-                echo "<div class='pass-msg'>{$msg2}</div>";
+				printf("1. <a href='javascript:void(0)' onclick='jQuery(\"#dup-remove-installer-files-btn\").click()'>%s</a><br/>", __('Remove Installation Files Now!', 'duplicator'));
+                printf("2. <a href='https://wordpress.org/support/plugin/duplicator/reviews/?filter=5' target='wporg'>%s</a> <br/> ", __('Optionally, Review Duplicator at WordPress.org...', 'duplicator'));
+				echo "<div class='pass-msg'>{$msg2}</div>";
 
 			//All other Pages
             } else {

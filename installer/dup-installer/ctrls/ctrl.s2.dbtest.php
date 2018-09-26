@@ -89,6 +89,9 @@ class DUPX_DBTest
 		$this->buildStateSummary();
 		$this->buildDisplaySummary();
 		$this->out->payload = $this;
+		foreach ($this->out->payload->in as $key=>$val) {
+			$this->out->payload->in->$key = htmlentities($val);
+		}
 		$this->out->getProcessTime();
 
 		//Return PHP or JSON result
@@ -159,18 +162,18 @@ class DUPX_DBTest
 			$this->dbh = DUPX_DB::connect($this->in->dbhost, $this->in->dbuser, $this->in->dbpass, null, $this->in->dbport);
 			if ($this->dbh) {
 				$test['pass']	 = 1;
-				$test['info']	 = "The user <b>[{$this->in->dbuser}]</b> successfully connected to the database server on host <b>[{$this->in->dbhost}]</b>.";
+				$test['info']	 = "The user <b>[".htmlentities($this->in->dbuser)."]</b> successfully connected to the database server on host <b>[".htmlentities($this->in->dbhost)."]</b>.";
 			} else {
-				$msg = "Unable to connect the user <b>[{$this->in->dbuser}]</b> to the host <b>[{$this->in->dbhost}]</b>";
+				$msg = "Unable to connect the user <b>[".htmlentities($this->in->dbuser)."]</b> to the host <b>[".htmlentities($this->in->dbhost)."]</b>";
 				$test['pass']	 = 0;
 				$test['info']	 = (mysqli_connect_error())
-								? "{$msg}. The server error response was: <i>" . mysqli_connect_error() . '</i>'
+								? "{$msg}. The server error response was: <i>" . htmlentities(mysqli_connect_error()) . '</i>'
 								: "{$msg}. Please contact your hosting provider or server administrator.";
 			}
 
 		} catch (Exception $ex) {
 			$test['pass']	 = 0;
-			$test['info']	 = "Unable to connect the user <b>[{$this->in->dbuser}]</b> to the host <b>[{$this->in->dbhost}]</b>.<br/>" . $this->formatError($ex);
+			$test['info']	 = "Unable to connect the user <b>[".htmlentities($this->in->dbuser)."]</b> to the host <b>[".htmlentities($this->in->dbhost)."]</b>.<br/>" . $this->formatError($ex);
 		}
 	}
 
@@ -192,10 +195,10 @@ class DUPX_DBTest
 
 			if ($db_version_pass) {
 				$test['pass']	 = 1;
-				$test['info']	 = "This test passes with a current database version of <b>[{$db_version}]</b>";
+				$test['info']	 = "This test passes with a current database version of <b>[".htmlentities($db_version)."]</b>";
 			} else {
 				$test['pass']	 = 0;
-				$test['info']	 = "The current database version is <b>[{$db_version}]</b> which is below the required version of 5.0.0  "
+				$test['info']	 = "The current database version is <b>[".htmlentities($db_version)."]</b> which is below the required version of 5.0.0  "
 					."Please work with your server admin or hosting provider to update the database server.";
 			}
 
@@ -223,7 +226,7 @@ class DUPX_DBTest
 			$db_found = mysqli_select_db($this->dbh, $this->in->dbname);
 			if ($db_found) {
 				$test['pass']	 = 0;
-				$test['info']	 = "DATABASE CREATION FAILURE: A database named <b>[{$this->in->dbname}]</b> already exists.<br/><br/>"
+				$test['info']	 = "DATABASE CREATION FAILURE: A database named <b>[".htmlentities($this->in->dbname)."]</b> already exists.<br/><br/>"
 							."Please continue with the following options:<br/>"
 							."- Choose a different database name or remove this one.<br/>"
 							."- Change the action drop-down to an option like \"Connect and Remove All Data\".<br/>";
@@ -236,17 +239,17 @@ class DUPX_DBTest
 
 			if (!$db_found) {
 				$test['pass']	 = 0;
-				$test['info']	 = sprintf(ERR_DBCONNECT_CREATE, $this->in->dbname);
+				$test['info']	 = sprintf(ERR_DBCONNECT_CREATE, htmlentities($this->in->dbname));
 				$test['info'] .= "\nError Message: ".mysqli_error($this->dbh);
 			} else {
 				$this->newDBMade = true;
 				$test['pass']	= 1;
-				$test['info'] = "Database <b>[{$this->in->dbname}]</b> was successfully created and dropped.  The user has enough priveleges to create a new database with the "
+				$test['info'] = "Database <b>[".htmlentities($this->in->dbname)."]</b> was successfully created and dropped.  The user has enough privileges to create a new database with the "
 							. "'Basic' option enabled.";
 			}
 		} catch (Exception $ex) {
 			$test['pass']	 = 0;
-			$test['info']	 = "Error creating database <b>[{$this->in->dbname}]</b>.<br/>" . $this->formatError($ex);
+			$test['info']	 = "Error creating database <b>[".htmlentities($this->in->dbname)."]</b>.<br/>" . $this->formatError($ex);
 		}
 	}
 
@@ -271,17 +274,17 @@ class DUPX_DBTest
 			$db_found = mysqli_select_db($this->dbh, $this->in->dbname);
 			if (!$db_found) {
 				$test['pass'] = 0;
-				$test['info'] = "The user '<b>[{$this->in->dbuser}]</b>' is unable to see the database named '<b>[{$this->in->dbname}]</b>'.  "
+				$test['info'] = "The user '<b>[".htmlentities($this->in->dbuser)."]</b>' is unable to see the database named '<b>[".htmlentities($this->in->dbname)."]</b>'.  "
 					. "Be sure the database name already exists and check that the database user has access to the database.  "
                                         . "If you want to create a new database choose the action 'Create New Database'.";
 			} else {
 				$test['pass'] = 1;
-				$test['info'] = "The database user <b>[{$this->in->dbuser}]</b> has visible access to see the database named <b>[{$this->in->dbname}]</b>";
+				$test['info'] = "The database user <b>[".htmlentities($this->in->dbuser)."]</b> has visible access to see the database named <b>[".htmlentities($this->in->dbname)."]</b>";
 			}
 
 		} catch (Exception $ex) {
 			$test['pass'] = 0;
-			$test['info'] = "The user '<b>[{$this->in->dbuser}]</b>' is unable to see the database named '<b>[{$this->in->dbname}]</b>'.  "
+			$test['info'] = "The user '<b>[".htmlentities($this->in->dbuser)."]</b>' is unable to see the database named '<b>[".htmlentities($this->in->dbname)."]</b>'.  "
 				. "Be sure the database name already exists and check that the database user has access to the database.  "
                                 . "If you want to create a new database choose the action 'Create New Database'<br/>" . $this->formatError($ex);
 		}
@@ -304,11 +307,11 @@ class DUPX_DBTest
 				return;
 			}
 
-			$tblcount = DUPX_DB::countTables($this->dbh, $this->in->dbname);
+			$tblcount = DUPX_DB::countTables($this->dbh, htmlentities($this->in->dbname));
 
 			if ($tblcount < 10) {
 				$test['pass']	 = 0;
-				$test['info']	 = sprintf(ERR_DBMANUAL, $this->in->dbname, $tblcount);
+				$test['info']	 = sprintf(ERR_DBMANUAL, htmlentities($this->in->dbname), htmlentities($tblcount));
 			} else {
 				$test['pass']	 = 1;
 				$test['info']	 = "This test passes.  A WordPress database looks to be setup.";
@@ -316,7 +319,7 @@ class DUPX_DBTest
 
 		} catch (Exception $ex) {
 			$test['pass']	 = 0;
-			$test['info']	 = "The database user <b>[{$this->in->dbuser}]</b> has visible access to see the database named <b>[{$this->in->dbname}]</b> .<br/>" . $this->formatError($ex);
+			$test['info']	 = "The database user <b>[".htmlentities($this->in->dbuser)."]</b> has visible access to see the database named <b>[".htmlentities($this->in->dbname)."]</b> .<br/>" . $this->formatError($ex);
 		}
 	}
 
@@ -337,7 +340,7 @@ class DUPX_DBTest
 
 			if ($this->tblPerms['all']) {
 				$test['pass']	 = 1;
-				$test['info']	 = "The user <b>[{$this->in->dbuser}]</b> the correct privileges on the database <b>[{$this->in->dbname}]</b>";
+				$test['info']	 = "The user <b>[".htmlentities($this->in->dbuser)."]</b> the correct privileges on the database <b>[".htmlentities($this->in->dbname)."]</b>";
 			} else {
 				$list		 = array();
 				$test['pass']	 = 0;
@@ -347,7 +350,7 @@ class DUPX_DBTest
 					}
 				}
 				$list		 = implode(',', $list);
-				$test['info']	 = "The user <b>[{$this->in->dbuser}]</b> is missing the privileges <b>[{$list}]</b> on the database <b>[{$this->in->dbname}]</b>";
+				$test['info']	 = "The user <b>[".htmlentities($this->in->dbuser)."]</b> is missing the privileges <b>[".htmlentities($list)."]</b> on the database <b>[".htmlentities($this->in->dbname)."]</b>";
 			}
 
 		} catch (Exception $ex) {
@@ -470,7 +473,7 @@ class DUPX_DBTest
 			if ($this->ac->dbInfo->isTablesUpperCase && $this->ac->dbInfo->varLowerCaseTables == 1 && $localhostLowerCaseTables == 0) {
 				$test['pass']	 = 0;
 				$test['info']	 = "An upper case table name was found in the database SQL script and the server variable lower_case_table_names is set  "
-					. "to <b>[{$localhostLowerCaseTables}]</b>.  When both of these conditions are met it can lead to issues with creating tables with upper case characters.  "
+					. "to <b>[".htmlentities($localhostLowerCaseTables)."]</b>.  When both of these conditions are met it can lead to issues with creating tables with upper case characters.  "
 					. "<br/><b>Options</b>:<br/> "
 					. " - On this server have the host company set the lower_case_table_names value to 1 or 2 in the my.cnf file.<br/>"
 					. " - On the build server set the lower_case_table_names value to 2 restart server and build package.<br/>"
@@ -587,11 +590,11 @@ class DUPX_DBTest
             if($sql_mode_array !== false) {
                 $this->sql_modes = $sql_mode_array['mode'];
             } else {
-                $this->sql_modes ="query failed <br/>".@mysqli_error($this->dbh);
+                $this->sql_modes ="query failed <br/>".htmlentities(@mysqli_error($this->dbh));
             }
 
         }else{
-           $this->sql_modes ="query failed <br/>".@mysqli_error($this->dbh);
+           $this->sql_modes ="query failed <br/>".htmlentities(@mysqli_error($this->dbh));
         }
 
 		$this->sqlmodeChecked = true;
@@ -645,8 +648,8 @@ class DUPX_DBTest
 				$result	= mysqli_query($this->dbh, "DROP DATABASE IF EXISTS `{$this->in->dbname}`");
 				if (!$result) {
 					$this->reqs[30][pass] = 0;
-					$this->reqs[30][info] = "The database <b>[{$this->in->dbname}]</b> was successfully created. However removing the database was not succussful with the following response.<br/>"
-								."Response Message: <i>".mysqli_error($this->dbh)."</i>.  This database may need to be removed manually.";
+					$this->reqs[30][info] = "The database <b>[".htmlentities($this->in->dbname)."]</b> was successfully created. However removing the database was not successful with the following response.<br/>"
+								."Response Message: <i>".htmlentities(mysqli_error($this->dbh))."</i>.  This database may need to be removed manually.";
 				}
 			}
 		}
@@ -719,6 +722,6 @@ class DUPX_DBTest
 
 	private function formatError(Exception $ex)
 	{
-		return "Message: " . $ex->getMessage() . "<br/>Line: " . $ex->getFile() . ':' . $ex->getLine();
+		return "Message: " . htmlentities($ex->getMessage()) . "<br/>Line: " . htmlentities($ex->getFile()) . ':' . htmlentities($ex->getLine());
 	}
 }

@@ -193,18 +193,28 @@ class DUP_Server {
 
     /**
      * Gets a list of all the installer files by name and full path
-     *
+	 *
+	 * @remarks
+	 *  FILES:		installer.php, installer-backup.php, installer-bootlog.txt
+	 * 	DIRS:		dup-installer
+	 * 	DEV FILES:	wp-config.orig
+	 * 	Last set is for lazy developer cleanup files that a developer may have
+	 *  accidently left around lets be proactive for the user just in case.
+	 *
      * @return array [file_name, file_path]
      */
     public static function getInstallerFiles() {
-        //Files:   installer.php, installer-backup.php, installer-bootlog.txt
-        //Dirs:	   dup-installer
+        // alphanumeric 7 time, then -(dash), then 8 digits
+        $hashPattern = '[a-z0-9][a-z0-9][a-z0-9][a-z0-9][a-z0-9][a-z0-9][a-z0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]';
         return array(
+			basename(DUPLICATOR_INSTALLER_DIRECTORY) . ' ' . __('(directory)') => DUPLICATOR_INSTALLER_DIRECTORY,
             DUPLICATOR_INSTALL_PHP => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_PHP,
             DUPLICATOR_INSTALL_BAK => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_BAK,
             DUPLICATOR_INSTALL_BOOT_LOG => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_BOOT_LOG,
-            basename(DUPLICATOR_INSTALLER_DIRECTORY) . ' ' . __('(directory)') => DUPLICATOR_INSTALLER_DIRECTORY,
-            'dup-wp-config-arc__[HASH].txt' => DUPLICATOR_WPROOTPATH . 'dup-wp-config-arc__*.txt',
+			'dup-wp-config-arc__[HASH].txt'		=> DUPLICATOR_WPROOTPATH . "dup-wp-config-arc__{$hashPattern}.txt",
+			//'dup-installer-data__[HASH].sql'	=> DUPLICATOR_WPROOTPATH . "dup-installer-data__{$hashPattern}.sql",
+			//'dup-database__[HASH].sql'			=> DUPLICATOR_WPROOTPATH . "dup-database__{$hashPattern}.sql",
+            //'dup-installer-log_[HASH].txt'		=> DUPLICATOR_WPROOTPATH . "dup-installer-log__{$hashPattern}.txt",
         );
     }
 

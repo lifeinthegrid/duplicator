@@ -112,6 +112,7 @@
 	table.s1-archive-local {width:100%}
     table.s1-archive-local td {padding:4px 4px 4px 4px}
 	table.s1-archive-local td:first-child {font-weight:bold; width:55px}
+	div.s1-archive-failed-msg {padding:15px; border:1px dashed maroon; font-size: 12px; border-radius:5px;}
 	div.s1-err-msg {padding:0 0 80px 0; line-height:20px}
 	div.s1-err-msg i {color:maroon}
 

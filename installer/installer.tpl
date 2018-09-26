@@ -715,16 +715,13 @@ $auto_refresh = isset($_POST['auto-fresh']) ? true : false;
 
 <html>
 <?php if ($boot_error == null) :?>
-
 	<head>
 		<meta http-equiv="refresh" content="2;url='<?php echo $boot->mainInstallerURL ?>'" />
 		<script>
 			window.location = "<?php echo $boot->mainInstallerURL ?>";
 		</script>
 	</head>
-
 <?php else :?>
-
 	<head>
 		<style>
 			body {font-family:Verdana,Arial,sans-serif; line-height:18px; font-size: 12px}
@@ -800,7 +797,10 @@ $auto_refresh = isset($_POST['auto-fresh']) ? true : false;
 				</tr>
 				<tr>
 					<td>Archive Name:</td>
-					<td><?php echo DUPX_Bootstrap::ARCHIVE_FILENAME  ?></td>
+					<td>
+						[HASH]_archive.zip or [HASH]_archive.daf<br/>
+						<small>This is based on the format used to build the archive</small>
+					</td>
 				</tr>
 				<tr>
 					<td>Archive Size:</td>

@@ -5,6 +5,7 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/classes/class.io.php');
 
 $installer_files	= DUP_Server::getInstallerFiles();
 $package_name		= (isset($_GET['package'])) ?  esc_html($_GET['package']) : '';
+
 // For auto detect archive file name logic
 if (empty($package_name)) {
     $installer_file_path = DUPLICATOR_WPROOTPATH . 'installer.php';
@@ -19,20 +20,14 @@ if (empty($package_name)) {
         }
     }
 }
-$package_path        = empty($package_name) ? '' : DUPLICATOR_WPROOTPATH.$package_name;
-
-$txt_found		 = __('File Found', 'duplicator');
-$txt_removed	 = __('File Removed', 'duplicator');
-$txt_archive_msg = __("<b>Archive File:</b> The archive file has a unique hashed name when downloaded.  Leaving the archive file on your server does not impose a security"
-					. " risk if the file was not renamed.  It is still recommended to remove the archive file after install,"
-					. " especially if it was renamed.", 'duplicator');
-
-$nonce	  = wp_create_nonce('duplicator_cleanup_page');
-$section  = (isset($_GET['section'])) ?$_GET['section']:'';
+$package_path	= empty($package_name) ? '' : DUPLICATOR_WPROOTPATH.$package_name;
+$txt_found		= __('File Found: Unable to remove', 'duplicator');
+$txt_removed	= __('Removed', 'duplicator');
+$nonce			= wp_create_nonce('duplicator_cleanup_page');
+$section		= (isset($_GET['section'])) ?$_GET['section']:'';
 
 if ($section == "info" || $section == '') {
 
-	$ajax_nonce	= wp_create_nonce('DUP_CTRL_Tools_deleteInstallerFiles');
 	$_GET['action'] = isset($_GET['action']) ? $_GET['action'] : 'display';
 
 	if (isset($_REQUEST['_wpnonce'])) {
@@ -59,55 +54,64 @@ if ($section == "info" || $section == '') {
 			<?php if ( $_GET['action'] == 'installer') :  ?>
 				<?php
 					$html = "";
-
 					//REMOVE CORE INSTALLER FILES
 					$installer_files = DUP_Server::getInstallerFiles();
+					$installer_file_found = false;
 					foreach ($installer_files as $file => $path) {
-						if (false !== strpos($path, '*')) {
+						$file_path = '';
+						if (false !== stripos($file, '[hash]')) {
 							$glob_files = glob($path);
 							if (!empty($glob_files)) {
-								foreach ($glob_files as $glob_file) {
-									DUP_IO::deleteFile($glob_file);
-								}
+								$file_path = $glob_files[0];
 							}
-						} else if (is_file($path)) {
-							DUP_IO::deleteFile($path);
-						} elseif (is_dir($path)) {
-							// Extra protection to ensure we only are deleting the installer directory
-							if(SnapLibStringU::contains($path, 'dup-installer')) {
-								DUP_IO::deleteTree($path);
-							}
+						} elseif (file_exists($path)) {
+							$file_path = $path;                            
 						}
-
-						echo (file_exists($path))
-							? "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - {$path}  </div>"
-							: "<div class='success'> <i class='fa fa-check'></i> {$txt_removed} - {$path}	</div>";
+                        if (!empty($file_path)) {
+							if (is_dir($file_path)) {
+								DUP_IO::deleteTree($file_path);
+							} else {
+								DUP_IO::deleteFile($file_path);
+							}
+							                            
+                            if (file_exists($file_path)) {
+								$installer_file_found = true;
+								echo "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - {$file_path}</div>";
+							} else {
+								echo "<div class='success'> <i class='fa fa-check'></i> {$txt_removed} - {$file_path}</div>";
+							}
+                        }
 					}
-
+	
 					//No way to know exact name of archive file except from installer.
 					//The only place where the package can be removed is from installer
 					//So just show a message if removing from plugin.
 					if (file_exists($package_path)) {
 						$path_parts	 = pathinfo($package_name);
 						$path_parts	 = (isset($path_parts['extension'])) ? $path_parts['extension'] : '';
-						$valid_ext   = ($path_parts == "zip" || $path_parts == "daf");
-						if ($valid_ext  && !is_dir($package_path)) {
+						$valid_ext = ($path_parts == "zip" || $path_parts == "daf");
+						if ($valid_ext && !is_dir($package_path)) {
 							$html .= (@unlink($package_path))
 										? "<div class='success'><i class='fa fa-check'></i> {$txt_removed} - {$package_path}</div>"
 										: "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - {$package_path}</div>";
-						}
+						} 
 					}
-
 					echo $html;
-				 ?><br/>
 
-				<div style="font-style: italic; max-width:900px">
-					<b><?php _e('Security Notes', 'duplicator')?>:</b>
-					<?php _e('If the installer files do not successfully get removed with this action, then they WILL need to be removed manually through your hosts control panel,  '
-						 . ' file system or FTP.  Please remove all installer files listed above to avoid leaving open security issues on your server.', 'duplicator')?>
-					<br/><br/>
-					<?php echo $txt_archive_msg; ?>
-					<br/><br/>
+					if (!$installer_file_found) {
+						echo '<div class="dup-alert-no-files-msg success">'
+								. '<i class="fa fa-check"></i> <b>' . __('No Duplicator installer files found on this WordPress Site.', 'duplicator') . '</b>'
+							. '</div>';
+					}
+				 ?>
+
+				<div class="dup-alert-secure-note">
+					<?php
+						echo '<b>' . __('Security Notes', 'duplicator') . ':</b>&nbsp;';
+						_e('If the installer files do not successfully get removed with this action, then they WILL need to be removed manually through your hosts control panel  '
+						 . 'or FTP.  Please remove all installer files to avoid any security issues on this site.  For more details please visit '
+						 . 'the FAQ link <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-295-q" target="_blank">Which files need to be removed after an install?</a>', 'duplicator');
+					?>
 				</div>
 
 			<?php endif; ?>

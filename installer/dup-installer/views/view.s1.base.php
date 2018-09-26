@@ -169,33 +169,39 @@ ARCHIVE
 				<td colspan="2"><div class="hdr-sub3">File Details</div></td>
 			</tr>
 			<tr>
-				<td>Size:</td>
-				<td><?php echo DUPX_U::readableByteSize($arcSize);?> </td>
-			</tr>
-			<tr>
-				<td>Name:</td>
-				<td><?php echo "{$GLOBALS['FW_PACKAGE_NAME']}"; ?> </td>
+				<td style="vertical-align:top">Status:</td>
+				<td>
+					<?php if ($arcCheck != 'Fail') : ?>
+						<span class="dupx-pass">Archive file successfully detected.</span>
+					<?php else : ?>
+						<div class="s1-archive-failed-msg">
+						<b class="dupx-fail">Archive File Not Found!</b><br/>
+							The installer file and the archive are bound together as a package when the archive is built.  They must be downloaded together and used
+							together at install time.  The archive file name should <u>not</u> be changed when it is downloaded because the file name is strongly bound
+							to the installer. When downloading the package files make sure both files are from the same package line in the packages view within the
+							Duplicator WordPress admin.
+							<br/><br/>
+
+							The full archive file name must be <u>exactly</u> the same as when it was built (character for character), or the installer will not work properly.
+							To find out the exact archive name that is bound to this installer open the dup_installer/dup-archive_[HASH].txt file with a text editor and search for
+							the text "package_name":"[HASH]_archive.zip/daf".  Check to see what that value is assigned to and that should be the name of the archive file
+							placed in the same path	as this installer.
+							<br/><br/>
+
+							If the contents of the archive were manually transferred to this location without the archive file then simply create a temp file named the same
+							archive bound to this installer and place the file in the same directory as the installer.php file.  The temp file will not need to contain any data.
+							Afterward, refresh this page and continue with the install process.
+						</div>
+					<?php endif; ?>
+				</td>
 			</tr>
 			<tr>
 				<td>Path:</td>
 				<td><?php echo $root_path; ?> </td>
 			</tr>
 			<tr>
-				<td style="vertical-align:top">Status:</td>
-				<td>
-					<?php if ($arcCheck != 'Fail') : ?>
-						<span class="dupx-pass">Archive file successfully detected.</span>
-						<?php else : ?>
-						<span class="dupx-fail" style="font-style:italic">
-							The archive file named above must be the <u>exact</u> name of the archive file placed in the root path (character for character).
-							When downloading the package files make sure both files are from the same package line.  <br/><br/>
-
-							If the contents of the archive were manually transferred to this location without the archive file then simply create a temp file named with
-							the exact name shown above and place the file in the same directory as the installer.php file.  The temp file will not need to contain any data.
-							Afterward, refresh this page and continue with the install process.
-						</span>
-					<?php endif; ?>
-				</td>
+				<td>Size:</td>
+				<td><?php echo DUPX_U::readableByteSize($arcSize);?> </td>
 			</tr>
 		</table>
 
@@ -445,12 +451,8 @@ VALIDATION
 
 			 <i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_is_mu_warn_exe&utm_campaign=duplicator_pro' target='_blank'>[upgrade to pro]</a></i>
 		</div>
-
 	</div>
 
-	<div style="text-align:center; margin: auto; padding:10px">
-		<a href="javascript:void(0)" target="db-test" onclick="DUPX.openDBValidationWindow()">[Quick Database Connection Test]</a>
-	</div>
 </div>
 <br/><br/>
 
@@ -571,6 +573,12 @@ OPTIONS
 			</td>
 		</tr>
 		<?php endif;?>
+		<tr>
+			<td>Testing:</td>
+			<td>
+				<a href="javascript:void(0)" target="db-test" onclick="DUPX.openDBValidationWindow()">[Quick Database Connection Test]</a>
+			</td>
+		</tr>
 	</table>
 </div><br/>
 
@@ -619,7 +627,7 @@ Auto Posts to view.step2.php
 ========================================= -->
 <form id='s1-result-form' method="post" class="content-form" style="display:none">
 
-    <div class="dupx-logfile-link"><a href="./<?php echo $GLOBALS["LOG_FILE_NAME"];?>" target="dup-installer">installer-log.txt</a></div>
+    <div class="dupx-logfile-link"><a href="./<?php echo $GLOBALS["LOG_FILE_NAME"];?>" target="dup-installer">dup-installer-log.txt</a></div>
     <div class="hdr-main">
         Step <span class="step">1</span> of 4: Extraction
     </div>
@@ -630,7 +638,6 @@ Auto Posts to view.step2.php
         <input type="hidden" name="view" value="step2" />
 		<input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
 		<input type="hidden" name="logging" id="ajax-logging"  />
-        <input type="hidden" name="archive_name" value="<?php echo $GLOBALS['FW_PACKAGE_NAME'] ?>" />
         <input type="hidden" name="config_mode" id="ajax-config-mode" />
         <input type="hidden" name="exe_safe_mode" id="exe-safe-mode"  value="0" />
 		<input type="hidden" name="json" id="ajax-json" />
@@ -653,7 +660,7 @@ Auto Posts to view.step2.php
     <div id="ajaxerr-area" style="display:none">
         <p>Please try again an issue has occurred.</p>
         <div style="padding: 0px 10px 10px 0px;">
-            <div id="ajaxerr-data">An unknown issue has occurred with the file and database setup process.  Please see the installer-log.txt file for more details.</div>
+            <div id="ajaxerr-data">An unknown issue has occurred with the file and database setup process.  Please see the dup-installer-log.txt file for more details.</div>
             <div style="text-align:center; margin:10px auto 0px auto">
                 <input type="button" class="default-btn" onclick="DUPX.hideErrorResult()" value="&laquo; Try Again" /><br/><br/>
                 <i style='font-size:11px'>See online help for more details at <a href='https://snapcreek.com/ticket' target='_blank'>snapcreek.com</a></i>

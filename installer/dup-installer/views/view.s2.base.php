@@ -22,7 +22,7 @@ $cpnl_supported =  DUPX_U::$on_php_53_plus ? true : false;
 		<div class="hdr-main">Database Validation	</div>
 	<?php else : ?>
 		<div class="dupx-logfile-link">
-			<a href="./<?php echo $GLOBALS["LOG_FILE_NAME"];?>?now=<?php echo $GLOBALS['NOW_TIME']; ?>" target="dup-installer">installer-log.txt</a>
+			<a href="./<?php echo $GLOBALS["LOG_FILE_NAME"];?>?now=<?php echo $GLOBALS['NOW_TIME']; ?>" target="dup-installer">dup-installer-log.txt</a>
 		</div>
 		<div class="hdr-main">Step <span class="step">2</span> of 4: Install Database	</div>
 		<div class="s2-btngrp">
@@ -92,7 +92,7 @@ VIEW: STEP 2 - AJAX RESULT
 Auto Posts to view.step3.php  -->
 <form id='s2-result-form' method="post" class="content-form" style="display:none">
 
-	<div class="dupx-logfile-link"><a href="./<?php echo $GLOBALS["LOG_FILE_NAME"];?>" target="dup-installer">installer-log.txt</a></div>
+	<div class="dupx-logfile-link"><a href="./<?php echo $GLOBALS["LOG_FILE_NAME"];?>" target="dup-installer">dup-installer-log.txt</a></div>
 	<div class="hdr-main">
 		Step <span class="step">2</span> of 4: Install Database
 	</div>
@@ -131,7 +131,7 @@ Auto Posts to view.step3.php  -->
 	<div id="ajaxerr-area" style="display:none">
 		<p>Please try again an issue has occurred.</p>
 		<div style="padding: 0px 10px 10px 0px;">
-			<div id="ajaxerr-data">An unknown issue has occurred with the file and database setup process.  Please see the installer-log.txt file for more details.</div>
+			<div id="ajaxerr-data">An unknown issue has occurred with the file and database setup process.  Please see the dup-installer-log.txt file for more details.</div>
 			<div style="text-align:center; margin:10px auto 0px auto">
 				<input type="button" onclick="$('#s2-result-form').hide();  $('#s2-input-form').show(200);" value="&laquo; Try Again" class="default-btn" /><br/><br/>
 				<i style='font-size:11px'>See online help for more details at <a href='https://snapcreek.com/' target='_blank'>snapcreek.com</a></i>

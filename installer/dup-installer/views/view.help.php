@@ -49,6 +49,9 @@ HELP FORM -->
 			</td>
 		</tr>
 	</table>
+	<br/>
+	Note: Even though the installer has a password protection feature, it should only be used for the short term while the installer is being used. All installer files should and
+	must be removed after the install is completed.  Files should not to be left on the server for any long duration of time to prevent any security related issues.
 </div>
 
 <!-- ============================================
@@ -219,7 +222,7 @@ STEP 1
 		<tr>
 			<td>Logging</td>
 			<td>
-				The level of detail that will be sent to the log file (installer-log.txt).  The recommend setting for most installs should be 'Light'.
+				The level of detail that will be sent to the log file (dup-installer-log.txt).  The recommend setting for most installs should be 'Light'.
 				Note if you use Debug the amount of data written can be very large.  Debug is only recommended for support.
 			</td>
 		</tr>
@@ -542,7 +545,8 @@ STEP 4
 		<li>installer.php</li>
 		<li>installer-backup.php</li>
 		<li>installer-bootlog.txt</li>
-		<li>archive.zip/daf</li>
+		<li>dup-wp-config-arc_[HASH].txt</li>
+		<li>[HASH]_archive.zip/daf</li>
 	</ul>
 	<br/><br/>
 
