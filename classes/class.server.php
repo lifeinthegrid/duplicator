@@ -207,7 +207,7 @@ class DUP_Server {
         // alphanumeric 7 time, then -(dash), then 8 digits
         $hashPattern = '[a-z0-9][a-z0-9][a-z0-9][a-z0-9][a-z0-9][a-z0-9][a-z0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]';
         return array(
-			basename(DUPLICATOR_INSTALLER_DIRECTORY) . ' ' . __('(directory)') => DUPLICATOR_INSTALLER_DIRECTORY,
+			basename(DUPLICATOR_INSTALLER_DIRECTORY) . ' ' . esc_html__('(directory)', 'duplicator') => DUPLICATOR_INSTALLER_DIRECTORY,
             DUPLICATOR_INSTALL_PHP => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_PHP,
             DUPLICATOR_INSTALL_BAK => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_BAK,
             DUPLICATOR_INSTALL_BOOT_LOG => DUPLICATOR_WPROOTPATH . DUPLICATOR_INSTALL_BOOT_LOG,

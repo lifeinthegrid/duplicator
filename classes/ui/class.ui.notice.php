@@ -60,10 +60,10 @@ class DUP_UI_Notice
 				$msg2  = __('This message will be removed after all installer files are removed.  Installer files must be removed to maintain a secure site.<br/>'
 									. 'Click the link above or button below to remove all installer files and complete the migration.', 'duplicator');
 
-				echo "<b class='pass-msg'><i class='fa fa-check-circle'></i> {$title}</b> <br/> {$safe_html} <b>{$msg1}</b> <br/>";
-				printf("1. <a href='javascript:void(0)' onclick='jQuery(\"#dup-remove-installer-files-btn\").click()'>%s</a><br/>", __('Remove Installation Files Now!', 'duplicator'));
-                printf("2. <a href='https://wordpress.org/support/plugin/duplicator/reviews/?filter=5' target='wporg'>%s</a> <br/> ", __('Optionally, Review Duplicator at WordPress.org...', 'duplicator'));
-				echo "<div class='pass-msg'>{$msg2}</div>";
+				echo "<b class='pass-msg'><i class='fa fa-check-circle'></i> ".esc_html($title)."</b> <br/> {$safe_html} <b>".esc_html($msg1)."</b> <br/>";
+				printf("1. <a href='javascript:void(0)' onclick='jQuery(\"#dup-remove-installer-files-btn\").click()'>%s</a><br/>", esc_html__('Remove Installation Files Now!', 'duplicator'));
+                printf("2. <a href='https://wordpress.org/support/plugin/duplicator/reviews/?filter=5' target='wporg'>%s</a> <br/> ", esc_html__('Optionally, Review Duplicator at WordPress.org...', 'duplicator'));
+				echo "<div class='pass-msg'>".esc_html($msg2)."</div>";
 
 			//All other Pages
             } else {
@@ -74,8 +74,8 @@ class DUP_UI_Notice
 
 				$nonce = wp_create_nonce('duplicator_cleanup_page');
 				$url   = self_admin_url('admin.php?page=duplicator-tools&tab=diagnostics&section=info&_wpnonce='.$nonce);
-				echo "<b>{$title}</b><br/> {$safe_html} {$msg}";
-				@printf("<br/><a href='{$url}'>%s</a>", __('Take me there now!', 'duplicator'));
+				echo "<b>".esc_html($title)."</b><br/> {$safe_html} ".esc_html($msg);
+				@printf("<br/><a href='".esc_url($url)."'>%s</a>", esc_html__('Take me there now!', 'duplicator'));
 
             }
             echo "</p></div>";
@@ -90,9 +90,9 @@ class DUP_UI_Notice
     public static function redirect($location)
     {
         echo '<div class="dup-redirect"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i>';
-			__('Redirecting Please Wait...', 'duplicator');
+		esc_html__('Redirecting Please Wait...', 'duplicator');
 		echo '</div>';
 		echo "<script>window.location = '{$location}';</script>";
-		die(__('Invalid token permissions to perform this request.', 'duplicator'));
+		die(esc_html__('Invalid token permissions to perform this request.', 'duplicator'));
     }
 }

@@ -44,7 +44,7 @@ class DUP_DupArchive
             if ($buildProgress->retries > DUPLICATOR_MAX_BUILD_RETRIES) {
 				DUP_LOG::trace("c3");
                 $error_msg              = __('Package build appears stuck so marking package as failed. Is the Max Worker Time set too high?.', 'duplicator');
-                DUP_Log::error(__('Build Failure', 'duplicator'), $error_msg, Dup_ErrorBehavior::LogOnly);
+                DUP_Log::error(esc_html__('Build Failure', 'duplicator'), esc_html($error_msg), Dup_ErrorBehavior::LogOnly);
                 //$buildProgress->failed = true;
                 $buildProgress->set_failed($error_msg);
                 return true;
@@ -85,7 +85,7 @@ class DUP_DupArchive
                     $fixText = __("Click on \"Resolve This\" button to fix the JSON settings.", 'duplicator');
 
                     DUP_Log::Trace($errorText);
-                    DUP_Log::error("$errorText **RECOMMENDATION:  $fixText.", '', Dup_ErrorBehavior::LogOnly);
+                    DUP_Log::error(esc_html($errorText)." **RECOMMENDATION:  ".esc_html($fixText).".", '', Dup_ErrorBehavior::LogOnly);
 
                     //$buildProgress->failed = true;
                     $buildProgress->set_failed($errorText);

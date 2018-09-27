@@ -19,119 +19,119 @@ SERVER SETTINGS -->
 <div class="dup-box">
 <div class="dup-box-title">
 	<i class="fa fa-tachometer"></i>
-	<?php _e("Server Settings", 'duplicator') ?>
+	<?php esc_html_e("Server Settings", 'duplicator') ?>
 	<div class="dup-box-arrow"></div>
 </div>
-<div class="dup-box-panel" id="dup-settings-diag-srv-panel" style="<?php echo $ui_css_srv_panel?>">
+<div class="dup-box-panel" id="dup-settings-diag-srv-panel" style="<?php echo esc_html($ui_css_srv_panel); ?>">
 	<table class="widefat" cellspacing="0">		   
 		<tr>
-			<td class='dup-settings-diag-header' colspan="2"><?php _e("General", 'duplicator'); ?></td>
+			<td class='dup-settings-diag-header' colspan="2"><?php esc_html_e("General", 'duplicator'); ?></td>
 		</tr>
 		<tr>
-			<td><?php _e("Duplicator Version", 'duplicator'); ?></td>
-			<td><?php echo DUPLICATOR_VERSION ?></td>
+			<td><?php esc_html_e("Duplicator Version", 'duplicator'); ?></td>
+			<td><?php echo esc_html(DUPLICATOR_VERSION); ?></td>
 		</tr>
 		<tr>
-			<td><?php _e("Operating System", 'duplicator'); ?></td>
-			<td><?php echo PHP_OS ?></td>
+			<td><?php esc_html_e("Operating System", 'duplicator'); ?></td>
+			<td><?php echo esc_html(PHP_OS) ?></td>
 		</tr>
 		<tr>
-			<td><?php _e("Timezone", 'duplicator'); ?></td>
-			<td><?php echo  date_default_timezone_get() ; ?> &nbsp; <small><i>This is a <a href='options-general.php'>WordPress setting</a></i></small></td>
+			<td><?php esc_html_e("Timezone", 'duplicator'); ?></td>
+			<td><?php echo esc_html(date_default_timezone_get()); ?> &nbsp; <small><i>This is a <a href='options-general.php'>WordPress setting</a></i></small></td>
 		</tr>	
 		<tr>
-			<td><?php _e("Server Time", 'duplicator'); ?></td>
+			<td><?php esc_html_e("Server Time", 'duplicator'); ?></td>
 			<td><?php echo date("Y-m-d H:i:s"); ?></td>
 		</tr>				   
 		<tr>
-			<td><?php _e("Web Server", 'duplicator'); ?></td>
-			<td><?php echo $_SERVER['SERVER_SOFTWARE'] ?></td>
+			<td><?php esc_html_e("Web Server", 'duplicator'); ?></td>
+			<td><?php echo esc_html($_SERVER['SERVER_SOFTWARE']); ?></td>
 		</tr>
 		<tr>
-			<td><?php _e("APC Enabled", 'duplicator'); ?></td>
+			<td><?php esc_html_e("APC Enabled", 'duplicator'); ?></td>
 			<td><?php echo DUP_Util::runAPC() ? 'Yes' : 'No'  ?></td>
 		</tr>					   
 		<tr>
-			<td><?php _e("Root Path", 'duplicator'); ?></td>
-			<td><?php echo DUPLICATOR_WPROOTPATH ?></td>
+			<td><?php esc_html_e("Root Path", 'duplicator'); ?></td>
+			<td><?php echo esc_html(DUPLICATOR_WPROOTPATH) ?></td>
 		</tr>	
 		<tr>
-			<td><?php _e("ABSPATH", 'duplicator'); ?></td>
-			<td><?php echo ABSPATH ?></td>
+			<td><?php esc_html_e("ABSPATH", 'duplicator'); ?></td>
+			<td><?php echo esc_html(ABSPATH); ?></td>
 		</tr>			
 		<tr>
-			<td><?php _e("Plugins Path", 'duplicator'); ?></td>
-			<td><?php echo DUP_Util::safePath(WP_PLUGIN_DIR) ?></td>
+			<td><?php esc_html_e("Plugins Path", 'duplicator'); ?></td>
+			<td><?php echo esc_html(DUP_Util::safePath(WP_PLUGIN_DIR)); ?></td>
 		</tr>
 		<tr>
-			<td><?php _e("Loaded PHP INI", 'duplicator'); ?></td>
-			<td><?php echo php_ini_loaded_file() ;?></td>
+			<td><?php esc_html_e("Loaded PHP INI", 'duplicator'); ?></td>
+			<td><?php echo esc_html(php_ini_loaded_file()); ?></td>
 		</tr>	
 		<tr>
-			<td><?php _e("Server IP", 'duplicator'); ?></td>
-			<td><?php echo $_SERVER['SERVER_ADDR'];?></td>
+			<td><?php esc_html_e("Server IP", 'duplicator'); ?></td>
+			<td><?php echo esc_html($_SERVER['SERVER_ADDR']); ?></td>
 		</tr>	
 		<tr>
-			<td><?php _e("Client IP", 'duplicator'); ?></td>
-			<td><?php echo $client_ip_address;?></td>
+			<td><?php esc_html_e("Client IP", 'duplicator'); ?></td>
+			<td><?php echo esc_html($client_ip_address);?></td>
 		</tr>
 		<tr>
 			<td class='dup-settings-diag-header' colspan="2">WordPress</td>
 		</tr>
 		<tr>
-			<td><?php _e("Version", 'duplicator'); ?></td>
-			<td><?php echo $wp_version ?></td>
+			<td><?php esc_html_e("Version", 'duplicator'); ?></td>
+			<td><?php echo esc_html($wp_version); ?></td>
 		</tr>
 		<tr>
-			<td><?php _e("Language", 'duplicator'); ?></td>
-			<td><?php echo get_bloginfo('language') ?></td>
+			<td><?php esc_html_e("Language", 'duplicator'); ?></td>
+			<td><?php bloginfo('language'); ?></td>
 		</tr>	
 		<tr>
-			<td><?php _e("Charset", 'duplicator'); ?></td>
-			<td><?php echo get_bloginfo('charset') ?></td>
+			<td><?php esc_html_e("Charset", 'duplicator'); ?></td>
+			<td><?php bloginfo('charset'); ?></td>
 		</tr>
 		<tr>
-			<td><?php _e("Memory Limit ", 'duplicator'); ?></td>
-			<td><?php echo WP_MEMORY_LIMIT ?> (<?php _e("Max", 'duplicator'); echo '&nbsp;' . WP_MAX_MEMORY_LIMIT; ?>)</td>
+			<td><?php esc_html_e("Memory Limit ", 'duplicator'); ?></td>
+			<td><?php echo esc_html(WP_MEMORY_LIMIT); ?> (<?php esc_html_e("Max", 'duplicator'); echo '&nbsp;' . esc_html(WP_MAX_MEMORY_LIMIT); ?>)</td>
 		</tr>
 		<tr>
 			<td class='dup-settings-diag-header' colspan="2">PHP</td>
 		</tr>
 		<tr>
-			<td><?php _e("Version", 'duplicator'); ?></td>
-			<td><?php echo phpversion() ?></td>
+			<td><?php esc_html_e("Version", 'duplicator'); ?></td>
+			<td><?php echo esc_html(phpversion()); ?></td>
 		</tr>	
 		<tr>
 			<td>SAPI</td>
-			<td><?php echo PHP_SAPI ?></td>
+			<td><?php echo esc_html(PHP_SAPI); ?></td>
 		</tr>
 		<tr>
-			<td><?php _e("User", 'duplicator'); ?></td>
+			<td><?php esc_html_e("User", 'duplicator'); ?></td>
 			<td><?php echo DUP_Util::getCurrentUser(); ?></td>
 		</tr>
 		<tr>
-			<td><?php _e("Process", 'duplicator'); ?></td>
-			<td><?php echo DUP_Util::getProcessOwner(); ?></td>
+			<td><?php esc_html_e("Process", 'duplicator'); ?></td>
+			<td><?php echo esc_html(DUP_Util::getProcessOwner()); ?></td>
 		</tr>
 		<tr>
-			<td><a href="http://php.net/manual/en/features.safe-mode.php" target="_blank"><?php _e("Safe Mode", 'duplicator'); ?></a></td>
+			<td><a href="http://php.net/manual/en/features.safe-mode.php" target="_blank"><?php esc_html_e("Safe Mode", 'duplicator'); ?></a></td>
 			<td>
 			<?php echo (((strtolower(@ini_get('safe_mode')) == 'on')	  ||  (strtolower(@ini_get('safe_mode')) == 'yes') || 
 						 (strtolower(@ini_get('safe_mode')) == 'true') ||  (ini_get("safe_mode") == 1 )))  
-						 ? __('On', 'duplicator') : __('Off', 'duplicator'); 
+						 ? esc_html__('On', 'duplicator') : esc_html__('Off', 'duplicator'); 
 			?>
 			</td>
 		</tr>
 		<tr>
-			<td><a href="http://www.php.net/manual/en/ini.core.php#ini.memory-limit" target="_blank"><?php _e("Memory Limit", 'duplicator'); ?></a></td>
+			<td><a href="http://www.php.net/manual/en/ini.core.php#ini.memory-limit" target="_blank"><?php esc_html_e("Memory Limit", 'duplicator'); ?></a></td>
 			<td><?php echo @ini_get('memory_limit') ?></td>
 		</tr>
 		<tr>
-			<td><?php _e("Memory In Use", 'duplicator'); ?></td>
+			<td><?php esc_html_e("Memory In Use", 'duplicator'); ?></td>
 			<td><?php echo size_format(@memory_get_usage(TRUE), 2) ?></td>
 		</tr>
 		<tr>
-			<td><a href="http://www.php.net/manual/en/info.configuration.php#ini.max-execution-time" target="_blank"><?php _e("Max Execution Time", 'duplicator'); ?></a></td>
+			<td><a href="http://www.php.net/manual/en/info.configuration.php#ini.max-execution-time" target="_blank"><?php esc_html_e("Max Execution Time", 'duplicator'); ?></a></td>
 			<td>
 				<?php
 					echo @ini_get('max_execution_time');
@@ -140,63 +140,63 @@ SERVER SETTINGS -->
 					echo " (default) - {$try_update}";
 				?>
 				<i class="fa fa-question-circle data-size-help"
-					data-tooltip-title="<?php _e("Max Execution Time", 'duplicator'); ?>"
-					data-tooltip="<?php _e('If the value shows dynamic then this means its possible for PHP to run longer than the default.  '
+					data-tooltip-title="<?php esc_attr_e("Max Execution Time", 'duplicator'); ?>"
+					data-tooltip="<?php esc_attr_e('If the value shows dynamic then this means its possible for PHP to run longer than the default.  '
 						. 'If the value is fixed then PHP will not be allowed to run longer than the default.', 'duplicator'); ?>"></i>
 			</td>
 		</tr>
 		<tr>
-			<td><a href="http://us3.php.net/shell_exec" target="_blank"><?php _e("Shell Exec", 'duplicator'); ?></a></td>
-			<td><?php echo (DUP_Util::hasShellExec()) ? _e("Is Supported", 'duplicator') : _e("Not Supported", 'duplicator'); ?></td>
+			<td><a href="http://us3.php.net/shell_exec" target="_blank"><?php esc_html_e("Shell Exec", 'duplicator'); ?></a></td>
+			<td><?php echo (DUP_Util::hasShellExec()) ? esc_html__("Is Supported", 'duplicator') : esc_html__("Not Supported", 'duplicator'); ?></td>
 		</tr>            
 		<tr>
-			<td><?php _e("Shell Exec Zip", 'duplicator'); ?></td>
-			<td><?php echo (DUP_Util::getZipPath() != null) ? _e("Is Supported", 'duplicator') : _e("Not Supported", 'duplicator'); ?></td>
+			<td><?php esc_html_e("Shell Exec Zip", 'duplicator'); ?></td>
+			<td><?php echo (DUP_Util::getZipPath() != null) ? esc_html__("Is Supported", 'duplicator') : esc_html__("Not Supported", 'duplicator'); ?></td>
 		</tr>
         <tr>
-            <td><a href="https://suhosin.org/stories/index.html" target="_blank"><?php _e("Suhosin Extension", 'duplicator'); ?></a></td>
-            <td><?php echo extension_loaded('suhosin') ? _e("Enabled", 'duplicator') : _e("Disabled", 'duplicator'); ?></td>
+            <td><a href="https://suhosin.org/stories/index.html" target="_blank"><?php esc_html_e("Suhosin Extension", 'duplicator'); ?></a></td>
+            <td><?php echo extension_loaded('suhosin') ? esc_html__("Enabled", 'duplicator') : esc_html__("Disabled", 'duplicator'); ?></td>
         </tr>
 		<tr>
-            <td><?php _e("Error Log File ", 'duplicator'); ?></td>
-            <td><?php echo $error_log_path; ?></td>
+            <td><?php esc_html_e("Error Log File ", 'duplicator'); ?></td>
+            <td><?php echo esc_html($error_log_path); ?></td>
         </tr>
 		<tr>
 			<td class='dup-settings-diag-header' colspan="2">MySQL</td>
 		</tr>					   
 		<tr>
-			<td><?php _e("Version", 'duplicator'); ?></td>
-			<td><?php echo DUP_DB::getVersion() ?></td>
+			<td><?php esc_html_e("Version", 'duplicator'); ?></td>
+			<td><?php echo esc_html(DUP_DB::getVersion()); ?></td>
 		</tr>
         <tr>
-			<td><?php _e("Comments", 'duplicator'); ?></td>
-            <td><?php echo DUP_DB::getVariable('version_comment') ?></td>
+			<td><?php esc_html_e("Comments", 'duplicator'); ?></td>
+            <td><?php echo esc_html(DUP_DB::getVariable('version_comment')); ?></td>
 		</tr>
 		<tr>
-			<td><?php _e("Charset", 'duplicator'); ?></td>
+			<td><?php esc_html_e("Charset", 'duplicator'); ?></td>
 			<td><?php echo DB_CHARSET ?></td>
 		</tr>
 		<tr>
-			<td><a href="http://dev.mysql.com/doc/refman/5.0/en/server-system-variables.html#sysvar_wait_timeout" target="_blank"><?php _e("Wait Timeout", 'duplicator'); ?></a></td>
-			<td><?php echo $dbvar_maxtime ?></td>
+			<td><a href="http://dev.mysql.com/doc/refman/5.0/en/server-system-variables.html#sysvar_wait_timeout" target="_blank"><?php esc_html_e("Wait Timeout", 'duplicator'); ?></a></td>
+			<td><?php echo esc_html($dbvar_maxtime); ?></td>
 		</tr>
 		<tr>
-			<td style="white-space:nowrap"><a href="http://dev.mysql.com/doc/refman/5.0/en/server-system-variables.html#sysvar_max_allowed_packet" target="_blank"><?php _e("Max Allowed Packets", 'duplicator'); ?></a></td>
-			<td><?php echo $dbvar_maxpacks ?></td>
+			<td style="white-space:nowrap"><a href="http://dev.mysql.com/doc/refman/5.0/en/server-system-variables.html#sysvar_max_allowed_packet" target="_blank"><?php esc_html_e("Max Allowed Packets", 'duplicator'); ?></a></td>
+			<td><?php echo esc_html($dbvar_maxpacks); ?></td>
 		</tr>
 		<tr>
-			<td><a href="http://dev.mysql.com/doc/refman/5.0/en/mysqldump.html" target="_blank"><?php _e("msyqldump Path", 'duplicator'); ?></a></td>
-			<td><?php echo $mysqlDumpSupport ?></td>
+			<td><a href="http://dev.mysql.com/doc/refman/5.0/en/mysqldump.html" target="_blank"><?php esc_html_e("msyqldump Path", 'duplicator'); ?></a></td>
+			<td><?php echo esc_html($mysqlDumpSupport); ?></td>
 		</tr>
 		 <tr>
-			 <td class='dup-settings-diag-header' colspan="2"><?php _e("Server Disk", 'duplicator'); ?></td>
+			 <td class='dup-settings-diag-header' colspan="2"><?php esc_html_e("Server Disk", 'duplicator'); ?></td>
 		 </tr>
 		 <tr valign="top">
-			 <td><?php _e('Free space', 'hyper-cache'); ?></td>
-			 <td><?php echo $perc;?>% -- <?php echo DUP_Util::byteSize($space_free);?> from <?php echo DUP_Util::byteSize($space);?><br/>
+			 <td><?php esc_html_e('Free space', 'hyper-cache'); ?></td>
+			 <td><?php echo esc_html($perc);?>% -- <?php echo esc_html(DUP_Util::byteSize($space_free));?> from <?php echo esc_html(DUP_Util::byteSize($space));?><br/>
 				  <small>
-					  <?php _e("Note: This value is the physical servers hard-drive allocation.", 'duplicator'); ?> <br/>
-					  <?php _e("On shared hosts check your control panel for the 'TRUE' disk space quota value.", 'duplicator'); ?>
+					  <?php esc_html_e("Note: This value is the physical servers hard-drive allocation.", 'duplicator'); ?> <br/>
+					  <?php esc_html_e("On shared hosts check your control panel for the 'TRUE' disk space quota value.", 'duplicator'); ?>
 				  </small>
 			 </td>
 		 </tr>	

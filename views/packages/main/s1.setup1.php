@@ -3,10 +3,11 @@ global $wpdb;
 
 //POST BACK: Rest Button
 if (isset($_POST['action'])) {
-    $action_result = DUP_Settings::DeleteWPOption($_POST['action']);
-    switch ($_POST['action']) {
+    $action = sanitize_text_field($_POST['action']);
+    $action_result = DUP_Settings::DeleteWPOption($action);
+    switch ($action) {
         case 'duplicator_package_active' :
-            $action_result = DUP_Settings::DeleteWPOption($_POST['action']);
+            $action_result = DUP_Settings::DeleteWPOption($action);
             $action_response = __('Package settings have been reset.', 'duplicator');
             break;
     }
@@ -57,25 +58,25 @@ TOOL BAR: STEPS -->
         <td style="white-space: nowrap">
             <div id="dup-wiz">
                 <div id="dup-wiz-steps">
-                    <div class="active-step"><a>1-<?php _e('Setup', 'duplicator'); ?></a></div>
-                    <div><a>2-<?php _e('Scan', 'duplicator'); ?> </a></div>
-                    <div><a>3-<?php _e('Build', 'duplicator'); ?> </a></div>
+                    <div class="active-step"><a>1-<?php esc_html_e('Setup', 'duplicator'); ?></a></div>
+                    <div><a>2-<?php esc_html_e('Scan', 'duplicator'); ?> </a></div>
+                    <div><a>3-<?php esc_html_e('Build', 'duplicator'); ?> </a></div>
                 </div>
                 <div id="dup-wiz-title">
-                    <?php _e('Step 1: Package Setup', 'duplicator'); ?>
+                    <?php esc_html_e('Step 1: Package Setup', 'duplicator'); ?>
                 </div> 
             </div>	
         </td>
         <td>
-            <a href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php _e("Packages", 'duplicator'); ?></a>
-            <span> <?php _e("Create New", 'duplicator'); ?></span>
+            <a href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php esc_html_e("Packages", 'duplicator'); ?></a>
+            <span> <?php esc_html_e("Create New", 'duplicator'); ?></span>
         </td>
     </tr>
 </table>	
 <hr class="dup-toolbar-line">
 
 <?php if (!empty($action_response)) : ?>
-    <div id="message" class="notice notice-success is-dismissible"><p><?php echo $action_response; ?></p></div>
+    <div id="message" class="notice notice-success is-dismissible"><p><?php echo esc_html($action_response); ?></p></div>
 <?php endif; ?>	
 
 
@@ -85,7 +86,7 @@ SYSTEM REQUIREMENTS -->
     <div class="dup-box">
         <div class="dup-box-title">
             <?php
-            _e("Requirements:", 'duplicator');
+            esc_html_e("Requirements:", 'duplicator');
             echo ($dup_tests['Success']) ? ' <div class="dup-sys-pass">Pass</div>' : ' <div class="dup-sys-fail">Fail</div>';
             ?>
             <div class="dup-box-arrow"></div>
@@ -94,58 +95,58 @@ SYSTEM REQUIREMENTS -->
         <div class="dup-box-panel">
 
             <div class="dup-sys-section">
-                <i><?php _e("System requirements must pass for the Duplicator to work properly.  Click each link for details.", 'duplicator'); ?></i>
+                <i><?php esc_html_e("System requirements must pass for the Duplicator to work properly.  Click each link for details.", 'duplicator'); ?></i>
             </div>
 
             <!-- PHP SUPPORT -->
             <div class='dup-sys-req'>
                 <div class='dup-sys-title'>
-                    <a><?php _e('PHP Support', 'duplicator'); ?></a>
-                    <div><?php echo $dup_tests['PHP']['ALL']; ?></div>
+                    <a><?php esc_html_e('PHP Support', 'duplicator'); ?></a>
+                    <div><?php echo esc_html($dup_tests['PHP']['ALL']); ?></div>
                 </div>
                 <div class="dup-sys-info dup-info-box">
                     <table class="dup-sys-info-results">
                         <tr>
-                            <td><?php printf("%s [%s]", __("PHP Version", 'duplicator'), phpversion()); ?></td>
-                            <td><?php echo $dup_tests['PHP']['VERSION'] ?></td>
-                            <td><?php _e('PHP versions 5.2.9+ or higher is required.')?></td>
+                            <td><?php printf("%s [%s]", esc_html__("PHP Version", 'duplicator'), phpversion()); ?></td>
+                            <td><?php echo esc_html($dup_tests['PHP']['VERSION']); ?></td>
+                            <td><?php esc_html_e('PHP versions 5.2.9+ or higher is required.')?></td>
                         </tr>
                         <?php if ($archive_build_mode == 'zip') : ?>
                             <tr>
-                                <td><?php _e('Zip Archive Enabled', 'duplicator'); ?></td>
-                                <td><?php echo $dup_tests['PHP']['ZIP'] ?></td>
+                                <td><?php esc_html_e('Zip Archive Enabled', 'duplicator'); ?></td>
+                                <td><?php echo esc_html($dup_tests['PHP']['ZIP']); ?></td>
                                 <td>
                                     <?php printf("%s <a href='admin.php?page=duplicator-settings&tab=package'>%s</a> %s", 
-                                        __("ZipArchive extension is required or", 'duplicator'),
-                                        __("Switch to DupArchive", 'duplicator'),
-                                        __("to by-pass this requirement.", 'duplicator'));
+                                        esc_html__("ZipArchive extension is required or", 'duplicator'),
+                                        esc_html__("Switch to DupArchive", 'duplicator'),
+                                        esc_html__("to by-pass this requirement.", 'duplicator'));
                                    ?>
                                 </td>
                             </tr>
                         <?php endif; ?>
                         <tr>
-                            <td><?php _e('Safe Mode Off', 'duplicator'); ?></td>
-                            <td><?php echo $dup_tests['PHP']['SAFE_MODE'] ?></td>
-                            <td><?php _e('Safe Mode should be set to Off in you php.ini file and is deprecated as of PHP 5.3.0.')?></td>
+                            <td><?php esc_html_e('Safe Mode Off', 'duplicator'); ?></td>
+                            <td><?php echo esc_html($dup_tests['PHP']['SAFE_MODE']); ?></td>
+                            <td><?php esc_html_e('Safe Mode should be set to Off in you php.ini file and is deprecated as of PHP 5.3.0.')?></td>
                         </tr>					
                         <tr>
-                            <td><?php _e('Function', 'duplicator'); ?> <a href="http://php.net/manual/en/function.file-get-contents.php" target="_blank">file_get_contents</a></td>
-                            <td><?php echo $dup_tests['PHP']['FUNC_1'] ?></td>
-                            <td><?php _e('')?></td>
+                            <td><?php esc_html_e('Function', 'duplicator'); ?> <a href="http://php.net/manual/en/function.file-get-contents.php" target="_blank">file_get_contents</a></td>
+                            <td><?php echo esc_html($dup_tests['PHP']['FUNC_1']); ?></td>
+                            <td><?php echo ''; ?></td>
                         </tr>					
                         <tr>
-                            <td><?php _e('Function', 'duplicator'); ?> <a href="http://php.net/manual/en/function.file-put-contents.php" target="_blank">file_put_contents</a></td>
-                            <td><?php echo $dup_tests['PHP']['FUNC_2'] ?></td>
-                            <td><?php _e('')?></td>
+                            <td><?php esc_html_e('Function', 'duplicator'); ?> <a href="http://php.net/manual/en/function.file-put-contents.php" target="_blank">file_put_contents</a></td>
+                            <td><?php echo esc_html($dup_tests['PHP']['FUNC_2']); ?></td>
+                            <td><?php echo ''; ?></td>
                         </tr>
                         <tr>
-                            <td><?php _e('Function', 'duplicator'); ?> <a href="http://php.net/manual/en/mbstring.installation.php" target="_blank">mb_strlen</a></td>
-                            <td><?php echo $dup_tests['PHP']['FUNC_3'] ?></td>
-                            <td><?php _e('')?></td>
+                            <td><?php esc_html_e('Function', 'duplicator'); ?> <a href="http://php.net/manual/en/mbstring.installation.php" target="_blank">mb_strlen</a></td>
+                            <td><?php echo esc_html($dup_tests['PHP']['FUNC_3']); ?></td>
+                            <td><?php echo ''; ?></td>
                         </tr>					
                     </table>
                     <small>
-                        <?php _e("For any issues in this section please contact your hosting provider or server administrator.  For additional information see our online documentation.", 'duplicator'); ?>
+                        <?php esc_html_e("For any issues in this section please contact your hosting provider or server administrator.  For additional information see our online documentation.", 'duplicator'); ?>
                     </small>
                 </div>
             </div>		
@@ -153,7 +154,7 @@ SYSTEM REQUIREMENTS -->
             <!-- PERMISSIONS -->
             <div class='dup-sys-req'>
                 <div class='dup-sys-title'>
-                    <a><?php _e('Required Paths', 'duplicator'); ?></a>
+                    <a><?php esc_html_e('Required Paths', 'duplicator'); ?></a>
                     <div>
                         <?php
                         if ($dup_tests['IO']['ALL']) {
@@ -176,7 +177,7 @@ SYSTEM REQUIREMENTS -->
                             echo sprintf(__('If the root WordPress path is not writable by PHP on some systems this can cause issues.', 'duplicator'), DUPLICATOR_WPROOTPATH);
                             echo '<br/>';
                         }
-                        _e("If Duplicator does not have enough permissions then you will need to manually create the paths above. &nbsp; ", 'duplicator');
+                        esc_html_e("If Duplicator does not have enough permissions then you will need to manually create the paths above. &nbsp; ", 'duplicator');
                         ?>
                     </div>
                 </div>
@@ -185,24 +186,24 @@ SYSTEM REQUIREMENTS -->
             <!-- SERVER SUPPORT -->
             <div class='dup-sys-req'>
                 <div class='dup-sys-title'>
-                    <a><?php _e('Server Support', 'duplicator'); ?></a>
-                    <div><?php echo $dup_tests['SRV']['ALL']; ?></div>
+                    <a><?php esc_html_e('Server Support', 'duplicator'); ?></a>
+                    <div><?php echo esc_html($dup_tests['SRV']['ALL']); ?></div>
                 </div>
                 <div class="dup-sys-info dup-info-box">
                     <table class="dup-sys-info-results">
                         <tr>
-                            <td><?php printf("%s [%s]", __("MySQL Version", 'duplicator'), DUP_DB::getVersion()); ?></td>
-                            <td><?php echo $dup_tests['SRV']['MYSQL_VER'] ?></td>
+                            <td><?php printf("%s [%s]", esc_html__("MySQL Version", 'duplicator'), esc_html(DUP_DB::getVersion())); ?></td>
+                            <td><?php echo esc_html($dup_tests['SRV']['MYSQL_VER']); ?></td>
                         </tr>
                         <tr>
-                            <td><?php printf("%s", __("MySQLi Support", 'duplicator')); ?></td>
-                            <td><?php echo $dup_tests['SRV']['MYSQLi'] ?></td>
+                            <td><?php printf("%s", esc_html__("MySQLi Support", 'duplicator')); ?></td>
+                            <td><?php echo esc_html($dup_tests['SRV']['MYSQLi']); ?></td>
                         </tr>
                     </table>
                     <small>
                         <?php
-                        _e("MySQL version 5.0+ or better is required and the PHP MySQLi extension (note the trailing 'i') is also required.  Contact your server administrator and request that mysqli extension and MySQL Server 5.0+ be installed.", 'duplicator');
-                        echo "&nbsp;<i><a href='http://php.net/manual/en/mysqli.installation.php' target='_blank'>[" . __('more info', 'duplicator') . "]</a></i>";
+                        esc_html_e("MySQL version 5.0+ or better is required and the PHP MySQLi extension (note the trailing 'i') is also required.  Contact your server administrator and request that mysqli extension and MySQL Server 5.0+ be installed.", 'duplicator');
+                        echo "&nbsp;<i><a href='http://php.net/manual/en/mysqli.installation.php' target='_blank'>[" . esc_html__('more info', 'duplicator') . "]</a></i>";
                         ?>										
                     </small>
                 </div>
@@ -211,22 +212,22 @@ SYSTEM REQUIREMENTS -->
             <!-- RESERVED FILES -->
             <div class='dup-sys-req'>
                 <div class='dup-sys-title'>
-                    <a><?php _e('Reserved Files', 'duplicator'); ?></a> <div><?php echo $dup_tests['RES']['INSTALL']; ?></div>
+                    <a><?php esc_html_e('Reserved Files', 'duplicator'); ?></a> <div><?php echo esc_html($dup_tests['RES']['INSTALL']); ?></div>
                 </div>
                 <div class="dup-sys-info dup-info-box">
                     <?php if ($dup_tests['RES']['INSTALL'] == 'Pass') : ?>
                         <?php
-                        _e("None of the reserved files where found from a previous install.  This means you are clear to create a new package.", 'duplicator');
+                        esc_html_e("None of the reserved files where found from a previous install.  This means you are clear to create a new package.", 'duplicator');
                         echo "  [{$dup_intaller_files}]";
                         ?>
                     <?php
                     else:
                         $duplicator_nonce = wp_create_nonce('duplicator_cleanup_page');
                         ?> 
-                        <form method="post" action="admin.php?page=duplicator-tools&tab=diagnostics&section=info&action=installer&_wpnonce=<?php echo $duplicator_nonce; ?>">
-                            <b><?php _e('WordPress Root Path:', 'duplicator'); ?></b>  <?php echo DUPLICATOR_WPROOTPATH; ?><br/>
-                            <?php _e("A reserved file(s) was found in the WordPress root directory. Reserved file names include [{$dup_intaller_files}].  To archive your data correctly please remove any of these files from your WordPress root directory.  Then try creating your package again.", 'duplicator'); ?>
-                            <br/><input type='submit' class='button button-small' value='<?php _e('Remove Files Now', 'duplicator') ?>' style='font-size:10px; margin-top:5px;' />
+                        <form method="post" action="admin.php?page=duplicator-tools&tab=diagnostics&section=info&action=installer&_wpnonce=<?php echo esc_js($duplicator_nonce); ?>">
+                            <b><?php esc_html_e('WordPress Root Path:', 'duplicator'); ?></b>  <?php echo esc_html(DUPLICATOR_WPROOTPATH); ?><br/>
+                            <?php esc_html_e("A reserved file(s) was found in the WordPress root directory. Reserved file names include [{$dup_intaller_files}].  To archive your data correctly please remove any of these files from your WordPress root directory.  Then try creating your package again.", 'duplicator'); ?>
+                            <br/><input type='submit' class='button button-small' value='<?php esc_attr_e('Remove Files Now', 'duplicator') ?>' style='font-size:10px; margin-top:5px;' />
                         </form>
                     <?php endif; ?>
                 </div>
@@ -235,7 +236,7 @@ SYSTEM REQUIREMENTS -->
             <!-- ONLINE SUPPORT -->
             <div class="dup-sys-contact">
                 <?php
-                printf("%s <a href='admin.php?page=duplicator-help'>[%s]</a>", __("For additional help please see the ", 'duplicator'), __("help page", 'duplicator'));
+                printf("%s <a href='admin.php?page=duplicator-help'>[%s]</a>", esc_html__("For additional help please see the ", 'duplicator'), esc_html__("help page", 'duplicator'));
                 ?>
             </div>
 

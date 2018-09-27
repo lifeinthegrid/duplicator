@@ -50,7 +50,7 @@ if ($section == "info" || $section == '') {
 
 	 if ($_GET['action'] != 'display')  :	?>
 		<div id="message" class="notice notice-success is-dismissible  dup-wpnotice-box">
-			<p><b><?php echo $action_response; ?></b></p>
+			<p><b><?php echo esc_html($action_response); ?></b></p>
 			<?php if ( $_GET['action'] == 'installer') :  ?>
 				<?php
 					$html = "";
@@ -65,20 +65,20 @@ if ($section == "info" || $section == '') {
 								$file_path = $glob_files[0];
 							}
 						} elseif (file_exists($path)) {
-							$file_path = $path;                            
+							$file_path = $path;
 						}
                         if (!empty($file_path)) {
+							$installer_file_found = true;
 							if (is_dir($file_path)) {
 								DUP_IO::deleteTree($file_path);
 							} else {
 								DUP_IO::deleteFile($file_path);
 							}
-							                            
+
                             if (file_exists($file_path)) {
-								$installer_file_found = true;
-								echo "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - {$file_path}</div>";
+								echo "<div class='failed'><i class='fa fa-exclamation-triangle'></i> ".esc_html($txt_found)." - ".esc_html($file_path)."</div>";
 							} else {
-								echo "<div class='success'> <i class='fa fa-check'></i> {$txt_removed} - {$file_path}</div>";
+								echo "<div class='success'> <i class='fa fa-check'></i> ".esc_html($txt_removed)." - ".esc_html($file_path)."</div>";
 							}
                         }
 					}
@@ -92,22 +92,22 @@ if ($section == "info" || $section == '') {
 						$valid_ext = ($path_parts == "zip" || $path_parts == "daf");
 						if ($valid_ext && !is_dir($package_path)) {
 							$html .= (@unlink($package_path))
-										? "<div class='success'><i class='fa fa-check'></i> {$txt_removed} - {$package_path}</div>"
-										: "<div class='failed'><i class='fa fa-exclamation-triangle'></i> {$txt_found} - {$package_path}</div>";
+										? "<div class='success'><i class='fa fa-check'></i> ".esc_html($txt_removed)." - ".esc_html($package_path)."</div>"
+										: "<div class='failed'><i class='fa fa-exclamation-triangle'></i> ".esc_html($txt_found)." - ".esc_html($package_path)."</div>";
 						} 
 					}
 					echo $html;
 
 					if (!$installer_file_found) {
 						echo '<div class="dup-alert-no-files-msg success">'
-								. '<i class="fa fa-check"></i> <b>' . __('No Duplicator installer files found on this WordPress Site.', 'duplicator') . '</b>'
+								. '<i class="fa fa-check"></i> <b>' . esc_html__('No Duplicator installer files found on this WordPress Site.', 'duplicator') . '</b>'
 							. '</div>';
 					}
 				 ?>
 
 				<div class="dup-alert-secure-note">
 					<?php
-						echo '<b>' . __('Security Notes', 'duplicator') . ':</b>&nbsp;';
+						echo '<b>' . esc_html__('Security Notes', 'duplicator') . ':</b>&nbsp;';
 						_e('If the installer files do not successfully get removed with this action, then they WILL need to be removed manually through your hosts control panel  '
 						 . 'or FTP.  Please remove all installer files to avoid any security issues on this site.  For more details please visit '
 						 . 'the FAQ link <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-295-q" target="_blank">Which files need to be removed after an install?</a>', 'duplicator');
@@ -152,8 +152,8 @@ if ($section == "info" || $section == '') {
 		}
 
 		if (! DUP_Server::hasInstallerFiles()) {
-			echo  "<div class='notice notice-success cleanup-notice'><p><b class='title'><i class='fa fa-check-circle'></i> {$safe_title}</b> "
-				. "<div class='notice-safemode'>{$safe_msg}</p></div></div>";
+			echo  "<div class='notice notice-success cleanup-notice'><p><b class='title'><i class='fa fa-check-circle'></i> ".esc_html($safe_title)."</b> "
+				. "<div class='notice-safemode'>".esc_html($safe_msg)."</p></div></div>";
 		}
 
 		delete_option("duplicator_exe_safe_mode");
@@ -168,8 +168,9 @@ if ($section == "info" || $section == '') {
 	
 	<?php
 		if (isset($_POST['remove-options'])) {
-			$action_result = DUP_Settings::DeleteWPOption($_POST['remove-options']);
-			switch ($_POST['remove-options'])
+			$remove_options = sanitize_text_field($_POST['remove-options']);
+			$action_result = DUP_Settings::DeleteWPOption($remove_options);
+			switch ($remove_options)
 			{
 				case 'duplicator_settings'		 : 	$remove_response = __('Plugin settings reset.', 'duplicator');		break;
 				case 'duplicator_ui_view_state'  : 	$remove_response = __('View state settings reset.', 'duplicator');	 break;
@@ -178,7 +179,7 @@ if ($section == "info" || $section == '') {
 		}
 		
 		if (! empty($remove_response))  {
-			echo "<div id='message' class='notice notice-success is-dismissible dup-wpnotice-box'><p>{$remove_response}</p></div>";
+			echo "<div id='message' class='notice notice-success is-dismissible dup-wpnotice-box'><p>".esc_html($remove_response)."</p></div>";
 		}
 
 		include_once 'inc.data.php';

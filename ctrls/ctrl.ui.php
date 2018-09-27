@@ -45,8 +45,8 @@ class DUP_CTRL_UI extends DUP_CTRL_Base
 		{
 			//CONTROLLER LOGIC
 			$post  = stripslashes_deep($_POST);
-			$key   = esc_html($post['key']);
-			$value = esc_html($post['value']);
+			$key   = sanitize_text_field($post['key']);
+			$value = sanitize_text_field($post['value']);
 			$success = DUP_UI_ViewState::save($key, $value);
 
 			$payload = array();

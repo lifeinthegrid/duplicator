@@ -95,7 +95,7 @@ class DUP_Log {
 
             $message = sprintf('%1$s', DUP_Util::byteSize($filesize));
         } else {
-            $message = __('No Log', 'duplicator');
+            $message = esc_html__('No Log', 'duplicator');
         }
 
         return $message;

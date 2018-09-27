@@ -40,11 +40,11 @@
         <table style="width:825px">
             <tr>
                 <td style="width:90px">
-                    <img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/logo-box.png" style='text-align:top; margin:0'  />
+                    <img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/logo-box.png"); ?>" style='text-align:top; margin:0'  />
                 </td>
                 <td valign="top" style="padding-top:10px; font-size:18px; line-height: 24px">
                     <?php
-                    _e("Duplicator can streamline your workflow and quickly clone/migrate a WordPress site. The plugin helps admins, designers and developers speed up the "
+                    esc_html_e("Duplicator can streamline your workflow and quickly clone/migrate a WordPress site. The plugin helps admins, designers and developers speed up the "
 						. "migration process of moving a WordPress site. Please help us continue development by giving this plugin a 5 star.", 'duplicator');
                     ?>
                 </td>
@@ -56,7 +56,7 @@
             <table class="dup-support-hlp-hdrs">
                 <tr >
                     <td style="height:30px; text-align: center;">
-                        <span style="display: inline-block; margin-top: 5px"><?php _e('Rate Duplicator', 'duplicator') ?></span>
+                        <span style="display: inline-block; margin-top: 5px"><?php esc_html_e('Rate Duplicator', 'duplicator') ?></span>
                     </td>
                 </tr>
             </table>
@@ -65,7 +65,7 @@
                     <td valign="top">
                         <a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" target="vote-wp"><img id="dup-img-5stars" src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/5star.png" /></a>
                         <div  style=" font-size: 16px; font-weight: bold">
-							<a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" target="vote-wp"><?php _e('Support us with a 5 star review!', 'duplicator') ?></a>
+							<a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" target="vote-wp"><?php esc_html_e('Support us with a 5 star review!', 'duplicator') ?></a>
 						</div>
                     </td>
                 </tr>
@@ -77,23 +77,23 @@
             <table class="dup-support-hlp-hdrs">
                 <tr>
                     <td style="height:30px; text-align: center;">
-                        <span style="display: inline-block; margin-top: 5px"><?php _e('Spread the Word', 'duplicator') ?></span>
+                        <span style="display: inline-block; margin-top: 5px"><?php esc_html_e('Spread the Word', 'duplicator') ?></span>
                     </td>
                 </tr>
             </table>
             <div class="dup-support-hlp-txt">
 				<div class="social-images">
 					<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//snapcreek.com/duplicator/duplicator-free/" target="_blank">
-						<div class="social-item"><i class="fa fa-facebook-square fa-lg"></i> <?php _e('Facebook', 'duplicator') ?></div>
+						<div class="social-item"><i class="fa fa-facebook-square fa-lg"></i> <?php esc_html_e('Facebook', 'duplicator') ?></div>
 					</a>
 					<a href="https://twitter.com/home?status=Checkout%20the%20WordPress%20Duplicator%20plugin!%20%0Ahttps%3A//snapcreek.com/duplicator/duplicator-free/"  target="_blank">
-						<div class="social-item"><i class="fa fa-twitter-square fa-lg"></i> <?php _e('Twitter', 'duplicator') ?></div>
+						<div class="social-item"><i class="fa fa-twitter-square fa-lg"></i> <?php esc_html_e('Twitter', 'duplicator') ?></div>
 					</a>
 					<a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A//snapcreek.com/duplicator/duplicator-free/&title=WordPress%20Duplicator%20Plugin&summary=&source=" target="_blank">
-						<div class="social-item"><i class="fa fa-linkedin-square fa-lg"></i> <?php _e('LinkedIn', 'duplicator') ?></div>
+						<div class="social-item"><i class="fa fa-linkedin-square fa-lg"></i> <?php esc_html_e('LinkedIn', 'duplicator') ?></div>
 					</a>
 					<a href="https://plus.google.com/share?url=https%3A//snapcreek.com/duplicator/duplicator-free/" target="_blank">
-						<div class="social-item"><i class="fa fa-google-plus-square fa-lg"></i> <?php _e('Google+', 'duplicator') ?></div>
+						<div class="social-item"><i class="fa fa-google-plus-square fa-lg"></i> <?php esc_html_e('Google+', 'duplicator') ?></div>
 					</a>
 				</div>
             </div>
@@ -105,7 +105,7 @@
             <table class="dup-support-hlp-hdrs">
                 <tr>
                     <td style="height:30px; text-align: center;">
-                        <span style="display: inline-block; margin-top: 5px"><?php _e('Stay in the Loop', 'duplicator') ?></span>
+                        <span style="display: inline-block; margin-top: 5px"><?php esc_html_e('Stay in the Loop', 'duplicator') ?></span>
                     </td>
                 </tr>
             </table>
@@ -115,7 +115,7 @@
 						<!-- Begin MailChimp Signup Form -->
 						<div class="email-form">
 							<div style="font-size:18px; width: 525px; padding: 5px 0 15px 0; text-align: center; font-style: italic; margin: auto">
-								<?php _e('Subscribe to the Duplicator newsletter and stay on top of great ideas, tutorials, and better ways to improve your workflows', 'duplicator') ?>...
+								<?php esc_html_e('Subscribe to the Duplicator newsletter and stay on top of great ideas, tutorials, and better ways to improve your workflows', 'duplicator') ?>...
 							</div>
 
 

@@ -143,12 +143,12 @@ jQuery(document).ready(function($)
 
 <?php if (! $logfound)  :	?>
 	<div style="padding:20px">
-		<h2><?php _e("Log file not found or unreadable", 'duplicator') ?>.</h2>
-		<?php _e("Try to create a package, since no log files were found in the snapshots directory with the extension *.log", 'duplicator') ?>.<br/><br/>
-		<?php _e("Reasons for log file not showing", 'duplicator') ?>: <br/>
-		- <?php _e("The web server does not support returning .log file extentions", 'duplicator') ?>. <br/>
-		- <?php _e("The snapshots directory does not have the correct permissions to write files.  Try setting the permissions to 755", 'duplicator') ?>. <br/>
-		- <?php _e("The process that PHP runs under does not have enough permissions to create files.  Please contact your hosting provider for more details", 'duplicator') ?>. <br/>
+		<h2><?php esc_html_e("Log file not found or unreadable", 'duplicator') ?>.</h2>
+		<?php esc_html_e("Try to create a package, since no log files were found in the snapshots directory with the extension *.log", 'duplicator') ?>.<br/><br/>
+		<?php esc_html_e("Reasons for log file not showing", 'duplicator') ?>: <br/>
+		- <?php esc_html_e("The web server does not support returning .log file extentions", 'duplicator') ?>. <br/>
+		- <?php esc_html_e("The snapshots directory does not have the correct permissions to write files.  Try setting the permissions to 755", 'duplicator') ?>. <br/>
+		- <?php esc_html_e("The process that PHP runs under does not have enough permissions to create files.  Please contact your hosting provider for more details", 'duplicator') ?>. <br/>
 	</div>
 <?php else: ?>	
 	<table id="dup-log-panels">
@@ -157,35 +157,35 @@ jQuery(document).ready(function($)
 				<div class="name">
 					<i class='fa fa-list-alt'></i> <b><?php echo basename($logurl); ?></b> &nbsp; | &nbsp;
 					<i style="cursor: pointer" 
-						data-tooltip-title="<?php _e("Host Recommendation:", 'duplicator'); ?>" 
-						data-tooltip="<?php _e('Duplicator recommends going with the high performance pro plan or better from our recommended list', 'duplicator'); ?>">
+						data-tooltip-title="<?php esc_attr_e("Host Recommendation:", 'duplicator'); ?>" 
+						data-tooltip="<?php esc_attr_e('Duplicator recommends going with the high performance pro plan or better from our recommended list', 'duplicator'); ?>">
 						 <i class="fa fa-lightbulb-o" aria-hidden="true"></i>
 							<?php
 								printf("%s <a target='_blank' href='//snapcreek.com/wordpress-hosting/'>%s</a> %s",
-									__("Consider our recommended", 'duplicator'), 
-									__("host list", 'duplicator'),
-									__("if you’re unhappy with your current provider", 'duplicator'));
+								esc_html__("Consider our recommended", 'duplicator'), 
+								esc_html__("host list", 'duplicator'),
+								esc_html__("if you’re unhappy with your current provider", 'duplicator'));
 							?>
 					</i>					
 				</div>
-				<div class="opts"><a href="javascript:void(0)" id="dup-options"><?php _e("Options", 'duplicator') ?> <i class="fa fa-angle-double-right"></i></a> &nbsp;</div>
+				<div class="opts"><a href="javascript:void(0)" id="dup-options"><?php esc_html_e("Options", 'duplicator') ?> <i class="fa fa-angle-double-right"></i></a> &nbsp;</div>
 				<br style="clear:both" />
-				<iframe id="dup-log-content" src="<?php echo $logurl ?>" ></iframe>							
+				<iframe id="dup-log-content" src="<?php echo esc_url($logurl); ?>" ></iframe>
 			</td>
 			<td id="dup-log-panel-right">
-				<h2><?php _e("Options", 'duplicator') ?> </h2>
+				<h2><?php esc_html_e("Options", 'duplicator') ?> </h2>
 				<div class="dup-opts-items">
-					<input type="button" class="button button-small" id="dup-refresh" value="<?php _e("Refresh", 'duplicator') ?>" /> &nbsp; 
+					<input type="button" class="button button-small" id="dup-refresh" value="<?php esc_html_e("Refresh", 'duplicator') ?>" /> &nbsp; 
 					<input type='checkbox' id="dup-auto-refresh" style="margin-top:1px" /> 
 					<label id="dup-auto-refresh-lbl" for="dup-auto-refresh">
-						<?php _e("Auto Refresh", 'duplicator') ?>
+						<?php esc_html_e("Auto Refresh", 'duplicator') ?>
 						[<div id="dup-refresh-count"></div>]
 					</label>
 				</div>
 
 				<div class="dup-log-hdr">
-					<?php _e("Package Logs", 'duplicator') ?>
-					<small><?php _e("Top 20", 'duplicator') ?></small>
+					<?php esc_html_e("Package Logs", 'duplicator') ?>
+					<small><?php esc_html_e("Top 20", 'duplicator') ?></small>
 				</div>
 
 				<div class="dup-log-file-list">
@@ -194,11 +194,11 @@ jQuery(document).ready(function($)
 						$active = basename($logurl);
 						foreach ($logs as $log) { 
 							$time = date('m/d/y h:i:s', filemtime($log));
-							$name = esc_html(basename($log));
-							$url  = '?page=duplicator-tools&tab=diagnostics&section=log&logname=' . $name;
+							$name = basename($log);
+							$url  = '?page=duplicator-tools&tab=diagnostics&section=log&logname=' . esc_html($name);
 							echo ($active == $name) 
-								? "<span class='dup-log' title='{$name}'>{$time}-{$name}</span>"
-								: "<a href='javascript:void(0)'  title='{$name}' onclick='Duplicator.Tools.GetLog(\"{$url}\")'>{$time}-{$name}</a>";
+								? "<span class='dup-log' title='".esc_attr($name)."'>".esc_html($time)."-".esc_html($name)."</span>"
+								: "<a href='javascript:void(0)'  title='".esc_attr($name)."' onclick='Duplicator.Tools.GetLog(\"".esc_js($url)."\")'>".esc_html($time)."-".esc_html($name)."</a>";
 							if ($count > 20) break;
 						} 
 					?>

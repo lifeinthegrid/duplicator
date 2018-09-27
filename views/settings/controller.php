@@ -19,12 +19,12 @@ $current_tab = isset($_REQUEST['tab']) ? esc_html($_REQUEST['tab']) : 'general';
     <?php duplicator_header(__("Settings", 'duplicator')) ?>
 
 	<h2 class="nav-tab-wrapper">
-        <a href="?page=duplicator-settings&tab=general" class="nav-tab <?php echo ($current_tab == 'general') ? 'nav-tab-active' : '' ?>"> <?php _e('General', 'duplicator'); ?></a>
-		<a href="?page=duplicator-settings&tab=package" class="nav-tab <?php echo ($current_tab == 'package') ? 'nav-tab-active' : '' ?>"> <?php _e('Packages', 'duplicator'); ?></a>
-		<a href="?page=duplicator-settings&tab=schedule" class="nav-tab <?php echo ($current_tab == 'schedule') ? 'nav-tab-active' : '' ?>"> <?php _e('Schedules', 'duplicator'); ?></a>
-        <a href="?page=duplicator-settings&tab=storage" class="nav-tab <?php echo ($current_tab == 'storage') ? 'nav-tab-active' : '' ?>"> <?php _e('Storage', 'duplicator'); ?></a>
-		<a href="?page=duplicator-settings&tab=license" class="nav-tab <?php echo ($current_tab == 'license') ? 'nav-tab-active' : '' ?>"> <?php _e('License', 'duplicator'); ?></a>
-		<a href="?page=duplicator-settings&tab=about" class="nav-tab <?php echo ($current_tab == 'about') ? 'nav-tab-active' : '' ?>"> <?php _e('About', 'duplicator'); ?></a>
+        <a href="?page=duplicator-settings&tab=general" class="nav-tab <?php echo ($current_tab == 'general') ? 'nav-tab-active' : '' ?>"> <?php esc_html_e('General', 'duplicator'); ?></a>
+		<a href="?page=duplicator-settings&tab=package" class="nav-tab <?php echo ($current_tab == 'package') ? 'nav-tab-active' : '' ?>"> <?php esc_html_e('Packages', 'duplicator'); ?></a>
+		<a href="?page=duplicator-settings&tab=schedule" class="nav-tab <?php echo ($current_tab == 'schedule') ? 'nav-tab-active' : '' ?>"> <?php esc_html_e('Schedules', 'duplicator'); ?></a>
+        <a href="?page=duplicator-settings&tab=storage" class="nav-tab <?php echo ($current_tab == 'storage') ? 'nav-tab-active' : '' ?>"> <?php esc_html_e('Storage', 'duplicator'); ?></a>
+		<a href="?page=duplicator-settings&tab=license" class="nav-tab <?php echo ($current_tab == 'license') ? 'nav-tab-active' : '' ?>"> <?php esc_html_e('License', 'duplicator'); ?></a>
+		<a href="?page=duplicator-settings&tab=about" class="nav-tab <?php echo ($current_tab == 'about') ? 'nav-tab-active' : '' ?>"> <?php esc_html_e('About', 'duplicator'); ?></a>
     </h2>
 
     <?php
