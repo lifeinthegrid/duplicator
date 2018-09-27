@@ -54,7 +54,7 @@ class DUP_JSON
 		if (function_exists('json_last_error')) {
 			$message = self::$_messages[json_last_error()];
 		} else {
-			$message = __('One or more filenames isn\'t compatible with JSON encoding');
+			$message = esc_html__("One or more filenames isn't compatible with JSON encoding", 'duplicator');
 		}
 
 		throw new RuntimeException($message);

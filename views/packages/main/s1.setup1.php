@@ -218,7 +218,7 @@ SYSTEM REQUIREMENTS -->
                     <?php if ($dup_tests['RES']['INSTALL'] == 'Pass') : ?>
                         <?php
                         esc_html_e("None of the reserved files where found from a previous install.  This means you are clear to create a new package.", 'duplicator');
-                        echo "  [{$dup_intaller_files}]";
+                        echo "  [".esc_html($dup_intaller_files)."]";
                         ?>
                     <?php
                     else:

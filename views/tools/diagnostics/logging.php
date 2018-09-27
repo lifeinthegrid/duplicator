@@ -175,10 +175,10 @@ jQuery(document).ready(function($)
 			<td id="dup-log-panel-right">
 				<h2><?php esc_html_e("Options", 'duplicator') ?> </h2>
 				<div class="dup-opts-items">
-					<input type="button" class="button button-small" id="dup-refresh" value="<?php esc_html_e("Refresh", 'duplicator') ?>" /> &nbsp; 
+					<input type="button" class="button button-small" id="dup-refresh" value="<?php esc_attr_e("Refresh", 'duplicator') ?>" /> &nbsp; 
 					<input type='checkbox' id="dup-auto-refresh" style="margin-top:1px" /> 
 					<label id="dup-auto-refresh-lbl" for="dup-auto-refresh">
-						<?php esc_html_e("Auto Refresh", 'duplicator') ?>
+						<?php esc_attr_e("Auto Refresh", 'duplicator') ?>
 						[<div id="dup-refresh-count"></div>]
 					</label>
 				</div>

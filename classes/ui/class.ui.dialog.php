@@ -175,7 +175,7 @@ class DUP_UI_Dialog
 					'.$progress_data.'
 				</div>
 				<div class="dup-dlg-confirm-btns">
-					<input type="button" class="button button-large" value="'.esc_attr($ok).'" onclick="{$this->jscallback}{$progress_func2}" />
+					<input type="button" class="button button-large" value="'.esc_attr($ok).'" onclick="'.$this->jscallback.$progress_func2.'" />
 					<input type="button" class="button button-large" value="'.esc_attr($cancel).'" onclick="tb_remove()" />
 				</div>
 			</div>';

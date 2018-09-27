@@ -134,7 +134,7 @@ $package_debug = DUP_Settings::Get('package_debug');
             <td>
                 <input type="checkbox" name="package_debug" id="package_debug" <?php echo ($package_debug) ? 'checked="checked"' : ''; ?> />
                 <label for="package_debug"><?php esc_html_e("Enable debug options throughout user interface", 'duplicator'); ?></label>
-				<p class="description"><?php  esc_html_e("Refresh page after saving to show/hide Debug menu", 'duplicator'); ?></p>
+				<p class="description"><?php esc_html_e("Refresh page after saving to show/hide Debug menu", 'duplicator'); ?></p>
             </td>
         </tr>
         <tr valign="top">
