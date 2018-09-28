@@ -791,19 +791,56 @@ class DUP_Package
         if (isset($post)) {
             $post = stripslashes_deep($post);
 
-            $name       = ( isset($post['package-name']) && !empty($post['package-name'])) ? $post['package-name'] : self::getDefaultName();
+            $name       = ( isset($post['package-name']) && !empty($post['package-name'])) ? sanitize_text_field($post['package-name']) : self::getDefaultName();
             $name       = substr(sanitize_file_name($name), 0, 40);
             $name       = str_replace(array('.', '-', ';', ':', "'", '"'), '', $name);
 
-            $filter_dirs  = isset($post['filter-dirs'])  ? $this->Archive->parseDirectoryFilter($post['filter-dirs']) : '';
-			$filter_files = isset($post['filter-files']) ? $this->Archive->parseFileFilter($post['filter-files']) : '';
-            $filter_exts  = isset($post['filter-exts'])  ? $this->Archive->parseExtensionFilter($post['filter-exts']) : '';
-            $tablelist    = isset($post['dbtables'])	 ? implode(',', $post['dbtables']) : '';
-            $compatlist   = isset($post['dbcompat'])	 ? implode(',', $post['dbcompat']) : '';
+            if (isset($post['filter-dirs'])) {
+                $post_filter_dirs = sanitize_text_field($post['filter-dirs']);
+                $filter_dirs  = $this->Archive->parseDirectoryFilter($post_filter_dirs);
+            } else {
+                $filter_dirs  = '';
+            }
+
+            if (isset($post['filter-dirs'])) {
+                $post_filter_dirs = sanitize_text_field($post['filter-dirs']);
+                $filter_dirs  = $this->Archive->parseDirectoryFilter($post_filter_dirs);
+            } else {
+                $filter_dirs  = '';
+            }
+            
+            if (isset($post['filter-files'])) {
+                $post_filter_files = sanitize_text_field($post['filter-files']);
+                $filter_files = $this->Archive->parseFileFilter($post_filter_files);
+            } else {
+                $filter_files = '';
+            }
+            
+            if (isset($post['filter-exts'])) {
+                $post_filter_exts = sanitize_text_field($post['filter-exts']);
+                $filter_exts  = $this->Archive->parseExtensionFilter($post_filter_exts);
+            } else {
+                $filter_exts  = '';
+            }
+            
+            if (isset($post['dbtables'])) {
+                $post_dbtables = sanitize_text_field($post['dbtables']);
+                $tablelist    = implode(',', $post_dbtables);
+            } else {
+                $tablelist    = '';
+            }
+            
+            if (isset($post['dbcompat'])) {
+                $post_dbcompat = sanitize_text_field($post['dbcompat']);
+                $compatlist = isset($post['dbcompat'])	 ? implode(',', $post_dbcompat) : '';
+            } else {
+                $compatlist = '';
+            }
+            
             $dbversion    = DUP_DB::getVersion();
-            $dbversion    = is_null($dbversion) ? '- unknown -'  : $dbversion;
-            $dbcomments   = DUP_DB::getVariable('version_comment');
-            $dbcomments   = is_null($dbcomments) ? '- unknown -' : $dbcomments;
+            $dbversion    = is_null($dbversion) ? '- unknown -'  : sanitize_text_field($dbversion);
+            $dbcomments   = sanitize_text_field(DUP_DB::getVariable('version_comment'));
+            $dbcomments   = is_null($dbcomments) ? '- unknown -' : sanitize_text_field($dbcomments);
 
 
             //PACKAGE
@@ -812,32 +849,33 @@ class DUP_Package
             $this->VersionOS  = defined('PHP_OS') ? PHP_OS : 'unknown';
             $this->VersionWP  = $wp_version;
             $this->VersionPHP = phpversion();
-            $this->VersionDB  = esc_html($dbversion);
+            $this->VersionDB  = sanitize_text_field($dbversion);
             $this->Name       = sanitize_text_field($name);
             $this->Hash       = $this->makeHash();
-            $this->NameHash   = "{$this->Name}_{$this->Hash}";
+            $this->NameHash   = sanitize_text_field("{$this->Name}_{$this->Hash}");
 
-            $this->Notes                    = DUP_Util::escSanitizeTextAreaField($post['package-notes']);
+            $this->Notes                    = sanitize_textarea_field($post['package-notes']);
             //ARCHIVE
             $this->Archive->PackDir         = rtrim(DUPLICATOR_WPROOTPATH, '/');
             $this->Archive->Format          = 'ZIP';
             $this->Archive->FilterOn        = isset($post['filter-on']) ? 1 : 0;
 			$this->Archive->ExportOnlyDB    = isset($post['export-onlydb']) ? 1 : 0;
-            $this->Archive->FilterDirs      = DUP_Util::escSanitizeTextAreaField($filter_dirs);
-			 $this->Archive->FilterFiles    = DUP_Util::escSanitizeTextAreaField($filter_files);
-            $this->Archive->FilterExts      = str_replace(array('.', ' '), '', DUP_Util::escSanitizeTextAreaField($filter_exts));
+            $this->Archive->FilterDirs      = sanitize_textarea_field($filter_dirs);
+			$this->Archive->FilterFiles    = sanitize_textarea_field($filter_files);
+            $this->Archive->FilterExts      = str_replace(array('.', ' '), '', $filter_exts);
             //INSTALLER
-            $this->Installer->OptsDBHost		= DUP_Util::escSanitizeTextField($post['dbhost']);
-            $this->Installer->OptsDBPort		= DUP_Util::escSanitizeTextField($post['dbport']);
-            $this->Installer->OptsDBName		= DUP_Util::escSanitizeTextField($post['dbname']);
-            $this->Installer->OptsDBUser		= DUP_Util::escSanitizeTextField($post['dbuser']);
-			$this->Installer->OptsSecureOn		= isset($post['secure-on']) ? 1 : 0;
-			$this->Installer->OptsSecurePass	= DUP_Util::installerScramble($post['secure-pass']);
+            $this->Installer->OptsDBHost		= sanitize_text_field($post['dbhost']);
+            $this->Installer->OptsDBPort		= sanitize_text_field($post['dbport']);
+            $this->Installer->OptsDBName		= sanitize_text_field($post['dbname']);
+            $this->Installer->OptsDBUser		= sanitize_text_field($post['dbuser']);
+            $this->Installer->OptsSecureOn		= isset($post['secure-on']) ? 1 : 0;
+            $post_secure_pass                   = sanitize_text_field($post['secure-pass']);
+			$this->Installer->OptsSecurePass	= DUP_Util::installerScramble($post_secure_pass);
             //DATABASE
             $this->Database->FilterOn       = isset($post['dbfilter-on']) ? 1 : 0;
-            $this->Database->FilterTables   = esc_html($tablelist);
+            $this->Database->FilterTables   = sanitize_text_field($tablelist);
             $this->Database->Compatible     = $compatlist;
-            $this->Database->Comments       = esc_html($dbcomments);
+            $this->Database->Comments       = sanitize_text_field($dbcomments);
 
             update_option(self::OPT_ACTIVE, $this);
         }

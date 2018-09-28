@@ -44,17 +44,17 @@ $tools_url      = 'admin.php?page=duplicator-tools&tab=diagnostics';
 
 switch ($section) {
     case 'info':
-        echo "<div class='lite-sub-tabs'><b>{$txt_diagnostic}</b> &nbsp;|&nbsp; <a href='{$tools_url}&section=log'>{$txt_log}</a> &nbsp;|&nbsp; <a href='{$tools_url}&section=support'>{$txt_support}</a></div>";
+        echo "<div class='lite-sub-tabs'><b>".esc_html($txt_diagnostic)."</b> &nbsp;|&nbsp; <a href='".esc_url($tools_url."&section=log")."'>".esc_html($txt_log)."</a> &nbsp;|&nbsp; <a href='".esc_url($tools_url."&section=support")."'>".esc_html($txt_support)."</a></div>";
         include(dirname(__FILE__) . '/information.php');
         break;
 
     case 'log':
-        echo "<div class='lite-sub-tabs'><a href='{$tools_url}&section=info'>{$txt_diagnostic}</a>  &nbsp;|&nbsp;<b>{$txt_log}</b>  &nbsp;|&nbsp; <a href='{$tools_url}&section=support'>{$txt_support}</a></div>";
+        echo "<div class='lite-sub-tabs'><a href='".esc_url($tools_url."&section=info")."'>".esc_html($txt_diagnostic)."</a>  &nbsp;|&nbsp;<b>".esc_html($txt_log)."</b>  &nbsp;|&nbsp; <a href='".esc_url($tools_url."&section=support")."'>".esc_html($txt_support)."</a></div>";
         include(dirname(__FILE__) . '/logging.php');
         break;
 	
     case 'support':
-        echo "<div class='lite-sub-tabs'><a href='{$tools_url}&section=info'>{$txt_diagnostic}</a> &nbsp;|&nbsp; <a href='{$tools_url}&section=log'>{$txt_log}</a> &nbsp;|&nbsp; <b>{$txt_support}</b> </div>";
+        echo "<div class='lite-sub-tabs'><a href='".esc_url($tools_url."&section=info")."'>".esc_html($txt_diagnostic)."</a> &nbsp;|&nbsp; <a href='".esc_url($tools_url."&section=log")."'>".esc_html($txt_log)."</a> &nbsp;|&nbsp; <b>".esc_html($txt_support)."</b> </div>";
         include(dirname(__FILE__) . '/support.php');
         break;
 }
