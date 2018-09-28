@@ -67,6 +67,12 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
     public function getTraceLog()
     {
         DUP_Log::Trace("enter");
+        
+        $nonce = sanitize_text_field($_GET['nonce']);
+        if (!wp_verify_nonce($nonce, 'DUP_CTRL_Tools_getTraceLog')) {
+            die('Security issue');
+        }
+
         Dup_Util::hasCapability('export');
 
         $request     = stripslashes_deep($_REQUEST);
@@ -100,7 +106,7 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
 
             DUP_Log::trace("streaming $zip_path");
             if (fpassthru($fp) === false) {
-                DUP_PRO_LOG::trace("Error with fpassthru for $zip_path");
+                DUP_Log::trace("Error with fpassthru for $zip_path");
             }
 
             fclose($fp);

@@ -497,7 +497,7 @@ jQuery(document).ready(function ($)
 	 *	METHOD: Retrieves package status and updates UI with build percentage */
 	Duplicator.Pack.GetActivePackageStatus = function ()
 	{
-		var data = {action: 'DUP_CTRL_Package_getActivePackageStatus'}
+		var data = {action: 'DUP_CTRL_Package_getActivePackageStatus', nonce: '<?php echo wp_create_nonce('DUP_CTRL_Package_getActivePackageStatus'); ?>'}
 		console.log('####Duplicator.Pack.GetActivePackageStatus');
 
 		$.ajax({
