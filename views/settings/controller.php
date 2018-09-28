@@ -7,7 +7,7 @@ global $wpdb;
 //COMMON HEADER DISPLAY
 require_once(DUPLICATOR_PLUGIN_PATH . '/assets/js/javascript.php');
 require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
-$current_tab = isset($_REQUEST['tab']) ? esc_html($_REQUEST['tab']) : 'general';
+$current_tab = isset($_REQUEST['tab']) ? sanitize_text_field($_REQUEST['tab']) : 'general';
 ?>
 
 <style>

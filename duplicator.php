@@ -182,7 +182,7 @@ if (is_admin() == true)
      */
     function duplicator_get_menu() 
 	{
-        $current_page = isset($_REQUEST['page']) ? esc_html($_REQUEST['page']) : 'duplicator';
+        $current_page = isset($_REQUEST['page']) ? sanitize_text_field($_REQUEST['page']) : 'duplicator';
         switch ($current_page) 
 		{
             case 'duplicator':			include('views/packages/controller.php');	break;
