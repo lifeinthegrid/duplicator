@@ -15,6 +15,11 @@ require_once(DUPLICATOR_PLUGIN_PATH.'/classes/package/duparchive/class.pack.arch
  */
 function duplicator_package_scan()
 {
+    $nonce = sanitize_text_field($_POST['nonce']);
+if (!wp_verify_nonce($nonce, 'duplicator_package_scan')) {
+	die('Security issue');
+}
+
     header('Content-Type: application/json;');
     DUP_Util::hasCapability('export');
 
@@ -327,6 +332,12 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
     function getPackageFile($post)
     {
         $params = $this->postParamMerge($post);
+
+        $nonce = sanitize_text_field($_GET['nonce']);
+        if (!wp_verify_nonce($nonce, 'DUP_CTRL_Package_getPackageFile')) {
+            die('Security issue');
+        }
+
         $params = $this->getParamMerge($params);
 //       check_ajax_referer($post['action'], 'nonce');
 
@@ -418,7 +429,11 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
      */
 	public function getActivePackageStatus($post) 
 	{
-		$post = $this->postParamMerge($post);
+        $post = $this->postParamMerge($post);
+        $nonce = sanitize_text_field($post['nonce']);
+        if (!wp_verify_nonce($nonce, 'DUP_CTRL_Package_getActivePackageStatus')) {
+            die('Security issue');
+        }        
 		$result = new DUP_CTRL_Result($this);
 	
 		try 

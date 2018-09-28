@@ -67,7 +67,7 @@ Duplicator.UI.SaveViewState = function (key, value)
 			type: "POST",
 			url: ajaxurl,
 			dataType: "json",
-			data: {action : 'DUP_CTRL_UI_SaveViewState', key: key, value: value},
+			data: {action : 'DUP_CTRL_UI_SaveViewState', key: key, value: value, nonce: '<?php echo wp_create_nonce('DUP_CTRL_UI_SaveViewState'); ?>'},
 			success: function(data) {},
 			error: function(data) {}
 		});	

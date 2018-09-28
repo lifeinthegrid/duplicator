@@ -168,7 +168,7 @@ jQuery(document).ready(function($)
 {
 	// which: 0=installer, 1=archive, 2=sql file, 3=log
 	Duplicator.Pack.DownloadTraceLog = function () {
-		var actionLocation = ajaxurl + '?action=DUP_CTRL_Tools_getTraceLog';
+		var actionLocation = ajaxurl + '?action=DUP_CTRL_Tools_getTraceLog&nonce=' + '<?php echo wp_create_nonce('DUP_CTRL_Tools_getTraceLog'); ?>';
 		location.href = actionLocation;
 	};
 });
