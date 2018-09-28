@@ -51,22 +51,22 @@ TOOL-BAR -->
 	<tr valign="top">
 		<td style="white-space: nowrap">
 			<select id="dup-pack-bulk-actions">
-				<option value="-1" selected="selected"><?php _e("Bulk Actions", 'duplicator') ?></option>
-				<option value="delete" title="<?php _e("Delete selected package(s)", 'duplicator') ?>"><?php _e("Delete", 'duplicator') ?></option>
+				<option value="-1" selected="selected"><?php esc_html_e("Bulk Actions", 'duplicator') ?></option>
+				<option value="delete" title="<?php esc_attr_e("Delete selected package(s)", 'duplicator') ?>"><?php esc_html_e("Delete", 'duplicator') ?></option>
 			</select>
-			<input type="button" id="dup-pack-bulk-apply" class="button action" value="<?php _e("Apply", 'duplicator') ?>" onclick="Duplicator.Pack.ConfirmDelete()">
+			<input type="button" id="dup-pack-bulk-apply" class="button action" value="<?php esc_html_e("Apply", 'duplicator') ?>" onclick="Duplicator.Pack.ConfirmDelete()">
 			<span class="btn-separator"></span>
-			<a href="javascript:void(0)" class="button"  title="<?php _e("Get Help", 'duplicator') ?>" onclick="Duplicator.Pack.showHelp()">
+			<a href="javascript:void(0)" class="button"  title="<?php esc_attr_e("Get Help", 'duplicator') ?>" onclick="Duplicator.Pack.showHelp()">
 				<?php echo ($statusCount == 1)  
 						? '<i class="fa fa-question-circle" style="color:green"></i>'
 						: '<i class="fa fa-question-circle grey-icon"></i>';
 				?>
 			</a>
-			<a href="admin.php?page=duplicator-settings&tab=package" class="button grey-icon" title="<?php _e("Settings", 'duplicator') ?>"><i class="fa fa-gear"></i></a>
+			<a href="admin.php?page=duplicator-settings&tab=package" class="button grey-icon" title="<?php esc_attr_e("Settings", 'duplicator') ?>"><i class="fa fa-gear"></i></a>
 		</td>
 		<td>						
-			<span><i class="fa fa-archive"></i> <?php _e("Packages", 'duplicator'); ?></span>
-			<a href="?page=duplicator&tab=new1" class="add-new-h2"><?php _e("Create New", 'duplicator'); ?></a>
+			<span><i class="fa fa-archive"></i> <?php esc_html_e("Packages", 'duplicator'); ?></span>
+			<a href="?page=duplicator&tab=new1" class="add-new-h2"><?php esc_html_e("Create New", 'duplicator'); ?></a>
 		</td>
 	</tr>
 </table>	
@@ -82,12 +82,12 @@ TOOL-BAR -->
 				<td>
 				<div id='dup-list-alert-nodata'>
 					<i class="fa fa-archive"></i> 
-					<?php _e("No Packages Found.", 'duplicator'); ?><br/>
-					<?php _e("Click the 'Create New' button to build a package.", 'duplicator'); ?><br/>
+					<?php esc_html_e("No Packages Found.", 'duplicator'); ?><br/>
+					<?php esc_html_e("Click the 'Create New' button to build a package.", 'duplicator'); ?><br/>
 					<div class="dup-quick-start">
-						<?php _e("New to Duplicator?", 'duplicator'); ?><br/>
+						<?php esc_html_e("New to Duplicator?", 'duplicator'); ?><br/>
 						<a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=packages_empty&utm_campaign=quick_start" target="_blank">
-							<?php _e("Check out the 'Quick Start' guide!", 'duplicator'); ?>
+							<?php esc_html_e("Check out the 'Quick Start' guide!", 'duplicator'); ?>
 						</a>
 					</div>
 					<div style="height:75px">&nbsp;</div>
@@ -103,12 +103,12 @@ TOOL-BAR -->
 	<table class="widefat dup-pack-table">
 		<thead>
 			<tr>
-				<th><input type="checkbox" id="dup-bulk-action-all"  title="<?php _e("Select all packages", 'duplicator') ?>" style="margin-left:15px" onclick="Duplicator.Pack.SetDeleteAll()" /></th>
-				<th><?php _e("Created", 'duplicator') ?></th>
-				<th><?php _e("Size", 'duplicator') ?></th>
-				<th style="width:90%;"><?php _e("Name", 'duplicator') ?></th>
+				<th><input type="checkbox" id="dup-bulk-action-all"  title="<?php esc_attr_e("Select all packages", 'duplicator') ?>" style="margin-left:15px" onclick="Duplicator.Pack.SetDeleteAll()" /></th>
+				<th><?php esc_html_e("Created", 'duplicator') ?></th>
+				<th><?php esc_html_e("Size", 'duplicator') ?></th>
+				<th style="width:90%;"><?php esc_html_e("Name", 'duplicator') ?></th>
 				<th style="text-align:center;" colspan="2">
-					<?php _e("Package",  'duplicator')?>
+					<?php esc_html_e("Package",  'duplicator')?>
 				</th>
 			</tr>
 		</thead>
@@ -116,12 +116,12 @@ TOOL-BAR -->
 			<td colspan="6">
 				<div id='dup-list-alert-nodata'>
 					<i class="fa fa-archive"></i>
-					<?php _e("No Packages Found.", 'duplicator'); ?><br/>
-					<?php _e("Click the 'Create New' button to build a package.", 'duplicator'); ?><br/>
+					<?php esc_html_e("No Packages Found.", 'duplicator'); ?><br/>
+					<?php esc_html_e("Click the 'Create New' button to build a package.", 'duplicator'); ?><br/>
 					<div class="dup-quick-start">
-						<?php _e("New to Duplicator?", 'duplicator'); ?><br/>
+						<?php esc_html_e("New to Duplicator?", 'duplicator'); ?><br/>
 						<a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=packages_empty&utm_campaign=quick_start" target="_blank">
-							<?php _e("Check out the 'Quick Start' guide!", 'duplicator'); ?>
+							<?php esc_html_e("Check out the 'Quick Start' guide!", 'duplicator'); ?>
 						</a>
 					</div>
 					<div style="height:75px">&nbsp;</div>
@@ -180,8 +180,8 @@ TOOL-BAR -->
 
 			<!-- COMPLETE -->
 			<?php if ($row['status'] >= 100) : ?>
-				<tr class="dup-pack-info <?php echo $css_alt ?>">
-					<td class="pass"><input name="delete_confirm" type="checkbox" id="<?php echo $row['id'] ;?>" /></td>
+				<tr class="dup-pack-info <?php echo esc_attr($css_alt); ?>">
+					<td class="pass"><input name="delete_confirm" type="checkbox" id="<?php echo absint($row['id']); ?>" /></td>
 					<td>
 						<?php 
 							echo DUP_Package::getCreatedDateFormat($row['created'], $ui_create_frmt);
@@ -190,16 +190,16 @@ TOOL-BAR -->
 					</td>
 					<td><?php echo DUP_Util::byteSize($pack_archive_size); ?></td>
 					<td class='pack-name'>
-						<?php	echo ($pack_dbonly) ? "{$pack_name} <sup title='{$txt_dbonly}'>DB</sup>" : $pack_name ; ?>
+						<?php	echo ($pack_dbonly) ? "{$pack_name} <sup title='".esc_attr($txt_dbonly)."'>DB</sup>" : esc_html($pack_name); ?>
 					</td>
 					<td class="get-btns">
-						<button id="<?php echo "{$uniqueid}_installer.php" ?>" class="button no-select" onclick="Duplicator.Pack.DownloadPackageFile(0, <?php echo $Package->ID ?>); return false;">
-							<i class="fa fa-bolt"></i> <?php _e("Installer", 'duplicator') ?>
+						<button id="<?php echo esc_attr("{$uniqueid}_installer.php"); ?>" class="button no-select" onclick="Duplicator.Pack.DownloadPackageFile(0, <?php echo absint($Package->ID); ?>); return false;">
+							<i class="fa fa-bolt"></i> <?php esc_html_e("Installer", 'duplicator') ?>
 						</button> 
-                        <button id="<?php echo "{$uniqueid}_archive.zip" ?>" class="button no-select" onclick="Duplicator.Pack.DownloadFile(<?php echo "'{$Package->Archive->File}', '{$packagepath}'"; ?>); return false;">
-							<i class="fa fa-file-archive-o"></i> <?php _e("Archive", 'duplicator') ?>
+                        <button id="<?php echo esc_attr("{$uniqueid}_archive.zip"); ?>" class="button no-select" onclick="Duplicator.Pack.DownloadFile('<?php echo esc_js($Package->Archive->File); ?>', '<?php echo esc_js($packagepath); ?>'); return false;">
+							<i class="fa fa-file-archive-o"></i> <?php esc_html_e("Archive", 'duplicator') ?>
 						</button>
-						<button type="button" class="button no-select" title="<?php _e("Package Details", 'duplicator') ?>" onclick="Duplicator.Pack.OpenPackageDetails(<?php echo "{$row['id']}"; ?>);">
+						<button type="button" class="button no-select" title="<?php esc_attr_e("Package Details", 'duplicator') ?>" onclick="Duplicator.Pack.OpenPackageDetails(<?php echo "{$row['id']}"; ?>);">
 							<i class="fa fa-archive" ></i> 
 						</button>
 					</td>
@@ -218,17 +218,17 @@ TOOL-BAR -->
 					$pack_archive_size = $size;
 					$error_url = "?page=duplicator&action=detail&tab=detail&id={$row['id']}"; 
 				?>
-				<tr class="dup-pack-info  <?php echo $css_alt ?>">
-					<td class="fail"><input name="delete_confirm" type="checkbox" id="<?php echo $row['id'] ;?>" /></td>
+				<tr class="dup-pack-info  <?php echo esc_attr($css_alt); ?>">
+					<td class="fail"><input name="delete_confirm" type="checkbox" id="<?php echo absint($row['id']); ?>" /></td>
 					<td><?php echo DUP_Package::getCreatedDateFormat($row['created'], $ui_create_frmt);?></td>
 					<td><?php echo DUP_Util::byteSize($size); ?></td>
-					<td class='pack-name'><?php echo $pack_name ;?></td>               
+					<td class='pack-name'><?php echo esc_html($pack_name); ?></td>               
 					<td class="get-btns error-msg" colspan="2">		
 						<span>
 							<i class="fa fa-exclamation-triangle"></i>
-							<a href="<?php echo $error_url; ?>"><?php _e("Error Processing", 'duplicator') ?></a>
+							<a href="<?php echo esc_url($error_url); ?>"><?php esc_html_e("Error Processing", 'duplicator') ?></a>
 						</span>			
-						<a class="button no-select" title="<?php _e("Package Details", 'duplicator') ?>" href="<?php echo $error_url; ?>">
+						<a class="button no-select" title="<?php esc_attr_e("Package Details", 'duplicator') ?>" href="<?php echo esc_url($error_url); ?>">
 							<i class="fa fa-archive"></i> 
 						</a>						
 					</td>
@@ -242,8 +242,8 @@ TOOL-BAR -->
 	<tfoot>
 		<tr>
 			<th colspan="11" style='text-align:right; font-size:12px'>						
-				<?php echo _e("Packages", 'duplicator') . ': ' . $totalElements; ?> |
-				<?php echo _e("Total Size", 'duplicator') . ': ' . DUP_Util::byteSize($totalSize); ?> 
+				<?php esc_html_e("Packages", 'duplicator') . ': ' . esc_html($totalElements); ?> |
+				<?php esc_html_e("Total Size", 'duplicator') . ': ' . esc_html(DUP_Util::byteSize($totalSize)); ?> 
 			</th>
 		</tr>
 	</tfoot>
@@ -282,17 +282,17 @@ THICK-BOX DIALOGS: -->
 <!-- =======================
 DIALOG: HELP DIALOG -->
 <div id="dup-help-dlg-info" style="display:none">
-	<b><?php _e("Common Questions:", 'duplicator') ?></b><hr size='1'/>
-	<i class="fa fa-file-text-o"></i> <a href="https://snapcreek.com/duplicator/docs/quick-start?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_pack_help&utm_campaign=duplicator_free#quick-010-q" target="_blank"><?php _e("How do I create a package", 'duplicator') ?></a> <br/>
-    <i class="fa fa-file-text-o"></i> <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_install_help&utm_campaign=duplicator_free#quick-040-q" target="_blank"><?php _e('How do I install a package?', 'duplicator'); ?></a>	 <br/>
-	<i class="fa fa-file-code-o"></i> <a href="https://snapcreek.com/duplicator/docs/faqs-tech?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_faq&utm_campaign=duplicator_free" target="_blank"><?php _e("Frequently Asked Questions!", 'duplicator') ?></a>
+	<b><?php esc_html_e("Common Questions:", 'duplicator') ?></b><hr size='1'/>
+	<i class="fa fa-file-text-o"></i> <a href="https://snapcreek.com/duplicator/docs/quick-start?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_pack_help&utm_campaign=duplicator_free#quick-010-q" target="_blank"><?php esc_html_e("How do I create a package", 'duplicator') ?></a> <br/>
+    <i class="fa fa-file-text-o"></i> <a href="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_install_help&utm_campaign=duplicator_free#quick-040-q" target="_blank"><?php esc_html_e('How do I install a package?', 'duplicator'); ?></a>	 <br/>
+	<i class="fa fa-file-code-o"></i> <a href="https://snapcreek.com/duplicator/docs/faqs-tech?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_faq&utm_campaign=duplicator_free" target="_blank"><?php esc_html_e("Frequently Asked Questions!", 'duplicator') ?></a>
 	<br/><br/>
 
-	<b><?php _e("Other Resources:", 'duplicator') ?></b><hr size='1'/>
-	<i class="fa fa-question-circle"></i> <a href="https://snapcreek.com/ticket?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_ticket&utm_campaign=duplicator_free" target="_blank"><?php _e("Need help with the plugin?", 'duplicator') ?></a> <br/>
-	<i class="fa fa-lightbulb-o"></i> <a href="https://snapcreek.com/support?idea=1&utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_idea&utm_campaign=duplicator_free" target="_blank"><?php _e("Have an idea for the plugin?", 'duplicator') ?></a> <br/>
+	<b><?php esc_html_e("Other Resources:", 'duplicator') ?></b><hr size='1'/>
+	<i class="fa fa-question-circle"></i> <a href="https://snapcreek.com/ticket?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_ticket&utm_campaign=duplicator_free" target="_blank"><?php esc_html_e("Need help with the plugin?", 'duplicator') ?></a> <br/>
+	<i class="fa fa-lightbulb-o"></i> <a href="https://snapcreek.com/support?idea=1&utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=help_btn_idea&utm_campaign=duplicator_free" target="_blank"><?php esc_html_e("Have an idea for the plugin?", 'duplicator') ?></a> <br/>
 	<?php if($statusCount >= 3)  :	?>
-		<i class="fa fa-star-o"></i> <a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" target="vote-wp"><?php _e("Help review the plugin!", 'duplicator') ?></a>
+		<i class="fa fa-star-o"></i> <a href="https://wordpress.org/support/plugin/duplicator/reviews/?filter=5" target="vote-wp"><?php esc_html_e("Help review the plugin!", 'duplicator') ?></a>
 	<?php endif; ?>
 </div>
 
@@ -341,7 +341,7 @@ jQuery(document).ready(function($)
 			type: "POST",
 			url: ajaxurl,
 			dataType: "json",
-			data: {action : 'duplicator_package_delete', duplicator_delid : list, nonce: '<?php echo $ajax_nonce; ?>' },
+			data: {action : 'duplicator_package_delete', duplicator_delid : list, nonce: '<?php echo esc_js($ajax_nonce); ?>' },
 			complete: function(data) { 
 				Duplicator.ReloadWindow(data); 
 			}

@@ -44,13 +44,13 @@ class DUP_Package_Screen extends DUP_UI_Screen
 		$guide = '#guide-packs';
 		$faq   = '#faq-package';
 		$content .= "<b>References:</b><br/>"
-					. "<a href='https://snapcreek.com/duplicator/docs/guide/{$guide}' target='_sc-guide'>User Guide</a> | "
-					. "<a href='https://snapcreek.com/duplicator/docs/faqs-tech/{$faq}' target='_sc-guide'>FAQs</a> | "
+					. "<a href='".esc_url("https://snapcreek.com/duplicator/docs/guide/".$guide)."' target='_sc-guide'>User Guide</a> | "
+					. "<a href='".esc_url("https://snapcreek.com/duplicator/docs/faqs-tech/".$faq)."' target='_sc-guide'>FAQs</a> | "
 					. "<a href='https://snapcreek.com/duplicator/docs/quick-start/' target='_sc-guide'>Quick Start</a>";
 
 		$this->screen->add_help_tab( array(
 				'id'        => 'dup_help_package_overview',
-				'title'     => __('Overview','duplicator'),
+				'title'     => esc_html__('Overview','duplicator'),
 				'content'   => "<p>{$content}</p>"
 			)
 		);

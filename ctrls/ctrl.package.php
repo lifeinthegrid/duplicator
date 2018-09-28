@@ -157,7 +157,7 @@ function duplicator_duparchive_package_build()
                 $error_message .= implode(',', $failure->description);
             }
 
-            Dup_Log::Error("Build failed so sending back error", $error_message, Dup_ErrorBehavior::LogOnly);
+            Dup_Log::Error("Build failed so sending back error", esc_html($error_message), Dup_ErrorBehavior::LogOnly);
             Dup_Log::Trace('#### after log 2');
 
             $json['status'] = 3;
@@ -201,7 +201,7 @@ function duplicator_package_delete()
         $json     = array();
         $post     = stripslashes_deep($_POST);
         $tblName  = $wpdb->prefix.'duplicator_packages';
-        $postIDs  = isset($post['duplicator_delid']) ? $post['duplicator_delid'] : null;
+        $postIDs  = isset($post['duplicator_delid']) ? sanitize_text_field($post['duplicator_delid']) : null;
         $list     = explode(",", $postIDs);
         $delCount = 0;
 
@@ -281,7 +281,8 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
     public function addQuickFilters($post)
     {
         $post   = $this->postParamMerge($post);
-        check_ajax_referer($post['action'], 'nonce');
+        $action = sanitize_text_field($post['action']);
+        check_ajax_referer($action, 'nonce');
         $result = new DUP_CTRL_Result($this);
 
         try {
@@ -289,12 +290,12 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
             $package = DUP_Package::getActive();
 
             //DIRS
-            $dir_filters = $package->Archive->FilterDirs.';'.$post['dir_paths'];
+            $dir_filters = $package->Archive->FilterDirs.';'.sanitize_text_field($post['dir_paths']);
             $dir_filters = $package->Archive->parseDirectoryFilter($dir_filters);
             $changed     = $package->Archive->saveActiveItem($package, 'FilterDirs', $dir_filters);
 
             //FILES
-            $file_filters = $package->Archive->FilterFiles.';'.$post['file_paths'];
+            $file_filters = $package->Archive->FilterFiles.';'.sanitize_text_field($post['file_paths']);
             $file_filters = $package->Archive->parseFileFilter($file_filters);
             $changed      = $package->Archive->saveActiveItem($package, 'FilterFiles', $file_filters);
 
@@ -303,10 +304,10 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
 
             //Result
             $package              = DUP_Package::getActive();
-            $payload['dirs-in']   = $post['dir_paths'];
-            $payload['dir-out']   = $package->Archive->FilterDirs;
-            $payload['files-in']  = $post['file_paths'];
-            $payload['files-out'] = $package->Archive->FilterFiles;
+            $payload['dirs-in']   = esc_html(sanitize_text_field($post['dir_paths']));
+            $payload['dir-out']   = esc_html($package->Archive->FilterDirs);
+            $payload['files-in']  = esc_html(sanitize_text_field($post['file_paths']));
+            $payload['files-out'] = esc_html($package->Archive->FilterFiles);
 
             //RETURN RESULT
             $test = ($changed) ? DUP_CTRL_Status::SUCCESS : DUP_CTRL_Status::FAILED;
@@ -378,7 +379,7 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
                         header("Content-Disposition: attachment; filename=\"error.txt\";");
                         $message = "Couldn't open $filePath.";
                         DUP_Log::Trace($message);
-                        echo $message;
+                        echo esc_html($message);
                     }
                 } else {
                     $message = __("Couldn't find a local copy of the file requested.", 'duplicator');
@@ -388,7 +389,7 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
 
                     // Report that we couldn't find the file
                     DUP_Log::Trace($message);
-                    echo $message;
+                    echo esc_html($message);
                 }
 
                 //OUTPUT: Log File
@@ -400,7 +401,7 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
                     die($text);
                 } else {
                     $message = __("Couldn't find a local copy of the file requested.", 'duplicator');
-                    echo $message;
+                    echo esc_html($message);
                 }
             }
         } catch (Exception $exc) {

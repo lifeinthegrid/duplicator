@@ -1,6 +1,6 @@
 <?php
 	//Nonce Check
-	if (! isset( $_POST['dup_form_opts_nonce_field'] ) || ! wp_verify_nonce( $_POST['dup_form_opts_nonce_field'], 'dup_form_opts' ) ) {
+	if (! isset( $_POST['dup_form_opts_nonce_field'] ) || ! wp_verify_nonce( sanitize_text_field($_POST['dup_form_opts_nonce_field']), 'dup_form_opts' ) ) {
 		DUP_UI_Notice::redirect('admin.php?page=duplicator&tab=new1');
 	}
 
@@ -137,18 +137,18 @@ TOOL BAR:STEPS -->
 		<td style="white-space:nowrap">
 			<div id="dup-wiz">
 				<div id="dup-wiz-steps">
-					<div class="completed-step"><a>1-<?php _e('Setup', 'duplicator'); ?></a></div>
-					<div class="active-step"><a>2-<?php _e('Scan', 'duplicator'); ?> </a></div>
-					<div><a>3-<?php _e('Build', 'duplicator'); ?> </a></div>
+					<div class="completed-step"><a>1-<?php esc_html_e('Setup', 'duplicator'); ?></a></div>
+					<div class="active-step"><a>2-<?php esc_html_e('Scan', 'duplicator'); ?> </a></div>
+					<div><a>3-<?php esc_html_e('Build', 'duplicator'); ?> </a></div>
 				</div>
 				<div id="dup-wiz-title">
-					<?php _e('Step 2: System Scan', 'duplicator'); ?>
+					<?php esc_html_e('Step 2: System Scan', 'duplicator'); ?>
 				</div> 
 			</div>	
 		</td>
 		<td>
-			<a href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php _e('Packages', 'duplicator'); ?></a> 
-			<span> <?php _e('Create New', 'duplicator'); ?></span>
+			<a href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php esc_html_e('Packages', 'duplicator'); ?></a> 
+			<span> <?php esc_html_e('Create New', 'duplicator'); ?></span>
 		</td>
 	</tr>
 </table>		
@@ -160,22 +160,22 @@ TOOL BAR:STEPS -->
 
 	<!--  PROGRESS BAR -->
 	<div id="dup-progress-bar-area">
-		<div class="dup-progress-title"><i class="fa fa-circle-o-notch fa-spin"></i> <?php _e('Scanning Site', 'duplicator'); ?></div>
+		<div class="dup-progress-title"><i class="fa fa-circle-o-notch fa-spin"></i> <?php esc_html_e('Scanning Site', 'duplicator'); ?></div>
 		<div id="dup-progress-bar"></div>
-		<b><?php _e('Please Wait...', 'duplicator'); ?></b><br/><br/>
-		<i><?php _e('Keep this window open during the scan process.', 'duplicator'); ?></i><br/>
-		<i><?php _e('This can take several minutes.', 'duplicator'); ?></i><br/>
+		<b><?php esc_html_e('Please Wait...', 'duplicator'); ?></b><br/><br/>
+		<i><?php esc_html_e('Keep this window open during the scan process.', 'duplicator'); ?></i><br/>
+		<i><?php esc_html_e('This can take several minutes.', 'duplicator'); ?></i><br/>
 	</div>
 
 	<!--  ERROR MESSAGE -->
 	<div id="dup-msg-error" style="display:none">
-		<div class="dup-hdr-error"><i class="fa fa-exclamation-circle"></i> <?php _e('Scan Error', 'duplicator'); ?></div>
-		<i><?php _e('Please try again!', 'duplicator'); ?></i><br/>
+		<div class="dup-hdr-error"><i class="fa fa-exclamation-circle"></i> <?php esc_html_e('Scan Error', 'duplicator'); ?></div>
+		<i><?php esc_html_e('Please try again!', 'duplicator'); ?></i><br/>
 		<div class="dup-hdr-error-details">
-			<b><?php _e("Server Status:", 'duplicator'); ?></b> &nbsp;
+			<b><?php esc_html_e("Server Status:", 'duplicator'); ?></b> &nbsp;
 			<div id="dup-msg-error-response-status" style="display:inline-block"></div><br/>
 
-			<b><?php _e("Error Message:", 'duplicator'); ?></b>
+			<b><?php esc_html_e("Error Message:", 'duplicator'); ?></b>
 			<div id="dup-msg-error-response-text"></div>
 		</div>
 	</div>
@@ -184,9 +184,9 @@ TOOL BAR:STEPS -->
 	<div id="dup-msg-success" style="display:none">
 
 		<div style="text-align:center">
-			<div class="dup-hdr-success"><i class="fa fa-check-square-o fa-lg"></i> <?php _e('Scan Complete', 'duplicator'); ?></div>
+			<div class="dup-hdr-success"><i class="fa fa-check-square-o fa-lg"></i> <?php esc_html_e('Scan Complete', 'duplicator'); ?></div>
 			<div id="dup-msg-success-subtitle">
-				<?php _e('Process Time:', 'duplicator'); ?> <span id="data-rpt-scantime"></span>
+				<?php esc_html_e('Process Time:', 'duplicator'); ?> <span id="data-rpt-scantime"></span>
 			</div>
 		</div>
 
@@ -202,11 +202,11 @@ TOOL BAR:STEPS -->
 		<div id="dup-scan-warning-continue">
 			<div class="msg1">
 				<label for="dup-scan-warning-continue-checkbox">
-					<?php _e('A notice status has been detected, are you sure you want to continue?', 'duplicator');?>
+					<?php esc_html_e('A notice status has been detected, are you sure you want to continue?', 'duplicator');?>
 				</label>
 				<div style="padding:8px 0">
 					<input type="checkbox" id="dup-scan-warning-continue-checkbox" onclick="Duplicator.Pack.warningContinue(this)"/>
-					<label for="dup-scan-warning-continue-checkbox"><?php _e('Yes.  Continue with the build process!', 'duplicator');?></label>
+					<label for="dup-scan-warning-continue-checkbox"><?php esc_html_e('Yes.  Continue with the build process!', 'duplicator');?></label>
 				</div>
 			</div>
 			<div class="msg2">
@@ -221,9 +221,9 @@ TOOL BAR:STEPS -->
 		</div>
 
 		<div class="dup-button-footer" style="display:none">
-			<input type="button" value="&#9664; <?php _e("Back", 'duplicator') ?>" onclick="window.location.assign('?page=duplicator&tab=new1')" class="button button-large" />
-			<input type="button" value="<?php _e("Rescan", 'duplicator') ?>" onclick="Duplicator.Pack.rescan()" class="button button-large" />
-			<input type="submit" value="<?php _e("Build", 'duplicator') ?> &#9654" class="button button-primary button-large" id="dup-build-button" />
+			<input type="button" value="&#9664; <?php esc_html_e("Back", 'duplicator') ?>" onclick="window.location.assign('?page=duplicator&tab=new1')" class="button button-large" />
+			<input type="button" value="<?php esc_attr_e("Rescan", 'duplicator') ?>" onclick="Duplicator.Pack.rescan()" class="button button-large" />
+			<input type="submit" value="<?php esc_attr_e("Build", 'duplicator') ?> &#9654" class="button button-primary button-large" id="dup-build-button" />
 		</div>
 	</div>
 
@@ -336,14 +336,14 @@ jQuery(document).ready(function($)
 	Duplicator.Pack.intErrorView = function()
 	{
 		var html_msg;
-		html_msg  = '<?php _e("Unable to perform a full scan, please try the following actions:", 'duplicator') ?><br/><br/>';
-		html_msg += '<?php _e("1. Go back and create a root path directory filter to validate the site is scan-able.", 'duplicator') ?><br/>';
-		html_msg += '<?php _e("2. Continue to add/remove filters to isolate which path is causing issues.", 'duplicator') ?><br/>';
-		html_msg += '<?php _e("3. This message will go away once the correct filters are applied.", 'duplicator') ?><br/><br/>';
+		html_msg  = '<?php esc_html_e("Unable to perform a full scan, please try the following actions:", 'duplicator') ?><br/><br/>';
+		html_msg += '<?php esc_html_e("1. Go back and create a root path directory filter to validate the site is scan-able.", 'duplicator') ?><br/>';
+		html_msg += '<?php esc_html_e("2. Continue to add/remove filters to isolate which path is causing issues.", 'duplicator') ?><br/>';
+		html_msg += '<?php esc_html_e("3. This message will go away once the correct filters are applied.", 'duplicator') ?><br/><br/>';
 
-		html_msg += '<?php _e("Common Issues:", 'duplicator') ?><ul>';
-		html_msg += '<li><?php _e("- On some budget hosts scanning over 30k files can lead to timeout/gateway issues. Consider scanning only your main WordPress site and avoid trying to backup other external directories.", 'duplicator') ?></li>';
-		html_msg += '<li><?php _e("- Symbolic link recursion can cause timeouts.  Ask your server admin if any are present in the scan path.  If they are add the full path as a filter and try running the scan again.", 'duplicator') ?></li>';
+		html_msg += '<?php esc_html_e("Common Issues:", 'duplicator') ?><ul>';
+		html_msg += '<li><?php esc_html_e("- On some budget hosts scanning over 30k files can lead to timeout/gateway issues. Consider scanning only your main WordPress site and avoid trying to backup other external directories.", 'duplicator') ?></li>';
+		html_msg += '<li><?php esc_html_e("- Symbolic link recursion can cause timeouts.  Ask your server admin if any are present in the scan path.  If they are add the full path as a filter and try running the scan again.", 'duplicator') ?></li>';
 		html_msg += '</ul>';
 		$('#dup-msg-error-response-status').html('Scan Path Error [<?php echo rtrim(DUPLICATOR_WPROOTPATH, '/'); ?>]');
 		$('#dup-msg-error-response-text').html(html_msg);
@@ -356,10 +356,10 @@ jQuery(document).ready(function($)
 		var result;
 		switch (status) {
 			case false :    result = '<div class="scan-warn"><i class="fa fa-exclamation-triangle"></i></div>'; break;
-			case 'Warn' :   result = '<div class="badge badge-warn"><?php _e("Notice", 'duplicator') ?></div>'; break;
+			case 'Warn' :   result = '<div class="badge badge-warn"><?php esc_html_e("Notice", 'duplicator') ?></div>'; break;
 			case true :     result = '<div class="scan-good"><i class="fa fa-check"></i></div>'; break;
-			case 'Good' :   result = '<div class="badge badge-pass"><?php _e("Good", 'duplicator') ?></div>'; break;
-            case 'Fail' :   result = '<div class="badge badge-warn"><?php _e("Fail", 'duplicator') ?></div>'; break;
+			case 'Good' :   result = '<div class="badge badge-pass"><?php esc_html_e("Good", 'duplicator') ?></div>'; break;
+            case 'Fail' :   result = '<div class="badge badge-warn"><?php esc_html_e("Fail", 'duplicator') ?></div>'; break;
 			default :
 				result = 'unable to read';
 		}

@@ -101,7 +101,7 @@ class DUP_Installer
         $installer_contents = str_replace($search_array, $replace_array, $installer_contents);
         
         if (@file_put_contents($installer_filepath, $installer_contents) === false) {
-            DUP_Log::error(__('Error writing installer contents', 'duplicator'), __("Couldn't write to $installer_filepath", 'duplicator'));
+            DUP_Log::error(esc_html__('Error writing installer contents', 'duplicator'), esc_html__("Couldn't write to $installer_filepath", 'duplicator'));
             $success = false;
         }
         

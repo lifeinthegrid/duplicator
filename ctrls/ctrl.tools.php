@@ -30,20 +30,26 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
 	public function runScanValidator($post)
 	{
         @set_time_limit(0);
-		$post = $this->postParamMerge($post);
-		check_ajax_referer($post['action'], 'nonce');
+        $post = $this->postParamMerge($post);
+        $action = sanitize_text_field($post['action']);
+		check_ajax_referer($action, 'nonce');
 		
 		$result = new DUP_CTRL_Result($this);
 		 
 		try 
 		{
 			//CONTROLLER LOGIC
-			$path = isset($post['scan-path']) ? $post['scan-path'] : DUPLICATOR_WPROOTPATH;
+			$path = isset($post['scan-path']) ? sanitize_text_field($post['scan-path']) : DUPLICATOR_WPROOTPATH;
 			if (!is_dir($path)) {
 				throw new Exception("Invalid directory provided '{$path}'!");
 			}
-			$scanner = new DUP_ScanCheck();
-			$scanner->recursion = (isset($post['scan-recursive']) && $post['scan-recursive'] != 'false') ? true : false;
+            $scanner = new DUP_ScanCheck();
+            if (isset($post['scan-recursive'])) {
+                $scan_recursive_val = sanitize_text_field($post['scan-recursive']);
+                $scan_recursive = ($scan_recursive_val != 'false');
+            }
+            
+			$scanner->recursion = $scan_recursive ? true : false;
 			$payload = $scanner->run($path);
 
 			//RETURN RESULT
@@ -108,7 +114,7 @@ class DUP_CTRL_Tools extends DUP_CTRL_Base
                 $message = "Couldn't open $file_path.";
             }
             DUP_Log::trace($message);
-            echo $message;
+            echo esc_html($message);
         }
 
         exit;

@@ -55,7 +55,7 @@ EOT;
 </script>
 
 <div class="wrap dup-wrap dup-support-all">
-	<h1><?php _e('Testing Interface', 'duplicator'); ?></h1>
+	<h1><?php esc_html_e('Testing Interface', 'duplicator'); ?></h1>
     <hr size="1" />
 	
 	<table class="debug-toolbar">
@@ -65,8 +65,8 @@ EOT;
 				<input id="test-checkall" type="checkbox" onclick="Duplicator.Debug.CheckAllTests()"> 
 			</td>
 			<td>
-				<input type="button" class="button button-small" value="<?php _e('Run Tests', 'duplicator'); ?>" onclick="Duplicator.Debug.RunTests()" />
-				<input type="button" class="button button-small" value="<?php _e('Refresh Page', 'duplicator'); ?>" onclick="window.location.reload();" />
+				<input type="button" class="button button-small" value="<?php esc_attr_e('Run Tests', 'duplicator'); ?>" onclick="Duplicator.Debug.RunTests()" />
+				<input type="button" class="button button-small" value="<?php esc_attr_e('Refresh Page', 'duplicator'); ?>" onclick="window.location.reload();" />
 			</td>
 			<td> <input type="checkbox" id="test-openwindow" onchange="Duplicator.Debug.TestNewWindow()" /> <label for="test-openwindow">Tests in new window</label> </td>
 		</tr>

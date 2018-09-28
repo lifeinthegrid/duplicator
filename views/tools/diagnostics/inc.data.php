@@ -8,26 +8,26 @@ OPTIONS DATA -->
 <div class="dup-box">
 	<div class="dup-box-title">
 		<i class="fa fa-th-list"></i>
-		<?php _e("Stored Data", 'duplicator'); ?>
+		<?php esc_html_e("Stored Data", 'duplicator'); ?>
 		<div class="dup-box-arrow"></div>
 	</div>
-	<div class="dup-box-panel" id="dup-settings-diag-opts-panel" style="<?php echo $ui_css_opts_panel?>">
+	<div class="dup-box-panel" id="dup-settings-diag-opts-panel" style="<?php echo esc_html($ui_css_opts_panel); ?>">
 		<div style="padding-left:10px">
-			<h3 class="title"><?php _e('Data Cleanup', 'duplicator') ?></h3>
+			<h3 class="title"><?php esc_html_e('Data Cleanup', 'duplicator') ?></h3>
 				<table class="dup-reset-opts">
 					<tr style="vertical-align:text-top">
 						<td>
 							<button id="dup-remove-installer-files-btn" type="button" class="button button-small dup-fixed-btn" onclick="Duplicator.Tools.deleteInstallerFiles();">
-								<?php _e("Remove Installation Files", 'duplicator'); ?>
+								<?php esc_html_e("Remove Installation Files", 'duplicator'); ?>
 							</button>
 						</td>
 						<td>
-							<?php _e("Removes all reserved installer files.", 'duplicator'); ?>
-							<a href="javascript:void(0)" onclick="jQuery('#dup-tools-delete-moreinfo').toggle()">[<?php _e("more info", 'duplicator'); ?>]</a><br/>
+							<?php esc_html_e("Removes all reserved installer files.", 'duplicator'); ?>
+							<a href="javascript:void(0)" onclick="jQuery('#dup-tools-delete-moreinfo').toggle()">[<?php esc_html_e("more info", 'duplicator'); ?>]</a><br/>
 
 							<div id="dup-tools-delete-moreinfo">
 								<?php
-									_e("Clicking on the 'Remove Installation Files' button will attempt to remove the installer files used by Duplicator.  These files should not "
+									esc_html_e("Clicking on the 'Remove Installation Files' button will attempt to remove the installer files used by Duplicator.  These files should not "
 									. "be left on production systems for security reasons. Below are the files that should be removed.", 'duplicator');
 									echo "<br/><br/>";
 
@@ -42,15 +42,15 @@ OPTIONS DATA -->
 					<tr>
 						<td>
 							<button type="button" class="button button-small dup-fixed-btn" onclick="Duplicator.Tools.ConfirmClearBuildCache()">
-								<?php _e("Clear Build Cache", 'duplicator'); ?>
+								<?php esc_html_e("Clear Build Cache", 'duplicator'); ?>
 							</button>
 						</td>
-						<td><?php _e("Removes all build data from:", 'duplicator'); ?> [<?php echo DUPLICATOR_SSDIR_PATH_TMP ?>].</td>
+						<td><?php esc_html_e("Removes all build data from:", 'duplicator'); ?> [<?php echo DUPLICATOR_SSDIR_PATH_TMP ?>].</td>
 					</tr>
 				</table>
 		</div>
 		<div style="padding:0px 20px 0px 25px">
-			<h3 class="title" style="margin-left:-15px"><?php _e("Options Values", 'duplicator') ?> </h3>	
+			<h3 class="title" style="margin-left:-15px"><?php esc_html_e("Options Values", 'duplicator') ?> </h3>	
 			<table class="widefat" cellspacing="0">
 				<thead>
 					<tr>
@@ -65,11 +65,11 @@ OPTIONS DATA -->
 						<td>
 							<?php 
 								 echo (in_array($row->option_name, $GLOBALS['DUPLICATOR_OPTS_DELETE']))
-									? "<a href='javascript:void(0)' onclick='Duplicator.Settings.ConfirmDeleteOption(this)'>{$row->option_name}</a>"
+									? "<a href='javascript:void(0)' onclick='Duplicator.Settings.ConfirmDeleteOption(this)'>".esc_html($row->option_name)."</a>"
 									: $row->option_name;
 							?>
 						</td>
-						<td><textarea class="dup-opts-read" readonly="readonly"><?php echo $row->option_value?></textarea></td>
+						<td><textarea class="dup-opts-read" readonly="readonly"><?php echo esc_textarea($row->option_value); ?></textarea></td>
 					</tr>
 				<?php } ?>
 				</tbody>
@@ -103,8 +103,8 @@ jQuery(document).ready(function($)
 	Duplicator.Settings.ConfirmDeleteOption = function (anchor) 
 	{
 		var key = $(anchor).text();
-		var msg_id = '<?php echo $confirm1->getMessageID() ?>';
-		var msg    = '<?php _e('Delete the option value', 'duplicator');?>' + ' [' + key + '] ?';
+		var msg_id = '<?php echo esc_js($confirm1->getMessageID()); ?>';
+		var msg    = '<?php esc_html_e('Delete the option value', 'duplicator');?>' + ' [' + key + '] ?';
 		jQuery('#dup-remove-options-value').val(key);
 		jQuery('#' + msg_id).html(msg)
 		<?php $confirm1->showConfirm(); ?>
@@ -122,7 +122,7 @@ jQuery(document).ready(function($)
 
 	Duplicator.Tools.ClearBuildCache = function ()
 	{
-		window.location = '?page=duplicator-tools&tab=diagnostics&action=tmp-cache&_wpnonce=<?php echo $nonce; ?>';
+		window.location = '?page=duplicator-tools&tab=diagnostics&action=tmp-cache&_wpnonce=<?php echo esc_js($nonce); ?>';
 	}
 });
 
@@ -130,7 +130,7 @@ jQuery(document).ready(function($)
 Duplicator.Tools.deleteInstallerFiles = function()
 {
 	<?php
-	$url = "?page=duplicator-tools&tab=diagnostics&action=installer&_wpnonce={$nonce}&package={$package_name}";
+	$url = "?page=duplicator-tools&tab=diagnostics&action=installer&_wpnonce=".esc_js($nonce)."&package=".esc_js($package_name);
 	echo "window.location = '{$url}';";
 	?>
 }

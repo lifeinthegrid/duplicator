@@ -16,7 +16,7 @@ PHP INFORMATION -->
 <div class="dup-box">
 	<div class="dup-box-title">
 		<i class="fa fa-info-circle"></i>
-		<?php _e("PHP Information", 'duplicator'); ?>
+		<?php esc_html_e("PHP Information", 'duplicator'); ?>
 		<div class="dup-box-arrow"></div>
 	</div>
 	<div class="dup-box-panel" style="display:none">	

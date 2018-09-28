@@ -350,7 +350,7 @@ class DaTester
                         echo '<br/><br/>';
 
                         foreach ($daTesterExpandState->failures as $failure) {
-                            echo $failure->description;
+                            echo esc_html($failure->description);
                             echo '<br/><br/>';
                         }
                     } else {

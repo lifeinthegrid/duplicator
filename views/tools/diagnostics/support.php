@@ -26,7 +26,7 @@
                 <td style="width:70px"><i class="fa fa-question-circle fa-5x"></i></td>
                 <td valign="top" style="padding-top:10px; font-size:13px">
                     <?php
-                    _e("Migrating WordPress is a complex process and the logic to make all the magic happen smoothly may not work quickly with every site.  With over 30,000 plugins and a very complex server eco-system some migrations may run into issues.  This is why the Duplicator includes a detailed knowledgebase that can help with many common issues.  Resources to additional support, approved hosting, and alternatives to fit your needs can be found below.", 'duplicator');
+                    esc_html_e("Migrating WordPress is a complex process and the logic to make all the magic happen smoothly may not work quickly with every site.  With over 30,000 plugins and a very complex server eco-system some migrations may run into issues.  This is why the Duplicator includes a detailed knowledgebase that can help with many common issues.  Resources to additional support, approved hosting, and alternatives to fit your needs can be found below.", 'duplicator');
                     ?>
                 </td>
             </tr>
@@ -37,16 +37,16 @@
         <div class="dup-support-hlp-area">
             <div class="dup-support-hlp-hdrs">
                 <i class="fa fa-cube fa-2x pull-left"></i>
-                <div><?php _e('Knowledgebase', 'duplicator') ?></div>
+                <div><?php esc_html_e('Knowledgebase', 'duplicator') ?></div>
             </div>
             <div class="dup-support-hlp-txt">
-                <?php _e('Complete Online Documentation', 'duplicator'); ?><br/>
+                <?php esc_html_e('Complete Online Documentation', 'duplicator'); ?><br/>
                 <select id="dup-support-kb-lnks" style="margin-top:18px; font-size:16px; min-width: 170px">
-                    <option> <?php _e('Choose A Section', 'duplicator') ?> </option>
-                    <option value="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_qs"><?php _e('Quick Start', 'duplicator') ?></option>
-                    <option value="https://snapcreek.com/duplicator/docs/guide/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_guide"><?php _e('User Guide', 'duplicator') ?></option>
-                    <option value="https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_FAQs"><?php _e('FAQs', 'duplicator') ?></option>
-                    <option value="https://snapcreek.com/duplicator/docs/changelog/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_changelog&lite"><?php _e('Change Log', 'duplicator') ?></option>
+                    <option> <?php esc_html_e('Choose A Section', 'duplicator') ?> </option>
+                    <option value="https://snapcreek.com/duplicator/docs/quick-start/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_qs"><?php esc_html_e('Quick Start', 'duplicator') ?></option>
+                    <option value="https://snapcreek.com/duplicator/docs/guide/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_guide"><?php esc_html_e('User Guide', 'duplicator') ?></option>
+                    <option value="https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_FAQs"><?php esc_html_e('FAQs', 'duplicator') ?></option>
+                    <option value="https://snapcreek.com/duplicator/docs/changelog/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_changelog&lite"><?php esc_html_e('Change Log', 'duplicator') ?></option>
                 </select>
             </div>
         </div>
@@ -55,14 +55,14 @@
         <div class="dup-support-hlp-area">
             <div class="dup-support-hlp-hdrs">
                 <i class="fa fa-lightbulb-o fa-2x pull-left"></i>
-                <div><?php _e('Online Support', 'duplicator') ?></div>
+                <div><?php esc_html_e('Online Support', 'duplicator') ?></div>
             </div>
             <div class="dup-support-hlp-txt">
-                <?php _e("Get Help From IT Professionals", 'duplicator'); ?> 
+                <?php esc_html_e("Get Help From IT Professionals", 'duplicator'); ?> 
                 <br/>
                 <div class="dup-support-txts-links" style="margin:10px 0 10px 0">
                     <button class="button  button-primary button-large" onclick="Duplicator.OpenSupportWindow();return false;">
-						<?php _e('Get Support!', 'duplicator') ?>
+						<?php esc_html_e('Get Support!', 'duplicator') ?>
 					</button> <br/>
                 </div>	
 				<small>Pro Users <a href="https://snapcreek.com/ticket?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_prousers_here" target="_blank">Support Here</a></small>
@@ -76,13 +76,13 @@
 
             <div class="dup-support-hlp-hdrs">
                 <i class="fa fa-bolt fa-2x pull-left"></i>
-                <div><?php _e('Approved Hosting', 'duplicator') ?></div>
+                <div><?php esc_html_e('Approved Hosting', 'duplicator') ?></div>
             </div>			
             <div class="dup-support-hlp-txt">
-                <?php _e('Servers That Work With Duplicator', 'duplicator'); ?>
+                <?php esc_html_e('Servers That Work With Duplicator', 'duplicator'); ?>
                 <br/><br/>
                 <div class="dup-support-txts-links">
-                    <button class="button button-primary button-large" onclick="window.open('https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_servers#faq-resource-040-q', 'litg');"><?php _e('Trusted Providers!', 'duplicator') ?></button> &nbsp;
+                    <button class="button button-primary button-large" onclick="window.open('https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_servers#faq-resource-040-q', 'litg');"><?php esc_html_e('Trusted Providers!', 'duplicator') ?></button> &nbsp;
                 </div>
             </div>
         </div>
@@ -92,13 +92,13 @@
 
             <div class="dup-support-hlp-hdrs">
                 <i class="fa fa-code-fork fa-2x pull-left"></i>
-                <div><?php _e('Alternatives', 'duplicator') ?></div>
+                <div><?php esc_html_e('Alternatives', 'duplicator') ?></div>
             </div>			
             <div class="dup-support-hlp-txt">
-                <?php _e('Other Commercial Resources', 'duplicator'); ?>
+                <?php esc_html_e('Other Commercial Resources', 'duplicator'); ?>
                 <br/><br/>
                 <div class="dup-support-txts-links">
-                    <button class="button button-primary button-large" onclick="window.open('https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_pro_sln#faq-resource-050-q', 'litg');"><?php _e('Pro Solutions!', 'duplicator') ?></button> &nbsp;
+                    <button class="button button-primary button-large" onclick="window.open('https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=support_pro_sln#faq-resource-050-q', 'litg');"><?php esc_html_e('Pro Solutions!', 'duplicator') ?></button> &nbsp;
                 </div>
             </div>
         </div>
