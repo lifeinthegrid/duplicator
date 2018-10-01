@@ -234,8 +234,8 @@ class DUPX_DBTest
 			}
 
 			//CREATE & DROP DB
-			$result		 = mysqli_query($this->dbh, "CREATE DATABASE IF NOT EXISTS `{$this->in->dbname}`");
-			$db_found	 = mysqli_select_db($this->dbh, $this->in->dbname);
+			$result		 = mysqli_query($this->dbh, "CREATE DATABASE IF NOT EXISTS `".mysqli_real_escape_string($this->dbh, $this->in->dbname)."`");
+			$db_found	 = mysqli_select_db($this->dbh, mysqli_real_escape_string($this->dbh, $this->in->dbname));
 
 			if (!$db_found) {
 				$test['pass']	 = 0;
@@ -542,9 +542,9 @@ class DUPX_DBTest
 			return;
 		}
 
-		mysqli_select_db($this->dbh, $this->in->dbname);
+		mysqli_select_db($this->dbh, mysqli_real_escape_string($this->dbh, $this->in->dbname));
 		$tmp_table	 = '__dpro_temp_'.rand(1000, 9999).'_'.date("ymdHis");
-		$qry_create	 = @mysqli_query($this->dbh, "CREATE TABLE `{$tmp_table}` (
+		$qry_create	 = @mysqli_query($this->dbh, "CREATE TABLE `".mysqli_real_escape_string($this->dbh, $tmp_table)."` (
 						`id` int(11) NOT NULL AUTO_INCREMENT,
 						`text` text NOT NULL,
 						PRIMARY KEY (`id`))");
@@ -552,12 +552,12 @@ class DUPX_DBTest
 		$this->tblPerms['create'] = ($qry_create) ? 1 : 0;
 
 		if ($qry_create) {
-			$qry_insert	 = @mysqli_query($this->dbh, "INSERT INTO `{$tmp_table}` (`text`) VALUES ('Duplicator Test: Please Remove this Table')");
-			$qry_insert	 = @mysqli_query($this->dbh, "INSERT INTO `{$tmp_table}` (`text`) VALUES ('TEXT-1')");
-			$qry_select	 = @mysqli_query($this->dbh, "SELECT COUNT(*) FROM `{$tmp_table}`");
-			$qry_update	 = @mysqli_query($this->dbh, "UPDATE `{$tmp_table}` SET text = 'TEXT-2' WHERE text = 'TEXT-1'");
-			$qry_delete	 = @mysqli_query($this->dbh, "DELETE FROM `{$tmp_table}` WHERE text = 'TEXT-2'");
-			$qry_drop	 = @mysqli_query($this->dbh, "DROP TABLE IF EXISTS `{$tmp_table}`;");
+			$qry_insert	 = @mysqli_query($this->dbh, "INSERT INTO `".mysqli_real_escape_string($this->dbh, $tmp_table)."` (`text`) VALUES ('Duplicator Test: Please Remove this Table')");
+			$qry_insert	 = @mysqli_query($this->dbh, "INSERT INTO `".mysqli_real_escape_string($this->dbh, $tmp_table)."` (`text`) VALUES ('TEXT-1')");
+			$qry_select	 = @mysqli_query($this->dbh, "SELECT COUNT(*) FROM `".mysqli_real_escape_string($this->dbh, $tmp_table)."`");
+			$qry_update	 = @mysqli_query($this->dbh, "UPDATE `".mysqli_real_escape_string($this->dbh, $tmp_table)."` SET text = 'TEXT-2' WHERE text = 'TEXT-1'");
+			$qry_delete	 = @mysqli_query($this->dbh, "DELETE FROM `".mysqli_real_escape_string($this->dbh, $tmp_table)."` WHERE text = 'TEXT-2'");
+			$qry_drop	 = @mysqli_query($this->dbh, "DROP TABLE IF EXISTS `".mysqli_real_escape_string($this->dbh, $tmp_table)."`;");
 
 			$this->tblPerms['insert']	 = ($qry_insert) ? 1 : 0;
 			$this->tblPerms['select']	 = ($qry_select) ? 1 : 0;
@@ -614,14 +614,15 @@ class DUPX_DBTest
 
 		mysqli_select_db($this->dbh, $this->in->dbname);
 
-        $tmp_table	 = '__dpro_temp_'.rand(1000, 9999).'_'.date("ymdHis");
+		$tmp_table	 = '__dpro_temp_'.rand(1000, 9999).'_'.date("ymdHis");
+		$tmp_table	 = mysqli_real_escape_string($dbh, $tmp_table);
 
 		$qry_create	 = @mysqli_query($this->dbh, "CREATE TABLE `{$tmp_table}` (
 						`datetimefield` datetime NOT NULL,
 						`datefield` date NOT NULL)");
 
 		if ($qry_create) {
-            $qry_date    = @mysqli_query($this->dbh, "INSERT INTO `{$tmp_table}` (`datetimefield`,`datefield`) VALUES ('0000-00-00 00:00:00','0000-00-00')");
+            $qry_date    = @mysqli_query($this->dbh, "INSERT INTO `".$tmp_table."` (`datetimefield`,`datefield`) VALUES ('0000-00-00 00:00:00','0000-00-00')");
 
             if($qry_date) {
                  $this->queryDateInserted = true;
@@ -645,7 +646,7 @@ class DUPX_DBTest
 
 			//DELETE DB
 			if ($this->newDBMade && $this->in->dbaction == 'create') {
-				$result	= mysqli_query($this->dbh, "DROP DATABASE IF EXISTS `{$this->in->dbname}`");
+				$result	= mysqli_query($this->dbh, "DROP DATABASE IF EXISTS `".mysqli_real_escape_string($this->dbh, $this->in->dbname)."`");
 				if (!$result) {
 					$this->reqs[30][pass] = 0;
 					$this->reqs[30][info] = "The database <b>[".htmlentities($this->in->dbname)."]</b> was successfully created. However removing the database was not successful with the following response.<br/>"

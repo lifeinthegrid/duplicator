@@ -55,8 +55,8 @@ class DUPX_DBInstall
                 or DUPX_Log::error(sprintf(ERR_DBCREATE, $post['dbname']));
         }
 
-		@mysqli_query($this->dbh, "SET wait_timeout = {$GLOBALS['DB_MAX_TIME']}");
-        @mysqli_query($this->dbh, "SET max_allowed_packet = {$GLOBALS['DB_MAX_PACKETS']}");
+		@mysqli_query($this->dbh, "SET wait_timeout = ".mysqli_real_escape_string($this->dbh, $GLOBALS['DB_MAX_TIME']));
+        @mysqli_query($this->dbh, "SET max_allowed_packet = ".mysqli_real_escape_string($this->dbh, $GLOBALS['DB_MAX_PACKETS']));
 
         $this->profile_start   = isset($post['profile_start']) ? $post['profile_start'] : DUPX_U::getMicrotime();
         $this->start_microtime = isset($post['start_microtime']) ? $post['start_microtime'] : $start_microtime;
@@ -125,8 +125,8 @@ EOT;
     public function prepareDB()
     {
         //RUN DATABASE SCRIPT
-        @mysqli_query($this->dbh, "SET wait_timeout = {$GLOBALS['DB_MAX_TIME']}");
-        @mysqli_query($this->dbh, "SET max_allowed_packet = {$GLOBALS['DB_MAX_PACKETS']}");
+        @mysqli_query($this->dbh, "SET wait_timeout = ".mysqli_real_escape_string($this->dbh, $GLOBALS['DB_MAX_TIME']));
+        @mysqli_query($this->dbh, "SET max_allowed_packet = ".mysqli_real_escape_string($this->dbh, $GLOBALS['DB_MAX_PACKETS']));
         DUPX_DB::setCharset($this->dbh, $this->post['dbcharset'], $this->post['dbcollate']);
 
         //Will set mode to null only for this db handle session
@@ -138,7 +138,7 @@ EOT;
             case 'CUSTOM':
                 $dbmysqlmode_opts = $this->post['dbmysqlmode_opts'];
 
-                $qry_session_custom = @mysqli_query($this->dbh, "SET SESSION sql_mode = '{$dbmysqlmode_opts}'");
+                $qry_session_custom = @mysqli_query($this->dbh, "SET SESSION sql_mode = '".mysqli_real_escape_string($dbh, $dbmysqlmode_opts)."'");
                 if ($qry_session_custom == false) {
                     $sql_error = mysqli_error($this->dbh);
                     $log       = "WARNING: A custom sql_mode setting issue has been detected:\n{$sql_error}.\n";
@@ -176,9 +176,9 @@ EOT;
         switch ($this->post['dbaction']) {
             case "create":
                 if ($this->post['view_mode'] == 'basic') {
-                    mysqli_query($this->dbh, "CREATE DATABASE IF NOT EXISTS `{$this->post['dbname']}`");
+                    mysqli_query($this->dbh, "CREATE DATABASE IF NOT EXISTS `".mysqli_real_escape_string($this->dbh, $this->post['dbname'])."`");
                 }
-                mysqli_select_db($this->dbh, $this->post['dbname'])
+                mysqli_select_db($this->dbh, mysqli_real_escape_string($this->dbh, $this->post['dbname']))
                     or DUPX_Log::error(sprintf(ERR_DBCONNECT_CREATE, $this->post['dbname']));
                 break;
 
@@ -192,7 +192,7 @@ EOT;
 
             //RENAME DB TABLES
             case "rename" :
-                $sql          = "SHOW TABLES FROM `{$this->post['dbname']}` WHERE  `Tables_in_{$this->post['dbname']}` NOT LIKE '{$GLOBALS['DB_RENAME_PREFIX']}%'";
+                $sql          = "SHOW TABLES FROM `".mysqli_real_escape_string($this->dbh, $this->post['dbname'])."` WHERE  `Tables_in_".mysqli_real_escape_string($this->dbh, $this->post['dbname'])."` NOT LIKE '".mysqli_real_escape_string($this->dbh, $GLOBALS['DB_RENAME_PREFIX'])."%'";
                 $found_tables = null;
                 if ($result       = mysqli_query($this->dbh, $sql)) {
                     while ($row = mysqli_fetch_row($result)) {
@@ -200,7 +200,7 @@ EOT;
                     }
                     if (count($found_tables) > 0) {
                         foreach ($found_tables as $table_name) {
-                            $sql    = "RENAME TABLE `{$this->post['dbname']}`.`{$table_name}` TO  `{$this->post['dbname']}`.`{$GLOBALS['DB_RENAME_PREFIX']}{$table_name}`";
+                            $sql    = "RENAME TABLE `".mysqli_real_escape_string($this->dbh, $this->post['dbname'])."`.`".mysqli_real_escape_string($this->dbh, $table_name)."` TO  `".mysqli_real_escape_string($this->dbh, $this->post['dbname'])."`.`".mysqli_real_escape_string($this->dbh, $GLOBALS['DB_RENAME_PREFIX']).mysqli_real_escape_string($this->dbh, $table_name)."`";
                             if (!$result = mysqli_query($this->dbh, $sql)) {
                                 DUPX_Log::error(sprintf(ERR_DBTRYRENAME, "{$this->post['dbname']}.{$table_name}"));
                             }
@@ -293,7 +293,7 @@ EOT;
                         mysqli_close($this->dbh);
                         $this->dbh = DUPX_DB::connect($this->post['dbhost'], $this->post['dbuser'], $this->post['dbpass'], $this->post['dbname']);
                         // Reset session setup
-                        @mysqli_query($this->dbh, "SET wait_timeout = {$GLOBALS['DB_MAX_TIME']}");
+                        @mysqli_query($this->dbh, "SET wait_timeout = ".mysqli_real_escape_string($dbh, $GLOBALS['DB_MAX_TIME']));
                         DUPX_DB::setCharset($this->dbh, $this->post['dbcharset'], $this->post['dbcollate']);
                     }
                     DUPX_Log::info("**ERROR** database error write '{$err}' - [sql=".substr($this->sql_result_data[$counter], 0, 75)."...]");
@@ -322,18 +322,18 @@ EOT;
         $dbdelete_count1 = 0;
         $dbdelete_count2 = 0;
 
-        @mysqli_query($this->dbh, "DELETE FROM `{$GLOBALS['DUPX_AC']->wp_tableprefix}duplicator_packages`");
+        @mysqli_query($this->dbh, "DELETE FROM `".mysqli_real_escape_string($this->dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."duplicator_packages`");
         $dbdelete_count1 = @mysqli_affected_rows($this->dbh);
 
         @mysqli_query($this->dbh,
-                "DELETE FROM `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` WHERE `option_name` LIKE ('_transient%') OR `option_name` LIKE ('_site_transient%')");
+                "DELETE FROM `".mysqli_real_escape_string($this->dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."options` WHERE `option_name` LIKE ('_transient%') OR `option_name` LIKE ('_site_transient%')");
         $dbdelete_count2 = @mysqli_affected_rows($this->dbh);
 
         $this->dbdelete_count += (abs($dbdelete_count1) + abs($dbdelete_count2));
 
         //Reset Duplicator Options
         foreach ($GLOBALS['DUPX_AC']->opts_delete as $value) {
-            mysqli_query($this->dbh, "DELETE FROM `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` WHERE `option_name` = '{$value}'");
+            mysqli_query($this->dbh, "DELETE FROM `".mysqli_real_escape_string($this->dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."options` WHERE `option_name` = '".mysqli_real_escape_string($dbh, $value)."'");
         }
 
         //Remove views from DB
@@ -363,7 +363,7 @@ EOT;
             }
             if (count($found_tables) > 0) {
                 foreach ($found_tables as $table_name) {
-                    $sql    = "DROP TABLE `{$this->post['dbname']}`.`{$table_name}`";
+                    $sql    = "DROP TABLE `".mysqli_real_escape_string($this->dbh, $this->post['dbname'])."`.`".mysqli_real_escape_string($this->dbh, $table_name)."`";
                     if (!$result = mysqli_query($this->dbh, $sql)) {
                         DUPX_Log::error(sprintf(ERR_DBTRYCLEAN, "{$this->post['dbname']}.{$table_name}")."<br/>ERROR MESSAGE:{$err}");
                     }
@@ -383,7 +383,7 @@ EOT;
             }
             if (count($found) > 0) {
                 foreach ($found as $proc_name) {
-                    $sql    = "DROP PROCEDURE IF EXISTS `{$this->post['dbname']}`.`{$proc_name}`";
+                    $sql    = "DROP PROCEDURE IF EXISTS `".mysqli_real_escape_string($this->dbh, $this->post['dbname'])."`.`".mysqli_real_escape_string($this->dbh, $proc_name)."`";
                     if (!$result = mysqli_query($this->dbh, $sql)) {
                         DUPX_Log::error(sprintf(ERR_DBTRYCLEAN, "{$this->post['dbname']}.{$proc_name}")."<br/>ERROR MESSAGE:{$err}");
                     }
@@ -402,7 +402,7 @@ EOT;
             }
             if (count($found_views) > 0) {
                 foreach ($found_views as $view_name) {
-                    $sql    = "DROP VIEW `{$this->post['dbname']}`.`{$view_name}`";
+                    $sql    = "DROP VIEW `".mysqli_real_escape_string($this->dbh, $this->post['dbname'])."`.`".mysqli_real_escape_string($this->dbh, $view_name)."`";
                     if (!$result = mysqli_query($this->dbh, $sql)) {
                         DUPX_Log::error(sprintf(ERR_DBTRYCLEAN, "{$this->post['dbname']}.{$view_name}")."<br/>ERROR MESSAGE:{$err}");
                     }
