@@ -208,12 +208,12 @@ DUPX_UpdateEngine::logErrors($report);
 //===============================================
 //CREATE NEW ADMIN USER
 //===============================================
-if (strlen($post_wp_username) >= 4 && strlen($_POST['wp_password']) >= 6) {
+if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
 
 	$post_wp_username = mysqli_real_escape_string($dbh, $_POST['wp_username']);	
 	$post_wp_password = mysqli_real_escape_string($dbh, $_POST['wp_password']);
 
-	$newuser_check	 = mysqli_query($dbh, "SELECT COUNT(*) AS count FROM `".mysqli_real_escape_string($this->dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."users` WHERE user_login = '{$post_wp_username}' ");
+	$newuser_check	 = mysqli_query($dbh, "SELECT COUNT(*) AS count FROM `".mysqli_real_escape_string($dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."users` WHERE user_login = '{$post_wp_username}' ");
 	$newuser_row	 = mysqli_fetch_row($newuser_check);
 	$newuser_count	 = is_null($newuser_row) ? 0 : $newuser_row[0];
 
@@ -231,7 +231,7 @@ if (strlen($post_wp_username) >= 4 && strlen($_POST['wp_password']) >= 6) {
 
 		$newuser2 = @mysqli_query($dbh,
 				"INSERT INTO `{$GLOBALS['DUPX_AC']->wp_tableprefix}usermeta`
-				(`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser1_insert_id}', '{$GLOBALS['DUPX_AC']->wp_tableprefix}capabilities', '{$newuser_security}')");
+				(`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser1_insert_id}', '".mysqli_real_escape_string($dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."capabilities', '{$newuser_security}')");
 
 		$newuser3 = @mysqli_query($dbh,
 				"INSERT INTO `{$GLOBALS['DUPX_AC']->wp_tableprefix}usermeta`
