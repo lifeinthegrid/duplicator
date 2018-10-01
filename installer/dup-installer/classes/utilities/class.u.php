@@ -265,7 +265,7 @@ class DUPX_U
 		$where  = "option_name = 'active_plugins'";
 
 
-		$query = @mysqli_query($dbh, "SELECT {$select} FROM `{$GLOBALS['DUPX_AC']->wp_tableprefix}{$table}` WHERE {$where} ");
+		$query = @mysqli_query($dbh, "SELECT {$select} FROM `".mysqli_real_escape_string($dbh, $GLOBALS['DUPX_AC']->wp_tableprefix).mysqli_real_escape_string($dbh, $table)."` WHERE {$where} ");
 		if ($query) {
 			$row		 = @mysqli_fetch_array($query);
 			$all_plugins = unserialize($row[0]);

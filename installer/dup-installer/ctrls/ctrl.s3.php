@@ -39,7 +39,7 @@ if (!$dbh) {
 }
 
 $charset_server	 = @mysqli_character_set_name($dbh);
-@mysqli_query($dbh, "SET wait_timeout = {$GLOBALS['DB_MAX_TIME']}");
+@mysqli_query($dbh, "SET wait_timeout = ".mysqli_real_escape_string($dbh, $GLOBALS['DB_MAX_TIME']));
 DUPX_DB::setCharset($dbh, $_POST['dbcharset'], $_POST['dbcollate']);
 $charset_client	 = @mysqli_character_set_name($dbh);
 
@@ -208,9 +208,12 @@ DUPX_UpdateEngine::logErrors($report);
 //===============================================
 //CREATE NEW ADMIN USER
 //===============================================
-if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
+if (strlen($post_wp_username) >= 4 && strlen($_POST['wp_password']) >= 6) {
 
-	$newuser_check	 = mysqli_query($dbh, "SELECT COUNT(*) AS count FROM `{$GLOBALS['DUPX_AC']->wp_tableprefix}users` WHERE user_login = '{$_POST['wp_username']}' ");
+	$post_wp_username = mysqli_real_escape_string($dbh, $_POST['wp_username']);	
+	$post_wp_password = mysqli_real_escape_string($dbh, $_POST['wp_password']);
+
+	$newuser_check	 = mysqli_query($dbh, "SELECT COUNT(*) AS count FROM `".mysqli_real_escape_string($this->dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."users` WHERE user_login = '{$post_wp_username}' ");
 	$newuser_row	 = mysqli_fetch_row($newuser_check);
 	$newuser_count	 = is_null($newuser_row) ? 0 : $newuser_row[0];
 
@@ -222,7 +225,7 @@ if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
 		$newuser1 = @mysqli_query($dbh,
 				"INSERT INTO `{$GLOBALS['DUPX_AC']->wp_tableprefix}users`
 				(`user_login`, `user_pass`, `user_nicename`, `user_email`, `user_registered`, `user_activation_key`, `user_status`, `display_name`)
-				VALUES ('{$_POST['wp_username']}', MD5('{$_POST['wp_password']}'), '{$_POST['wp_username']}', '', '{$newuser_datetime}', '', '0', '{$_POST['wp_username']}')");
+				VALUES ('{$post_wp_username}', MD5('{$post_wp_password}'), '{$post_wp_username}', '', '{$newuser_datetime}', '', '0', '{$post_wp_username}')");
 
 		$newuser1_insert_id = mysqli_insert_id($dbh);
 
@@ -235,22 +238,22 @@ if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
 				(`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser1_insert_id}', '{$GLOBALS['DUPX_AC']->wp_tableprefix}user_level', '10')");
 
 		//Misc Meta-Data Settings:
-		@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['DUPX_AC']->wp_tableprefix}usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser1_insert_id}', 'rich_editing', 'true')");
-		@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['DUPX_AC']->wp_tableprefix}usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser1_insert_id}', 'admin_color',  'fresh')");
-		@mysqli_query($dbh, "INSERT INTO `{$GLOBALS['DUPX_AC']->wp_tableprefix}usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser1_insert_id}', 'nickname', '{$_POST['wp_username']}')");
+		@mysqli_query($dbh, "INSERT INTO `".mysqli_real_escape_string($dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser1_insert_id}', 'rich_editing', 'true')");
+		@mysqli_query($dbh, "INSERT INTO `".mysqli_real_escape_string($dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser1_insert_id}', 'admin_color',  'fresh')");
+		@mysqli_query($dbh, "INSERT INTO `".mysqli_real_escape_string($dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser1_insert_id}', 'nickname', '{$post_wp_username}')");
 	
 		DUPX_Log::info("\nNEW WP-ADMIN USER:");
 		if ($newuser1 && $newuser_test2 && $newuser3) {
-			DUPX_Log::info("- New username '{$_POST['wp_username']}' was created successfully allong with MU usermeta.");
+			DUPX_Log::info("- New username '{$post_wp_username}' was created successfully allong with MU usermeta.");
 		} elseif ($newuser1) {
-			DUPX_Log::info("- New username '{$_POST['wp_username']}' was created successfully.");
+			DUPX_Log::info("- New username '{$post_wp_username}' was created successfully.");
 		} else {
-			$newuser_warnmsg = "- Failed to create the user '{$_POST['wp_username']}' \n ";
+			$newuser_warnmsg = "- Failed to create the user '{$post_wp_username}' \n ";
 			$JSON['step3']['warnlist'][] = $newuser_warnmsg;
 			DUPX_Log::info($newuser_warnmsg);
 		}
 	} else {
-		$newuser_warnmsg = "\nNEW WP-ADMIN USER:\n - Username '{$_POST['wp_username']}' already exists in the database.  Unable to create new account.\n";
+		$newuser_warnmsg = "\nNEW WP-ADMIN USER:\n - Username '{$post_wp_username}' already exists in the database.  Unable to create new account.\n";
 		$JSON['step3']['warnlist'][] = $newuser_warnmsg;
 		DUPX_Log::info($newuser_warnmsg);
 	}
@@ -320,17 +323,18 @@ if (!in_array('duplicator/duplicator.php', $plugin_list)) {
     $plugin_list[] = 'duplicator/duplicator.php';
 }
 $serial_plugin_list	 = @serialize($plugin_list);
+$serial_plugin_list	 = mysqli_real_escape_string($dbh, $serial_plugin_list);
 
 /** FINAL UPDATES: Must happen after the global replace to prevent double pathing
   http://xyz.com/abc01 will become http://xyz.com/abc0101  with trailing data */
-mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` SET option_value = '{$blog_name}' WHERE option_name = 'blogname' ");
-mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` SET option_value = '{$serial_plugin_list}'  WHERE option_name = 'active_plugins' ");
-mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` SET option_value = '{$_POST['url_new']}'  WHERE option_name = 'home' ");
-mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` SET option_value = '{$_POST['siteurl']}'  WHERE option_name = 'siteurl' ");
-mysqli_query($dbh, "INSERT INTO `{$GLOBALS['DUPX_AC']->wp_tableprefix}options` (option_value, option_name) VALUES('{$_POST['exe_safe_mode']}','duplicator_exe_safe_mode')");
+mysqli_query($dbh, "UPDATE `".mysqli_real_escape_string($dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."options` SET option_value = '{$blog_name}' WHERE option_name = 'blogname' ");
+mysqli_query($dbh, "UPDATE `".mysqli_real_escape_string($dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."options` SET option_value = '{$serial_plugin_list}'  WHERE option_name = 'active_plugins' ");
+mysqli_query($dbh, "UPDATE `".mysqli_real_escape_string($dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."options` SET option_value = '".mysqli_real_escape_string($dbh, $_POST['url_new'])."'  WHERE option_name = 'home' ");
+mysqli_query($dbh, "UPDATE `".mysqli_real_escape_string($dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."options` SET option_value = '".mysqli_real_escape_string($dbh, $_POST['siteurl'])."'  WHERE option_name = 'siteurl' ");
+mysqli_query($dbh, "INSERT INTO `".mysqli_real_escape_string($dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."options` (option_value, option_name) VALUES('".mysqli_real_escape_string($dbh, $_POST['exe_safe_mode'])."','duplicator_exe_safe_mode')");
 //Reset the postguid data
 if ($_POST['postguid']) {
-	mysqli_query($dbh, "UPDATE `{$GLOBALS['DUPX_AC']->wp_tableprefix}posts` SET guid = REPLACE(guid, '{$_POST['url_new']}', '{$_POST['url_old']}')");
+	mysqli_query($dbh, "UPDATE `".mysqli_real_escape_string($dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."posts` SET guid = REPLACE(guid, '".mysqli_real_escape_string($dbh, $_POST['url_new'])."', '".mysqli_real_escape_string($dbh, $_POST['url_old'])."')");
 	$update_guid = @mysqli_affected_rows($dbh) or 0;
 	DUPX_Log::info("Reverted '{$update_guid}' post guid columns back to '{$_POST['url_old']}'");
 }
