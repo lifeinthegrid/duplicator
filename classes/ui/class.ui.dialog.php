@@ -112,7 +112,7 @@ class DUP_UI_Dialog
         $html = '
 		<div id="'.esc_attr($this->id).'" style="display:none">
 			<div class="dup-dlg-alert-txt">
-				'.esc_html($this->message).'
+				'.$this->message.'
 				<br/><br/>
 			</div>
 			<div class="dup-dlg-alert-btns">
