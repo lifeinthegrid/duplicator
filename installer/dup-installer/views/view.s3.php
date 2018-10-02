@@ -235,6 +235,7 @@ VIEW: STEP 3 - AJAX RESULT  -->
 	<div class="dupx-debug">
 		<i>Step 3 - AJAX Response</i>
 		<input type="hidden" name="view"  value="step4" />
+		<input type="hidden" name="csrf_token" value="<?php echo DUPX_CSRF::generate('step4'); ?>">
 		<input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
 		<input type="hidden" name="logging" id="logging" value="<?php echo $_POST['logging']; ?>" />
 		<input type="hidden" name="url_new" id="ajax-url_new"  />

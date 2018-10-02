@@ -67,6 +67,7 @@ $archive_config  = DUPX_ArchiveConfig::getInstance();
 
 <form id="s1-input-form" method="post" class="content-form">
 <input type="hidden" name="view" value="step1" />
+<input type="hidden" name="csrf_token" value="<?php echo DUPX_CSRF::generate('step1'); ?>"> 
 <input type="hidden" name="ctrl_action" value="ctrl-step1" />
 <input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
 <input type="hidden" id="s1-input-form-extra-data" name="extra_data" />
@@ -617,6 +618,7 @@ VIEW: STEP 1 - DB QUICK TEST
 <form id="s1-dbtest-form" method="post" target="_blank">
 	<input type="hidden" name="dbonlytest" value="1" />
 	<input type="hidden" name="view" value="step2" />
+	<input type="hidden" name="csrf_token" value="<?php echo DUPX_CSRF::generate('step2'); ?>">
 	<input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
 </form>
 
@@ -636,6 +638,7 @@ Auto Posts to view.step2.php
     <div class="dupx-debug">
 		<i>Step 1 - AJAX Response</i>
         <input type="hidden" name="view" value="step2" />
+		<input type="hidden" name="csrf_token" value="<?php echo DUPX_CSRF::generate('step2'); ?>">
 		<input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
 		<input type="hidden" name="logging" id="ajax-logging"  />
         <input type="hidden" name="config_mode" id="ajax-config-mode" />

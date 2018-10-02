@@ -42,6 +42,7 @@ VIEW: STEP 4- INPUT -->
 	<div class="dupx-debug">
 		<i>Step 4 - Page Load</i>
 		<input type="hidden" name="view" value="step4" />
+		<input type="hidden" name="csrf_token" value="<?php echo DUPX_CSRF::generate('step4'); ?>">
 		<input type="hidden" name="exe_safe_mode" id="exe-safe-mode" value="<?php echo $_POST['exe_safe_mode'] ?>" />
 	</div>
 
