@@ -12,7 +12,7 @@ $pass_check  = $pass_hasher->CheckPassword(base64_encode($_POST['secure-pass']),
 
 //FORWARD: password not enabled
 if (! $GLOBALS['DUPX_AC']->secure_on && ! $_GET['debug']) {
-	DUPX_HTTP::post_with_html($page_url, array('action_step' => '1'));
+	DUPX_HTTP::post_with_html($page_url, array('action_step' => '1', 'csrf_token' => DUPX_CSRF::generate('step1')));
 	exit;
 }
 
@@ -21,6 +21,7 @@ if ($pass_check) {
 	DUPX_HTTP::post_with_html($page_url,
 		array(
 			'action_step' => '1',
+			'csrf_token' => DUPX_CSRF::generate('step1'),
 			'secure-pass' => $_POST['secure-pass']));
 	exit;
 }
@@ -35,6 +36,7 @@ if ($_POST['secure-try'] && ! $pass_check) {
 VIEW: STEP 0 - PASSWORD -->
 <form method="post" id="i1-pass-form" class="content-form"  data-parsley-validate="" autocomplete="oldpassword">
 	<input type="hidden" name="view" value="secure" />
+	<input type="hidden" name="csrf_token" value="<?php echo DUPX_CSRF::generate('secure'); ?>"> 
 	<input type="hidden" name="secure-try" value="1" />
 
 	<div class="hdr-main">

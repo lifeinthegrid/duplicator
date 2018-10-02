@@ -48,6 +48,23 @@ require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.archive.config.php');
 require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.conf.wp.php');
 require_once($GLOBALS['DUPX_INIT'].'/classes/class.installer.state.php');
 require_once($GLOBALS['DUPX_INIT'].'/classes/class.password.php');
+require_once($GLOBALS['DUPX_INIT'].'/classes/class.csrf.php');
+
+// CSRF checking
+if (!empty($GLOBAL['view'])) {
+	$csrf_views = array(
+		'secure',
+		'step1',
+		'step2',
+		'step3',
+		'step4',
+	);
+	if (in_array($GLOBAL['view'], $csrf_views)) {
+        if (!DUPX_CSRF::check($_POST['csrf_token'], $GLOBAL['view'])) {
+			die('CSRF security issue for the view: '.$GLOBAL['view']);
+        }
+	}
+}
 
 $GLOBALS['DUPX_AC'] = DUPX_ArchiveConfig::getInstance();
 if ($GLOBALS['DUPX_AC'] == null) {

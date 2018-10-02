@@ -35,6 +35,7 @@ $cpnl_supported =  DUPX_U::$on_php_53_plus ? true : false;
 	<div class="dupx-debug">
 		<i>Step 2 - Page Load</i>
 		<input type="hidden" name="view" value="step2" />
+		<input type="hidden" name="csrf_token" value="<?php echo DUPX_CSRF::generate('step2'); ?>">
 		<input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
 		<input type="hidden" name="logging" id="logging" value="<?php echo $_POST['logging']; ?>" />
 		<input type="hidden" name="dbcolsearchreplace"/>
@@ -101,6 +102,7 @@ Auto Posts to view.step3.php  -->
 	<div class="dupx-debug">
 		<i>Step 2 - AJAX Response</i>
 		<input type="hidden" name="view" value="step3" />
+		<input type="hidden" name="csrf_token" value="<?php echo DUPX_CSRF::generate('step3'); ?>">
 		<input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
 		<input type="hidden" name="logging" id="ajax-logging" />
 		<input type="hidden" name="dbaction" id="ajax-dbaction" />
