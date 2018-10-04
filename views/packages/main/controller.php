@@ -1,6 +1,24 @@
 <?php
 require_once(DUPLICATOR_PLUGIN_PATH . '/classes/ui/class.ui.dialog.php');
 $current_tab = isset($_REQUEST['tab']) ? sanitize_text_field($_REQUEST['tab']) : 'list';
+
+switch ($current_tab) {
+	case 'new1':
+		if (!wp_verify_nonce($_GET['_wpnonce'], 'new1-package')) {
+			die('Security issue');
+		}
+		break;
+	case 'new2':
+		if (!wp_verify_nonce($_GET['_wpnonce'], 'new2-package')) {
+			die('Security issue');
+		}
+		break;
+	case 'new3':
+		if (!wp_verify_nonce($_GET['_wpnonce'], 'new3-package')) {
+			die('Security issue');
+		}
+		break;
+}
 ?>
 
 <style>
