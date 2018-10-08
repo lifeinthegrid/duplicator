@@ -15,7 +15,7 @@ class DUPX_HTTP
 	public static function post_with_html($url, $data)
 	{
 		$id = uniqid();
-		$html = "<form id='".DUPX_U::esc_attr($id)."' method='post' action='{$url}' />\n";
+		$html = "<form id='".DUPX_U::esc_attr($id)."' method='post' action='".DUPX_U::esc_url($url)."' />\n";
 		foreach ($data as $name => $value)
 		{
 			$html .= "<input type='hidden' name='".DUPX_U::esc_attr($name)."' value='".DUPX_U::esc_attr($value)."' />\n";
