@@ -84,7 +84,7 @@ BASIC PANEL -->
 					Warning: The selected 'Action' above will remove <u>all data</u> from this database!
 				</div>
 				<div class="s2-warning-renamedb">
-					Notice: The selected 'Action' will rename <u>all existing tables</u> from the database name above with a prefix '<?php echo $GLOBALS['DB_RENAME_PREFIX']; ?>'.
+					Notice: The selected 'Action' will rename <u>all existing tables</u> from the database name above with a prefix '<?php echo DUPX_U::esc_html($GLOBALS['DB_RENAME_PREFIX']); ?>'.
 					The prefix is only applied to existing tables and not the new tables that will be installed.
 				</div>
 				<div class="s2-warning-manualdb">
@@ -107,7 +107,7 @@ BASIC PANEL -->
 	</div>
 	<div id="s2-opts-basic" class="s2-opts" style="display:none;padding-top:0">
 		<div class="help-target">
-			<a href="<?php echo $GLOBALS['_HELP_URL_PATH'];?>#help-s2" target="_blank"><i class="fa fa-question-circle"></i></a>
+			<a href="<?php echo DUPX_U::esc_url($GLOBALS['_HELP_URL_PATH'].'#help-s2');?>" target="_blank"><i class="fa fa-question-circle"></i></a>
 		</div>
 
 		<table class="dupx-opts dupx-advopts dupx-advopts-space">
@@ -127,7 +127,7 @@ BASIC PANEL -->
 					<input type="radio" name="dbmysqlmode" id="dbmysqlmode_3" value="CUSTOM"/> <label for="dbmysqlmode_3">Custom</label> &nbsp;
 					<div id="dbmysqlmode_3_view" style="display:none; padding:5px">
 						<input type="text" name="dbmysqlmode_opts" value="" /><br/>
-						<small>Separate additional <a href="<?php echo $GLOBALS['_HELP_URL_PATH'];?>#help-mysql-mode" target="_blank">sql modes</a> with commas &amp; no spaces.<br/>
+						<small>Separate additional <a href="<?php echo DUPX_U::esc_attr($GLOBALS['_HELP_URL_PATH'].'#help-mysql-mode');?>" target="_blank">sql modes</a> with commas &amp; no spaces.<br/>
 							Example: <i>NO_ENGINE_SUBSTITUTION,NO_ZERO_IN_DATE,...</i>.</small>
 					</div>
 				</td>
@@ -143,8 +143,8 @@ BASIC PANEL -->
 				<td></td>
 				<td><input type="checkbox" name="dbobj_procs" id="dbobj_procs" checked="true" /><label for="dbobj_procs">Enable Stored Procedure Creation</label></td>
 			</tr>
-			<tr><td>Charset:</td><td><input type="text" name="dbcharset" id="dbcharset" value="<?php echo $_POST['dbcharset'] ?>" /> </td></tr>
-			<tr><td>Collation: </td><td><input type="text" name="dbcollate" id="dbcollate" value="<?php echo $_POST['dbcollate'] ?>" /> </tr>
+			<tr><td>Charset:</td><td><input type="text" name="dbcharset" id="dbcharset" value="<?php echo DUPX_U::esc_attr($_POST['dbcharset']); ?>" /> </td></tr>
+			<tr><td>Collation: </td><td><input type="text" name="dbcollate" id="dbcollate" value="<?php echo DUPX_U::esc_attr($_POST['dbcollate']); ?>" /> </tr>
 		</table>
 	</div>
 	<br/><br/>

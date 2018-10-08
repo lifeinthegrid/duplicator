@@ -173,7 +173,7 @@ if (isset($_POST['ctrl_action'])) {
 			<div class="dupx-branding-header">Duplicator</div>
 		</td>
 		<td class="wiz-dupx-version">
-			<a href="javascript:void(0)" onclick="DUPX.openServerDetails()">version:<?php echo $GLOBALS['DUPX_AC']->version_dup; ?></a>&nbsp;
+			<a href="javascript:void(0)" onclick="DUPX.openServerDetails()">version:<?php echo DUPX_U::esc_html($GLOBALS['DUPX_AC']->version_dup); ?></a>&nbsp;
 			<?php
 				$help_url = "?view=help&archive={$GLOBALS['FW_ENCODED_PACKAGE_PATH']}&bootloader={$GLOBALS['BOOTLOADER_NAME']}&basic";
 				echo ($GLOBALS['DUPX_AC']->secure_on) 
@@ -182,7 +182,7 @@ if (isset($_POST['ctrl_action'])) {
 			?>
 			
 			<div style="padding: 6px 0">
-				<a href="<?php echo $help_url;?>" target="_blank">help</a> <i class="fa fa-question-circle"></i>
+				<a href="<?php echo DUPX_U::esc_url($help_url);?>" target="_blank">help</a> <i class="fa fa-question-circle"></i>
 			</div>
 		</td>
 	</tr>
@@ -249,22 +249,25 @@ FORM DATA: User-Interface views -->
 		?>
          <div class="hdr">SERVER DETAILS</div>
 		<label>Try CDN Request:</label> 		<?php echo ( DUPX_U::tryCDN("ajax.aspnetcdn.com", 443) && DUPX_U::tryCDN("ajax.googleapis.com", 443)) ? 'Yes' : 'No'; ?> <br/>
-		<label>Web Server:</label>  			<?php echo $_SERVER['SERVER_SOFTWARE']; ?><br/>
-        <label>PHP Version:</label>  			<?php echo DUPX_Server::$php_version; ?><br/>
+		<label>Web Server:</label>  			<?php echo DUPX_U::esc_html($_SERVER['SERVER_SOFTWARE']); ?><br/>
+        <label>PHP Version:</label>  			<?php echo DUPX_U::esc_html(DUPX_Server::$php_version); ?><br/>
 		<label>PHP INI Path:</label> 			<?php echo empty($ini_path ) ? 'Unable to detect loaded php.ini file' : $ini_path; ?>	<br/>
-		<label>PHP SAPI:</label>  				<?php echo php_sapi_name(); ?><br/>
+		<?php
+		$php_sapi_name = php_sapi_name();
+		?>
+		<label>PHP SAPI:</label>  				<?php echo DUPX_U::esc_html($php_sapi_name); ?><br/>
 		<label>PHP ZIP Archive:</label> 		<?php echo class_exists('ZipArchive') ? 'Is Installed' : 'Not Installed'; ?> <br/>
-		<label>PHP max_execution_time:</label>  <?php echo $ini_max_time === false ? 'unable to find' : $ini_max_time; ?><br/>
-		<label>PHP memory_limit:</label>  		<?php echo empty($ini_memory)      ? 'unable to find' : $ini_memory; ?><br/>
-		<label>Error Log Path:</label>  		<?php echo empty($ini_error_path)      ? 'unable to find' : $ini_error_path; ?><br/>
+		<label>PHP max_execution_time:</label>  <?php echo $ini_max_time === false ? 'unable to find' : DUPX_U::esc_html($ini_max_time); ?><br/>
+		<label>PHP memory_limit:</label>  		<?php echo empty($ini_memory)      ? 'unable to find' : DUPX_U::esc_html($ini_memory); ?><br/>
+		<label>Error Log Path:</label>  		<?php echo empty($ini_error_path)      ? 'unable to find' : DUPX_U::esc_html($ini_error_path); ?><br/>
 
         <br/>
         <div class="hdr">PACKAGE BUILD DETAILS</div>
-        <label>Plugin Version:</label>  		<?php echo $GLOBALS['DUPX_AC']->version_dup; ?><br/>
-        <label>WordPress Version:</label>  		<?php echo $GLOBALS['DUPX_AC']->version_wp; ?><br/>
-        <label>PHP Version:</label>             <?php echo $GLOBALS['DUPX_AC']->version_php; ?><br/>
-        <label>Database Version:</label>        <?php echo $GLOBALS['DUPX_AC']->version_db; ?><br/>
-        <label>Operating System:</label>        <?php echo $GLOBALS['DUPX_AC']->version_os; ?><br/>
+        <label>Plugin Version:</label>  		<?php echo DUPX_U::esc_html($GLOBALS['DUPX_AC']->version_dup); ?><br/>
+        <label>WordPress Version:</label>  		<?php echo DUPX_U::esc_html($GLOBALS['DUPX_AC']->version_wp); ?><br/>
+        <label>PHP Version:</label>             <?php echo DUPX_U::esc_html($GLOBALS['DUPX_AC']->version_php); ?><br/>
+        <label>Database Version:</label>        <?php echo DUPX_U::esc_html($GLOBALS['DUPX_AC']->version_db); ?><br/>
+        <label>Operating System:</label>        <?php echo DUPX_U::esc_html($GLOBALS['DUPX_AC']->version_os); ?><br/>
 
 	</div>
 </div>

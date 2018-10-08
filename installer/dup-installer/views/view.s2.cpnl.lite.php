@@ -11,7 +11,7 @@ defined("ABSPATH") or die("");
 <?php if (DUPX_U::isURLActive($_SERVER['SERVER_NAME'], 2083)): ?>
         <div class='s2-cpanel-login'>
             <b>Login to this server's cPanel</b><br/>
-            <a href="https://<?php echo $_SERVER['SERVER_NAME'] ?>:2083" target="cpanel" style="color:#fff">[<?php echo $_SERVER['SERVER_NAME'] ?>:2083]</a>
+            <a href="<?php echo DUPX_U::esc_url('https://'.$_SERVER['SERVER_NAME'].':2083'); ?>" target="cpanel" style="color:#fff">[<?php echo DUPX_U::esc_html($_SERVER['SERVER_NAME']); ?>:2083]</a>
         </div>
 <?php else : ?>
         <div class='s2-cpanel-off'>

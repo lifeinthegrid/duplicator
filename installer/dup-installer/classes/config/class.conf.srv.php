@@ -48,8 +48,8 @@ class DUPX_ServerConfig
 		self::$confFileIIS			= "{$GLOBALS['DUPX_ROOT']}/web.config";
 		self::$confFileIISOrig		= "{$GLOBALS['DUPX_ROOT']}/web.config.orig";
 		self::$confFileWordFence	= "{$GLOBALS['DUPX_ROOT']}/.user.ini";
-		self::$configMode           = isset($_POST['config_mode']) ? $_POST['config_mode']  : null;
-		self::$newSiteURL           = isset($_POST['url_new'])	   ? $_POST['url_new']		: null;
+		self::$configMode           = isset($_POST['config_mode']) ? DUPX_U::sanitize_text_field($_POST['config_mode'])  : null;
+		self::$newSiteURL           = isset($_POST['url_new']) ? DUPX_U::sanitize_text_field($_POST['url_new']) : null;
 	}
 
 	/**

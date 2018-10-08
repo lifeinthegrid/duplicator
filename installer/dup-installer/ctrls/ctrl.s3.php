@@ -13,15 +13,29 @@ $ajax3_error_level	 = error_reporting();
 error_reporting(E_ERROR);
 
 //POST PARAMS
-$_POST['blogname']		= isset($_POST['blogname']) ? $_POST['blogname'] : 'No Blog Title Set';
+$_POST['blogname']		= isset($_POST['blogname']) ? DUPX_U::sanitize_text_field($_POST['blogname']) : 'No Blog Title Set';
 $_POST['postguid']		= isset($_POST['postguid']) && $_POST['postguid'] == 1 ? 1 : 0;
 $_POST['fullsearch']	= isset($_POST['fullsearch']) && $_POST['fullsearch'] == 1 ? 1 : 0;
 $_POST['path_old']		= isset($_POST['path_old']) ? trim($_POST['path_old']) : null;
 $_POST['path_new']		= isset($_POST['path_new']) ? trim($_POST['path_new']) : null;
 $_POST['siteurl']		= isset($_POST['siteurl']) ? rtrim(trim($_POST['siteurl']), '/') : null;
 $_POST['tables']		= isset($_POST['tables']) && is_array($_POST['tables']) ? array_map('stripcslashes', $_POST['tables']) : array();
-$_POST['url_old']		= isset($_POST['url_old']) ? trim($_POST['url_old']) : null;
-$_POST['url_new']		= isset($_POST['url_new']) ? rtrim(trim($_POST['url_new']), '/') : null;
+
+if (isset($_POST['url_old'])) {
+	$post_url_old = DUPX_U::sanitize_text_field($_POST['url_old']);
+	$_POST['url_old'] = trim($post_url_old);
+} else {
+	$_POST['url_old'] = null;
+}
+
+if (isset($_POST['url_new'])) {
+	$post_url_new = DUPX_U::sanitize_text_field($_POST['url_new']);
+	$_POST['url_new'] = isset($_POST['url_new']) ? rtrim(trim($post_url_new), '/') : null;
+} else {
+	$_POST['url_new'] = null;
+}
+
+
 $_POST['ssl_admin']		= isset($_POST['ssl_admin']) ? true : false;
 $_POST['cache_wp']		= isset($_POST['cache_wp']) ? true : false;
 $_POST['cache_path']	= isset($_POST['cache_path']) ? true : false;
@@ -209,9 +223,12 @@ DUPX_UpdateEngine::logErrors($report);
 //CREATE NEW ADMIN USER
 //===============================================
 if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
+	
+	$post_wp_username = $_POST['wp_username'];
+	$post_wp_password = $_POST['wp_password'];
 
-	$post_wp_username = mysqli_real_escape_string($dbh, $_POST['wp_username']);	
-	$post_wp_password = mysqli_real_escape_string($dbh, $_POST['wp_password']);
+	$post_wp_username = mysqli_real_escape_string($dbh, $post_wp_username);	
+	$post_wp_password = mysqli_real_escape_string($dbh, $post_wp_password);
 
 	$newuser_check	 = mysqli_query($dbh, "SELECT COUNT(*) AS count FROM `".mysqli_real_escape_string($dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."users` WHERE user_login = '{$post_wp_username}' ");
 	$newuser_row	 = mysqli_fetch_row($newuser_check);
