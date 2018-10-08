@@ -154,8 +154,12 @@ TOOL BAR:STEPS -->
 </table>		
 <hr class="dup-toolbar-line">
 
+<?php 
+$action_url = admin_url('admin.php?page=duplicator&tab=new3');
+$action_nonce_url = wp_nonce_url($action_url, 'new3-package');
+?>
 
-<form id="form-duplicator" method="post" action="?page=duplicator&tab=new3">
+<form id="form-duplicator" method="post" action="<?php echo $action_nonce_url; ?>">
 <?php wp_nonce_field('dup_form_opts', 'dup_form_opts_nonce_field', false); ?>
 
 	<!--  PROGRESS BAR -->
@@ -221,7 +225,7 @@ TOOL BAR:STEPS -->
 		</div>
 
 		<div class="dup-button-footer" style="display:none">
-			<input type="button" value="&#9664; <?php esc_html_e("Back", 'duplicator') ?>" onclick="window.location.assign('?page=duplicator&tab=new1')" class="button button-large" />
+			<input type="button" value="&#9664; <?php esc_html_e("Back", 'duplicator') ?>" onclick="window.location.assign('?page=duplicator&tab=new1&_wpnonce=<?php echo wp_create_nonce('new1-package');?>')" class="button button-large" />
 			<input type="button" value="<?php esc_attr_e("Rescan", 'duplicator') ?>" onclick="Duplicator.Pack.rescan()" class="button button-large" />
 			<input type="submit" value="<?php esc_attr_e("Build", 'duplicator') ?> &#9654" class="button button-primary button-large" id="dup-build-button" />
 		</div>

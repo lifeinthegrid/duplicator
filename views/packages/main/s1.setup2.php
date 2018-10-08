@@ -58,8 +58,11 @@
 	ul.add-menu-item-tabs li, ul.category-tabs li {padding:3px 30px 5px}
 	div.dup-install-prefill-tab-pnl {min-height:180px !important; }
 </style>
-
-<form id="dup-form-opts" method="post" action="?page=duplicator&tab=new2<?php echo "&retry={$retry_state}"; ?>" data-parsley-validate="" autocomplete="oldpassword">
+<?php
+$action_url = admin_url("admin.php?page=duplicator&tab=new2&retry={$retry_state}");
+$action_nonce_url = wp_nonce_url($action_url, 'new2-package');
+?>
+<form id="dup-form-opts" method="post" action="<?php echo $action_nonce_url; ?>" data-parsley-validate="" autocomplete="oldpassword">
 <input type="hidden" id="dup-form-opts-action" name="action" value="">
 <?php wp_nonce_field('dup_form_opts', 'dup_form_opts_nonce_field', false); ?>
 

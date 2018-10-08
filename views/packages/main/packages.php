@@ -66,7 +66,11 @@ TOOL-BAR -->
 		</td>
 		<td>						
 			<span><i class="fa fa-archive"></i> <?php esc_html_e("Packages", 'duplicator'); ?></span>
-			<a href="?page=duplicator&tab=new1" class="add-new-h2"><?php esc_html_e("Create New", 'duplicator'); ?></a>
+			<?php
+			$package_url = admin_url('admin.php?page=duplicator&tab=new1');
+			$package_nonce_url = wp_nonce_url($package_url, 'new1-package');
+			?>
+			<a href="<?php echo $package_nonce_url;?>" class="add-new-h2"><?php esc_html_e("Create New", 'duplicator'); ?></a>
 		</td>
 	</tr>
 </table>	
