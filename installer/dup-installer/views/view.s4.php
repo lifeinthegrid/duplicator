@@ -3,13 +3,13 @@ defined("ABSPATH") or die("");
 /** IDE HELPERS */
 /* @var $GLOBALS['DUPX_AC'] DUPX_ArchiveConfig */
 
-$_POST['exe_safe_mode']	= isset($_POST['exe_safe_mode']) ? $_POST['exe_safe_mode'] : 0;
+$_POST['exe_safe_mode']	= isset($_POST['exe_safe_mode']) ? DUPX_U::sanitize_text_field($_POST['exe_safe_mode']) : 0;
 
-$url_new_rtrim  = rtrim(DUPX_U::sanitize($_POST['url_new']), "/");
+$url_new_rtrim  = rtrim(DUPX_U::sanitize_text_field($_POST['url_new']), "/");
 $admin_base		= basename($GLOBALS['DUPX_AC']->wplogin_url);
 $admin_redirect ="{$url_new_rtrim}/wp-admin/admin.php?page=duplicator-tools&tab=diagnostics";
 
-$safe_mode		= $_POST['exe_safe_mode'];
+$safe_mode		= DUPX_U::sanitize_text_field($_POST['exe_safe_mode']);
 $admin_redirect = "{$admin_redirect}&package={$GLOBALS['DUPX_AC']->package_name}&installer_name={$GLOBALS['BOOTLOADER_NAME']}&safe_mode={$safe_mode}" ;
 $admin_redirect = urlencode($admin_redirect);
 $admin_url_qry  = (strpos($admin_base, '?') === false) ? '?' : '&';
@@ -31,8 +31,8 @@ $admin_login	= "{$url_new_rtrim}/{$admin_base}{$admin_url_qry}redirect_to={$admi
 <!-- =========================================
 VIEW: STEP 4- INPUT -->
 <form id='s4-input-form' method="post" class="content-form" style="line-height:20px">
-	<input type="hidden" name="url_new" id="url_new" value="<?php echo $url_new_rtrim; ?>" />
-	<div class="logfile-link"><a href="./<?php echo $GLOBALS["LOG_FILE_NAME"];?>?now=<?php echo $GLOBALS['NOW_TIME']; ?>" target="dup-installer">dup-installer-log.txt</a></div>
+	<input type="hidden" name="url_new" id="url_new" value="<?php echo DUPX_U::esc_attr($url_new_rtrim); ?>" />
+	<div class="logfile-link"><a href="./<?php echo DUPX_U::esc_attr($GLOBALS["LOG_FILE_NAME"]);?>?now=<?php echo DUPX_U::esc_attr($GLOBALS['NOW_TIME']); ?>" target="dup-installer">dup-installer-log.txt</a></div>
 
 	<div class="hdr-main">
 		Step <span class="step">4</span> of 4: Test Site
@@ -43,7 +43,7 @@ VIEW: STEP 4- INPUT -->
 		<i>Step 4 - Page Load</i>
 		<input type="hidden" name="view" value="step4" />
 		<input type="hidden" name="csrf_token" value="<?php echo DUPX_CSRF::generate('step4'); ?>">
-		<input type="hidden" name="exe_safe_mode" id="exe-safe-mode" value="<?php echo $_POST['exe_safe_mode'] ?>" />
+		<input type="hidden" name="exe_safe_mode" id="exe-safe-mode" value="<?php echo DUPX_U::esc_attr($_POST['exe_safe_mode']); ?>" />
 	</div>
 
 	<table class="s4-final-step">
@@ -68,7 +68,7 @@ VIEW: STEP 4- INPUT -->
 	</table>
 	<i style="color:maroon; font-size:12px">
 		<i class="fa fa-exclamation-triangle"></i> IMPORTANT FINAL STEPS: Login into the WordPress Admin to remove all
-		<a href="?view=help&archive=<?php echo $GLOBALS['FW_ENCODED_PACKAGE_PATH']?>&bootloader=<?php echo $GLOBALS['BOOTLOADER_NAME']?>&basic#help-s4" target="_blank">installation files</a>
+		<a href="?view=help&archive=<?php echo DUPX_U::esc_attr($GLOBALS['FW_ENCODED_PACKAGE_PATH']); ?>&bootloader=<?php echo DUPX_U::esc_attr($GLOBALS['BOOTLOADER_NAME']); ?>&basic#help-s4" target="_blank">installation files</a>
 		and keep this site secure.   This install is not complete until the installer files are removed.
 	</i>
 	<br/><br/><br/>
@@ -87,8 +87,8 @@ VIEW: STEP 4- INPUT -->
 				</i>
 			</li>
 			<li>
-				Review this sites <a href="<?php echo $url_new_rtrim; ?>" target="_blank">front-end</a> or
-				re-run the installer and <a href="<?php echo "{$url_new_rtrim}/installer.php"; ?>">go back to step 1</a>.
+				Review this sites <a href="<?php echo DUPX_U::esc_attr($url_new_rtrim); ?>" target="_blank">front-end</a> or
+				re-run the installer and <a href="<?php echo DUPX_U::esc_url("{$url_new_rtrim}/installer.php"); ?>">go back to step 1</a>.
 			</li>
 			<li>If the .htaccess file was reset some plugin settings might need to be re-saved.</li>
 			<li>For additional help and questions visit the <a href='https://snapcreek.com/duplicator/docs/faqs-tech/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=problem_resolution&utm_content=inst4_step4_troubleshoot' target='_blank'>online FAQs</a>.</li>
@@ -148,7 +148,7 @@ VIEW: STEP 4- INPUT -->
 			<div class="s4-err-title">STEP 2 - INSTALL NOTICES:</div>
 			<b data-bind="with: status.step1">ERRORS (<span data-bind="text: query_errs"></span>)</b><br/>
 			<div class="info-error">
-				Queries that error during the deploy step are logged to the <a href="./<?php echo $GLOBALS["LOG_FILE_NAME"];?>" target="dup-installer">install-log.txt</a> file and
+				Queries that error during the deploy step are logged to the <a href="./<?php echo DUPX_U::esc_attr($GLOBALS["LOG_FILE_NAME"]);?>" target="dup-installer">install-log.txt</a> file and
 				and marked with an **ERROR** status.   If you experience a few errors (under 5), in many cases they can be ignored as long as your site is working correctly.
 				However if you see a large amount of errors or you experience an issue with your site then the error messages in the log file will need to be investigated.
 				<br/><br/>
@@ -257,8 +257,8 @@ VIEW: STEP 4- INPUT -->
 	?>
 
 	<div class="s4-gopro-btn">
-		<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=duplicator_pro&utm_content=<?php echo $key;?>" target="_blank">
-			<?php echo $txt;?>
+		<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_campaign=duplicator_pro&utm_content=<?php echo DUPX_U::esc_attr($key);?>" target="_blank">
+			<?php echo DUPX_U::esc_html($txt);?>
 		</a>
 	</div>
 	<br/><br/><br/>
@@ -267,7 +267,7 @@ VIEW: STEP 4- INPUT -->
 <?php
 	//Sanitize
 	$json_result = true;
-	$_POST['json'] = isset($_POST['json']) ? $_POST['json'] : 'json data not set';
+	$_POST['json'] = isset($_POST['json']) ? DUPX_U::esc_attr($_POST['json']) : 'json data not set';
 	$json_data   = utf8_decode(urldecode($_POST['json']));
 	$json_decode = json_decode($json_data);
 	if ($json_decode == NULL || $json_decode == FALSE) {

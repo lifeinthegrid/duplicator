@@ -69,7 +69,7 @@ $archive_config  = DUPX_ArchiveConfig::getInstance();
 <input type="hidden" name="view" value="step1" />
 <input type="hidden" name="csrf_token" value="<?php echo DUPX_CSRF::generate('step1'); ?>"> 
 <input type="hidden" name="ctrl_action" value="ctrl-step1" />
-<input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
+<input type="hidden" name="secure-pass" value="<?php echo DUPX_U::esc_html($_POST['secure-pass']); ?>" />
 <input type="hidden" id="s1-input-form-extra-data" name="extra_data" />
 
 <div class="hdr-main">
@@ -151,11 +151,11 @@ ARCHIVE
 			</tr>
 			 <tr>
 				<td>Site:</td>
-				<td><?php echo $GLOBALS['DUPX_AC']->blogname;?> </td>
+				<td><?php echo DUPX_U::esc_html($GLOBALS['DUPX_AC']->blogname);?> </td>
 			</tr>
 			<tr>
 				<td>Notes:</td>
-				<td><?php echo strlen($GLOBALS['DUPX_AC']->package_notes) ? "{$GLOBALS['DUPX_AC']->package_notes}" : " - no notes - "; ?></td>
+				<td><?php echo strlen($GLOBALS['DUPX_AC']->package_notes) ? DUPX_U::esc_html($GLOBALS['DUPX_AC']->package_notes) : " - no notes - "; ?></td>
 			</tr>
 			<?php if ($GLOBALS['DUPX_AC']->exportOnlyDB) :?>
 			<tr>
@@ -198,7 +198,7 @@ ARCHIVE
 			</tr>
 			<tr>
 				<td>Path:</td>
-				<td><?php echo $root_path; ?> </td>
+				<td><?php echo DUPX_U::esc_html($root_path); ?> </td>
 			</tr>
 			<tr>
 				<td>Size:</td>
@@ -235,7 +235,10 @@ VALIDATION
 		</div>
 
 		<!-- REQ 10 -->
-		<div class="status <?php echo strtolower($req['10']); ?>"><?php echo $req['10']; ?></div>
+		<?php
+		$status = strtolower($req['10']);
+		?>
+		<div class="status <?php echo DUPX_U::esc_attr($status); ?>"><?php echo DUPX_U::esc_html($req['10']); ?></div>
 		<div class="title" data-type="toggle" data-target="#s1-reqs10"><i class="fa fa-caret-right"></i> Permissions</div>
 		<div class="info" id="s1-reqs10">
 			<table>
@@ -261,7 +264,7 @@ VALIDATION
 		</div>
 
 		<!-- REQ 20 -->
-		<div class="status <?php echo strtolower($req['20']); ?>"><?php echo $req['20']; ?></div>
+		<div class="status <?php echo strtolower($req['20']); ?>"><?php echo DUPX_U::esc_html($req['20']); ?></div>
 		<div class="title" data-type="toggle" data-target="#s1-reqs20"><i class="fa fa-caret-right"></i> PHP Mysqli</div>
 		<div class="info" id="s1-reqs20">
 			Support for the PHP <a href='http://us2.php.net/manual/en/mysqli.installation.php' target='_blank'>mysqli extension</a> is required.
@@ -270,7 +273,7 @@ VALIDATION
 		</div>
 
 		<!-- REQ 30 -->
-		<div class="status <?php echo strtolower($req['30']); ?>"><?php echo $req['30']; ?></div>
+		<div class="status <?php echo strtolower($req['30']); ?>"><?php echo DUPX_U::esc_html($req['30']); ?></div>
 		<div class="title" data-type="toggle" data-target="#s1-reqs30"><i class="fa fa-caret-right"></i> PHP Version</div>
 		<div class="info" id="s1-reqs30">
 			This server is running PHP: <b><?php echo DUPX_Server::$php_version ?></b>. <i>A minimum of PHP 5.2.17 is required</i>.
@@ -369,7 +372,7 @@ VALIDATION
 		<?php endif; ?>
 
 		<!-- NOTICE 30 -->
-		<div class="status <?php echo ($notice['30'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['30']; ?></div>
+		<div class="status <?php echo ($notice['30'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo DUPX_U::esc_html($notice['30']); ?></div>
 		<div class="title" data-type="toggle" data-target="#s1-notice30"><i class="fa fa-caret-right"></i> Package Age</div>
 		<div class="info" id="s1-notice30">
 			This package is <?php echo "{$fulldays}"; ?> day(s) old. Packages older than 180 days might be considered stale.  It is recommended to build a new
@@ -378,7 +381,7 @@ VALIDATION
 
 
 		<!-- NOTICE 40 -->
-		<div class="status <?php echo ($notice['40'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['40']; ?></div>
+		<div class="status <?php echo ($notice['40'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo DUPX_U::esc_html($notice['40']); ?></div>
 		<div class="title" data-type="toggle" data-target="#s1-notice40"><i class="fa fa-caret-right"></i> PHP Version 5.2</div>
 		<div class="info" id="s1-notice40">
 			<?php
@@ -396,7 +399,7 @@ VALIDATION
 		</div>
 
 		<!-- NOTICE 50 -->
-		<div class="status <?php echo ($notice['50'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['50']; ?></div>
+		<div class="status <?php echo ($notice['50'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo DUPX_U::esc_html($notice['50']); ?></div>
 		<div class="title" data-type="toggle" data-target="#s1-notice50"><i class="fa fa-caret-right"></i> PHP Open Base</div>
 		<div class="info" id="s1-notice50">
 			<b>Open BaseDir:</b> <i><?php echo $notice['50'] == 'Good' ? "<i class='dupx-pass'>Disabled</i>" : "<i class='dupx-fail'>Enabled</i>"; ?></i>
@@ -416,7 +419,7 @@ VALIDATION
 		</div>
 
 		<!-- NOTICE 60 -->
-		<div class="status <?php echo ($notice['60'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['60']; ?></div>
+		<div class="status <?php echo ($notice['60'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo DUPX_U::esc_html($notice['60']); ?></div>
 		<div class="title" data-type="toggle" data-target="#s1-notice60"><i class="fa fa-caret-right"></i> PHP Timeout</div>
 		<div class="info" id="s1-notice60">
 			<b>Archive Size:</b> <?php echo DUPX_U::readableByteSize($arcSize) ?>  <small>(detection limit is set at <?php echo DUPX_U::readableByteSize($max_time_size) ?>) </small><br/>
@@ -438,10 +441,10 @@ VALIDATION
 
 
 		<!-- NOTICE 8 -->
-		<div class="status <?php echo ($notice['70'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo $notice['70']; ?></div>
+		<div class="status <?php echo ($notice['70'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo DUPX_U::esc_html($notice['70']); ?></div>
 		<div class="title" data-type="toggle" data-target="#s1-notice70"><i class="fa fa-caret-right"></i> WordPress Multisite</div>
 		<div class="info" id="s1-notice70">
-			<b>Status:</b> <?php echo $notice['70'] <= 0 ? 'This archive is not a multisite' : 'This is an unsupported multisite archive' ?>
+			<b>Status:</b> <?php echo $notice['70'] <= 0 ? 'This archive is not a multisite' : 'This is an unsupported multisite archive'; ?>
 			<br/><br/>
 
 			 Duplicator does not support WordPress multisite migrations.  We recommend using Duplicator Pro which currently supports full multisite migrations and subsite to
@@ -466,7 +469,7 @@ OPTIONS
 </div>
 <div id="s1-area-adv-opts" style="display:none">
 	<div class="help-target">
-		<a href="<?php echo $GLOBALS['_HELP_URL_PATH']; ?>#help-s1" target="_blank"><i class="fa fa-question-circle"></i></a>
+		<a href="<?php echo DUPX_U::esc_html($GLOBALS['_HELP_URL_PATH'].'#help-s1'); ?>" target="_blank"><i class="fa fa-question-circle"></i></a>
 	</div><br/>
 
 	<div class="hdr-sub3">General</div>
@@ -475,7 +478,7 @@ OPTIONS
             <td>Extraction:</td>
             <td>
                 <?php $num_selections = ($archive_config->isZipArchive() ? 3 : 2); ?>
-                <select id="archive_engine" name="archive_engine" size="<?php echo $num_selections; ?>">
+                <select id="archive_engine" name="archive_engine" size="<?php echo DUPX_U::esc_attr($num_selections); ?>">
 					<option <?php echo ($is_wpconfarc_present ? '' : 'disabled'); ?> value="manual">Manual Archive Extraction <?php echo ($is_wpconfarc_present ? '' : '*'); ?></option>
                     <?php
                         if($archive_config->isZipArchive()){
@@ -544,7 +547,7 @@ OPTIONS
 				</select> <br/>
 				<span class="sub-notes" style="font-weight: normal">
 					Controls how .htaccess, .user.ini and web.config are used
-					<a href="<?php echo $GLOBALS['_HELP_URL_PATH'] . '#help-s1'; ?>" target="help">[more info]</a>
+					<a href="<?php echo DUPX_U::esc_url($GLOBALS['_HELP_URL_PATH'] . '#help-s1'); ?>" target="help">[more info]</a>
 				</span>
 			</td>
 		</tr>
@@ -606,7 +609,7 @@ OPTIONS
 	</div>
 <?php else : ?>
 	<div class="footer-buttons" >
-		<button id="s1-deploy-btn" type="button" title="<?php echo $agree_msg; ?>" onclick="DUPX.processNext()"  class="default-btn"> Next <i class="fa fa-caret-right"></i> </button>
+		<button id="s1-deploy-btn" type="button" title="<?php echo DUPX_U::esc_attr($agree_msg); ?>" onclick="DUPX.processNext()"  class="default-btn"> Next <i class="fa fa-caret-right"></i> </button>
 	</div>
 <?php endif; ?>
 
@@ -619,7 +622,7 @@ VIEW: STEP 1 - DB QUICK TEST
 	<input type="hidden" name="dbonlytest" value="1" />
 	<input type="hidden" name="view" value="step2" />
 	<input type="hidden" name="csrf_token" value="<?php echo DUPX_CSRF::generate('step2'); ?>">
-	<input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
+	<input type="hidden" name="secure-pass" value="<?php echo DUPX_U::esc_attr($_POST['secure-pass']); ?>" />
 </form>
 
 
@@ -629,7 +632,7 @@ Auto Posts to view.step2.php
 ========================================= -->
 <form id='s1-result-form' method="post" class="content-form" style="display:none">
 
-    <div class="dupx-logfile-link"><a href="./<?php echo $GLOBALS["LOG_FILE_NAME"];?>" target="dup-installer">dup-installer-log.txt</a></div>
+    <div class="dupx-logfile-link"><a href="./<?php echo DUPX_U::esc_attr($GLOBALS["LOG_FILE_NAME"]);?>" target="dup-installer">dup-installer-log.txt</a></div>
     <div class="hdr-main">
         Step <span class="step">1</span> of 4: Extraction
     </div>
@@ -639,7 +642,7 @@ Auto Posts to view.step2.php
 		<i>Step 1 - AJAX Response</i>
         <input type="hidden" name="view" value="step2" />
 		<input type="hidden" name="csrf_token" value="<?php echo DUPX_CSRF::generate('step2'); ?>">
-		<input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
+		<input type="hidden" name="secure-pass" value="<?php echo DUPX_U::esc_attr($_POST['secure-pass']); ?>" />
 		<input type="hidden" name="logging" id="ajax-logging"  />
         <input type="hidden" name="config_mode" id="ajax-config-mode" />
         <input type="hidden" name="exe_safe_mode" id="exe-safe-mode"  value="0" />
@@ -947,8 +950,8 @@ DUPX.kickOffDupArchiveExtract = function ()
 	var isClientSideKickoff = DUPX.isClientSideKickoff();
 
 	request.action = "start_expand";
-	request.archive_filepath = '<?php echo $archive_path; ?>';
-	request.restore_directory = '<?php echo $root_path; ?>';
+	request.archive_filepath = '<?php echo DUPX_U::esc_js($archive_path); ?>';
+	request.restore_directory = '<?php echo DUPX_U::esc_js($root_path); ?>';
 	request.worker_time = DUPX.DAWS.KickoffWorkerTimeInSec;
 	request.client_driven = isClientSideKickoff ? 1 : 0;
 	request.throttle_delay = DUPX.throttleDelay;
@@ -1180,7 +1183,7 @@ DUPX.acceptWarning = function ()
 		$("#s1-deploy-btn").removeAttr("title");
 	} else {
 		$("#s1-deploy-btn").attr("disabled", "true");
-		$("#s1-deploy-btn").attr("title", "<?php echo $agree_msg; ?>");
+		$("#s1-deploy-btn").attr("title", "<?php echo DUPX_U::esc_js($agree_msg); ?>");
 	}
 };
 

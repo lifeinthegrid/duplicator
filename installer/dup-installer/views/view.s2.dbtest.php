@@ -215,10 +215,10 @@ defined("ABSPATH") or die("");
 			{{{getInfo payload.reqs.70.pass payload.reqs.70.info}}}<br/>
 
 			<div class="sub-title">DETAILS</div>
-			This test checks to make sure this database can support the collations found in the dup-installer/dup-database__<?php echo $GLOBALS['DUPX_AC']->package_hash;?>.sql script.
+			This test checks to make sure this database can support the collations found in the dup-installer/dup-database__<?php echo DUPX_U::esc_html($GLOBALS['DUPX_AC']->package_hash);?>.sql script.
 			<br/><br/>
 
-			<b>Collations in dup-database__<?php echo $GLOBALS['DUPX_AC']->package_hash;?>.sql</b> <br/>
+			<b>Collations in dup-database__<?php echo DUPX_U::esc_html($GLOBALS['DUPX_AC']->package_hash);?>.sql</b> <br/>
 			<table class="collation-list">
 				{{#each payload.collationStatus as |item|}}
 					<tr>

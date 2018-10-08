@@ -23,11 +23,11 @@ class DUPX_WPConfig
 		$wpconfig_arkpath	= "{$GLOBALS['DUPX_ROOT']}/dup-wp-config-arc__{$GLOBALS['DUPX_AC']->package_hash}.txt";
 		$wpconfig		= @file_get_contents($wpconfig_arkpath, true);
 
-		$db_port    = is_int($_POST['dbport'])   ? $_POST['dbport'] : 3306;
-		$db_host	= ($db_port == 3306) ? $_POST['dbhost'] : "{$_POST['dbhost']}:{$db_port}";
-		$db_name	= isset($_POST['dbname']) ? DUPX_U::safeQuote($_POST['dbname']) : null;
-		$db_user	= isset($_POST['dbuser']) ? DUPX_U::safeQuote($_POST['dbuser']) : null;
-       	$db_pass	= isset($_POST['dbpass']) ? DUPX_U::safeQuote($_POST['dbpass']) : null;
+		$db_port    = is_int($_POST['dbport']) ? DUPX_U::sanitize_text_field($_POST['dbport']) : 3306;
+		$db_host	= ($db_port == 3306) ? DUPX_U::sanitize_text_field($_POST['dbhost']) : DUPX_U::sanitize_text_field($_POST['dbhost']).':'.DUPX_U::sanitize_text_field($db_port);
+		$db_name	= isset($_POST['dbname']) ? DUPX_U::sanitize_text_field($_POST['dbname']) : null;
+		$db_user	= isset($_POST['dbuser']) ? DUPX_U::sanitize_text_field($_POST['dbuser']) : null;
+       	$db_pass	= isset($_POST['dbpass']) ? DUPX_U::sanitize_text_field($_POST['dbpass']) : null;
 
 		//--------------------
 		//LEGACY PARSER LOGIC:

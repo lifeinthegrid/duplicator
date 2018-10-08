@@ -58,8 +58,8 @@ class DUPX_DBInstall
 		@mysqli_query($this->dbh, "SET wait_timeout = ".mysqli_real_escape_string($this->dbh, $GLOBALS['DB_MAX_TIME']));
         @mysqli_query($this->dbh, "SET max_allowed_packet = ".mysqli_real_escape_string($this->dbh, $GLOBALS['DB_MAX_PACKETS']));
 
-        $this->profile_start   = isset($post['profile_start']) ? $post['profile_start'] : DUPX_U::getMicrotime();
-        $this->start_microtime = isset($post['start_microtime']) ? $post['start_microtime'] : $start_microtime;
+        $this->profile_start   = isset($post['profile_start']) ? DUPX_U::sanitize_text_field($post['profile_start']) : DUPX_U::getMicrotime();
+        $this->start_microtime = isset($post['start_microtime']) ? DUPX_U::sanitize_text_field($post['start_microtime']) : $start_microtime;
         $this->dbvar_maxtime   = DUPX_DB::getVariable($this->dbh, 'wait_timeout');
         $this->dbvar_maxpacks  = DUPX_DB::getVariable($this->dbh, 'max_allowed_packet');
         $this->dbvar_sqlmode   = DUPX_DB::getVariable($this->dbh, 'sql_mode');
@@ -67,14 +67,14 @@ class DUPX_DBInstall
         $this->dbvar_maxtime   = is_null($this->dbvar_maxtime) ? 300 : $this->dbvar_maxtime;
         $this->dbvar_maxpacks  = is_null($this->dbvar_maxpacks) ? 1048576 : $this->dbvar_maxpacks;
         $this->dbvar_sqlmode   = empty($this->dbvar_sqlmode) ? 'NOT_SET' : $this->dbvar_sqlmode;
-        $this->dbquery_errs    = isset($post['dbquery_errs']) ? $post['dbquery_errs'] : 0;
-        $this->drop_tbl_log    = isset($post['drop_tbl_log']) ? $post['drop_tbl_log'] : 0;
-        $this->rename_tbl_log  = isset($post['rename_tbl_log']) ? $post['rename_tbl_log'] : 0;
-        $this->dbquery_rows    = isset($post['dbquery_rows']) ? $post['dbquery_rows'] : 0;
-        $this->dbdelete_count  = isset($post['dbdelete_count']) ? $post['dbdelete_count'] : 0;
-        $this->dbcollatefb     = isset($post['dbcollatefb']) ? $post['dbcollatefb'] : 0;
-        $this->dbobj_views     = isset($post['dbobj_views']) ? $post['dbobj_views'] : 0;
-        $this->dbobj_procs     = isset($post['dbobj_procs']) ? $post['dbobj_procs'] : 0;
+        $this->dbquery_errs    = isset($post['dbquery_errs']) ? DUPX_U::sanitize_text_field($post['dbquery_errs']) : 0;
+        $this->drop_tbl_log    = isset($post['drop_tbl_log']) ? DUPX_U::sanitize_text_field($post['drop_tbl_log']) : 0;
+        $this->rename_tbl_log  = isset($post['rename_tbl_log']) ? DUPX_U::sanitize_text_field($post['rename_tbl_log']) : 0;
+        $this->dbquery_rows    = isset($post['dbquery_rows']) ? DUPX_U::sanitize_text_field($post['dbquery_rows']) : 0;
+        $this->dbdelete_count  = isset($post['dbdelete_count']) ? DUPX_U::sanitize_text_field($post['dbdelete_count']) : 0;
+        $this->dbcollatefb     = isset($post['dbcollatefb']) ? DUPX_U::sanitize_text_field($post['dbcollatefb']) : 0;
+        $this->dbobj_views     = isset($post['dbobj_views']) ? DUPX_U::sanitize_text_field($post['dbobj_views']) : 0;
+        $this->dbobj_procs     = isset($post['dbobj_procs']) ? DUPX_U::sanitize_text_field($post['dbobj_procs']) : 0;
     }
 
     public function prepareSQL()
@@ -87,16 +87,14 @@ class DUPX_DBInstall
         if ($sql_file === false || strlen($sql_file) < 10) {
             $spacer = str_repeat("&nbsp;", 5);
             $sql_file_rel_path = "dup-installer/dup-database__{$GLOBALS['DUPX_AC']->package_hash}.sql";
-            $msg    = <<<EOT
-<b>Unable to read/find the {$sql_file_rel_path} file from the archive.</b><br/>
+            $msg    = "<b>Unable to read/find the ".DUPX_U::esc_html($sql_file_rel_path)." file from the archive.</b><br/>
 Please check these items: <br/><br/>
 1. Validate permissions and/or group-owner rights on these items: <br/>
 {$spacer}- File: dup-database__{$GLOBALS['DUPX_AC']->package_hash}.sql file in dup-installer folder<br/>
-{$spacer}- Directory: [{$this->root_path}] <br/>
-{$spacer}<small>See: <a href='{$faq_url}#faq-trouble-055-q' target='_blank'>{$faq_url}#faq-trouble-055-q</a></small><br/><br/>
-2. Validate the dup-database__{$GLOBALS['DUPX_AC']->package_hash}.sql file exists and is in the dup-installer folder of the archive.zip file <br/>
-{$spacer}<small>See: <a href='{$faq_url}#faq-installer-020-q' target='_blank'>{$faq_url}#faq-installer-020-q</a></small><br/><br/>
-EOT;
+{$spacer}- Directory: [".DUPX_U::esc_html($this->root_path)."] <br/>
+{$spacer}<small>See: <a href='".DUPX_U::esc_url($faq_url."#faq-trouble-055-q")."' target='_blank'>".DUPX_U::esc_url($faq_url."#faq-trouble-055-q")."</a></small><br/><br/>
+2. Validate the dup-database__".DUPX_U::esc_html($GLOBALS['DUPX_AC']->package_hash).".sql file exists and is in the dup-installer folder of the archive.zip file <br/>
+{$spacer}<small>See: <a href='".DUPX_U::esc_url($faq_url.'#faq-installer-020-q')."' target='_blank'>{$faq_url}#faq-installer-020-q</a></small><br/><br/>";
             DUPX_Log::error($msg);
         }
 

@@ -9,10 +9,16 @@ require_once($GLOBALS['DUPX_INIT'] . '/classes/config/class.archive.config.php')
 //-- START OF VIEW STEP 2
 $_POST['dbcharset'] = isset($_POST['dbcharset']) ? trim($_POST['dbcharset']) : $GLOBALS['DBCHARSET_DEFAULT'];
 $_POST['dbcollate'] = isset($_POST['dbcollate']) ? trim($_POST['dbcollate']) : $GLOBALS['DBCOLLATE_DEFAULT'];
-$_POST['exe_safe_mode'] = (isset($_POST['exe_safe_mode'])) ? DUPX_U::sanitize($_POST['exe_safe_mode']) : 0;
+$_POST['exe_safe_mode'] = (isset($_POST['exe_safe_mode'])) ? DUPX_U::sanitize_text_field($_POST['exe_safe_mode']) : 0;
 $is_dbtest_mode = isset($_POST['dbonlytest']) ? 1 : 0;
 
-$_POST['logging'] = isset($_POST['logging']) ? trim(DUPX_U::sanitize($_POST['logging'])) : 1;
+if (isset($_POST['logging'])) {
+	$post_logging = DUPX_U::sanitize_text_field($_POST['logging']);
+	$_POST['logging'] = trim($post_logging);
+} else {
+	$_POST['logging'] = 1;
+}
+
 $cpnl_supported =  DUPX_U::$on_php_53_plus ? true : false;
 ?>
 
@@ -22,7 +28,7 @@ $cpnl_supported =  DUPX_U::$on_php_53_plus ? true : false;
 		<div class="hdr-main">Database Validation	</div>
 	<?php else : ?>
 		<div class="dupx-logfile-link">
-			<a href="./<?php echo $GLOBALS["LOG_FILE_NAME"];?>?now=<?php echo $GLOBALS['NOW_TIME']; ?>" target="dup-installer">dup-installer-log.txt</a>
+			<a href="./<?php echo DUPX_U::esc_attr($GLOBALS["LOG_FILE_NAME"]);?>?now=<?php echo DUPX_U::esc_attr($GLOBALS['NOW_TIME']); ?>" target="dup-installer">dup-installer-log.txt</a>
 		</div>
 		<div class="hdr-main">Step <span class="step">2</span> of 4: Install Database	</div>
 		<div class="s2-btngrp">
@@ -36,12 +42,12 @@ $cpnl_supported =  DUPX_U::$on_php_53_plus ? true : false;
 		<i>Step 2 - Page Load</i>
 		<input type="hidden" name="view" value="step2" />
 		<input type="hidden" name="csrf_token" value="<?php echo DUPX_CSRF::generate('step2'); ?>">
-		<input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
-		<input type="hidden" name="logging" id="logging" value="<?php echo $_POST['logging']; ?>" />
+		<input type="hidden" name="secure-pass" value="<?php echo DUPX_U::esc_attr($_POST['secure-pass']); ?>" />
+		<input type="hidden" name="logging" id="logging" value="<?php echo DUPX_U::esc_attr($_POST['logging']); ?>" />
 		<input type="hidden" name="dbcolsearchreplace"/>
 		<input type="hidden" name="ctrl_action" value="ctrl-step2" />
 		<input type="hidden" name="view_mode" id="s2-input-form-mode" />
-		<input type="hidden" name="exe_safe_mode" id="exe-safe-mode"  value="<?php echo $_POST['exe_safe_mode'] ?>"/>
+		<input type="hidden" name="exe_safe_mode" id="exe-safe-mode"  value="<?php echo DUPX_U::esc_attr($_POST['exe_safe_mode']); ?>"/>
 		<textarea name="dbtest-response" id="debug-dbtest-json"></textarea>
 	</div>
 
@@ -93,7 +99,7 @@ VIEW: STEP 2 - AJAX RESULT
 Auto Posts to view.step3.php  -->
 <form id='s2-result-form' method="post" class="content-form" style="display:none">
 
-	<div class="dupx-logfile-link"><a href="./<?php echo $GLOBALS["LOG_FILE_NAME"];?>" target="dup-installer">dup-installer-log.txt</a></div>
+	<div class="dupx-logfile-link"><a href="./<?php echo DUPX_U::esc_attr($GLOBALS["LOG_FILE_NAME"]);?>" target="dup-installer">dup-installer-log.txt</a></div>
 	<div class="hdr-main">
 		Step <span class="step">2</span> of 4: Install Database
 	</div>
@@ -103,7 +109,7 @@ Auto Posts to view.step3.php  -->
 		<i>Step 2 - AJAX Response</i>
 		<input type="hidden" name="view" value="step3" />
 		<input type="hidden" name="csrf_token" value="<?php echo DUPX_CSRF::generate('step3'); ?>">
-		<input type="hidden" name="secure-pass" value="<?php echo $_POST['secure-pass']; ?>" />
+		<input type="hidden" name="secure-pass" value="<?php echo DUPX_U::esc_attr($_POST['secure-pass']); ?>" />
 		<input type="hidden" name="logging" id="ajax-logging" />
 		<input type="hidden" name="dbaction" id="ajax-dbaction" />
 		<input type="hidden" name="dbhost" id="ajax-dbhost" />
@@ -113,7 +119,7 @@ Auto Posts to view.step3.php  -->
 		<input type="hidden" name="dbcharset" id="ajax-dbcharset" />
 		<input type="hidden" name="dbcollate" id="ajax-dbcollate" />
 		<input type="hidden" name="exe_safe_mode" id="ajax-exe-safe-mode" />
-		<input type="hidden" name="config_mode" value="<?php echo $_POST['config_mode']; ?>" />
+		<input type="hidden" name="config_mode" value="<?php echo DUPX_U::esc_attr($_POST['config_mode']); ?>" />
 		<input type="hidden" name="json"   id="ajax-json" />
 		<input type='submit' value='manual submit'>
 	</div>
