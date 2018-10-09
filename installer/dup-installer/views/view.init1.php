@@ -12,7 +12,12 @@ $pass_check  = $pass_hasher->CheckPassword(base64_encode($_POST['secure-pass']),
 
 //FORWARD: password not enabled
 if (! $GLOBALS['DUPX_AC']->secure_on && ! $_GET['debug']) {
-	DUPX_HTTP::post_with_html($page_url, array('action_step' => '1', 'csrf_token' => DUPX_CSRF::generate('step1')));
+	DUPX_HTTP::post_with_html($page_url, array(
+		'action_step' => '1',
+		'csrf_token' => DUPX_CSRF::generate('step1'),
+		'bootloader' => $GLOBALS['BOOTLOADER_NAME'],
+		'archive' => $GLOBALS['FW_PACKAGE_PATH'],
+	));
 	exit;
 }
 
@@ -22,7 +27,10 @@ if ($pass_check) {
 		array(
 			'action_step' => '1',
 			'csrf_token' => DUPX_CSRF::generate('step1'),
-			'secure-pass' => $_POST['secure-pass']));
+			'secure-pass' => $_POST['secure-pass'],
+			'bootloader' => $GLOBALS['BOOTLOADER_NAME'],
+			'archive' => $GLOBALS['FW_PACKAGE_PATH'],
+		));
 	exit;
 }
 
@@ -38,6 +46,8 @@ VIEW: STEP 0 - PASSWORD -->
 	<input type="hidden" name="view" value="secure" />
 	<input type="hidden" name="csrf_token" value="<?php echo DUPX_CSRF::generate('secure'); ?>"> 
 	<input type="hidden" name="secure-try" value="1" />
+	<input type="hidden" name="bootloader" value="<?php echo DUPX_U::esc_attr($GLOBALS['BOOTLOADER_NAME']); ?>" />
+	<input type="hidden" name="archive" value="<?php echo DUPX_U::esc_attr($GLOBALS['FW_PACKAGE_PATH']); ?>" />
 
 	<div class="hdr-main">
 		Installer Password

@@ -287,10 +287,12 @@ class DUPX_Bootstrap
                         $this->mainInstallerURL = $uri_start.'/'.self::INSTALLER_DIR_NAME.'/main.installer.php';
 
                         $this->fixInstallerPerms($this->mainInstallerURL);
-                        $this->mainInstallerURL = $this->mainInstallerURL . "?archive=$encoded_archive_path&bootloader=$bootloader_name";
 
-                        if (isset($_SERVER['QUERY_STRING'])) {
-                                $this->mainInstallerURL .= '&'.$_SERVER['QUERY_STRING'];
+						$this->archive = $archive_filepath;
+						$this->bootloader = $bootloader_name;
+
+                        if (isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING'])) {
+                                $this->mainInstallerURL .= '?'.$_SERVER['QUERY_STRING'];
                         }
 
                         self::log("No detected errors so redirecting to the main installer. Main Installer URI = {$this->mainInstallerURL}");
@@ -716,11 +718,25 @@ $auto_refresh = isset($_POST['auto-fresh']) ? true : false;
 <html>
 <?php if ($boot_error == null) :?>
 	<head>
-		<meta http-equiv="refresh" content="2;url='<?php echo $boot->mainInstallerURL ?>'" />
-		<script>
-			window.location = "<?php echo $boot->mainInstallerURL ?>";
-		</script>
+		<meta http-equiv="refresh" content="2;url='<?php echo $boot->mainInstallerURL ?>'" />		
 	</head>
+	<body>
+		<?php
+		$id = uniqid();
+		$html = "<form id='{$id}' method='post' action='{$boot->mainInstallerURL}' />\n";
+		$data = array(
+			'archive' => $boot->archive,
+			'bootloader' => $boot->bootloader,
+		);
+		foreach ($data as $name => $value)
+		{
+			$html .= "<input type='hidden' name='{$name}' value='{$value}' />\n";
+		}
+		$html .= "</form>\n";
+		$html .= "<script>window.onload = function() { document.getElementById('{$id}').submit(); }</script>";
+		echo $html;
+		?>
+	</body>
 <?php else :?>
 	<head>
 		<style>

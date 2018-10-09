@@ -70,6 +70,8 @@ $archive_config  = DUPX_ArchiveConfig::getInstance();
 <input type="hidden" name="csrf_token" value="<?php echo DUPX_CSRF::generate('step1'); ?>"> 
 <input type="hidden" name="ctrl_action" value="ctrl-step1" />
 <input type="hidden" name="secure-pass" value="<?php echo DUPX_U::esc_html($_POST['secure-pass']); ?>" />
+<input type="hidden" name="bootloader" value="<?php echo DUPX_U::esc_attr($GLOBALS['BOOTLOADER_NAME']); ?>" />
+<input type="hidden" name="archive" value="<?php echo DUPX_U::esc_attr($GLOBALS['FW_PACKAGE_PATH']); ?>" />
 <input type="hidden" id="s1-input-form-extra-data" name="extra_data" />
 
 <div class="hdr-main">
@@ -623,6 +625,8 @@ VIEW: STEP 1 - DB QUICK TEST
 	<input type="hidden" name="view" value="step2" />
 	<input type="hidden" name="csrf_token" value="<?php echo DUPX_CSRF::generate('step2'); ?>">
 	<input type="hidden" name="secure-pass" value="<?php echo DUPX_U::esc_attr($_POST['secure-pass']); ?>" />
+	<input type="hidden" name="bootloader" value="<?php echo DUPX_U::esc_attr($GLOBALS['BOOTLOADER_NAME']); ?>" />
+	<input type="hidden" name="archive" value="<?php echo DUPX_U::esc_attr($GLOBALS['FW_PACKAGE_PATH']); ?>" />
 </form>
 
 
@@ -643,6 +647,8 @@ Auto Posts to view.step2.php
         <input type="hidden" name="view" value="step2" />
 		<input type="hidden" name="csrf_token" value="<?php echo DUPX_CSRF::generate('step2'); ?>">
 		<input type="hidden" name="secure-pass" value="<?php echo DUPX_U::esc_attr($_POST['secure-pass']); ?>" />
+		<input type="hidden" name="bootloader" value="<?php echo DUPX_U::esc_attr($GLOBALS['BOOTLOADER_NAME']); ?>" />
+		<input type="hidden" name="archive" value="<?php echo DUPX_U::esc_attr($GLOBALS['FW_PACKAGE_PATH']); ?>" />
 		<input type="hidden" name="logging" id="ajax-logging"  />
         <input type="hidden" name="config_mode" id="ajax-config-mode" />
         <input type="hidden" name="exe_safe_mode" id="exe-safe-mode"  value="0" />

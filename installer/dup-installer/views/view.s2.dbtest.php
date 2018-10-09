@@ -333,10 +333,16 @@ DUPX.testDBConnect = function ()
 	$dbResult.html("<div class='message'><i class='fa fa-circle-o-notch fa-spin fa-fw'></i>Running Database Validation. <br/>  Please wait...</div>");
 	$dbButton.attr('disabled', 'true');
 
+	if (document.location.href.indexOf('?') > -1) {
+        var ajax_url = document.location.href + "&dbtest=1";
+    } else {
+        var ajax_url = document.location.href + "?dbtest=1";
+    }
+
 	$.ajax({
 		type: "POST",
 		timeout: 25000,
-		url: window.location.href + '&' + 'dbtest=1',
+		url: ajax_url,
 		data: $('#s2-input-form').serialize(),
 		success: function (data) {
 			DUPX.intTestDBResults(data, $dbResult);

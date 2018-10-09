@@ -26,8 +26,8 @@ class DUPX_Constants
 		$archive_prefix_length = strlen('dup-archive__');
 		$GLOBALS['PACKAGE_HASH'] = substr($config_file_name, $archive_prefix_length); 
 
-		$GLOBALS['BOOTLOADER_NAME'] = isset($_GET['bootloader'])  ? $_GET['bootloader'] : null ;
-        $GLOBALS['FW_PACKAGE_PATH'] = isset($_GET['archive'])     ? $_GET['archive']    : null; // '%fwrite_package_name%';
+		$GLOBALS['BOOTLOADER_NAME'] = isset($_POST['bootloader'])  ? $_POST['bootloader'] : null ;
+        $GLOBALS['FW_PACKAGE_PATH'] = isset($_POST['archive'])     ? $_POST['archive']    : null; // '%fwrite_package_name%';
         $GLOBALS['FW_ENCODED_PACKAGE_PATH'] = urlencode($GLOBALS['FW_PACKAGE_PATH']);
         $GLOBALS['FW_PACKAGE_NAME'] = basename($GLOBALS['FW_PACKAGE_PATH']);
 
