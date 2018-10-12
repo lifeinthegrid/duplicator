@@ -869,6 +869,22 @@ class DUPX_U
 		return ( ! in_array( $i, $allowedentitynames ) ) ? "&amp;$i;" : "&$i;";
 	}
 
+    
+    /**
+    * Helper function to determine if a Unicode value is valid.
+    *
+    * @since 2.7.0
+    *
+    * @param int $i Unicode value
+    * @return bool True if the value was a valid Unicode number
+    */
+    public static function wp_valid_unicode($i) {
+        return ( $i == 0x9 || $i == 0xa || $i == 0xd ||
+                ($i >= 0x20 && $i <= 0xd7ff) ||
+                ($i >= 0xe000 && $i <= 0xfffd) ||
+                ($i >= 0x10000 && $i <= 0x10ffff) );
+    }
+        
 	/**
 	 * Callback for wp_kses_normalize_entities() regular expression.
 	 *
@@ -886,7 +902,7 @@ class DUPX_U
 			return '';
 
 		$i = $matches[1];
-		if (valid_unicode($i)) {
+		if (self::wp_valid_unicode($i)) {
 			$i = str_pad(ltrim($i,'0'), 3, '0', STR_PAD_LEFT);
 			$i = "&#$i;";
 		} else {
@@ -913,7 +929,7 @@ class DUPX_U
 			return '';
 
 		$hexchars = $matches[1];
-		return ( ! valid_unicode( hexdec( $hexchars ) ) ) ? "&amp;#x$hexchars;" : '&#x'.ltrim($hexchars,'0').';';
+		return ( ! self::wp_valid_unicode( hexdec( $hexchars ) ) ) ? "&amp;#x$hexchars;" : '&#x'.ltrim($hexchars,'0').';';
 	}
 
 	/**
