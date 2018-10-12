@@ -34,11 +34,11 @@ $GLOBALS['DUPX_ROOT']  = str_replace("\\", '/', (realpath(dirname(__FILE__) . '/
 $GLOBALS['DUPX_INIT']  = "{$GLOBALS['DUPX_ROOT']}/dup-installer";
 $GLOBALS['DUPX_ENFORCE_PHP_INI']  = false;
 
-if (!isset($_GET['archive'])) {
+if (!isset($_POST['archive'])) {
 	die("Archive parameter not specified in query string! Please try to re-run installer.php");
 }
 
-if (!isset($_GET['bootloader'])) {
+if (!isset($_POST['bootloader'])) {
 	die("Bootloader parameter not specified in query string! Please try to re-run installer.php");
 }
 

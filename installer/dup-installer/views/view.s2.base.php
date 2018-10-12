@@ -43,6 +43,8 @@ $cpnl_supported =  DUPX_U::$on_php_53_plus ? true : false;
 		<input type="hidden" name="view" value="step2" />
 		<input type="hidden" name="csrf_token" value="<?php echo DUPX_CSRF::generate('step2'); ?>">
 		<input type="hidden" name="secure-pass" value="<?php echo DUPX_U::esc_attr($_POST['secure-pass']); ?>" />
+		<input type="hidden" name="bootloader" value="<?php echo DUPX_U::esc_attr($GLOBALS['BOOTLOADER_NAME']); ?>" />
+		<input type="hidden" name="archive" value="<?php echo DUPX_U::esc_attr($GLOBALS['FW_PACKAGE_PATH']); ?>" />
 		<input type="hidden" name="logging" id="logging" value="<?php echo DUPX_U::esc_attr($_POST['logging']); ?>" />
 		<input type="hidden" name="dbcolsearchreplace"/>
 		<input type="hidden" name="ctrl_action" value="ctrl-step2" />
@@ -110,6 +112,8 @@ Auto Posts to view.step3.php  -->
 		<input type="hidden" name="view" value="step3" />
 		<input type="hidden" name="csrf_token" value="<?php echo DUPX_CSRF::generate('step3'); ?>">
 		<input type="hidden" name="secure-pass" value="<?php echo DUPX_U::esc_attr($_POST['secure-pass']); ?>" />
+		<input type="hidden" name="bootloader" value="<?php echo DUPX_U::esc_attr($GLOBALS['BOOTLOADER_NAME']); ?>" />
+	<input type="hidden" name="archive" value="<?php echo DUPX_U::esc_attr($GLOBALS['FW_PACKAGE_PATH']); ?>" />
 		<input type="hidden" name="logging" id="ajax-logging" />
 		<input type="hidden" name="dbaction" id="ajax-dbaction" />
 		<input type="hidden" name="dbhost" id="ajax-dbhost" />
