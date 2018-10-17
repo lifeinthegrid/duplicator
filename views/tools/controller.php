@@ -25,14 +25,11 @@ if (empty($package_name)) {
 	if (file_exists($installer_file_path)) {
 		$installer_file_data = file_get_contents($installer_file_path);
 		$start_pos = strpos($installer_file_data, '$GLOBALS[\'FW_PACKAGE_NAME\']		= \'');
-
         if (false !== $start_pos) {
             $end_pos = stripos($installer_file_data, "';", $start_pos);
-			$substr_start_pos = $start_pos + 32;
+			      $substr_start_pos = $start_pos + 32;
             $substr_len = ($end_pos - $start_pos - 32);
-
-			$temp_archive_file = substr($installer_file_data, $substr_start_pos, $substr_len);
-
+      			$temp_archive_file = substr($installer_file_data, $substr_start_pos, $substr_len);
             if (!empty($temp_archive_file)) {
                 $temp_archive_file_path = DUPLICATOR_WPROOTPATH . $temp_archive_file;
                 if (file_exists($temp_archive_file_path)) {

@@ -65,7 +65,6 @@ class DUP_UI_Notice
 				printf("1. <a href='javascript:void(0)' onclick='jQuery(\"#dup-remove-installer-files-btn\").click()'>%s</a><br/>", esc_html__('Remove Installation Files Now!', 'duplicator'));
 				printf("2. <a href='https://wordpress.org/support/plugin/duplicator/reviews/?filter=5' target='wporg'>%s</a> <br/> ", esc_html__('Optionally, Review Duplicator at WordPress.org...', 'duplicator'));
                 echo "<div class='pass-msg' style='color:maroon'>" . $msg2 . "</div>";
-
 			//All other Pages
             } else {
 
