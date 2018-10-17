@@ -84,7 +84,11 @@ TOOL BAR: STEPS -->
         </td>
         <td style="padding-bottom:4px">
             <div id="dup-create-area-nolink"><?php esc_html_e("Create New", 'duplicator'); ?></div>
-            <div id="dup-create-area-link"><a href="admin.php?page=duplicator&tab=new1" class="add-new-h2"><?php esc_html_e("Create New", 'duplicator'); ?></a></div>
+			<?php
+			$package_url = admin_url('admin.php?page=duplicator&tab=new1');
+			$package_nonce_url = wp_nonce_url($package_url, 'new1-package');
+			?>
+            <div id="dup-create-area-link"><a href="<?php echo $package_nonce_url;?>" class="add-new-h2"><?php esc_html_e("Create New", 'duplicator'); ?></a></div>
             <div style="float:right;margin: 0px 5px;"><a href="?page=duplicator" class="add-new-h2"><i class="fa fa-archive"></i> <?php esc_html_e("Packages",
                         'duplicator'); ?></a></div>
         </td>
