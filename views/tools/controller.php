@@ -18,8 +18,32 @@ $current_tab = isset($_REQUEST['tab']) ? sanitize_text_field($_REQUEST['tab']) :
 <?php
 
 $installer_files = DUP_Server::getInstallerFiles();
-$package_name = (isset($_GET['package'])) ?  esc_html($_GET['package']) : '';
-$package_path = (isset($_GET['package'])) ?  DUPLICATOR_WPROOTPATH . esc_html($_GET['package']) : '';
+$package_name = (isset($_GET['package'])) ?  sanitize_text_field($_GET['package']) : '';
+
+if (empty($package_name)) {
+	$installer_file_path = DUPLICATOR_WPROOTPATH . 'installer.php';
+	if (file_exists($installer_file_path)) {
+		$installer_file_data = file_get_contents($installer_file_path);
+		$start_pos = strpos($installer_file_data, '$GLOBALS[\'FW_PACKAGE_NAME\']		= \'');
+		
+        if (false !== $start_pos) {
+            $end_pos = stripos($installer_file_data, "';", $start_pos);
+			$substr_start_pos = $start_pos + 32;
+            $substr_len = ($end_pos - $start_pos - 32);
+
+			$temp_archive_file = substr($installer_file_data, $substr_start_pos, $substr_len);
+			
+            if (!empty($temp_archive_file)) {
+                $temp_archive_file_path = DUPLICATOR_WPROOTPATH . $temp_archive_file;
+                if (file_exists($temp_archive_file_path)) {
+                    $package_name = $temp_archive_file;
+                }
+            }
+        }
+	}
+}
+
+$package_path = (isset($package_name)) ?  DUPLICATOR_WPROOTPATH . $package_name : '';
 
 $txt_found		= __('File Found: Unable to remove', 'duplicator');
 $txt_removed	= __('File Removed', 'duplicator');
