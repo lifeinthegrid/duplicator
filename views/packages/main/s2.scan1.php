@@ -22,7 +22,11 @@
 	$mysqlcompat_on  = ($mysqldump_on && $mysqlcompat_on) ? true : false;
 	$dbbuild_mode    = ($mysqldump_on) ? 'mysqldump' : 'PHP';
     $zip_check		 = DUP_Util::getZipPath();
+
+	$action_url = admin_url('admin.php?page=duplicator&tab=new3');
+	$action_nonce_url = wp_nonce_url($action_url, 'new3-package');
 ?>
+
 
 <style>
 	/*PROGRESS-BAR - RESULTS - ERROR */
@@ -125,6 +129,37 @@
         i.scan-warn {color:#630f0f;}
 </style>
 
+<?php
+/* VALIDATE PACKAGE DATA:
+ * Porting to 1.3 Line
+ */
+if (false) :
+	//if (($errors = $Package->validateInputs()) !== true)
+?>
+
+    <form id="form-duplicator" method="post" action="<?php echo $action_nonce_url; ?>">
+        <!--  ERROR MESSAGE -->
+        <div id="dup-msg-error" >
+            <div class="dup-hdr-error"><i class="fa fa-exclamation-circle"></i> <?php _e('Input fields not valid', 'duplicator'); ?></div>
+            <i><?php esc_html_e('Please try again!', 'duplicator'); ?></i><br/>
+            <div class="dup-hdr-error-details">
+                <b><?php esc_html_e("Error Message:", 'duplicator'); ?></b>
+                <div id="dup-msg-error-response-text">
+                    <?php
+                    foreach ($errors as $error) {
+                        echo $error['field'].': '.$error['msg'].'<br>';
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+        <input type="button" value="&#9664; <?php esc_html_e("Back", 'duplicator') ?>" onclick="window.location.assign('?page=duplicator&tab=new1&_wpnonce=<?php echo wp_create_nonce('new1-package'); ?>')" class="button button-large" />
+    </form>
+    <?php
+    return;
+endif;
+?>
+
 <!-- =========================================
 TOOL BAR:STEPS -->
 <table id="dup-toolbar">
@@ -149,10 +184,7 @@ TOOL BAR:STEPS -->
 </table>		
 <hr class="dup-toolbar-line">
 
-<?php
-$action_url = admin_url('admin.php?page=duplicator&tab=new3');
-$action_nonce_url = wp_nonce_url($action_url, 'new3-package');
-?>
+
 <form id="form-duplicator" method="post" action="<?php echo $action_nonce_url;?>">
 <?php wp_nonce_field('dup_form_opts', 'dup_form_opts_nonce_field', false); ?>
 

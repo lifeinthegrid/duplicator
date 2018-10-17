@@ -89,7 +89,7 @@ class DUP_Installer
             $insert_data = @file_get_contents($file_path);
             file_put_contents($template_path, str_replace("${token}", "{$insert_data}", $search_data));
             if ($search_data === false || $insert_data == false) {
-                DUP_Log::Error("Installer generation failed at {$token}.");
+                DUP_Log::Error("Installer generation failed at {$token}.", '');
             }
             @chmod($file_path, 0644);
         }

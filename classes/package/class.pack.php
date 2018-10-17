@@ -339,8 +339,9 @@ class DUP_Package
             $this->Installer->OptsDBPort		= sanitize_text_field($post['dbport']);
             $this->Installer->OptsDBName		= sanitize_text_field($post['dbname']);
             $this->Installer->OptsDBUser		= sanitize_text_field($post['dbuser']);
-			$this->Installer->OptsSecureOn		= isset($post['secure-on']) ? 1 : 0;
-			$this->Installer->OptsSecurePass    = DUP_Util::installerScramble($post['secure-pass']);
+            $this->Installer->OptsSecureOn		= isset($post['secure-on']) ? 1 : 0;
+            $post_secure_pass = sanitize_text_field($post['secure-pass']);
+			$this->Installer->OptsSecurePass    = DUP_Util::installerScramble($post_secure_pass);
             //DATABASE
             $this->Database->FilterOn       = isset($post['dbfilter-on']) ? 1 : 0;
             $this->Database->FilterTables   = sanitize_text_field($tablelist);
@@ -391,7 +392,7 @@ class DUP_Package
 
         $wpdb->flush();
         $table = $wpdb->prefix."duplicator_packages";
-        $sql   = "UPDATE `{$table}` SET  status = {$status}, package = '{$packageObj}'	WHERE ID = {$this->ID}";
+        $sql   = "UPDATE `{$table}` SET  status = ".intval($status).", package = '".esc_sql($packageObj)."'	WHERE ID = ".intval($this->ID);
         $wpdb->query($sql);
     }
 

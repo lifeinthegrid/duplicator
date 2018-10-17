@@ -4,14 +4,44 @@ defined("ABSPATH") or die("");
 /* @var $GLOBALS['DUPX_AC'] DUPX_ArchiveConfig */
 
 	//-- START OF VIEW STEP 3
-	$_POST['dbaction']		= isset($_POST['dbaction']) ? $_POST['dbaction']	 : 'create';
-	$_POST['dbhost']		= isset($_POST['dbhost']) ? trim($_POST['dbhost']) : null;
-	$_POST['dbname']		= isset($_POST['dbname']) ? trim($_POST['dbname']) : null;
-	$_POST['dbuser']		= isset($_POST['dbuser']) ? trim($_POST['dbuser']) : null;
-	$_POST['dbpass']		= isset($_POST['dbpass']) ? trim($_POST['dbpass']) : null;
-	$_POST['dbport']		= isset($_POST['dbhost']) ? parse_url($_POST['dbhost'], PHP_URL_PORT) : 3306;
-	$_POST['dbport']		= (! empty($_POST['dbport'])) ? $_POST['dbport'] : 3306;
-	$_POST['exe_safe_mode']	= isset($_POST['exe_safe_mode']) ? $_POST['exe_safe_mode'] : 0;
+	$_POST['dbaction'] = isset($_POST['dbaction']) ? sanitize_text_field($_POST['dbaction'])	 : 'create';
+	
+	if (isset($_POST['dbhost'])) {
+		$post_dbhost = sanitize_text_field($_POST['dbhost']);
+		$_POST['dbhost'] = trim($post_dbhost);
+	} else {
+		$_POST['dbhost'] = null;
+	}
+	
+	if (isset($_POST['dbname'])) {
+		$post_dbname = sanitize_text_field($_POST['dbname']);
+		$_POST['dbname'] = trim($post_dbname);
+	} else {
+		$_POST['dbname'] = null;
+	}
+	
+	if (isset($_POST['dbuser'])) {
+		$post_dbuser = sanitize_text_field($_POST['dbuser']);
+		$_POST['dbuser'] = trim($post_dbuser);
+	} else {
+		$_POST['dbuser'] = null;
+	}
+	
+	if (isset($_POST['dbpass'])) {
+		$post_db_pass = sanitize_text_field($_POST['dbpass']);
+		$_POST['dbpass'] = isset($_POST['dbpass']) ? trim($post_db_pass) : null;
+	} else {
+		$_POST['dbpass'] = null;
+	}
+	
+	if (isset($_POST['dbhost'])) {
+		$post_dbhost = sanitize_text_field($_POST['dbhost']);
+		$_POST['dbport'] = parse_url($post_dbhost, PHP_URL_PORT);
+	} else {
+		$_POST['dbport'] = 3306;
+	}
+
+	$_POST['exe_safe_mode']	= isset($_POST['exe_safe_mode']) ? sanitize_text_field($_POST['exe_safe_mode']) : 0;
 
 	$dbh = DUPX_DB::connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpass'], $_POST['dbname'], $_POST['dbport']);
 

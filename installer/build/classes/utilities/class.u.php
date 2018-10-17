@@ -1151,7 +1151,7 @@ class DUPX_U
 
 			// Use html entities in a special case to make sure no later
 			// newline stripping stage could lead to a functional tag
-			$filtered = self::str_replace("<\n", "&lt;\n", $filtered);
+			$filtered = str_replace("<\n", "&lt;\n", $filtered);
 		}
 
 		if ( ! $keep_newlines ) {
@@ -1171,6 +1171,34 @@ class DUPX_U
 		}
 
 		return $filtered;
+	}
+
+	/**
+	 * Convert lone less than signs.
+	 *
+	 * KSES already converts lone greater than signs.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param string $text Text to be converted.
+	 * @return string Converted text.
+	 */
+	public static function wp_pre_kses_less_than( $text ) {
+		return preg_replace_callback('%<[^>]*?((?=<)|>|$)%', array('self', 'wp_pre_kses_less_than_callback'), $text);
+	}
+
+	/**
+	 * Callback function used by preg_replace.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param array $matches Populated by matches to preg_replace.
+	 * @return string The text returned after esc_html if needed.
+	 */
+	public static function wp_pre_kses_less_than_callback( $matches ) {
+		if ( false === strpos($matches[0], '>') )
+			return esc_html($matches[0]);
+		return $matches[0];
 	}
 }
 ?>

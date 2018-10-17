@@ -172,8 +172,8 @@ TOOL BAR: STEPS -->
 				<div class="dup-box-panel" id="dup-pack-build-try1" style="display:none">
 					<b class="opt-title"><?php esc_html_e('OPTION 1:', 'duplicator'); ?></b><br/>
 
-					<?php esc_html_e('The first pass for reading files on some budget hosts is slow and may conflict with strict timeout settings '
-						. 'set up by the hosting provider.  If this is the case its recommended to retry the build.  <i>If the problem persists then consider the other options below.</i>', 'duplicator'); ?><br/><br/>
+					<?php echo wp_kses('The first pass for reading files on some budget hosts is slow and may conflict with strict timeout settings '
+						. 'set up by the hosting provider.  If this is the case its recommended to retry the build.  <i>If the problem persists then consider the other options below.</i>', 'duplicator', array('i' => array())); ?><br/><br/>
 
 					<div style="text-align: center; margin: 10px">
 						<input type="button" class="button-large button-primary" value="<?php esc_html_e('Retry Package Build', 'duplicator'); ?>" onclick="window.location = 'admin.php?page=duplicator&tab=new1&retry=1&_wpnonce=<?php echo wp_create_nonce('new1-package'); ?>" />
@@ -205,7 +205,7 @@ TOOL BAR: STEPS -->
 					<?php esc_html_e("A two-part install minimizes server load and can avoid I/O and CPU issues encountered on some budget hosts. With this procedure you simply build a 'database-only' archive, manually move the website files, and then run the installer to complete the process.", 'duplicator'); ?>
 						<br/><br/>
 
-					<b><?php esc_html_e('<i class="fa fa-file-text-o"></i> Overview', 'duplicator'); ?></b><br/>
+					<b><?php echo wp_kses('<i class="fa fa-file-text-o"></i> Overview', 'duplicator', array('i' => array())); ?></b><br/>
 					<?php esc_html_e('Please follow these steps:', 'duplicator'); ?><br/>
 					<ol>
 						<li><?php esc_html_e('Click the button below to go back to Step 1.', 'duplicator'); ?></li>

@@ -25,14 +25,11 @@ if (empty($package_name)) {
 	if (file_exists($installer_file_path)) {
 		$installer_file_data = file_get_contents($installer_file_path);
 		$start_pos = strpos($installer_file_data, '$GLOBALS[\'FW_PACKAGE_NAME\']		= \'');
-		
         if (false !== $start_pos) {
             $end_pos = stripos($installer_file_data, "';", $start_pos);
-			$substr_start_pos = $start_pos + 32;
+			      $substr_start_pos = $start_pos + 32;
             $substr_len = ($end_pos - $start_pos - 32);
-
-			$temp_archive_file = substr($installer_file_data, $substr_start_pos, $substr_len);
-			
+      			$temp_archive_file = substr($installer_file_data, $substr_start_pos, $substr_len);
             if (!empty($temp_archive_file)) {
                 $temp_archive_file_path = DUPLICATOR_WPROOTPATH . $temp_archive_file;
                 if (file_exists($temp_archive_file_path)) {
@@ -77,7 +74,7 @@ if($current_tab == "diagnostics"  && ($section == "info" || $section == '')){
 			$action_response = __('Build cache removed.', 'duplicator');
 			break;
 	}
-	
+
 	 if ($_GET['action'] != 'display')  :	?>
 		<div id="message" class="notice notice-success is-dismissible">
 			<p><b><?php echo esc_html($action_response); ?></b></p>
@@ -98,7 +95,7 @@ if($current_tab == "diagnostics"  && ($section == "info" || $section == '')){
 							}
 						} elseif (file_exists($path)) {
 							$installer_file_found = true;
-							$file_path = $path;                            
+							$file_path = $path;
 						}
 
                         if (!empty($file_path)) {
@@ -122,7 +119,7 @@ if($current_tab == "diagnostics"  && ($section == "info" || $section == '')){
 							$html .= (@unlink($package_path))
 										? "<div class='success'><i class='fa fa-check'></i> ".esc_html($txt_removed)." - ".esc_html($package_path)."</div>"
 										: "<div class='failed'><i class='fa fa-exclamation-triangle'></i> ".esc_html($txt_found)." - ".esc_html($package_path)."</div>";
-						} 
+						}
 					}
 
 					echo $html;
@@ -140,7 +137,7 @@ if($current_tab == "diagnostics"  && ($section == "info" || $section == '')){
 						. 'the FAQ link <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-installer-295-q" target="_blank">Which files need to be removed after an install?</a>', 'duplicator')?>
 					<br/><br/>
 				</div>
-			
+
 			<?php endif; ?>
 		</div>
 	<?php endif;
@@ -186,10 +183,10 @@ if($current_tab == "diagnostics"  && ($section == "info" || $section == '')){
 ?>
 
 <div class="wrap">
-	
+
     <?php duplicator_header(__("Tools", 'duplicator')) ?>
 
-    <h2 class="nav-tab-wrapper">  
+    <h2 class="nav-tab-wrapper">
         <a href="?page=duplicator-tools&tab=diagnostics" class="nav-tab <?php echo ($current_tab == 'diagnostics') ? 'nav-tab-active' : '' ?>"> <?php  esc_html_e('Diagnostics', 'duplicator'); ?></a>
 		<a href="?page=duplicator-tools&tab=templates" class="nav-tab <?php echo ($current_tab == 'templates') ? 'nav-tab-active' : '' ?>"> <?php  esc_html_e('Templates', 'duplicator'); ?></a>
     </h2>
