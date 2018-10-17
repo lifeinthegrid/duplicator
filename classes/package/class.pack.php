@@ -488,7 +488,7 @@ class DUP_Package
     {
         global $wpdb;
 
-        $packageObj = esc_sql(serialize($this));
+        $packageObj = serialize($this);
 
         if (!isset($status)) {
             DUP_Log::Error("Package SetStatus did not receive a proper code.");
