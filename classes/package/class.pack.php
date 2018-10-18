@@ -896,7 +896,7 @@ class DUP_Package
         $wpdb->flush();
         $table = $wpdb->prefix."duplicator_packages";
         $sql  = "UPDATE `{$table}` SET  status = {$this->Status},";
-        $sql .= "package = '" . $packageObj . "'";
+        $sql .= "package = '" . esc_sql($packageObj) . "'";
         $sql .= "WHERE ID = {$this->ID}";
      
         DUP_Log::Trace('-------------------------');
