@@ -60,7 +60,7 @@ TOTAL SIZE -->
 		<b><?php esc_html_e('Directory Count', 'duplicator');?>:</b> <span id="data-arc-dirs"></span> <br/>
 		<?php
 			_e('Compressing larger sites on <i>some budget hosts</i> may cause timeouts.  ' , 'duplicator');
-			echo "<i>&nbsp; <a href='javascipt:void(0)' onclick='jQuery(\"#size-more-details\").toggle(100)'>[" . esc_html__('more details...', 'duplicator') . "]</a></i>";
+			echo "<i>&nbsp; <a href='javascipt:void(0)' onclick='jQuery(\"#size-more-details\").toggle(100);return false;'>[" . esc_html__('more details...', 'duplicator') . "]</a></i>";
 		?>
 		<div id="size-more-details">
 			<?php
