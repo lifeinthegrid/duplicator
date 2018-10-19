@@ -822,13 +822,11 @@ class DUP_Package
             } else {
                 $filter_exts  = '';
             }
-            
+
+			$tablelist = '';
             if (isset($post['dbtables'])) {
-                $post_dbtables = sanitize_text_field($post['dbtables']);
-                $tablelist    = implode(',', $post_dbtables);
-            } else {
-                $tablelist    = '';
-            }
+                $tablelist   = implode(',', $post['dbtables']);
+            } 
             
             if (isset($post['dbcompat'])) {
                 $post_dbcompat = sanitize_text_field($post['dbcompat']);
