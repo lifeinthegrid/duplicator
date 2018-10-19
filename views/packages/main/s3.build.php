@@ -1,7 +1,7 @@
 <?php
 //Nonce Check
 if (!isset($_POST['dup_form_opts_nonce_field']) || !wp_verify_nonce(sanitize_text_field($_POST['dup_form_opts_nonce_field']), 'dup_form_opts')) {
-    DUP_UI_Notice::redirect('admin.php?page=duplicator&tab=new1');
+    DUP_UI_Notice::redirect('admin.php?page=duplicator&tab=new1&_wpnonce='.wp_create_nonce('new1-package'));
 }
 require_once (DUPLICATOR_PLUGIN_PATH.'classes/package/duparchive/class.pack.archive.duparchive.php');
 
