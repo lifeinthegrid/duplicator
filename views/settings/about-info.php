@@ -42,7 +42,7 @@
                 <td style="width:90px">
                     <img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/logo-box.png"); ?>" style='text-align:top; margin:0'  />
                 </td>
-                <td valign="top" style="padding-top:10px; font-size:18px; line-height: 24px">
+                <td valign="top" style="padding-top:10px;">
                     <?php
                     esc_html_e("Duplicator can streamline your workflow and quickly clone/migrate a WordPress site. The plugin helps admins, designers and developers speed up the "
 						. "migration process of moving a WordPress site. Please help us continue development by giving this plugin a 5 star.", 'duplicator');
@@ -114,7 +114,7 @@
 					<div class="email-area">
 						<!-- Begin MailChimp Signup Form -->
 						<div class="email-form">
-							<div style="font-size:18px; width: 525px; padding: 5px 0 15px 0; text-align: center; font-style: italic; margin: auto">
+							<div style="width:425px; padding: 5px 0 15px 0; text-align: center; font-style: italic; margin: auto">
 								<?php esc_html_e('Subscribe to the Duplicator newsletter and stay on top of great ideas, tutorials, and better ways to improve your workflows', 'duplicator') ?>...
 							</div>
 

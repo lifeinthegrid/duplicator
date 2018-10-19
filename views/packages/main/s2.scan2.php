@@ -147,10 +147,8 @@ WP SETTINGS -->
 
 
                 if(!$core_dir_notice && !$core_file_notice):
-                    echo '<small>';
-                        esc_html_e("If the scanner is unable to locate the wp-config.php file in the root directory, then you will need to manually copy it to its new location. "
+                    esc_html_e("If the scanner is unable to locate the wp-config.php file in the root directory, then you will need to manually copy it to its new location. "
 							. "This check will also look for core WordPress paths that should be included in the archive for WordPress to work correctly.", 'duplicator');
-                    echo '</small>';
                 endif;
 
 

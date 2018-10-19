@@ -232,7 +232,10 @@ $archive_build_mode		= DUP_Settings::Get('archive_build_mode')
 				<!-- DUPARCHIVE -->
 				<div class="engine-sub-opts" id="engine-details-2" style="display:none">
 					<p class="description">
-						<?php esc_html_e('Creates a custom archive format (archive.daf).<br/>  This option is recommended for large sites or sites on constrained servers.', 'duplicator'); ?>
+						<?php 
+							esc_html_e('Creates a custom archive format (archive.daf).', 'duplicator'); echo '<br/>';
+							esc_html_e('This option is recommended for large sites or sites on constrained servers.', 'duplicator');
+						?>
 					</p>
 				</div>
 			</td>

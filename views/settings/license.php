@@ -24,7 +24,7 @@
 			   <?php
 					esc_html_e("The free version of Duplicator does not require a license key. ");
 					echo '<br/><br/>';
-					esc_html_e("<b>Professional Users:</b> Please note that if you have already purchased the Professional version it is a separate plugin that you download and install.  "
+					esc_html_e("Professional Users: Please note that if you have already purchased the Professional version it is a separate plugin that you download and install.  "
 						. "You can download the Professional version  from the email sent after your purchase or click on the 'Manage Licenses' link above to "
 						. "download the plugin from your snapcreek.com dashboard.  ");
 					esc_html_e("If you would like to purchase the professional version you can ");

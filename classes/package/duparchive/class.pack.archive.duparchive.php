@@ -114,6 +114,8 @@ class DUP_DupArchive
                 $filterExts  = empty($archive->FilterExts) ? 'not set' : $archive->FilterExts;
                 $filterFiles = empty($archive->FilterFiles) ? 'not set' : $archive->FilterFiles;
                 $filterOn    = ($archive->FilterOn) ? 'ON' : 'OFF';
+				$filterDirsFormat  = rtrim(str_replace(';', "\n\t", $filterDirs));
+				$filterFilesFormat = rtrim(str_replace(';', "\n\t", $filterFiles));
 
 				DUP_LOG::trace("c13");
                 DUP_Log::info("\n********************************************************************************");
@@ -122,9 +124,9 @@ class DUP_DupArchive
                 DUP_Log::info("ARCHIVE DIR:  ".$compressDir);
                 DUP_Log::info("ARCHIVE FILE: ".basename($archivePath));
                 DUP_Log::info("FILTERS: *{$filterOn}*");
-                DUP_Log::info("DIRS:  {$filterDirs}");
-                DUP_Log::info("EXTS:  {$filterExts}");
-                DUP_Log::info("FILES:  {$filterFiles}");
+                DUP_Log::Info("DIRS:\n\t{$filterDirsFormat}");
+				DUP_Log::Info("FILES:\n\t{$filterFilesFormat}");
+				DUP_Log::info("EXTS:  {$filterExts}");
 
                 DUP_Log::info("----------------------------------------");
                 DUP_Log::info("COMPRESSING");

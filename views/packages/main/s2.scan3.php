@@ -65,11 +65,9 @@ TOTAL SIZE -->
 		<div id="size-more-details">
 			<?php
 				echo "<b>" . esc_html__('Overview', 'duplicator') . ":</b><br/>";
-
-				printf(esc_html__('This notice is triggered at <b>%s</b> and can be ignored on most hosts.  If during the build process you see a "Host Build Interrupt" message then this '
-					. 'host has strict processing limits.  Below are some options you can take to overcome constraints set up on this host.', 'duplicator'),
-					DUP_Util::byteSize(DUPLICATOR_SCAN_SIZE_DEFAULT));
-
+				$dup_byte_size = '<b>' . DUP_Util::byteSize(DUPLICATOR_SCAN_SIZE_DEFAULT) . '</b>';
+				printf(esc_html__('This notice is triggered at [%s] and can be ignored on most hosts.  If during the build process you see a "Host Build Interrupt" message then this '
+					. 'host has strict processing limits.  Below are some options you can take to overcome constraints set up on this host.', 'duplicator'), $dup_byte_size);
 				echo '<br/><br/>';
 
 				echo "<b>" . esc_html__('Timeout Options', 'duplicator') . ":</b><br/>";
@@ -141,7 +139,7 @@ TOTAL SIZE -->
 
 			<div class="apply-btn" style="margin-bottom:5px;float:right">
 				<div class="apply-warn">
-					 <?php esc_html_e('*Checking a directory will exclude all items recursively from that path down.<br/>Please use caution when filtering directories.', 'duplicator'); ?>
+					 <?php esc_html_e('*Checking a directory will exclude all items recursively from that path down.  Please use caution when filtering directories.', 'duplicator'); ?>
 				</div>
 				<button type="button" class="button-small" onclick="Duplicator.Pack.applyFilters(this, 'large')">
 					<i class="fa fa-filter"></i> <?php esc_html_e('Add Filters &amp; Rescan', 'duplicator');?>
@@ -167,13 +165,11 @@ ADDON SITES -->
 	</div>
     <div class="info">
         <div style="margin-bottom:10px;">
-            <small>
             <?php
                 printf(__('An "Addon Site" is a separate WordPress site(s) residing in subdirectories within this site. If you confirm these to be separate sites, '
 					. 'then it is recommended that you exclude them by checking the corresponding boxes below and clicking the \'Add Filters & Rescan\' button.  To backup the other sites '
 					. 'install the plugin on the sites needing to be backed-up.'));
             ?>
-            </small>
         </div>
         <script id="hb-addon-sites" type="text/x-handlebars-template">
             <div class="container">
@@ -221,9 +217,7 @@ FILE NAME CHECKS -->
 	<div class="info">
 		<?php
 			_e('Unicode and special characters such as "*?><:/\|", can be problematic on some hosts.', 'duplicator');
-            esc_html_e('<b>');
             esc_html_e('  Only consider using this filter if the package build is failing. Select files that are not important to your site or you can migrate manually.', 'duplicator');
-            esc_html_e('</b>');
 			$txt = __('If this environment/system and the system where it will be installed are set up to support Unicode and long paths then these filters can be ignored.  '
 				. 'If you run into issues with creating or installing a package, then is recommended to filter these paths.', 'duplicator');
 		?>
@@ -297,7 +291,7 @@ UNREADABLE FILES -->
     </div>
     <div class="info">
         <?php
-        esc_html_e('PHP is unable to read the following items and they will <u>not</u> be included in the package.  Please work with your host to adjust the permissions or resolve the '
+        esc_html_e('PHP is unable to read the following items and they will NOT be included in the package.  Please work with your host to adjust the permissions or resolve the '
             . 'symbolic-link(s) shown in the lists below.  If these items are not needed then this notice can be ignored.');
         ?>
         <script id="unreadable-files" type="text/x-handlebars-template">
@@ -306,22 +300,22 @@ UNREADABLE FILES -->
                     <b><?php esc_html_e('Unreadable Items:');?></b> <br/>
                     <div class="directory">
                         {{#if ARC.UnreadableItems}}
-                        {{#each ARC.UnreadableItems as |uitem|}}
-                        <i class="fa fa-lock"></i> {{uitem}} <br/>
-                        {{/each}}
+							{{#each ARC.UnreadableItems as |uitem|}}
+								<i class="fa fa-lock"></i> {{uitem}} <br/>
+							{{/each}}
                         {{else}}
-                        <i><?php esc_html_e('No unreadable items found.<br>');?></i>
+							<i><?php esc_html_e('No unreadable items found.');?><br/></i>
                         {{/if}}
                     </div>
 
-                    <b><?php esc_html_e('Recursive Links:');?></b> <br/>
+                    <b><?php esc_html_e('Recursive Links:');?> </b> <br/>
                     <div class="directory">
                         {{#if  ARC.RecursiveLinks}}
-                        {{#each ARC.RecursiveLinks as |link|}}
-                        <i class="fa fa-lock"></i> {{link}} <br/>
-                        {{/each}}
-                        {{else}}
-                        <i><?php esc_html_e('No recursive sym-links found.<br>');?></i>
+							{{#each ARC.RecursiveLinks as |link|}}
+								<i class="fa fa-lock"></i> {{link}} <br/>
+							{{/each}}
+						{{else}}
+							<i><?php esc_html_e('No recursive sym-links found.');?><br/></i>
                         {{/if}}
                     </div>
                 </div>
@@ -369,19 +363,16 @@ DATABASE -->
 			<b><?php esc_html_e('Tables', 'duplicator');?>:</b> <span id="data-db-tablecount"></span> &nbsp; | &nbsp;
 			<b><?php esc_html_e('Records', 'duplicator');?>:</b> <span id="data-db-rows"></span><br/>
 			<?php
-				printf(__('Total size and row counts are approximate values.  The thresholds that trigger notices are <i>%1$s OR %2$s</i> records total for the entire database.  '
-					. 'Larger databases take more time to process.  On some budget hosts that have cpu/memory/timeout limits this may cause issues.', 'duplicator'),
-						DUP_Util::byteSize(DUPLICATOR_SCAN_DB_ALL_SIZE),
-						number_format(DUPLICATOR_SCAN_DB_ALL_ROWS));
-
-				echo '<br/><br/><hr size="1" />';
+				$dup_scan_tbl_total_trigger_size = DUP_Util::byteSize(DUPLICATOR_SCAN_DB_ALL_SIZE) . ' OR ' . number_format(DUPLICATOR_SCAN_DB_ALL_ROWS);
+				printf(__('Total size and row counts are approximate values.  The thresholds that trigger notices are %1$s records total for the entire database.  Larger databases '
+					. 'take more time to process.  On some budget hosts that have cpu/memory/timeout limits this may cause issues.', 'duplicator'), $dup_scan_tbl_total_trigger_size);
+				echo '<br/><hr size="1" />';
 
 				//TABLE DETAILS
-				echo '<b>' . esc_html__('TABLE DETAILS:', 'duplicator') . '</b><br/>';
-				printf(__('The notices for tables are <i>%1$s, %2$s records or names with upper-case characters</i>.  Individual tables will not trigger '
-					. 'a notice message, but can help narrow down issues if they occur later on.', 'duplicator'),
-						DUP_Util::byteSize(DUPLICATOR_SCAN_DB_TBL_SIZE),
-						number_format(DUPLICATOR_SCAN_DB_TBL_ROWS));
+				echo '<b>' . __('TABLE DETAILS:', 'duplicator') . '</b><br/>';
+				$dup_scan_tbl_trigger_size = DUP_Util::byteSize(DUPLICATOR_SCAN_DB_TBL_SIZE) . ', ' . number_format(DUPLICATOR_SCAN_DB_TBL_ROWS);
+				printf(esc_html__('The notices for tables are %1$s records or names with upper-case characters.  Individual tables will not trigger '
+					. 'a notice message, but can help narrow down issues if they occur later on.', 'duplicator'), $dup_scan_tbl_trigger_size);
 				
 				echo '<div id="dup-scan-db-info"><div id="data-db-tablelist"></div></div>';
 
@@ -487,7 +478,7 @@ DIALOGS:
 	$alert1->initAlert();
 	
 	$alert2 = new DUP_UI_Dialog();
-	$alert2->height     = 425;
+	$alert2->height     = 450;
 	$alert2->width      = 650;
 	$alert2->title		= __('Copy Quick Filter Paths', 'duplicator');
 	$alert2->message	= "<div id='arc-paths-dlg'></div>";

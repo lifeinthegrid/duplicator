@@ -7,10 +7,10 @@
 <div class="panel">
 
 	<br/>
-	<div class="area">
+	<div class="area" style="width:400px">
 		<img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/logo-dpro-300x50.png"); ?>"  />
 		<h2>
-			<?php esc_html_e('Store your packages in multiple<br/> locations  with Duplicator Pro', 'duplicator') ?>
+			<?php esc_html_e('Store your packages in multiple locations  with Duplicator Pro', 'duplicator') ?>
 		</h2>
 
 		<div style='text-align: left; margin:auto; width:200px'>

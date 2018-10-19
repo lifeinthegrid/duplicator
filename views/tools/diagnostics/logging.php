@@ -41,7 +41,7 @@ $logfound = (strlen($logname) > 0) ? true :false;
 	td#dup-log-panel-left div.name {float:left; margin: 0px 0px 5px 5px;}
 	td#dup-log-panel-left div.opts {float:right;}
 	td#dup-log-panel-right {vertical-align: top; padding-left:15px; max-width: 375px}
-	#dup-log-content {padding:5px; background: #fff; min-height:500px; width:99%; border:1px solid silver}
+	#dup-log-content {padding:5px; background: #fff; min-height:500px; width:99%; border:1px solid silver;overflow:scroll; word-wrap: break-word; margin:0;}
 	
 	/* OPTIONS */
 	div.dup-log-hdr {font-weight: bold; font-size:16px; padding:2px; }
@@ -88,7 +88,7 @@ jQuery(document).ready(function($)
 	}
 	
 	Duplicator.Tools.WinResize = function() {
-		var height = $(window).height() - 215;
+		var height = $(window).height() - 225;
 		$("#dup-log-content").css({height: height + 'px'});
 	}
 

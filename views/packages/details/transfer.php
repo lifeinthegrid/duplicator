@@ -7,10 +7,10 @@
 <div class="panel">
 
 	<br/>
-	<div class="area">
+	<div class="area" style="width:450px">
 		<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/logo-dpro-300x50.png"  />
 		<h2>
-			<?php esc_html_e('Transfer your packages to multiple<br/> locations  with Duplicator Pro', 'duplicator') ?>
+			<?php esc_html_e('Transfer your packages to multiple locations  with Duplicator Pro', 'duplicator') ?>
 		</h2>
 
 		<div style='text-align: left; margin:auto; width:200px'>
@@ -24,7 +24,7 @@
 			</ul>
 		</div>
 		<?php
-			esc_html_e('Set up a one-time storage location and automatically <br/> push the package to your destination.', 'duplicator');
+			esc_html_e('Set up a one-time storage location and automatically push the package to your destination.', 'duplicator');
 		?>
 	</div><br/>
 
