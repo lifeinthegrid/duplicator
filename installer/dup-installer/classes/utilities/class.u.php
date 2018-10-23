@@ -1452,5 +1452,73 @@ class DUPX_U
 			return self::esc_html($matches[0]);
 		return $matches[0];
 	}
+
+	
+	/**
+	 * Remove slashes from a string or array of strings.
+	 *
+	 * This should be used to remove slashes from data passed to core API that
+	 * expects data to be unslashed.
+	 *
+	 * @since 3.6.0
+	 *
+	 * @param string|array $value String or array of strings to unslash.
+	 * @return string|array Unslashed $value
+	 */
+	public static function wp_unslash($value) {
+		return self::stripslashes_deep( $value );
+	}
+
+	/**
+	 * Navigates through an array, object, or scalar, and removes slashes from the values.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param mixed $value The value to be stripped.
+	 * @return mixed Stripped value.
+	 */
+	public static function stripslashes_deep($value) {
+		return self::map_deep($value, array('self', 'stripslashes_from_strings_only'));
+	}
+
+	/**
+	 * Maps a function to all non-iterable elements of an array or an object.
+	 *
+	 * This is similar to `array_walk_recursive()` but acts upon objects too.
+	 *
+	 * @since 4.4.0
+	 *
+	 * @param mixed    $value    The array, object, or scalar.
+	 * @param callable $callback The function to map onto $value.
+	 * @return mixed The value with the callback applied to all non-arrays and non-objects inside it.
+	 */
+	public static function map_deep($value, $callback) {
+		if (is_array($value)) {
+			foreach ($value as $index => $item) {
+				$value[$index] = self::map_deep($item, $callback);
+			}
+		} elseif (is_object($value)) {
+			$object_vars = get_object_vars($value);
+			foreach ($object_vars as $property_name => $property_value) {
+				$value->$property_name = self::map_deep($property_value, $callback);
+			}
+		} else {
+			$value = call_user_func($callback, $value);
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Callback function for `stripslashes_deep()` which strips slashes from strings.
+	 *
+	 * @since 4.4.0
+	 *
+	 * @param mixed $value The array or string to be stripped.
+	 * @return mixed $value The stripped value.
+	 */
+	public static function stripslashes_from_strings_only($value) {
+		return is_string($value) ? stripslashes($value) : $value;
+	}
 }
 DUPX_U::init();

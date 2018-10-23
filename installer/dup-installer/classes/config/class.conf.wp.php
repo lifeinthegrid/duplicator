@@ -27,7 +27,7 @@ class DUPX_WPConfig
 		$db_host	= ($db_port == 3306) ? DUPX_U::sanitize_text_field($_POST['dbhost']) : DUPX_U::sanitize_text_field($_POST['dbhost']).':'.DUPX_U::sanitize_text_field($db_port);
 		$db_name	= isset($_POST['dbname']) ? DUPX_U::sanitize_text_field($_POST['dbname']) : null;
 		$db_user	= isset($_POST['dbuser']) ? DUPX_U::sanitize_text_field($_POST['dbuser']) : null;
-       	$db_pass	= isset($_POST['dbpass']) ? DUPX_U::sanitize_text_field($_POST['dbpass']) : null;
+       	$db_pass	= isset($_POST['dbpass']) ? trim(DUPX_U::wp_unslash($_POST['dbpass'])) : null;
 
 		//--------------------
 		//LEGACY PARSER LOGIC:
