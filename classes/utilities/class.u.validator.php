@@ -24,12 +24,13 @@ class DUP_Validator
     private static $patterns = array(
         'fdir' => '/^([a-zA-Z]:|\/|\\\\\\\\)[\p{L}\s0-9-_!%&()=\[\]#@,.;+\\\\\/]+$/',
         'ffile' => '/^([a-zA-Z]:|\/|\\\\\\\\)[\p{L}\s0-9-_!%&()=\[\]#@,.;+\\\\\/]+\.[A-Za-z0-9]{2,4}$/',
-        'fext' => '\\.?[A-Za-z0-9]{2,4}$/',
+        'fext' => '/^\.?[A-Za-z0-9]{2,4}$/',
         'email' => '[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+'
     );
 
     const FILTER_VALIDATE_FILE   = 'ffile';
     const FILTER_VALIDATE_FOLDER = 'fdir';
+    const FILTER_VALIDATE_FILE_EXT = 'fext';
 
     /**
      * @var array $errors
@@ -119,6 +120,9 @@ class DUP_Validator
     }
 
     /**
+     * valkey
+     * errmsg
+     * acc_vals
      *
      * @param mixed $variable
      * @param int $filter
@@ -129,6 +133,10 @@ class DUP_Validator
     {
         $success = true;
         $result  = null;
+
+        if (isset($options['acc_vals']) && in_array($variable , $options['acc_vals'])) {
+            return $variable;
+        }
 
         if ($filter === FILTER_VALIDATE_BOOLEAN) {
             $options['flags'] = FILTER_NULL_ON_FAILURE;
@@ -186,4 +194,27 @@ class DUP_Validator
 
         return $this->filter_var($variable, FILTER_VALIDATE_REGEXP, $options);
     }
+
+    /**
+     *
+     * @param string $variable
+     * @param string $delimiter
+     * @param string $filter
+     * @param array $options
+     */
+    public function explode_filter_custom($variable, $delimiter , $filter, $options = array()) {
+        if (empty($variable)) {
+            return array();
+        }
+
+        $vals = explode($delimiter, trim($variable, $delimiter));
+        $res = array();
+
+            foreach ($vals as $val) {
+                $res[] = $this->filter_custom($val, $filter, $options);
+            }
+       
+        return $res;
+    }
+
 }

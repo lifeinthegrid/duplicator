@@ -263,6 +263,60 @@ class DUP_Package
         return $report;
     }
 
+    /**
+     * 
+     * @return DUP_Validator
+     */
+    public function validateInputs()
+    {
+
+        $validator = new DUP_Validator();
+
+        //$homepath = untrailingslashit(get_home_path());
+
+        $validator->explode_filter_custom($this->Archive->FilterDirs, ';' , DUP_Validator::FILTER_VALIDATE_FOLDER ,
+            array(  'valkey' => 'FilterDirs' ,
+                    'errmsg' => __('Directories: <b>%1$s</b> isn\'t a valid path', 'duplicator'),
+                )
+            );
+
+        $validator->explode_filter_custom($this->Archive->FilterExts, ';' , DUP_Validator::FILTER_VALIDATE_FILE_EXT ,
+            array(  'valkey' => 'FilterExts' ,
+                    'errmsg' => __('File extension: <b>%1$s</b> isn\'t a valid extension', 'duplicator'),
+                )
+            );
+
+        $validator->explode_filter_custom($this->Archive->FilterFiles, ';' , DUP_Validator::FILTER_VALIDATE_FILE ,
+            array(  'valkey' => 'FilterFiles' ,
+                    'errmsg' => __('Files: <b>%1$s</b> isn\'t a valid file name', 'duplicator'),
+                )
+            );
+
+        $validator->filter_var($this->Installer->OptsDBHost, FILTER_VALIDATE_URL ,  array(
+                    'valkey' => 'OptsDBHost' ,
+                    'errmsg' => __('MySQL Server Host: <b>%1$s</b> isn\'t a valid host', 'duplicator'),
+                    'acc_vals' => array(
+                        '' ,
+                        'localhost'
+                    )
+                )
+            );
+
+        $validator->filter_var($this->Installer->OptsDBPort, FILTER_VALIDATE_INT , array(
+                    'valkey' => 'OptsDBPort' ,
+                    'errmsg' => __('MySQL Server Port: <b>%1$s</b> isn\'t a valid port', 'duplicator'),
+                    'acc_vals' => array(
+                        ''
+                    ),
+                    'options' => array(
+                       'min_range' => 0
+                    )
+                )
+            );
+
+        return $validator;
+    }
+
     // Saves the active package to the package table
 	public function save($extension)
 	{
