@@ -21,7 +21,7 @@ if (isset($_POST['dbname'])) {
 }
 
 $_POST['dbuser'] = isset($_POST['dbuser']) ? DUPX_U::sanitize_text_field($_POST['dbuser']) : null;
-$_POST['dbpass'] = isset($_POST['dbpass']) ? DUPX_U::sanitize_text_field($_POST['dbpass']) : null;
+$_POST['dbpass'] = isset($_POST['dbpass']) ? trim(DUPX_U::wp_unslash($_POST['dbpass'])) : null;
 
 if (isset($_POST['dbhost'])) {
     $post_db_host = DUPX_U::sanitize_text_field($_POST['dbhost']);
@@ -74,7 +74,7 @@ $dbTestIn->mode		 = DUPX_U::sanitize_text_field($_POST['view_mode']);
 $dbTestIn->dbaction	 = DUPX_U::sanitize_text_field($_POST['dbaction']);
 $dbTestIn->dbhost	 = DUPX_U::sanitize_text_field($_POST['dbhost']);
 $dbTestIn->dbuser	 = DUPX_U::sanitize_text_field($_POST['dbuser']);
-$dbTestIn->dbpass	 = DUPX_U::sanitize_text_field($_POST['dbpass']);
+$dbTestIn->dbpass	 = trim(DUPX_U::wp_unslash($_POST['dbpass']));
 $dbTestIn->dbname	 = DUPX_U::sanitize_text_field($_POST['dbname']);
 $dbTestIn->dbport	 = DUPX_U::sanitize_text_field($_POST['dbport']);
 $dbTestIn->dbcollatefb = DUPX_U::sanitize_text_field($_POST['dbcollatefb']);

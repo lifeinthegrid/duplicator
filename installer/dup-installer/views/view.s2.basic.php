@@ -93,8 +93,8 @@ BASIC PANEL -->
 				</div>
 			</td>
 		</tr>
-		<tr><td>User:</td><td><input type="text" name="dbuser" id="dbuser" required="true" value="<?php echo htmlspecialchars($dbuser); ?>" placeholder="valid database username" /></td></tr>
-		<tr><td>Password:</td><td><input type="text" name="dbpass" id="dbpass" value="<?php echo htmlspecialchars($dbpass); ?>"  placeholder="valid database user password"  /></td></tr>
+		<tr><td>User:</td><td><input type="text" name="dbuser" id="dbuser" required="true" value="<?php echo DUPX_U::esc_attr($dbuser); ?>" placeholder="valid database username" /></td></tr>
+		<tr><td>Password:</td><td><input type="text" name="dbpass" id="dbpass" value="<?php echo DUPX_U::esc_attr($dbpass); ?>"  placeholder="valid database user password"  /></td></tr>
 	</table>
 </div>
 <br/><br/>
