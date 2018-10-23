@@ -57,7 +57,7 @@ class DUP_UI_Notice
 
 				$title = __('This site has been successfully migrated!', 'duplicator');
 				$msg1  = __('Final step(s):', 'duplicator');
-				$msg2  = __('This message will be removed after all installer files are removed.  Installer files must be removed to maintain a secure site.<br/>'
+				$msg2  = __('This message will be removed after all installer files are removed.  Installer files must be removed to maintain a secure site.  '
 									. 'Click the link above or button below to remove all installer files and complete the migration.', 'duplicator');
 
 				echo "<b class='pass-msg'><i class='fa fa-check-circle'></i> ".esc_html($title)."</b> <br/> {$safe_html} <b>".esc_html($msg1)."</b> <br/>";
