@@ -1,6 +1,6 @@
 <?php
 /**
- * Recursivly scans a directory and finds all sym-links and unreadable files
+ * Validate variables
  *
  * Standard: PSR-2
  * @link http://www.php-fig.org/psr/psr-2
@@ -33,7 +33,8 @@ class DUP_Validator
     const FILTER_VALIDATE_FILE_EXT = 'fext';
 
     /**
-     * @var array $errors
+     * @var array $errors [ ['key' => string field key,
+     *                      'msg' => error message ] , [] ]
      */
     private $errors = array();
 
@@ -73,7 +74,7 @@ class DUP_Validator
 
     /**
      *
-     * @return array
+     * @return array return errors messages
      */
     public function getErrorsMsg()
     {
@@ -86,8 +87,8 @@ class DUP_Validator
 
     /**
      *
-     * @param string $format
-     * @param bool $echo
+     * @param string $format printf format message where %s is the variable content default "%s\n"
+     * @param bool $echo if false return string
      * @return void|string
      */
     public function getErrorsFormat($format = "%s\n", $echo = true)
@@ -120,9 +121,12 @@ class DUP_Validator
     }
 
     /**
-     * valkey
-     * errmsg
-     * acc_vals
+     * filter_var function wrapper see http://php.net/manual/en/function.filter-var.php
+     * 
+     * additional options
+     * valkey => key of field
+     * errmsg => error message; % s will be replaced with the contents of the variable  es. "<b>%s</b> isn't a valid field"
+     * acc_vals => array of accepted values that skip validation
      *
      * @param mixed $variable
      * @param int $filter
@@ -170,7 +174,8 @@ class DUP_Validator
     }
 
     /**
-     *
+     * validation of predefined regular expressions
+     * 
      * @param mixed $variable
      * @param string $filter
      * @param array $options
@@ -196,6 +201,7 @@ class DUP_Validator
     }
 
     /**
+     * it explodes a string with a delimiter and validates every element of the array
      *
      * @param string $variable
      * @param string $delimiter
