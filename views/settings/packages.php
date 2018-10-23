@@ -225,7 +225,10 @@ $archive_build_mode		= DUP_Settings::Get('archive_build_mode')
 				<!-- ZIPARCHIVE -->
 				<div class="engine-sub-opts" id="engine-details-1" style="display:none">
 					<p class="description">
-						<?php esc_html_e('Creates a archive format (archive.zip).<br/>  This option uses the internal PHP ZipArchive classes to create a Zip file.', 'duplicator'); ?>
+						<?php 
+							esc_html_e('Creates a archive format (archive.zip).', 'duplicator'); echo '<br/>';
+							esc_html_e('This option uses the internal PHP ZipArchive classes to create a Zip file.', 'duplicator');
+						?>
 					</p>
 				</div>
 
@@ -247,7 +250,10 @@ $archive_build_mode		= DUP_Settings::Get('archive_build_mode')
                 <label for="package_zip_flush"><?php esc_html_e("Attempt Network Keep Alive", 'duplicator'); ?></label>
                 <i style="font-size:12px">(<?php esc_html_e("enable only for large archives", 'duplicator'); ?>)</i>
                 <p class="description">
-                    <?php esc_html_e("This will attempt to keep a network connection established for large archives.", 'duplicator'); ?>
+                    <?php
+						esc_html_e("This will attempt to keep a network connection established for large archives.", 'duplicator'); echo '<br/>';
+						esc_html_e(" Valid only when Archive Engine for ZipArchive is enabled.");
+					?>
                 </p>
             </td>
         </tr>
@@ -270,8 +276,10 @@ jQuery(document).ready(function($)
 		$('#engine-details-1, #engine-details-2').hide();
 		if ($('#archive_build_mode1').is(':checked')) {
 			$('#engine-details-1').show();
+			$('#package_zip_flush').removeAttr('disabled');
 		} else {
 			$('#engine-details-2').show();
+			$('#package_zip_flush').attr('disabled', true);
 		}
 	};
 
