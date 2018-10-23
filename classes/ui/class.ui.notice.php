@@ -74,8 +74,8 @@ class DUP_UI_Notice
 
 				$nonce = wp_create_nonce('duplicator_cleanup_page');
 				$url   = self_admin_url('admin.php?page=duplicator-tools&tab=diagnostics&section=info&_wpnonce='.$nonce);
-				echo "<b>".esc_html($title)."</b><br/> {$safe_html} ".esc_html($msg);
-				@printf("<br/><a href='".esc_url($url)."'>%s</a>", esc_html__('Take me there now!', 'duplicator'));
+				echo "<b>{$title}</b><br/> {$safe_html} {$msg}";
+				@printf("<br/><a href='{$url}'>%s</a>", __('Take me there now!', 'duplicator'));
 
             }
             echo "</p></div>";
