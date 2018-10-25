@@ -56,8 +56,36 @@ class DUP_IO
 
 		return $success && @rmdir($directory);
 	}
+    
+    /**
+     * Safely copies a file to a directory
+     *
+     * @param string $source_file       The full filepath to the file to copy
+     * @param string $dest_dir			The full path to the destination directory were the file will be copied
+     * @param string $delete_first		Delete file before copying the new one
+     *
+     *  @return TRUE on success or if file does not exist. FALSE on failure
+     */
+    public static function copyFile($source_file, $dest_dir, $delete_first = false)
+    {
+        //Create directory
+        if (file_exists($dest_dir) == false)
+        {
+            if (self::createDir($dest_dir, 0755, true) === false)
+            {
+                DUP_PRO_LOG::traceError("Error creating $dest_dir.");
+                return false;
+            }
+        }
 
+        //Remove file with same name before copy
+        $filename = basename($source_file);
+        $dest_filepath = $dest_dir . "/$filename";
+        if($delete_first)
+        {
+            self::deleteFile($dest_filepath);
+        }
 
-
-
+        return copy($source_file, $dest_filepath);
+    }
 }
