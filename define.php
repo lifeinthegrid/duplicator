@@ -2,7 +2,7 @@
 //Prevent directly browsing to the file
 if (function_exists('plugin_dir_url')) 
 {		
-    define('DUPLICATOR_VERSION',        '1.3.1.5');
+    define('DUPLICATOR_VERSION',        '1.3.1.6');
     define('DUPLICATOR_PLUGIN_URL',     plugin_dir_url(__FILE__));
 	define('DUPLICATOR_SITE_URL',		get_site_url());
 	
@@ -22,14 +22,12 @@ if (function_exists('plugin_dir_url'))
 	define('DUPLICATOR_SSDIR_NAME',			'wp-snapshots');
 	define('DUPLICATOR_PLUGIN_PATH',		str_replace("\\", "/", plugin_dir_path(__FILE__)));
 	define('DUPLICATOR_SSDIR_PATH',			str_replace("\\", "/", DUPLICATOR_WPROOTPATH . DUPLICATOR_SSDIR_NAME));
-    define('DUPLICATOR_SSDIR_PATH_TMP',		DUPLICATOR_SSDIR_PATH . '/tmp');
-    define("DUPLICATOR_SSDIR_PATH_INSTALLER", DUPLICATOR_SSDIR_PATH . '/installer');
+	define('DUPLICATOR_SSDIR_PATH_TMP',		DUPLICATOR_SSDIR_PATH . '/tmp');
 	define('DUPLICATOR_SSDIR_URL',			DUPLICATOR_SITE_URL . "/" . DUPLICATOR_SSDIR_NAME);
     define('DUPLICATOR_INSTALL_PHP',		'installer.php');
 	define('DUPLICATOR_INSTALL_BAK',		'installer-backup.php');
 	define('DUPLICATOR_INSTALL_BOOT_LOG',	'installer-bootlog.txt');
     define('DUPLICATOR_ZIPPED_LOG_FILENAME', 'duplicator_lite_log.zip');
-    define('DUPLICATOR_INSTALLER_HASH_PATTERN', '[a-z0-9][a-z0-9][a-z0-9][a-z0-9][a-z0-9][a-z0-9][a-z0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]');
 	
 	//GENERAL CONSTRAINTS
     define('DUPLICATOR_PHP_MAX_MEMORY',  '2048M');
