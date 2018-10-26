@@ -353,16 +353,16 @@ class DUPX_UpdateEngine
      *
      * @return array    The original array with all elements replaced as needed.
      */
-    public static function recursiveUnserializeReplace($from = '', $to = '', $data = '', $serialised = false, &$objArr)
+    public static function recursiveUnserializeReplace($from = '', $to = '', $data = '', $serialised = false, &$objArr = array(), $fixpartials = false)
     {
         // some unseriliased data cannot be re-serialised eg. SimpleXMLElements
         try {
             if (is_string($data) && ($unserialized = @unserialize($data)) !== false) {
-                $data = self::recursiveUnserializeReplace($from, $to, $unserialized, true, $objArr);
+                $data = self::recursiveUnserializeReplace($from, $to, $unserialized, true, $objArr, $fixpartials);
             } elseif (is_array($data)) {
                 $_tmp = array();
                 foreach ($data as $key => $value) {
-                    $_tmp[$key] = self::recursiveUnserializeReplace($from, $to, $value, false, $objArr);
+                    $_tmp[$key] = self::recursiveUnserializeReplace($from, $to, $value, false, $objArr, $fixpartials);
                 }
                 $data = $_tmp;
                 unset($_tmp);
@@ -377,9 +377,36 @@ class DUPX_UpdateEngine
                 $objArr[] = spl_object_hash($data);
                 // RSR NEW LOGIC
                 $_tmp = $data;
-                $props = get_object_vars($data);
-                foreach ($props as $key => $value) {
-                    $_tmp->$key = self::recursiveUnserializeReplace($from, $to, $value, false, $objArr);
+                if($fixpartials){
+                    if(method_exists($data,"getObjectVars")) {
+                        $props = $data->getObjectVars();
+                    }else{
+                        $props = get_object_vars($data);
+                    }
+                    foreach ($props as $key => $value) {
+                        $obj_replace_result = self::recursiveUnserializeReplace($from, $to, $value, false, $objArr, $fixpartials);
+                        if(method_exists($_tmp,"setVar")){
+                            $property_name = self::cleanPropertyName($_tmp,$key);
+                            $_tmp->setVar($property_name,$obj_replace_result);
+                        }else{
+                            $_tmp->$key = $obj_replace_result;
+                        }
+                    }
+                }else{
+                    $props = get_object_vars($data);
+                    foreach ($props as $key => $value) {
+                        if (isset($_tmp->$key)) {
+                            $_tmp->$key = self::recursiveUnserializeReplace($from, $to, $value, false, $objArr);
+                        } else {
+                            // $key is like \0
+                            $int_key = intval($key);
+                            if ($key == $int_key && isset($_tmp->$int_key)) {
+                                $_tmp->$int_key = self::recursiveUnserializeReplace($from, $to, $value, false, $objArr);
+                            } else {
+                                throw new Exception('Object key->'.$key.' is not exist');
+                            }
+                        }
+                    }
                 }
                 $data = $_tmp;
                 unset($_tmp);
@@ -394,6 +421,8 @@ class DUPX_UpdateEngine
             }
         } catch (Exception $error) {
             DUPX_Log::info("\nRECURSIVE UNSERIALIZE ERROR: With string\n" . $error, 2);
+        } catch (Error $error) {
+            DUPX_Log::info("\nRECURSIVE UNSERIALIZE ERROR: With string\n" . print_r($error, true), 2);    
         }
         return $data;
     }
