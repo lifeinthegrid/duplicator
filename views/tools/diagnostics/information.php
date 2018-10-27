@@ -53,6 +53,16 @@ if ($section == "info" || $section == '') {
 			<p><b><?php echo esc_html($action_response); ?></b></p>
 			<?php if ( $_GET['action'] == 'installer') :  ?>
 				<?php
+					// Move installer log before cleanup
+					$installer_log_path = DUPLICATOR_INSTALLER_DIRECTORY.'/dup-installer-log__'.DUPLICATOR_INSTALLER_HASH_PATTERN.'.txt';
+					$glob_files = glob($installer_log_path);
+					if (!empty($glob_files) && wp_mkdir_p(DUPLICATOR_SSDIR_PATH_INSTALLER)) {
+						foreach ($glob_files as $glob_file) {
+							$installer_log_file_path = $glob_file;
+							DUP_IO::copyFile($installer_log_file_path, DUPLICATOR_SSDIR_PATH_INSTALLER);
+						}
+					}
+
 					$html = "";
 					//REMOVE CORE INSTALLER FILES
 					$installer_files = DUP_Server::getInstallerFiles();
