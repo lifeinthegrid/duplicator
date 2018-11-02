@@ -225,10 +225,22 @@ DUPX_UpdateEngine::logErrors($report);
 if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
 	
 	$post_wp_username = $_POST['wp_username'];
-	$post_wp_password = $_POST['wp_password'];
+    $post_wp_password = $_POST['wp_password'];
+    $post_wp_mail     = $_POST['wp_mail'];
+    $post_wp_nickname = $_POST['wp_nickname'];
+    if (empty($post_wp_nickname)) {
+        $post_wp_nickname = $post_wp_username;
+    }
+    $post_wp_first_name = $_POST['wp_first_name'];
+    $post_wp_last_name  = $_POST['wp_last_name'];
 
-	$post_wp_username = mysqli_real_escape_string($dbh, $post_wp_username);	
+    $post_wp_username = mysqli_real_escape_string($dbh, $post_wp_username);
 	$post_wp_password = mysqli_real_escape_string($dbh, $post_wp_password);
+
+    $post_wp_mail = mysqli_real_escape_string($dbh, $post_wp_mail);
+	$post_wp_nickname = mysqli_real_escape_string($dbh, $post_wp_nickname);
+    $post_wp_first_name = mysqli_real_escape_string($dbh, $post_wp_first_name);
+	$post_wp_last_name = mysqli_real_escape_string($dbh, $post_wp_last_name);
 
 	$newuser_check	 = mysqli_query($dbh, "SELECT COUNT(*) AS count FROM `".mysqli_real_escape_string($dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."users` WHERE user_login = '{$post_wp_username}' ");
 	$newuser_row	 = mysqli_fetch_row($newuser_check);
@@ -242,7 +254,7 @@ if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
 		$newuser1 = @mysqli_query($dbh,
 				"INSERT INTO `{$GLOBALS['DUPX_AC']->wp_tableprefix}users`
 				(`user_login`, `user_pass`, `user_nicename`, `user_email`, `user_registered`, `user_activation_key`, `user_status`, `display_name`)
-				VALUES ('{$post_wp_username}', MD5('{$post_wp_password}'), '{$post_wp_username}', '', '{$newuser_datetime}', '', '0', '{$post_wp_username}')");
+				VALUES ('{$post_wp_username}', MD5('{$post_wp_password}'), '{$post_wp_username}', '{$post_wp_mail}', '{$newuser_datetime}', '', '0', '{$post_wp_username}')");
 
 		$newuser1_insert_id = mysqli_insert_id($dbh);
 
@@ -257,7 +269,9 @@ if (strlen($_POST['wp_username']) >= 4 && strlen($_POST['wp_password']) >= 6) {
 		//Misc Meta-Data Settings:
 		@mysqli_query($dbh, "INSERT INTO `".mysqli_real_escape_string($dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser1_insert_id}', 'rich_editing', 'true')");
 		@mysqli_query($dbh, "INSERT INTO `".mysqli_real_escape_string($dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser1_insert_id}', 'admin_color',  'fresh')");
-		@mysqli_query($dbh, "INSERT INTO `".mysqli_real_escape_string($dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser1_insert_id}', 'nickname', '{$post_wp_username}')");
+        @mysqli_query($dbh, "INSERT INTO `".mysqli_real_escape_string($dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser1_insert_id}', 'nickname', '{$post_wp_nickname}')");
+        @mysqli_query($dbh, "INSERT INTO `".mysqli_real_escape_string($dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser1_insert_id}', 'first_name', '{$post_wp_first_name}')");
+        @mysqli_query($dbh, "INSERT INTO `".mysqli_real_escape_string($dbh, $GLOBALS['DUPX_AC']->wp_tableprefix)."usermeta` (`user_id`, `meta_key`, `meta_value`) VALUES ('{$newuser1_insert_id}', 'last_name', '{$post_wp_last_name}')");
 	
 		DUPX_Log::info("\nNEW WP-ADMIN USER:");
 		if ($newuser1 && $newuser_test2 && $newuser3) {

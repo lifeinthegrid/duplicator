@@ -163,6 +163,22 @@ VIEW: STEP 3- INPUT -->
 				<td>Password:</td>
 				<td><input type="text" name="wp_password" id="wp_password" value="" title="6 characters minimum"  placeholder="(6 or more characters)" /></td>
 			</tr>
+            <tr>
+				<td>Mail:</td>
+				<td><input type="text" name="wp_mail" id="wp_mail" value="" title=""  placeholder="" /></td>
+			</tr>
+            <tr>
+				<td>Nickname:</td>
+				<td><input type="text" name="wp_nickname" id="wp_nickname" value="" title="if empty is username"  placeholder="(if empty is username)" /></td>
+			</tr>
+            <tr>
+				<td>First name:</td>
+				<td><input type="text" name="wp_first_name" id="wp_first_name" value="" title="optional"  placeholder="(optional)" /></td>
+			</tr>
+            <tr>
+				<td>Last name:</td>
+				<td><input type="text" name="wp_last_name" id="wp_last_name" value="" title="optional"  placeholder="(optional)" /></td>
+			</tr>
 		</table>
 		<br/><br/>
 
@@ -317,12 +333,25 @@ DUPX.runUpdate = function()
 	//Validation
 	var wp_username = $.trim($("#wp_username").val()).length || 0;
 	var wp_password = $.trim($("#wp_password").val()).length || 0;
+    var wp_mail = $.trim($("#wp_mail").val()).length || 0;
+
 
 	if ( $.trim($("#url_new").val()) == "" )  {alert("The 'New URL' field is required!"); return false;}
 	if ( $.trim($("#siteurl").val()) == "" )  {alert("The 'Site URL' field is required!"); return false;}
-	if (wp_username >= 1 && wp_username < 4) {alert("The New Admin Account 'Username' must be four or more characters"); return false;}
-	if (wp_username >= 4 && wp_password < 6) {alert("The New Admin Account 'Password' must be six or more characters"); return false;}
 
+    if (wp_username >= 1) {
+        if (wp_username < 4) {
+            alert("The New Admin Account 'Username' must be four or more characters");
+            return false;
+        } else if (wp_password < 6) {
+            alert("The New Admin Account 'Password' must be six or more characters");
+            return false;
+        } else if (wp_mail === 0) {
+            alert("The New Admin Account 'mail' is required");
+            return false;
+        }
+    }
+    
 	var nonHttp = false;
 	var failureText = '';
 
