@@ -79,6 +79,6 @@ class DaTesterLogging extends DupArchiveLoggerBase
 
     public static function initProfiling()
     {
-        $this->profileLogArray = array();
+        self::profileLogArray = array();
     }  
 }
