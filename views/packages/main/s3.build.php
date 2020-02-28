@@ -620,9 +620,9 @@ jQuery(document).ready(function ($)
         $('#dup-create-new').removeClass('disabled');
         
 		//Wire Up Downloads
-		$('#dup-btn-installer').click(function() { Duplicator.Pack.DownloadPackageFile(0, pack.ID); return false});
+		$('#dup-btn-installer').click(function() { Duplicator.Pack.DownloadPackageFile(pack.ID, pack.Hash, 'installer'); return false});
 		$('#dup-btn-archive').click(function() {
-			Duplicator.Pack.DownloadFile(archive_name, archive_url);
+			Duplicator.Pack.DownloadPackageFile(pack.ID, pack.Hash, 'archive');
 			return false;
 		});
 

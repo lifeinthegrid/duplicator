@@ -206,7 +206,7 @@ ARCHIVE -->
 
 						<label class="no-select" title="<?php esc_attr_e("Separate all filters by semicolon", 'duplicator'); ?>">
 							<?php
-								_e("Files:", 'duplicator');
+								esc_html_e("Files:", 'duplicator');
 								echo sprintf("<sup title='%s'>({$filter_file_count})</sup>", esc_html__("Number of files filtered", 'duplicator'));
 							?>
 						</label>

@@ -35,8 +35,15 @@ $link_installer = add_query_arg(
     ),
     $base_url
 );
-$link_log			= "{$package->StoreURL}{$package->NameHash}.log";
-$link_scan			= "{$package->StoreURL}{$package->NameHash}_scan.json";
+$link_log = add_query_arg(
+    array(
+        'action' => 'duplicator_download',
+        'id'     => $package->ID,
+        'hash'   => $package->Hash,
+        'file' => 'log'
+    ),
+    $base_url
+);
 
 $debug_on	     = DUP_Settings::Get('package_debug');
 $mysqldump_on	 = DUP_Settings::Get('package_mysqldump') && DUP_DB::getMySqlDumpPath();
@@ -147,10 +154,10 @@ GENERAL -->
 				<div id="dup-downloads-area">
 					<?php if  (!$err_found) :?>
 
-                        <button class="button" onclick="Duplicator.Pack.DownloadPackageFile(0, <?php echo absint($package->ID); ?>);return false;"><i class="fa fa-bolt fa-sm"></i> Installer</button>
-                        <button class="button" onclick="Duplicator.Pack.DownloadPackageFile(1, <?php echo absint($package->ID); ?>);return false;"><i class="far fa-file-archive"></i> Archive - <?php echo esc_html($package->ZipSize); ?></button>
-                        <button class="button" onclick="Duplicator.Pack.DownloadPackageFile(2, <?php echo absint($package->ID); ?>);return false;"><i class="fa fa-table fa-sm"></i> &nbsp; SQL - <?php echo esc_html(DUP_Util::byteSize($package->Database->Size))  ?></button>
-                        <button class="button" onclick="Duplicator.Pack.DownloadPackageFile(3, <?php echo absint($package->ID); ?>);return false;"><i class="fa fa-table fa-sm"></i> &nbsp; <?php esc_html_e('Log', 'duplicator'); ?> </button>
+                        <button class="button" onclick="Duplicator.Pack.DownloadPackageFile(<?php echo absint($package->ID); ?>, '<?php echo esc_js($package->Hash); ?>', 'installer'); return false;"><i class="fa fa-bolt fa-sm"></i> <?php esc_html_e('Installer', 'duplicator'); ?></button>
+                        <button class="button" onclick="Duplicator.Pack.DownloadPackageFile(<?php echo absint($package->ID); ?>, '<?php echo esc_js($package->Hash); ?>', 'archive'); return false;"><i class="far fa-file-archive"></i> <?php printf(esc_html__('Archive - %s', 'duplicator'), esc_html($package->ZipSize)); ?></button>
+                        <button class="button" onclick="Duplicator.Pack.DownloadPackageFile(<?php echo absint($package->ID); ?>, '<?php echo esc_js($package->Hash); ?>', 'sql'); return false;"><i class="fa fa-table fa-sm"></i> &nbsp; SQL - <?php echo esc_html(DUP_Util::byteSize($package->Database->Size))  ?></button>
+                        <button class="button" onclick="Duplicator.Pack.DownloadPackageFile(<?php echo absint($package->ID); ?>, '<?php echo esc_js($package->Hash); ?>', 'log'); return false;"><i class="fa fa-table fa-sm"></i> &nbsp; <?php esc_html_e('Log', 'duplicator'); ?> </button>
 						<button class="button" onclick="Duplicator.Pack.ShowLinksDialog('<?php echo esc_js($link_sql);?>','<?php echo esc_js($link_archive); ?>','<?php echo esc_js($link_installer); ?>','<?php echo esc_js($link_log);?>');" class="thickbox"><i class="fa fa-lock fa-xs"></i> &nbsp; <?php esc_html_e("Share", 'duplicator')?></button>
 					<?php else: ?>
                         <button class="button" onclick="Duplicator.Pack.DownloadPackageFile(3, <?php echo absint($package->ID); ?>);return false;"><i class="fa fa-table fa-sm"></i> &nbsp; Log </button>
@@ -164,11 +171,11 @@ GENERAL -->
 					</tr>
 					<tr>
 						<td><?php esc_html_e('Installer', 'duplicator') ?>: </td>
-						<td><a href="#" onclick="Duplicator.Pack.DownloadPackageFile(0, <?php echo absint($package->ID); ?>);return false;" ><?php echo esc_html($package->Installer->File) ?></a></td>
+						<td><a href="<?php echo esc_url($link_installer); ?>"><?php echo esc_html($package->Installer->File) ?></a></td>
 					</tr>
 					<tr>
 						<td><?php esc_html_e('Database', 'duplicator') ?>: </td>
-						<td><a href="<?php echo esc_url($link_sql); ?>" target="_blank"><?php echo esc_html($package->Database->File); ?></a></td>
+						<td><a href="<?php echo esc_url($link_sql); ?>"><?php echo esc_html($package->Database->File); ?></a></td>
 					</tr>
 				</table>
 				<?php endif; ?>

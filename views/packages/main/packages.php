@@ -194,10 +194,10 @@ function tablePackageRow($Package) {
                 </span>
             </td>
             <td class="get-btns">
-                <button id="<?php echo esc_attr("{$uniqueid}_installer.php"); ?>" class="button no-select" onclick="Duplicator.Pack.DownloadPackageFile(0, <?php echo absint($Package->ID); ?>); return false;">
+                <button id="<?php echo esc_attr("{$uniqueid}_installer.php"); ?>" class="button no-select" onclick="Duplicator.Pack.DownloadPackageFile(<?php echo absint($Package->ID); ?>, '<?php echo esc_js($Package->Hash); ?>', 'installer'); return false;">
                     <i class="fa fa-bolt fa-sm"></i> <?php esc_html_e("Installer", 'duplicator') ?>
                 </button>
-                <button id="<?php echo esc_attr("{$uniqueid}_archive.zip"); ?>" class="button no-select" onclick="Duplicator.Pack.DownloadFile('<?php echo esc_js($Package->Archive->File); ?>', '<?php echo esc_js($packagepath); ?>'); return false;">
+                <button id="<?php echo esc_attr("{$uniqueid}_archive.zip"); ?>" class="button no-select" onclick="Duplicator.Pack.DownloadPackageFile(<?php echo absint($Package->ID); ?>, '<?php echo esc_js($Package->Hash); ?>', 'archive'); return false;">
                     <i class="far fa-file-archive"></i> <?php esc_html_e("Archive", 'duplicator') ?>
                 </button>
                 <button type="button" class="button no-select" title="<?php esc_attr_e("Package Details", 'duplicator') ?>" onclick="Duplicator.Pack.OpenPackageDetails(<?php echo "{$Package->ID}"; ?>);">

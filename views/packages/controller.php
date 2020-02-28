@@ -22,45 +22,11 @@ $get_package_file_nonce = wp_create_nonce('DUP_CTRL_Package_getPackageFile');
 <script>
     jQuery(document).ready(function($) {
 
-        // which: 0=installer, 1=archive, 2=sql file, 3=log
-        Duplicator.Pack.DownloadPackageFile = function (which, packageID)
+        Duplicator.Pack.DownloadPackageFile = function (id, hash, file)
 		{
-            var actionLocation = ajaxurl + '?action=DUP_CTRL_Package_getPackageFile&which=' + which + '&package_id=' + packageID + '&nonce=' + '<?php echo esc_js($get_package_file_nonce); ?>';
-            if(which == 3) {
-                var win = window.open(actionLocation, '_blank');
-                win.focus();
-            }
-            else {
-                location.href = actionLocation;
-            }
+            var actionLocation = ajaxurl + '?action=duplicator_download&id=' + id + '&hash=' + hash + '&file=' + file;
+            window.location.assign(actionLocation)
         };
-
-        Duplicator.Pack.DownloadFile = function(file, url)
-        {
-            var link = document.createElement('a');        
-            link.target = "_blank";
-            link.download = file;
-            link.href= url;
-            document.body.appendChild(link);
-            
-            // click event fire
-            if (document.dispatchEvent) {
-                // First create an event
-                var click_ev = document.createEvent("MouseEvents");
-                // initialize the event
-                click_ev.initEvent("click", true /* bubble */, true /* cancelable */);
-                // trigger the event
-                link.dispatchEvent(click_ev);
-            } else if (document.fireEvent) {
-                link.fireEvent('onclick');
-            } else if (link.click()) {
-                link.click()
-            }
-
-            document.body.removeChild(link);
-            return false;
-        };
-
 
         /*	----------------------------------------
          * METHOD: Toggle links with sub-details */

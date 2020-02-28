@@ -389,7 +389,6 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
     function __construct()
     {
         add_action('wp_ajax_DUP_CTRL_Package_addQuickFilters', array($this, 'addQuickFilters'));
-        add_action('wp_ajax_DUP_CTRL_Package_getPackageFile', array($this, 'getPackageFile'));
         add_action('wp_ajax_DUP_CTRL_Package_getActivePackageStatus', array($this, 'getActivePackageStatus'));
     }
 
@@ -445,106 +444,7 @@ class DUP_CTRL_Package extends DUP_CTRL_Base
         }
     }
 
-    /**
-     * Download the requested package file
-     *
-     * @param string $_POST['which']
-     * @param string $_POST['package_id']
-     *
-     * @return downloadable file
-     */
-    function getPackageFile($post)
-    {
-        DUP_Handler::init_error_handler();
-
-        check_ajax_referer('DUP_CTRL_Package_getPackageFile', 'nonce');
-        DUP_Util::hasCapability('export');
-        $params = $this->postParamMerge($post);
-
-        $params = $this->getParamMerge($params);
-        $result = new DUP_CTRL_Result($this);
-
-        try {
-            //CONTROLLER LOGIC
-            $request   = stripslashes_deep($_REQUEST);
-            $which     = (int) $request['which'];
-            $packageId = (int) $request['package_id'];
-            $package   = DUP_Package::getByID($packageId);
-            $isBinary  = ($which != DUP_PackageFileType::Log);
-            $filePath  = $package->getLocalPackageFile($which);
-
-            //OUTPUT: Installer, Archive, SQL File
-            if ($isBinary) {
-                @session_write_close();
-                // @ob_flush();
-                //flush seems to cause issues on some PHP version where the download prompt
-                //is no longer called but the contents of the installer are dumped to the browser.
-                //@flush();
-
-                header("Pragma: public");
-                header("Expires: 0");
-                header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-                header("Cache-Control: private", false);
-                header("Content-Transfer-Encoding: binary");
-
-                if ($filePath != null) {
-                    $fp = fopen($filePath, 'rb');
-                    if ($fp !== false) {
-
-                        if ($which == DUP_PackageFileType::Installer) {
-                            $fileName = 'installer.php';
-                        } else {
-                            $fileName = basename($filePath);
-                        }
-
-                        header("Content-Type: application/octet-stream");
-                        header("Content-Disposition: attachment; filename=\"{$fileName}\";");
-
-                        DUP_LOG::trace("streaming $filePath");
-
-                        while (!feof($fp)) {
-                            $buffer = fread($fp, 2048);
-                            print $buffer;
-                        }
-
-                        fclose($fp);
-                        exit;
-                    } else {
-                        header("Content-Type: text/plain");
-                        header("Content-Disposition: attachment; filename=\"error.txt\";");
-                        $message = "Couldn't open $filePath.";
-                        DUP_Log::Trace($message);
-                        echo esc_html($message);
-                    }
-                } else {
-                    $message = __("Couldn't find a local copy of the file requested.", 'duplicator');
-
-                    header("Content-Type: text/plain");
-                    header("Content-Disposition: attachment; filename=\"error.txt\";");
-
-                    // Report that we couldn't find the file
-                    DUP_Log::Trace($message);
-                    echo esc_html($message);
-                }
-
-                //OUTPUT: Log File
-            } else {
-                if ($filePath != null) {
-                    header("Content-Type: text/plain");
-                    $text = file_get_contents($filePath);
-
-                    die($text);
-                } else {
-                    $message = __("Couldn't find a local copy of the file requested.", 'duplicator');
-                    echo esc_html($message);
-                }
-            }
-        }
-        catch (Exception $exc) {
-            $result->processError($exc);
-        }
-    }
-
+    
     /**
      * Get active package status
      *
