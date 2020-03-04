@@ -617,7 +617,8 @@ if (is_admin() == true)
                 wp_safe_redirect( admin_url() );
                 die;
             }
-
+		
+            DUP_Util::hasCapability('export');
             $nonce = sanitize_text_field($_POST['nonce']);
             if (!wp_verify_nonce($nonce, 'duplicator_dismiss_plugin_activation_admin_notice')) {
                 DUP_Log::trace('Security issue');
