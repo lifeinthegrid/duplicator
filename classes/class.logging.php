@@ -272,7 +272,7 @@ class DUP_Log
             
 			case Dup_ErrorBehavior::ThrowException:
 				DUP_LOG::trace("throwing exception");
-				throw new Exception("DUPLICATOR ERROR: Please see the 'Package Log' file link below.");
+                throw new Exception($msg);
 				break;
 
 			case Dup_ErrorBehavior::Quit:

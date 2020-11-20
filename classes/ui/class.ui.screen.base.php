@@ -45,22 +45,28 @@ class DUP_UI_Screen
         }
 
         $colorScheme = self::getCurrentColorScheme();
-        ?>
-        <style>
-            .link-style { 
-                color: <?php echo $colorScheme->colors[2]; ?>;
-            }
+        if ($colorScheme !== false) {
+            ?>
+            <style>
+                .link-style {
+                    color: <?php echo $colorScheme->colors[2]; ?>;
+                }
 
-            .link-style:hover {
-                color: <?php echo $colorScheme->colors[3]; ?>;
-            }
-        </style>
-        <?php
+                .link-style:hover {
+                    color: <?php echo $colorScheme->colors[3]; ?>;
+                }
+            </style>
+            <?php
+        }
     }
 
     public static function getCurrentColorScheme()
     {
         global $_wp_admin_css_colors;
+        if(!isset($_wp_admin_css_colors) || !is_array($_wp_admin_css_colors)){
+            return false;
+        }
+
         $colorScheme = get_user_option('admin_color');
 
         if (isset($_wp_admin_css_colors[$colorScheme])) {

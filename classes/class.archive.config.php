@@ -35,6 +35,8 @@ class DUP_Archive_Config
     public $dbname;
     public $dbuser;
     public $dbpass;
+    public $dbcharset;
+    public $dbcollation;
 
     // MULTISITE
     public $mu_mode;

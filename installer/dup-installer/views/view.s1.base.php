@@ -45,7 +45,7 @@ $max_time_zero	= ($GLOBALS['DUPX_ENFORCE_PHP_INI']) ? false : @set_time_limit(0)
 $max_time_size	= 314572800;  //300MB
 $max_time_ini	= ini_get('max_execution_time');
 $max_time_warn	= (is_numeric($max_time_ini) && $max_time_ini < 31 && $max_time_ini > 0) && $arcSize > $max_time_size;
-
+$parentWordFencePath = DUPX_Server::parentWordfencePath();
 
 $notice = array();
 $notice['10'] = ! $is_overwrite_mode				? 'Good' : 'Warn';
@@ -79,6 +79,7 @@ $archive_size = file_exists($GLOBALS['FW_PACKAGE_PATH']) ? filesize($GLOBALS['FW
 $notice['100'] = ($space_free && $archive_size > $space_free) 
                     ? 'Warn'
 					: 'Good';
+$notice['110'] = $parentWordFencePath === false ? 'Good' : 'Warn';
 
 $all_notice	  = in_array('Warn', $notice)			? 'Warn' : 'Good';
 
@@ -545,6 +546,18 @@ VALIDATION
                 : 'You don’t have sufficient disk space in your machine to extract the archive. Ask your host to increase disk space.'
         ?>
 		</div>
+
+        <!-- NOTICE 110 -->
+        <div class="status <?php echo ($notice['110'] == 'Good') ? 'pass' : 'fail' ?>"><?php echo DUPX_U::esc_html($notice['110']); ?></div>
+        <div class="title" data-type="toggle" data-target="#s1-notice110"><i class="fa fa-caret-right"></i> Wordfence</div>
+        <div class="info" id="s1-notice110">
+            <b>Wordfence Firewall:</b> <?php echo ($notice['110'] == 'Warn') ? "<span style='color:red;'>detected at {$parentWordFencePath}</span>" : "<span style='color:green;'>not detected</span>"; ?>
+            <p>
+                The Wordfence Web Application Firewall is a PHP based, application level firewall that filters out malicious
+                requests to your site. Sometimes Wordfence returns false positives on requests done during the installation process,
+                because of which it might fail. We recommend turning off the Wordfence firewall of the WordPress instance located at the mentioned path.
+            </p>
+        </div>
 
 	</div>
 

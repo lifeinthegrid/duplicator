@@ -218,7 +218,7 @@ class DUP_Database
         }
         catch (Exception $e) {
             do_action('duplicator_lite_build_database_fail', $package);
-            DUP_Log::Error("Runtime error in DUP_Database::Build", "Exception: {$e}", $errorBehavior);
+            DUP_Log::Error("Runtime error in DUP_Database::Build. ".$e->getMessage(), "Exception: {$e}", $errorBehavior);
         }
     }
 
@@ -542,7 +542,7 @@ class DUP_Database
              * 2 - Exception
              */
             DUP_Log::Info('MYSQL DUMP ERROR '.print_r($mysqlResult, true));
-            DUP_Log::error(__('Shell mysql dump error. Change Mysql dump engine in PHP mode', 'duplicator'), implode("\n", DupLiteSnapLibIOU::getLastLinesOfFile($this->tempDbPath,
+            DUP_Log::error(__('Shell mysql dump error. Change SQL Script to the "PHP Code" in the Duplicator > Settings > Packages.', 'duplicator'), implode("\n", DupLiteSnapLibIOU::getLastLinesOfFile($this->tempDbPath,
                 DUPLICATOR_DB_MYSQLDUMP_ERROR_CONTAINING_LINE_COUNT, DUPLICATOR_DB_MYSQLDUMP_ERROR_CHARS_IN_LINE_COUNT)), Dup_ErrorBehavior::ThrowException);
             return false;
         }

@@ -147,6 +147,7 @@ class DUPX_Boot
         require_once($GLOBALS['DUPX_INIT'].'/classes/utilities/class.u.notices.manager.php');
         require_once($GLOBALS['DUPX_INIT'].'/classes/utilities/class.u.html.php');
         require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.constants.php');
+        require_once($GLOBALS['DUPX_INIT'].'/classes/class.package.php');
         require_once($GLOBALS['DUPX_INIT'].'/ctrls/ctrl.base.php');
         require_once($GLOBALS['DUPX_INIT'].'/classes/config/class.archive.config.php');
         require_once($GLOBALS['DUPX_INIT'].'/classes/class.logging.php');

@@ -482,30 +482,39 @@ class DUP_Package
             if ($delResult != 0) {
                 $tmpPath = DUP_Settings::getSsdirTmpPath();
                 $ssdPath =  DUP_Settings::getSsdirPath();
-                
+
+                $archiveFile = $this->getArchiveFilename();
+                $wpConfigFile = "{$this->NameHash}_wp-config.txt";
+
                 //Perms
-                @chmod($tmpPath."/{$nameHash}_archive.zip", 0644);
+                @chmod($tmpPath."/{$archiveFile}", 0644);
                 @chmod($tmpPath."/{$nameHash}_database.sql", 0644);
                 @chmod($tmpPath."/{$nameHash}_installer.php", 0644);
                 @chmod($tmpPath."/{$nameHash}_scan.json", 0644);
+                @chmod($tmpPath."/{$wpConfigFile}", 0644);
                 @chmod($tmpPath."/{$nameHash}.log", 0644);
 
-                @chmod($ssdPath."/{$nameHash}_archive.zip", 0644);
+                @chmod($ssdPath."/{$archiveFile}", 0644);
                 @chmod($ssdPath."/{$nameHash}_database.sql", 0644);
                 @chmod($ssdPath."/{$nameHash}_installer.php", 0644);
                 @chmod($ssdPath."/{$nameHash}_scan.json", 0644);
+                // In older version, The plugin was storing [HASH]_wp-config.txt in main storage area. The below line code is for backward compatibility
+                @chmod($ssdPath."/{$wpConfigFile}", 0644);
                 @chmod($ssdPath."/{$nameHash}.log", 0644);
                 //Remove
-                @unlink($tmpPath."/{$nameHash}_archive.zip");
+                @unlink($tmpPath."/{$archiveFile}");
                 @unlink($tmpPath."/{$nameHash}_database.sql");
                 @unlink($tmpPath."/{$nameHash}_installer.php");
                 @unlink($tmpPath."/{$nameHash}_scan.json");
+                @unlink($tmpPath."/{$wpConfigFile}");
                 @unlink($tmpPath."/{$nameHash}.log");
 
-                @unlink($ssdPath."/{$nameHash}_archive.zip");
+                @unlink($ssdPath."/{$archiveFile}");
                 @unlink($ssdPath."/{$nameHash}_database.sql");
                 @unlink($ssdPath."/{$nameHash}_installer.php");
                 @unlink($ssdPath."/{$nameHash}_scan.json");
+                // In older version, The plugin was storing [HASH]_wp-config.txt in main storage area. The below line code is for backward compatibility
+                @unlink($ssdPath."/{$wpConfigFile}");
                 @unlink($ssdPath."/{$nameHash}.log");
             }
         }
@@ -1423,6 +1432,8 @@ class DUP_Package
             $this->Installer->OptsDBPort		= sanitize_text_field($post['dbport']);
             $this->Installer->OptsDBName		= sanitize_text_field($post['dbname']);
             $this->Installer->OptsDBUser		= sanitize_text_field($post['dbuser']);
+            $this->Installer->OptsDBCharset		= sanitize_text_field($post['dbcharset']);
+            $this->Installer->OptsDBCollation   = sanitize_text_field($post['dbcollation']);
             $this->Installer->OptsSecureOn		= isset($post['secure-on']) ? 1 : 0;
             $post_secure_pass                   = sanitize_text_field($post['secure-pass']);
 			$this->Installer->OptsSecurePass	= DUP_Util::installerScramble($post_secure_pass);

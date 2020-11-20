@@ -77,7 +77,12 @@ class DUPX_Constants
 		//SHARED POST PARAMS
 		$_GET['debug'] = isset($_GET['debug']) ? true : false;
 		$_GET['basic'] = isset($_GET['basic']) ? true : false;
-		$_POST['view'] = isset($_POST['view']) ? $_POST['view'] : "step1";
+		// For setting of help view
+		if (isset($_GET['view'])) {
+			$_POST['view'] = $_GET['view'];
+		} elseif (!isset($_POST['view'])) {
+			$_POST['view'] = "step1";
+		}
 
 		//GLOBALS
 		$GLOBALS["VIEW"]				= isset($_GET["view"]) ? $_GET["view"] : $_POST["view"];
@@ -146,7 +151,19 @@ class DUPX_Constants
 
 		define('ERR_DBCONNECT_CREATE', 'DATABASE CREATION FAILURE!<br/> Unable to create database "%s". Check to make sure the user has "Create" privileges.  Some hosts will restrict the creation of a database only through the cpanel.  Try creating the database manually to proceed with installation.  If the database already exists select the action "Connect and Remove All Data" which will remove all existing tables.');
 
-		define('ERR_DBTRYCLEAN', 'DATABASE CREATION FAILURE!<br/> Unable to remove table from database "%s".<br/>  Please remove all tables from this database and try the installation again.  If no tables show in the database, then Drop the database and re-create it.');
+        define('ERR_DROP_TABLE_TRYCLEAN', 'TABLE CLEAN FAILURE'
+            .'Unable to remove TABLE "%s" from database "%s".<br/>'
+            .'Please remove all tables from this database and try the installation again. '
+            .'If no tables show in the database, then Drop the database and re-create it.<br/>'
+            .'ERROR MESSAGE: %s');
+        define('ERR_DROP_PROCEDURE_TRYCLEAN', 'PROCEDURE CLEAN FAILURE. '
+            .'Please remove all procedures from this database and try the installation again. '
+            .'If no procedures show in the database, then Drop the database and re-create it.<br/>'
+            .'ERROR MESSAGE: %s <br/><br/>');
+        define('ERR_DROP_VIEW_TRYCLEAN', 'VIEW CLEAN FAILURE. '
+            .'Please remove all views from this database and try the installation again. '
+            .'If no views show in the database, then Drop the database and re-create it.<br/>'
+            .'ERROR MESSAGE: %s <br/><br/>');
 
 		define('ERR_DBTRYRENAME', 'DATABASE CREATION FAILURE!<br/> Unable to rename a table from database "%s".<br/> Be sure the database user has RENAME privileges for this specific database on all tables.');
 

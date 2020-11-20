@@ -122,6 +122,58 @@ class DUPX_Server
 		}
 		return ($search_count == $file_count);
 	}
+
+    public static function parentWordfencePath()
+    {
+        $scanPath = $GLOBALS['DUPX_ROOT'];
+        $rootPath = DupLiteSnapLibIOU::getMaxAllowedRootOfPath($scanPath);
+
+        if ($rootPath === false) {
+            //$scanPath is not contained in open_basedir paths skip
+            return false;
+        }
+
+        DUPX_Handler::setMode(DUPX_Handler::MODE_OFF);
+        $continueScan = true;
+        while ($continueScan) {
+            if (self::wordFenceFirewallEnabled($scanPath)) {
+                return $scanPath;
+                break;
+            }
+            $continueScan = $scanPath !== $rootPath && $scanPath != dirname($scanPath);
+            $scanPath     = dirname($scanPath);
+        }
+        DUPX_Handler::setMode();
+
+        return false;
+    }
+
+    protected static function wordFenceFirewallEnabled($path)
+    {
+        $configFiles = array(
+            'php.ini',
+            '.user.ini',
+            '.htaccess'
+        );
+
+        foreach ($configFiles as $configFile) {
+            $file = $path.'/'.$configFile;
+
+            if (!@is_readable($file)) {
+                continue;
+            }
+
+            if (($content = @file_get_contents($file)) === false) {
+                continue;
+            }
+
+            if (strpos($content, 'wordfence-waf.php') !== false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 	
 	/**
 	* Is the web server IIS

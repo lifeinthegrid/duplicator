@@ -6,6 +6,8 @@ DUP_Util::hasCapability('manage_options');
 
 global $wpdb;
 
+$dup_local_settings_path = dirname(__FILE__);
+
 //COMMON HEADER DISPLAY
 require_once(DUPLICATOR_PLUGIN_PATH . '/assets/js/javascript.php');
 require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
@@ -29,17 +31,17 @@ $current_tab = isset($_REQUEST['tab']) ? sanitize_text_field($_REQUEST['tab']) :
 
     <?php
     switch ($current_tab) {
-        case 'general': include('general.php');
+        case 'general': include("{$dup_local_settings_path}/general.php");
             break;
-		case 'package': include('packages.php');
+		case 'package': include("{$dup_local_settings_path}/packages.php");
             break;
-		case 'schedule': include('schedule.php');
+		case 'schedule': include("{$dup_local_settings_path}/schedule.php");
             break;
-        case 'storage': include('storage.php');
+        case 'storage': include("{$dup_local_settings_path}/storage.php");
             break;
-        case 'license': include('license.php');
+        case 'license': include("{$dup_local_settings_path}/license.php");
             break;
-        case 'about': include('about-info.php');
+        case 'about': include("{$dup_local_settings_path}/about-info.php");
             break;
     }
     ?>

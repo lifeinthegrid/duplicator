@@ -281,7 +281,7 @@ $reset_confirm->cancelText     = __('No', 'duplicator');
 $reset_confirm->closeOnConfirm = true;
 $reset_confirm->initConfirm();
 
-$msg_ajax_error                 = new DUP_UI_Messages(__('AJAX ERROR!', 'duplicator').'<br>'.__('Ajax request error', 'duplicator'), DUP_UI_Messages::ERROR);
+$msg_ajax_error                 = new DUP_UI_Messages(__('AJAX Call Error!', 'duplicator').'<br>'.__('AJAX error encountered when resetting packages. Please see <a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-trouble-053-q" target="_blank">this FAQ entry</a> for possible resolutions.', 'duplicator'), DUP_UI_Messages::ERROR);
 $msg_ajax_error->hide_on_init   = true;
 $msg_ajax_error->is_dismissible = true;
 $msg_ajax_error->initMessage();

@@ -487,6 +487,14 @@ INSTALLER -->
 					<td><?php esc_html_e("User", 'duplicator') ?></td>
 					<td><input type="text" name="dbuser" id="dbuser" value="<?php echo esc_attr($Package->Installer->OptsDBUser); ?>"  maxlength="100" placeholder="<?php esc_attr_e('example: DatabaseUserName (value is optional)', 'duplicator'); ?>" /></td>
 				</tr>
+				<tr>
+					<td><?php esc_html_e("Charset", 'duplicator') ?></td>
+					<td><input type="text" name="dbcharset" id="dbcharset" value="<?php echo esc_attr($Package->Installer->OptsDBCharset); ?>"  maxlength="100" placeholder="<?php esc_attr_e('example: utf8 (value is optional)', 'duplicator'); ?>" /></td>
+				</tr>
+				<tr>
+					<td><?php esc_html_e("Collation", 'duplicator') ?></td>
+					<td><input type="text" name="dbcollation" id="dbcollation" value="<?php echo esc_attr($Package->Installer->OptsDBCollation); ?>"  maxlength="100" placeholder="<?php esc_attr_e('example: utf8_general_ci (value is optional)', 'duplicator'); ?>" /></td>
+				</tr>
 			</table><br />
 		</div>
 		

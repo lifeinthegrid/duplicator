@@ -529,20 +529,6 @@ final class DUPX_S3_Funcs
         DUPX_UpdateEngine::logErrors();
     }
 
-    public function removeMaincenanceMode()
-    {
-        self::logSectionHeader('REMOVE MAINTENANCE MODE', __FUNCTION__, __LINE__);
-        // make sure post data is initialized
-        $this->getPost();
-
-
-        if (isset($this->post['remove_redundant']) && $this->post['remove_redundant']) {
-            if ($GLOBALS['DUPX_STATE']->mode == DUPX_InstallerMode::OverwriteInstall) {
-                DUPX_U::maintenanceMode(false, $GLOBALS['DUPX_ROOT']);
-            }
-        }
-    }
-
     public function removeLicenseKey()
     {
         self::logSectionHeader('REMOVE LICENSE KEY', __FUNCTION__, __LINE__);

@@ -1,0 +1,11 @@
+{
+    "scripts": {
+        "post-install-cmd": "\"vendor/bin/phpcs\" --config-set installed_paths vendor/phpcompatibility/php-compatibility",
+        "post-update-cmd" : "\"vendor/bin/phpcs\" --config-set installed_paths vendor/phpcompatibility/php-compatibility",
+        "test": "\"vendor/bin/phpcs\" -p ../../ --standard=PHPCompatibility --runtime-set testVersion 5.2-7.4"
+    },
+    "require": {
+        "squizlabs/php_codesniffer": "*",
+        "phpcompatibility/php-compatibility": "*"
+    }
+}

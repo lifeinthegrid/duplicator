@@ -196,10 +196,6 @@ class DUPX_Log
 
         self::info("\nINSTALLER ERROR:\n{$log_msg}\n");
 
-        if ($GLOBALS['DUPX_STATE']->mode == DUPX_InstallerMode::OverwriteInstall) {
-            DUPX_U::maintenanceMode(false, $GLOBALS['DUPX_ROOT']);
-        }
-
         if (self::$thowExceptionOnError) {
             throw new Exception($errorMessage);
         } else {

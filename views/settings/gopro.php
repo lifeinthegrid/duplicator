@@ -67,7 +67,16 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td class="check-column"><i class="fa fa-check"></i></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
-        <tr>
+                <tr>
+                    <td class="feature-column"><?php esc_html_e('Drag and Drop Installs', 'duplicator') ?><sup>
+                            <i class="fa fa-question-circle dup-gopro-help"
+						data-tooltip-title="<?php esc_attr_e("Drag and Drop Site Overwrites", 'duplicator'); ?>"
+                        data-tooltip="<?php esc_attr_e('Overwrite a live site just by dragging an archive to the destination site. No FTP or database creation required!', 'duplicator'); ?>"/></i></sup>
+			</td>
+			<td class="check-column"></td>
+			<td class="check-column"><i class="fa fa-check"></i></td>
+		</tr>
+                <tr>
 			<td class="feature-column"><?php esc_html_e('Scheduled Backups', 'duplicator') ?></td>
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
@@ -113,14 +122,6 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
 		<tr>
-                <td class="feature-column"><?php esc_html_e('Overwrite Live Site', 'duplicator') ?><sup>
-					<i class="fa fa-question-circle dup-gopro-help"
-						data-tooltip-title="<?php esc_attr_e("Overwrite Live Site", 'duplicator'); ?>"
-                        data-tooltip="<?php esc_attr_e('Overwrite a live site. Makes installing super-fast!', 'duplicator'); ?>"/></i></sup>
-			</td>
-			<td class="check-column"></td>
-			<td class="check-column"><i class="fa fa-check"></i></td>
-		</tr>
             <td class="feature-column"><?php esc_html_e('Large Site Support', 'duplicator') ?><sup>
 					<i class="fa fa-question-circle dup-gopro-help"
 						data-tooltip-title="<?php esc_attr_e("Large Site Support", 'duplicator'); ?>"

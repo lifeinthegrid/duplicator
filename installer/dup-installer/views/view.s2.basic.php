@@ -189,8 +189,18 @@ BASIC: DB VALIDATION -->
 				<td></td>
 				<td><input type="checkbox" name="dbobj_procs" id="dbobj_procs" checked="true" /><label for="dbobj_procs">Enable Stored Procedure Creation</label></td>
 			</tr>
-			<tr><td>Charset:</td><td><input type="text" name="dbcharset" id="dbcharset" value="<?php echo DUPX_U::esc_attr($_POST['dbcharset']); ?>" /> </td></tr>
-			<tr><td>Collation: </td><td><input type="text" name="dbcollate" id="dbcollate" value="<?php echo DUPX_U::esc_attr($_POST['dbcollate']); ?>" /> </tr>
+			<tr>
+				<td>Charset:</td>
+				<td>
+					<input type="text" name="dbcharset" id="dbcharset" value="<?php echo DUPX_U::esc_attr($_POST['dbcharset']); ?>" /> 
+				</td>
+			</tr>
+			<tr>
+				<td>Collation: </td>
+				<td>
+					<input type="text" name="dbcollate" id="dbcollate" value="<?php echo DUPX_U::esc_attr($_POST['dbcollate']); ?>" />
+				</td>
+			</tr>
 		</table>
 	</div>
 	<br/><br/>

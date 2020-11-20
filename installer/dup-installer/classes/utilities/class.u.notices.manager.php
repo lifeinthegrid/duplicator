@@ -16,10 +16,13 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
  */
 final class DUPX_NOTICE_MANAGER
 {
-    const ADD_NORMAL               = 0; // add notice in list
-    const ADD_UNIQUE               = 1; // add if unique id don't exists
-    const ADD_UNIQUE_UPDATE        = 2; // add or update notice unique id
-    const ADD_UNIQUE_APPEND        = 3; // append long msg
+    const ADD_NORMAL                   = 0; // add notice in list
+    const ADD_UNIQUE                   = 1; // add if unique id don't exists
+    const ADD_UNIQUE_UPDATE            = 2; // add or update notice unique id
+    const ADD_UNIQUE_APPEND            = 3; // append long msg
+    const ADD_UNIQUE_APPEND_IF_EXISTS  = 4; // append long msg if already exists item
+    const ADD_UNIQUE_PREPEND           = 5; // append long msg
+    const ADD_UNIQUE_PREPEND_IF_EXISTS = 6; // prepend long msg if already exists item
     const DEFAULT_UNIQUE_ID_PREFIX = '__auto_unique_id__';
 
     private static $uniqueCountId = 0;
@@ -324,6 +327,14 @@ final class DUPX_NOTICE_MANAGER
                 }
                 $insertId = $uniqueId;
                 break;
+            case self::ADD_UNIQUE_APPEND_IF_EXISTS:
+                if (empty($uniqueId)) {
+                    throw new Exception('uniqueId can\'t be empty');
+                }
+                if (!isset($list[$uniqueId])) {
+                    return false;
+                }
+            // no break
             case self::ADD_UNIQUE_APPEND:
                 if (empty($uniqueId)) {
                     throw new Exception('uniqueId can\'t be empty');
@@ -333,6 +344,26 @@ final class DUPX_NOTICE_MANAGER
                 if (isset($list[$uniqueId])) {
                     $tempObj                  = self::getObjFromParams($item);
                     $list[$uniqueId]->longMsg .= $tempObj->longMsg;
+                    $item                     = $list[$uniqueId];
+                }
+                break;
+            case self::ADD_UNIQUE_PREPEND_IF_EXISTS:
+                if (empty($uniqueId)) {
+                    throw new Exception('uniqueId can\'t be empty');
+                }
+                if (!isset($list[$uniqueId])) {
+                    return false;
+                }
+            // no break
+            case self::ADD_UNIQUE_PREPEND:
+                if (empty($uniqueId)) {
+                    throw new Exception('uniqueId can\'t be empty');
+                }
+                $insertId = $uniqueId;
+                // if item id exist append long msg
+                if (isset($list[$uniqueId])) {
+                    $tempObj                  = self::getObjFromParams($item);
+                    $list[$uniqueId]->longMsg = $tempObj->longMsg.$list[$uniqueId]->longMsg;
                     $item                     = $list[$uniqueId];
                 }
                 break;
