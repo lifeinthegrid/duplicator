@@ -1033,15 +1033,16 @@ LONGMSG;
         $manager->saveNotices();
     }
 
+    //PHP 8 Requires method to be public
+    public function __wakeup()
+    {
+    }
+
     private function __clone()
     {
 
     }
 
-    private function __wakeup()
-    {
-
-    }
 }
 
 class DUPX_NOTICE_ITEM

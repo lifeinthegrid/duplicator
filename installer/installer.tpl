@@ -593,7 +593,7 @@ class DUPX_Bootstrap
 		}
 	}
 
-	/**
+    /**
      * Set the permissions of a single directory or file
      *
      * @param string $path			The full path to the directory or file where perms will be set
@@ -601,17 +601,15 @@ class DUPX_Bootstrap
      *
      * @return bool		Returns true if the permission was properly set
      */
-	private function setPermsOnItem($path, $perms)
-	{
-		$result = self::chmod($path, $perms);
-		$perms_display = decoct($perms);
-		if ($result === false) {
-			self::log("ERROR: Couldn't set permissions of $path to {$perms_display}<br/>");
-		} else {
-			self::log("Set permissions of $path to {$perms_display}<br/>");
-		}
-		return $result;
-	}
+    private function setPermsOnItem($path, $perms)
+    {
+        if (($result = self::chmod($path, $perms)) === false) {
+            self::log("ERROR: Couldn't set permissions of $path<br/>");
+        } else {
+            self::log("Set permissions of $path<br/>");
+        }
+        return $result;
+    }
 
     /**
      * Compare two strings and return html text which represts diff

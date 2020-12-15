@@ -390,7 +390,7 @@ class DUPX_DBInstall
             while ($row = mysqli_fetch_row($result)) {
                 $found_tables[] = $row[0];
             }
-            if (count($found_tables) > 0) {
+            if ($found_tables != null && count($found_tables) > 0) {
                 mysqli_query($this->dbh, "SET FOREIGN_KEY_CHECKS = 0;");
                 foreach ($found_tables as $table_name) {
                     $sql    = "DROP TABLE `".mysqli_real_escape_string($this->dbh, $this->post['dbname'])."`.`".mysqli_real_escape_string($this->dbh, $table_name)."`";

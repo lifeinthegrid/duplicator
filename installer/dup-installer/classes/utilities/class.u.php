@@ -1676,7 +1676,7 @@ class DUPX_U
      * @param string $path The resource path or URL.
      * @return bool True if the path is a stream URL.
      */
-    function wp_is_stream($path)
+    public static function wp_is_stream($path)
     {
         $scheme_separator = strpos($path, '://');
 
