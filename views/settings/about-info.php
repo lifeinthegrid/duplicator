@@ -92,7 +92,7 @@ div#mce-responses {margin: auto; padding: 10px; width:500px; font-weight: bold;}
 							<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//snapcreek.com/duplicator/duplicator-free/" target="_blank">
 								<div class="social-item"><i class="fab fa-facebook-square fa-lg"></i> <?php esc_html_e('Facebook', 'duplicator') ?></div>
 							</a>
-							<a href="https://twitter.com/home?status=Checkout%20the%20WordPress%20Duplicator%20plugin!%20%0Ahttps%3A//snapcreek.com/duplicator/duplicator-free/"  target="_blank">
+							<a href="https://twitter.com/intent/tweet?text=Checkout%20the%20WordPress%20Duplicator%20plugin!%20%0Ahttps%3A//snapcreek.com/duplicator/duplicator-free/"  target="_blank">
 								<div class="social-item"><i class="fab fa-twitter-square fa-lg"></i> <?php esc_html_e('Twitter', 'duplicator') ?></div>
 							</a>
 							<a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A//snapcreek.com/duplicator/duplicator-free/&title=WordPress%20Duplicator%20Plugin&summary=&source=" target="_blank">
