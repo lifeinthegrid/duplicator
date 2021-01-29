@@ -115,7 +115,7 @@ jQuery(document).ready(function($)
 	function timer() {
 		count = count - 1;
 		$("#dup-refresh-count").html(count.toString());
-		if (! $("#dup-auto-refresh").is(":checked")) {
+		if (! $("#dup-auto-refresh").is(":checked") && count < 0) {
 			 clearInterval(timerInterval);
 			 $("#dup-refresh-count").text(count.toString().trim());
 			 return;
