@@ -80,6 +80,7 @@ class DUPX_DBTest
 		$this->reqs[80]	 = array('title' => "Check GTID mode", 'info' => "{$default_msg}", 'pass' => -1);
 		//NOTICES
 		$this->notices[10]	 = array('title' => "Table Case Sensitivity", 'info' => "{$default_msg}", 'pass' => -1);
+		$this->notices[20]	 = array('title' => "Source Site Triggers", 'info' => "{$default_msg}", 'pass' => -1);
        }
 
 	public function run()
@@ -143,6 +144,7 @@ class DUPX_DBTest
 
 		//NOTICES
 		$this->n10All($this->notices[10]);
+		$this->n20All($this->notices[20]);
 		$this->r70All($this->reqs[70]);
 		$this->r80All($this->reqs[80]);
 		$this->basicCleanup();
@@ -400,32 +402,23 @@ class DUPX_DBTest
 			$invalid_match = 0;
 
 			foreach($this->collationStatus as $key => $val) {
-
 				if ($this->collationStatus[$key]['found'] == 0) {
 				    if($this->in->dbcollatefb){
 				        $not_supported_col = $this->collationStatus[$key]['name'];
-                        //returns false or key
-                        $i = array_search($not_supported_col,$collation_arr);
-
-                        if($i !== false){
-                            ++$i;
-                            for($i; $i < $collation_arr_max; $i++) {
-
-                                $col_status = DUPX_DB::getCollationStatus($this->dbh, array($collation_arr[$i]));
-                                $cur_col_is_supported = $col_status[0]['found'];
-                                if($cur_col_is_supported){
-                                    $this->collationReplaceList[] = array(
-                                        'search'    => $not_supported_col,
-                                        'replace'   => $collation_arr[$i]
-                                    );
-									++$invalid_match;
-									break;
-                                }
-                            }
-                        } else {
-                            $invalid = 1;
-                            break;
-                        }
+                        for($i = 0; $i < $collation_arr_max; $i++) {
+							$col_status = DUPX_DB::getCollationStatus($this->dbh, array($collation_arr[$i]));
+							$cur_col_is_supported = $col_status[0]['found'];
+							if($cur_col_is_supported){
+								$this->collationReplaceList[] = array(
+									'search'    => $not_supported_col,
+									'replace'   => $collation_arr[$i]
+								);
+								++$invalid_match;
+								break;
+							}
+						}
+						$invalid = 1;
+                    	break;
                     } else {
                         $invalid = 1;
                         break;
@@ -543,6 +536,32 @@ class DUPX_DBTest
 			$test['info']	 = "Failure in attempt to read the upper case table status.<br/>" . $this->formatError($ex);
 		}
 	}
+
+    /**
+     * Show source site trigger creates
+     *
+     * @return null
+     */
+    private function n20All(&$test)
+    {
+        if ($this->isFailedState($test)) {
+            return;
+        }
+
+        $triggers = (array)$this->ac->dbInfo->triggerList;
+        if (count($triggers) > 0) {
+            $test['pass'] = 0;
+            $test['info'] = "";
+
+            foreach ($triggers as $trigger) {
+                $test['info'] .= $trigger->create."\n\n";;
+            }
+
+        } else {
+            $test['pass'] = 1;
+            $test['info'] = "Source site did not contain triggers.";
+        }
+    }
 
 	/**
 	 * Input has UTF8 data

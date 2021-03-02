@@ -599,7 +599,7 @@ $(document).ready(function()
 	$("#tabs").tabs();
 	DUPX.getNewURL('url_new');
 	DUPX.getNewURL('siteurl');
-	$("*[data-type='toggle']").click(DUPX.toggleClick);
+	DUPX.initToggle();
 	$("#wp_password").passStrength({
 			shortPass: 		"top_shortPass",
 			badPass:		"top_badPass",

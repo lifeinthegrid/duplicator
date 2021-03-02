@@ -410,6 +410,13 @@ $expandClass =  $sectionId == $open_section ? 'open' : 'close';
                     see the	<a href="https://dev.mysql.com/doc/refman/5.7/en/sql-mode.html" target="_blank">MySQL mode documentation</a> specific to your version.</td>
                 </tr>
                 <tr>
+                    <td class="col-opt">Objects</td>
+                    <td>Allow or Ignore  objects for 'Views', 'Stored Procedures", and 'DEFINER' statements.   Typically the defaults for these settings should be used.
+                    In the event you see an error such as "'Access denied; you need (at least one of) the SUPER privilege(s) for this operation" then changing the value
+                    for each operation should be considered.
+                    </td>
+                </tr>                
+                <tr>
                     <td class="col-opt">Charset</td>
                     <td>When the database is populated from the SQL script it will use this value as part of its connection.  Only change this value if you know what your
                     databases character set should be.</td>

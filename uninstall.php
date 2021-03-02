@@ -6,6 +6,15 @@
 if (!defined('WP_UNINSTALL_PLUGIN')) {
     exit;
 }
+
+// CHECK PHP VERSION
+define('DUPLICATOR_LITE_PHP_MINIMUM_VERSION', '5.3.8');
+define('DUPLICATOR_LITE_PHP_SUGGESTED_VERSION', '5.6.20');
+require_once(dirname(__FILE__)."/tools/DuplicatorPhpVersionCheck.php");
+if (DuplicatorPhpVersionCheck::check(DUPLICATOR_LITE_PHP_MINIMUM_VERSION, DUPLICATOR_LITE_PHP_SUGGESTED_VERSION) === false) {
+    return;
+}
+
 require_once 'helper.php';
 require_once 'define.php';
 require_once 'lib/snaplib/snaplib.all.php';
@@ -51,6 +60,10 @@ if (DUP_Settings::Get('uninstall_files')) {
                 @unlink("{$file}");
         }
         foreach (glob("{$ssdir}/*_scan.json") as $file) {
+            if (strstr($file, '_scan.json'))
+                @unlink("{$file}");
+        }
+        foreach (glob("{$ssdir_tmp}/*_scan.json") as $file) {
             if (strstr($file, '_scan.json'))
                 @unlink("{$file}");
         }

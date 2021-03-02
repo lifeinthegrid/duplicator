@@ -4,7 +4,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 <!-- ================================================================
 SERVER  -->
 <div class="details-title">
-	<i class="fa fa-hdd-o"></i> <?php esc_html_e("Server", 'duplicator');	?>
+	<i class="fa fa-hdd-o"></i> <i class="far fa-hdd fa-sm"></i> <?php esc_html_e("Setup", 'duplicator');	?>
 	<div class="dup-more-details" title="<?php esc_attr_e('Show Diagnostics', 'duplicator');?>">
 		<a href="?page=duplicator-tools&tab=diagnostics" target="_blank"><i class="fa fa-microchip"></i></a>
 	</div>
@@ -53,8 +53,8 @@ PHP SETTINGS -->
     }
     ?>
 	<div class='title' onclick="Duplicator.Pack.toggleScanItem(this);">
-		<div class="text"><i class="fa fa-caret-right"></i> <?php esc_html_e('Setup', 'duplicator');?></div>
-		<div id="data-srv-php-all"></div>
+		<div class="text"><i class="fa fa-caret-right"></i> <?php esc_html_e('System', 'duplicator');?></div>
+		<div id="data-srv-sys-all"></div>
 	</div>
 	<div class="info">
 	<?php
@@ -85,14 +85,30 @@ PHP SETTINGS -->
 			. 'the process.   If you are on a budget host and limited on processing time, consider using the database or file filters to shrink the size of your overall package.   '
 			. 'However use caution as excluding the wrong resources can cause your install to not work properly.', 'duplicator');
 		echo "&nbsp;<i><a href='http://www.php.net/manual/en/info.configuration.php#ini.max-execution-time' target='_blank'>[" . esc_html__('details', 'duplicator')  . "]</a></i>";
+        if ($zip_check != null) {
+            echo '<br/><br/>';
+            echo '<span style="font-weight:bold">';
+            _e('Get faster builds with Duplicator Pro with access to shell_exec zip.', 'duplicator');
+            echo '</span>';
+            echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_max_execution_time_warn&utm_campaign=duplicator_pro' target='_blank'>[" . esc_html__('details', 'duplicator') . "]</a></i>";
+        }
 
-		if ($zip_check != null) {
-			echo '<br/><br/>';
-			echo '<span style="font-weight:bold">';
-			_e('Get faster builds with Duplicator Pro with access to shell_exec zip.', 'duplicator');
-			echo '</span>';
-			echo "&nbsp;<i><a href='https://snapcreek.com/duplicator/?utm_source=duplicator_free&utm_medium=wordpress_plugin&utm_content=free_max_execution_time_warn&utm_campaign=duplicator_pro' target='_blank'>[" . esc_html__('details', 'duplicator') . "]</a></i>";
-		}
+        //MANAGED HOST
+        $test = DUP_Custom_Host_Manager::getInstance()->isManaged() ? "true" : "false";
+        echo '<hr size="1" /><span id="data-srv-sys-managedHost"></span>&nbsp;<b>' . esc_html__('Managed Host', 'duplicator') . ":</b>&nbsp; '{$test}' <br/>";
+        _e('A managed host is a WordPress host that tightly controls the server environment so that the software running on it can be closely ‘managed’ by the hosting company. '
+            .'Managed hosts typically have constraints imposed to facilitate this management, including the locking down of certain files and directories as well as non-standard configurations.', 'duplicator');
+        echo '<br/><br/>';
+        _e('Duplicator Lite allows users to build a package on managed hosts, however, the installer may not properly install packages created on managed hosts due to the non-standard configurations of managed hosts. '
+            .'It is also possible the package engine of Duplicator Lite won’t be able to capture all of the necessary data of a site running on a managed host.', 'duplicator');
+        echo '<br/><br/>';
+        _e('<b>Due to these constraints Lite does not officially support the migration of managed hosts.</b> '
+            .'It’s possible one could get the package to install but it may require custom manual effort. '
+            .'To get support and the advanced installer processing required for managed host support we encourage users to <i>'
+            .'<a href="https://snapcreek.com/duplicator/?utm_source=duplicator_free&amp;utm_medium=wordpress_plugin&amp;utm_content=free_is_mu_warn&amp;utm_campaign=duplicator_pro" target="_blank">upgrade to Duplicator Pro</a></i>. '
+            .'Pro has more sophisticated package and installer logic and accounts for odd configurations associated with managed hosts.', 'duplicator');
+        echo '<br/><br/>';
+
 	?>
 	</div>
 </div>
@@ -198,7 +214,8 @@ WP SETTINGS -->
 		$('#data-srv-php-maxtime').html(Duplicator.Pack.setScanStatus(data.SRV.PHP.maxtime));
 		$('#data-srv-php-version').html(Duplicator.Pack.setScanStatus(data.SRV.PHP.version));
 		$('#data-srv-php-openssl').html(Duplicator.Pack.setScanStatus(data.SRV.PHP.openssl));
-		$('#data-srv-php-all').html(Duplicator.Pack.setScanStatus(data.SRV.PHP.ALL));
+		$('#data-srv-sys-managedHost').html(Duplicator.Pack.setScanStatus(data.SRV.SYS.managedHost));
+		$('#data-srv-sys-all').html(Duplicator.Pack.setScanStatus(data.SRV.SYS.ALL));
 
 		$('#data-srv-wp-version').html(Duplicator.Pack.setScanStatus(data.SRV.WP.version));
 		$('#data-srv-wp-core').html(Duplicator.Pack.setScanStatus(data.SRV.WP.core));

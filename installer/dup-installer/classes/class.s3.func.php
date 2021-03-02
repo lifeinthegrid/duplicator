@@ -736,10 +736,10 @@ final class DUPX_S3_Funcs
                 $dbhost = DUPX_U::getEscapedGenericString($this->post['dbhost']);
 
                 $confTransformer->update('constant', 'DB_NAME', $dbname, array('raw' => true));
-                DUPX_Log::info('UPDATE DB_NAME '.DUPX_Log::varToString($dbname));
+                DUPX_Log::info('UPDATE DB_NAME '. DUPX_Log::varToString('** OBSCURED **'));
 
                 $confTransformer->update('constant', 'DB_USER', $dbuser, array('raw' => true));
-                DUPX_Log::info('UPDATE DB_USER '.DUPX_Log::varToString($dbuser));
+                DUPX_Log::info('UPDATE DB_USER '. DUPX_Log::varToString('** OBSCURED **'));
 
                 $confTransformer->update('constant', 'DB_PASSWORD', $dbpass, array('raw' => true));
                 DUPX_Log::info('UPDATE DB_PASSWORD '.DUPX_Log::varToString('** OBSCURED **'));
@@ -994,6 +994,8 @@ LONGMSG;
             $update_guid = @mysqli_affected_rows($this->dbh) or 0;
             DUPX_Log::info("Reverted '{$update_guid}' post guid columns back to '{$this->post['url_old']}'");
         }
+        
+        DUPX_U::maintenanceMode(false);
     }
 
     /**

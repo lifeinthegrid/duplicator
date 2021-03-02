@@ -23,10 +23,42 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
         // Real upper bound of a signed int is 214748364.
         // The value chosen below, makes sure we have a buffer of ~4.7 million.
         const FileSizeLimit32BitPHP = 1900000000;
+        const FWRITE_CHUNK_SIZE     = 4096; // bytes
 
         public static function rmPattern($filePathPattern)
         {
             @array_map('unlink', glob($filePathPattern));
+        }
+
+        /**
+         * 
+         * @param string $path
+         * @param array $args    // array key / val where key is the var name in include
+         * @param bool $required
+         * @return string
+         * @throws Exception // thorw exception if is $required and file can't be read
+         */
+        public static function getInclude($path, $args = array(), $required = true)
+        {
+            if (!is_readable($path)) {
+                if ($required) {
+                    throw new Exception('Can\'t read required file '.$path);
+                } else {
+                    return '';
+                }
+            }
+
+            foreach ($args as $var => $value) {
+                ${$var} = $value;
+            }
+
+            ob_start();
+            if ($required) {
+                require ($path);
+            } else {
+                include ($path);
+            }
+            return ob_get_clean();
         }
 
         public static function chmodPattern($filePathPattern, $mode)
@@ -47,15 +79,10 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
                 if ($overwriteIfExists) {
                     self::rm($dest);
                 } else {
-                    throw new Exception("Can't copy {$source} to {$dest} because {$dest} already exists!");
+                    return false;
                 }
             }
-
-            if (copy($source, $dest) === false) {
-                throw new Exception("Error copying {$source} to {$dest}");
-            }
-
-            return true;
+            return copy($source, $dest);
         }
 
         /**
@@ -271,11 +298,7 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
             if (!function_exists('touch')) {
                 return false;
             }
-
-            if (!is_writeable($filepath)) {
-                return false;
-            }
-
+            
             if ($time === null) {
                 $time = time();
             }
@@ -306,15 +329,48 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
             }
         }
 
+        /**
+         * 
+         * @param resource $handle
+         * @param srtring $string
+         * @return int
+         * @throws Exception
+         */
         public static function fwrite($handle, $string)
         {
             $bytes_written = @fwrite($handle, $string);
 
-            if ($bytes_written === false) {
+            if ($bytes_written != strlen($string)) {
                 throw new Exception('Error writing to file.');
             } else {
                 return $bytes_written;
             }
+        }
+
+        /**
+         * wrinte file in chunk mode. For big data.
+         * @param resource $handle
+         * @param string $content
+         * @return int
+         * @throws Exception
+         */
+        public static function fwriteChunked($handle, $content)
+        {
+            $pieces  = str_split($content, self::FWRITE_CHUNK_SIZE);
+            $written = 0;
+
+            foreach ($pieces as $piece) {
+                if (($fwResult = @fwrite($handle, $piece, self::FWRITE_CHUNK_SIZE)) === false) {
+                    throw new Exception('Error writing to file.');
+                }
+                $written += $fwResult;
+            }
+
+            if ($written != strlen($content)) {
+                throw new Exception('Error writing to file.');
+            }
+
+            return $written;
         }
 
         public static function fgets($handle, $length)
@@ -347,14 +403,14 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
             $position = @ftell($file_handle);
 
             if ($position === false) {
-                throw new Exception("Couldn't retrieve file offset for $filepath");
+                throw new Exception("Couldn't retrieve file offset.");
             } else {
                 return $position;
             }
         }
 
         /**
-         * Safely remove a directory and recursively files adnd directory upto multiple sublevels
+         * Safely remove a directory and recursively files and directory upto multiple sublevels
          *
          * @param path $dir The full path to the directory to remove
          *
@@ -504,88 +560,87 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
 
             if (is_int($mode)) {
                 $octalMode = $mode;
-            } else if (is_string($mode)) {
-                $mode = trim($mode);
-                if (preg_match('/([0-7]{1,3})/', $mode)) {
-                    $octalMode = intval(('0'.$mode), 8);
-                } else if (preg_match_all('/(a|[ugo]{1,3})([-=+])([rwx]{1,3})/', $mode, $gMatch, PREG_SET_ORDER)) {
-                    if (!function_exists('fileperms')) {
-                        return false;
+            } else if (is_numeric($mode)) {
+                $octalMode = intval((($mode[0] === '0' ? '' : '0').$mode), 8);
+            } else if (is_string($mode) && preg_match_all('/(a|[ugo]{1,3})([-=+])([rwx]{1,3})/', $mode, $gMatch, PREG_SET_ORDER)) {
+                if (!function_exists('fileperms')) {
+                    return false;
+                }
+
+                // start by file permission
+                $octalMode = (fileperms($file) & 0777);
+
+                foreach ($gMatch as $matches) {
+                    // [ugo] or a = ugo
+                    $group = $matches[1];
+                    if ($group === 'a') {
+                        $group = 'ugo';
                     }
+                    // can be + - =
+                    $action = $matches[2];
+                    // [rwx]
+                    $gPerms = $matches[3];
 
-                    // start by file permission
-                    $octalMode = (fileperms($file) & 0777);
+                    // reset octal group perms
+                    $octalGroupMode = 0;
 
-                    foreach ($gMatch as $matches) {
-                        // [ugo] or a = ugo
-                        $group = $matches[1];
-                        if ($group === 'a') {
-                            $group = 'ugo';
+                    // Init sub perms
+                    $subPerm = 0;
+                    $subPerm += strpos($gPerms, 'x') !== false ? 1 : 0; // mask 001
+                    $subPerm += strpos($gPerms, 'w') !== false ? 2 : 0; // mask 010
+                    $subPerm += strpos($gPerms, 'r') !== false ? 4 : 0; // mask 100
+
+                    $ugoLen = strlen($group);
+
+                    if ($action === '=') {
+                        // generate octal group permsissions and ugo mask invert
+                        $ugoMaskInvert = 0777;
+                        for ($i = 0; $i < $ugoLen; $i++) {
+                            switch ($group[$i]) {
+                                case 'u':
+                                    $octalGroupMode = $octalGroupMode | $subPerm << 6; // mask xxx000000
+                                    $ugoMaskInvert  = $ugoMaskInvert & 077;
+                                    break;
+                                case 'g':
+                                    $octalGroupMode = $octalGroupMode | $subPerm << 3; // mask 000xxx000
+                                    $ugoMaskInvert  = $ugoMaskInvert & 0707;
+                                    break;
+                                case 'o':
+                                    $octalGroupMode = $octalGroupMode | $subPerm; // mask 000000xxx
+                                    $ugoMaskInvert  = $ugoMaskInvert & 0770;
+                                    break;
+                            }
                         }
-                        // can be + - =
-                        $action = $matches[2];
-                        // [rwx]
-                        $gPerms = $matches[3];
-
-                        // reset octal group perms
-                        $octalGroupMode = 0;
-
-                        // Init sub perms
-                        $subPerm = 0;
-                        $subPerm += strpos($gPerms, 'x') !== false ? 1 : 0; // mask 001
-                        $subPerm += strpos($gPerms, 'w') !== false ? 2 : 0; // mask 010
-                        $subPerm += strpos($gPerms, 'r') !== false ? 4 : 0; // mask 100
-
-                        $ugoLen = strlen($group);
-
-                        if ($action === '=') {
-                            // generate octal group permsissions and ugo mask invert
-                            $ugoMaskInvert = 0777;
-                            for ($i = 0; $i < $ugoLen; $i++) {
-                                switch ($group[$i]) {
-                                    case 'u':
-                                        $octalGroupMode = $octalGroupMode | $subPerm << 6; // mask xxx000000
-                                        $ugoMaskInvert  = $ugoMaskInvert & 077;
-                                        break;
-                                    case 'g':
-                                        $octalGroupMode = $octalGroupMode | $subPerm << 3; // mask 000xxx000
-                                        $ugoMaskInvert  = $ugoMaskInvert & 0707;
-                                        break;
-                                    case 'o':
-                                        $octalGroupMode = $octalGroupMode | $subPerm; // mask 000000xxx
-                                        $ugoMaskInvert  = $ugoMaskInvert & 0770;
-                                        break;
-                                }
-                            }
-                            // apply = action
-                            $octalMode = $octalMode & ($ugoMaskInvert | $octalGroupMode);
-                        } else {
-                            // generate octal group permsissions
-                            for ($i = 0; $i < $ugoLen; $i++) {
-                                switch ($group[$i]) {
-                                    case 'u':
-                                        $octalGroupMode = $octalGroupMode | $subPerm << 6; // mask xxx000000
-                                        break;
-                                    case 'g':
-                                        $octalGroupMode = $octalGroupMode | $subPerm << 3; // mask 000xxx000
-                                        break;
-                                    case 'o':
-                                        $octalGroupMode = $octalGroupMode | $subPerm; // mask 000000xxx
-                                        break;
-                                }
-                            }
-                            // apply + or - action
-                            switch ($action) {
-                                case '+':
-                                    $octalMode = $octalMode | $octalGroupMode;
+                        // apply = action
+                        $octalMode = $octalMode & ($ugoMaskInvert | $octalGroupMode);
+                    } else {
+                        // generate octal group permsissions
+                        for ($i = 0; $i < $ugoLen; $i++) {
+                            switch ($group[$i]) {
+                                case 'u':
+                                    $octalGroupMode = $octalGroupMode | $subPerm << 6; // mask xxx000000
                                     break;
-                                case '-':
-                                    $octalMode = $octalMode & ~$octalGroupMode;
+                                case 'g':
+                                    $octalGroupMode = $octalGroupMode | $subPerm << 3; // mask 000xxx000
+                                    break;
+                                case 'o':
+                                    $octalGroupMode = $octalGroupMode | $subPerm; // mask 000000xxx
                                     break;
                             }
+                        }
+                        // apply + or - action
+                        switch ($action) {
+                            case '+':
+                                $octalMode = $octalMode | $octalGroupMode;
+                                break;
+                            case '-':
+                                $octalMode = $octalMode & ~$octalGroupMode;
+                                break;
                         }
                     }
                 }
+            } else {
+                return true;
             }
 
             // if input permissions are equal at file permissions return true without performing chmod
@@ -601,6 +656,25 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
         }
 
         /**
+         * return file perms in string 
+         * 
+         * @param int|string $perms
+         * @return string|bool // false if fail
+         */
+        public static function permsToString($perms)
+        {
+            if (is_int($perms)) {
+                return decoct($perms);
+            } else if (is_numeric($perms)) {
+                return ($perms[0] === '0' ? '' : '0').$perms;
+            } else if (is_string($perms)) {
+                return $perms;
+            } else {
+                false;
+            }
+        }
+
+        /**
          * this function creates a folder if it does not exist and performs a chmod.
          * it is different from the normal mkdir function to which an umask is applied to the input permissions.
          *
@@ -613,7 +687,7 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
          * @param string $path
          * @param int|string $mode
          * @param bool $recursive
-         * @param resource $context // not used for windows bug
+         * @param resource $context // not used fo windows bug
          * @return boolean bool TRUE on success or FALSE on failure.
          *
          * @todo check recursive true and multiple chmod
@@ -757,12 +831,16 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
          */
         public static function getRelativePath($path, $mainPath)
         {
+            if (strlen($mainPath) == 0) {
+                return ltrim(self::safePathUntrailingslashit($path), '/');
+            }
+
             $safePath     = self::safePathUntrailingslashit($path);
             $safeMainPath = self::safePathUntrailingslashit($mainPath);
 
-            if (empty($mainPath)) {
-                return ltrim($safePath, '/');
-            } else if (strpos($safePath, $safeMainPath) === 0) {
+            if ($safePath === $safeMainPath) {
+                return '';
+            } else if (strpos($safePath, self::trailingslashit($safeMainPath)) === 0) {
                 return ltrim(substr($safePath, strlen($safeMainPath)), '/');
             } else {
                 return false;
@@ -857,6 +935,60 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
         }
 
         /**
+         * Returns the last N lines of a file. Simular to tail command
+         *
+         * @param string $filepath The full path to the file to be tailed
+         * @param int $lines The number of lines to return with each tail call
+         *
+         * @return string The last N parts of the file
+         */
+        public static function tailFile($filepath, $lines = 2)
+        {
+            // Open file
+            $f = @fopen($filepath, "rb");
+            if ($f === false)
+                return false;
+
+            // Sets buffer size
+            $buffer = 256;
+
+            // Jump to last character
+            fseek($f, -1, SEEK_END);
+
+            // Read it and adjust line number if necessary
+            // (Otherwise the result would be wrong if file doesn't end with a blank line)
+            if (fread($f, 1) != "\n")
+                $lines -= 1;
+
+            // Start reading
+            $output = '';
+            $chunk  = '';
+
+            // While we would like more
+            while (ftell($f) > 0 && $lines >= 0) {
+                // Figure out how far back we should jump
+                $seek   = min(ftell($f), $buffer);
+                // Do the jump (backwards, relative to where we are)
+                fseek($f, -$seek, SEEK_CUR);
+                // Read a chunk and prepend it to our output
+                $output = ($chunk  = fread($f, $seek)).$output;
+                // Jump back to where we started reading
+                fseek($f, -mb_strlen($chunk, '8bit'), SEEK_CUR);
+                // Decrease our line counter
+                $lines  -= substr_count($chunk, "\n");
+            }
+
+            // While we have too many lines
+            // (Because of buffer size we might have read too many)
+            while ($lines++ < 0) {
+                // Find first newline and remove all text before that
+                $output = substr($output, strpos($output, "\n") + 1);
+            }
+            fclose($f);
+            return trim($output);
+        }
+
+        /**
          * @param string $path Path to the file
          * @param int $n Number of lines to get
          * @param int $charLimit Number of chars to include in each line
@@ -904,6 +1036,176 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
             self::fclose($handle, false);
 
             return array_reverse($result);
+        }
+
+        /**
+         * return a list of paths
+         * 
+         * @param string $dir
+         * @param callable $callback
+         * @param array $options // array(
+         *                              'regexFile'     => [bool|string|array], // if is bool alrays or never match, if is string o array of string check if rexeses match file name
+         *                              'regexFolder'   => [bool|string|array], // if is bool alrays or never match, if is string o array of string check if rexeses match file name
+         *                              'checkFullPath' => bool,                // if false only current file/folder name is passed at regex if true is passed the full path
+         *                              'recursive'     => bool,                // if false check only passed folder or all sub folder recursively
+         *                              'invert'        => bool,                // if false pass invert the result
+         *                              'childFirst'    => bool                 // if false is parsed parent folters first or child folders first
+         *                          )
+         *                          
+         * @return boolean
+         */
+        public static function regexGlob($dir, $options)
+        {
+            $result = array();
+
+            self::regexGlobCallback($dir, function ($path) use (&$result) {
+                $result[] = $path;
+            }, $options);
+
+            return $result;
+        }
+
+        /**
+         * execute the callback function foreach right element, private function for optimization
+         * 
+         * @param string $dir
+         * @param callable $callback
+         * @param array $options // array(
+         *                              'regexFile'     => [bool|string|array], // if is bool alrays or never match, if is string o array of string check if rexeses match file name
+         *                              'regexFolder'   => [bool|string|array], // if is bool alrays or never match, if is string o array of string check if rexeses match file name
+         *                              'checkFullPath' => bool,                // if false only current file/folder name is passed at regex if true is passed the full path
+         *                              'recursive'     => bool,                // if false check only passed folder or all sub folder recursively
+         *                              'invert'        => bool,                // if false pass invert the result
+         *                              'childFirst'    => bool                 // if false is parsed parent folters first or child folders first
+         *                          )
+         *                          
+         * @return boolean
+         */
+        protected static function regexGlobCallbackPrivate($dir, $callback, $options)
+        {
+            if (!is_dir($dir) || !is_readable($dir)) {
+                return false;
+            }
+
+            if (($dh = opendir($dir)) == false) {
+                return false;
+            }
+
+            $trailingslashitDir = self::trailingslashit($dir);
+
+            while (($elem = readdir($dh)) !== false) {
+                if ($elem === '.' || $elem === '..') {
+                    continue;
+                }
+
+                $fullPath  = $trailingslashitDir.$elem;
+                $regex     = is_dir($fullPath) ? $options['regexFolder'] : $options['regexFile'];
+                $pathCheck = $options['checkFullPath'] ? $fullPath : $elem;
+
+                if (is_bool($regex)) {
+                    $match = ($regex xor $options['invert']);
+                } else {
+                    $match = false;
+                    foreach ($regex as $currentRegex) {
+                        if (preg_match($currentRegex, $pathCheck) === 1) {
+                            $match = true;
+                            break;
+                        }
+                    }
+
+                    if ($options['invert']) {
+                        $match = !$match;
+                    }
+                }
+
+                if ($match) {
+                    if ($options['recursive'] && $options['childFirst'] === true && is_dir($fullPath)) {
+                        self::regexGlobCallbackPrivate($fullPath, $callback, $options);
+                    }
+
+                    call_user_func($callback, $fullPath);
+
+                    if ($options['recursive'] && $options['childFirst'] === false && is_dir($fullPath)) {
+                        self::regexGlobCallbackPrivate($fullPath, $callback, $options);
+                    }
+                }
+            }
+            closedir($dh);
+
+            return true;
+        }
+
+        /**
+         * execute the callback function foreach right element (folder or files)
+         * 
+         * @param string $dir
+         * @param callable $callback
+         * @param array $options // array(
+         *                              'regexFile'     => [bool|string|array], // if is bool alrays or never match, if is string o array of string check if rexeses match file name
+         *                              'regexFolder'   => [bool|string|array], // if is bool alrays or never match, if is string o array of string check if rexeses match file name
+         *                              'checkFullPath' => bool,                // if false only current file/folder name is passed at regex if true is passed the full path
+         *                              'recursive'     => bool,                // if false check only passed folder or all sub folder recursively
+         *                              'invert'        => bool,                // if false pass invert the result
+         *                              'childFirst'    => bool                 // if false is parsed parent folters first or child folders first
+         *                          )
+         *                          
+         * @return boolean
+         */
+        public static function regexGlobCallback($dir, $callback, $options = array())
+        {
+            if (!is_callable($callback)) {
+                return false;
+            }
+
+            $options = array_merge(array(
+                'regexFile'     => true,
+                'regexFolder'   => true,
+                'checkFullPath' => false,
+                'recursive'     => false,
+                'invert'        => false,
+                'childFirst'    => false
+                ), (array) $options);
+
+            if (is_scalar($options['regexFile']) && !is_bool($options['regexFile'])) {
+                $options['regexFile'] = array($options['regexFile']);
+            }
+
+            if (is_scalar($options['regexFolder']) && !is_bool($options['regexFolder'])) {
+                $options['regexFolder'] = array($options['regexFolder']);
+            }
+
+            return self::regexGlobCallbackPrivate(self::safePath($dir), $callback, $options);
+        }
+
+        public static function emptyDir($dir)
+        {
+            $dir = self::safePathTrailingslashit($dir);
+            if (!is_dir($dir) || !is_readable($dir)) {
+                return false;
+            }
+
+            if (($dh = opendir($dir)) == false) {
+                return false;
+            }
+
+            $listToDelete = array();
+
+            while (($elem = readdir($dh)) !== false) {
+                if ($elem === '.' || $elem === '..') {
+                    continue;
+                }
+
+                $fullPath = $dir.$elem;
+                if (is_writable($fullPath)) {
+                    $listToDelete[] = $fullPath;
+                }
+            }
+            closedir($dh);
+
+            foreach ($listToDelete as $path) {
+                self::rrmdir($path);
+            }
+            return true;
         }
 
         /**

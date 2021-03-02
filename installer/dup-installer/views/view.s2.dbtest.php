@@ -299,6 +299,33 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 			</ul>
 		</div>
 
+        <!-- ==================================
+		NOTICE 20: SOURCE SITE CONTAINED TRIGGERS-->
+        <div class="status {{optionalNoticeStyle payload.notices.20.pass}}">{{noticeText payload.notices.20.pass}}</div>
+        <div class="title" data-type="toggle" data-target="#s2-notice20" style="border-top:none"><i class="fa fa-caret-right"></i> {{payload.notices.20.title}}</div>
+        <div class="info" id="s2-notice20">
+            <div class="sub-title">STATUS</div>
+            {{#if payload.notices.20.pass}}
+                <p>{{payload.notices.20.info}}</p>
+            {{else}}
+                <p>The source site contains Triggers which can optionally be imported after the install process is complete. </p>
+                <div class="sub-title">DETAILS</div>
+                <p>
+                    Triggers are not being imported alongside the rest of the database, because they may cause unintended behavior during the install process.
+                    It is recommeded that you copy the queries to a seperate document and save them for later.  After the install process is
+                    completed and you have logged into your WordPress Admin you can then add the triggers if needed.
+                    <br/><br/>
+                    For a quick overview on how to add these triggers back to your site checkout this
+                    <a href="https://www.siteground.com/tutorials/phpmyadmin/" target="_blank">phpMyAdmin Tutorial</a>.   See the section
+                    titled "How to Run MySQL Queries" to run the queries below.
+                </p>
+                <div class="copy-to-clipboard-block">
+                    <button type="button" class="default-btn">Copy Queries To Clipboard</button>
+                    <textarea readonly="readonly">{{payload.notices.20.info}}</textarea>
+                </div>
+            {{/if}}
+        </div>
+
 	</div>
 </script>
 
@@ -489,9 +516,6 @@ DUPX.intTestDBResults = function(data, result)
 		var attr = $(this).attr('data-target');
 		$(this).attr('data-target', attr + mode);
 	});
-
-	$("div#" + resultID + " *[data-type='toggle']").on('click', DUPX.toggleClick);
-
 
 	var $divReqsAll		= $('div#s2-reqs-all' + mode);
 	var $divNoticeAll	= $('div#s2-notices-all' + mode);

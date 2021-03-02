@@ -210,7 +210,9 @@ class DUP_Server
 		$checks['SRV']['PHP']['maxtime']	 = $php_test2;
 		$checks['SRV']['PHP']['mysqli']		 = $php_test3;
 		$checks['SRV']['PHP']['version']	 = $php_test4;
-		$checks['SRV']['PHP']['ALL']		 = ($php_test0 && $php_test1 && $php_test2 && $php_test3 && $php_test4) ? 'Good' : 'Warn';
+        //MANAGED HOST
+        $checks['SRV']['SYS']['managedHost'] = !DUP_Custom_Host_Manager::getInstance()->isManaged();
+		$checks['SRV']['SYS']['ALL']		 = ($php_test0 && $php_test1 && $php_test2 && $php_test3 && $php_test4 && $checks['SRV']['SYS']['managedHost']) ? 'Good' : 'Warn';
 
 		//WORDPRESS SETTINGS
 		global $wp_version;

@@ -34,6 +34,7 @@ class DUP_Archive_Filter_Scope_Directory extends DUP_Archive_Filter_Scope_Base
     public $Warning    = array();
     //Items that are not readable
     public $Unreadable = array();
+    public $AddonSites = array();
 }
 
 /**

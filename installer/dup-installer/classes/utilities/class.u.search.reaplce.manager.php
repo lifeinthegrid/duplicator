@@ -252,15 +252,16 @@ final class DUPX_S_R_MANAGER
         return $result;
     }
 
+    //PHP 8 Requires method to be public
+    public function __wakeup()
+    {
+    }
+
     private function __clone()
     {
 
     }
 
-    private function __wakeup()
-    {
-
-    }
 }
 
 /**

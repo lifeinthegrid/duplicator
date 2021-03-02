@@ -214,10 +214,13 @@ class DUP_Web_Services
 
             $noticeToDismiss = filter_input(INPUT_POST, 'notice', FILTER_SANITIZE_STRING);
             switch ($noticeToDismiss) {
-                case DUP_UI_Notice::OPTION_KEY_INSTALLER_HASH_NOTICE:
                 case DUP_UI_Notice::OPTION_KEY_ACTIVATE_PLUGINS_AFTER_INSTALL:
-                case DUP_UI_Notice::OPTION_KEY_NEW_STORAGE_POSITION:
+                case DUP_UI_Notice::OPTION_KEY_NEW_NOTICE_TEMPLATE:
                     delete_option($noticeToDismiss);
+                    break;
+                case DUP_UI_Notice::OPTION_KEY_IS_PRO_ENABLE_NOTICE_DISMISSED:
+                case DUP_UI_Notice::OPTION_KEY_IS_MU_NOTICE_DISMISSED:
+                    update_option($noticeToDismiss, true);
                     break;
                 default:
                     throw new Exception('Notice invalid');

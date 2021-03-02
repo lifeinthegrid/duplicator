@@ -5,8 +5,8 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 if (function_exists('plugin_dir_url')) 
 {		
-    define('DUPLICATOR_VERSION',        '1.3.40.1');
-	define('DUPLICATOR_VERSION_BUILD',  '2020-12-14_09:00');
+    define('DUPLICATOR_VERSION',        '1.4.0');
+	define('DUPLICATOR_VERSION_BUILD',  '2021-03-1_09:00');
     define('DUPLICATOR_PLUGIN_URL',     plugin_dir_url(__FILE__));
 	define('DUPLICATOR_SITE_URL',		get_site_url());
 	
@@ -28,7 +28,7 @@ if (function_exists('plugin_dir_url'))
 	define('DUPLICATOR_INSTALL_PHP',				'installer.php');
 	define('DUPLICATOR_INSTALL_BAK',				'installer-backup.php');
 	define('DUPLICATOR_INSTALLER_HASH_PATTERN',		'[a-z0-9][a-z0-9][a-z0-9][a-z0-9][a-z0-9][a-z0-9][a-z0-9]-[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]');
-	define('DUPLICATOR_INSTALL_SITE_OVERWRITE_ON',	false);
+	define('DUPLICATOR_INSTALL_SITE_OVERWRITE_ON',	true);
 	
 	//GENERAL CONSTRAINTS
 	define('DUPLICATOR_PHP_MAX_MEMORY',  4294967296); // 4096MB
@@ -60,7 +60,12 @@ if (function_exists('plugin_dir_url'))
 	define("DUPLICATOR_FEEDBACK_NOTICE_SHOW_AFTER_NO_PACKAGE", 5);
 
 	$GLOBALS['DUPLICATOR_SERVER_LIST'] = array('Apache','LiteSpeed', 'Nginx', 'Lighttpd', 'IIS', 'WebServerX', 'uWSGI');
-	$GLOBALS['DUPLICATOR_OPTS_DELETE'] = array('duplicator_ui_view_state', 'duplicator_package_active', 'duplicator_settings');
+	$GLOBALS['DUPLICATOR_OPTS_DELETE'] = array(
+        'duplicator_ui_view_state',
+        'duplicator_package_active',
+        'duplicator_settings',
+        'duplicator_is_pro_enable_notice_dismissed'
+    );
 	$GLOBALS['DUPLICATOR_GLOBAL_FILE_FILTERS_ON'] = true;
 	$GLOBALS['DUPLICATOR_GLOBAL_FILE_FILTERS'] = array(
 		'error_log',

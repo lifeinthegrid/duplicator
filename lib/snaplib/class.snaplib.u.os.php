@@ -22,7 +22,7 @@ if (!class_exists('DupLiteSnapLibOSU', false)) {
 
         /**
          * return true if current SO is windows
-         * 
+         *
          * @staticvar bool $isWindows
          * @return bool
          */
@@ -33,6 +33,15 @@ if (!class_exists('DupLiteSnapLibOSU', false)) {
                 $isWindows = (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
             }
             return $isWindows;
+        }
+
+        public static function isOSX()
+        {
+            static $isOSX = null;
+            if (is_null($isOSX)) {
+                $isOSX = (strtoupper(substr(PHP_OS, 0, 6)) === 'DARWIN');
+            }
+            return $isOSX;
         }
 
         /**

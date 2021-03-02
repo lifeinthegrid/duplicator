@@ -29,6 +29,12 @@ if (!class_exists('DupLiteSnapLibUtilWp', false)) {
         private static $safeAbsPath  = null;
 
         /**
+         *
+         * @var string if not empty alters isWpCore's operation 
+         */
+        private static $wpCoreRelativePath = '';
+
+        /**
          * return safe ABSPATH without last /
          * perform safe function only one time
          *
@@ -38,13 +44,97 @@ if (!class_exists('DupLiteSnapLibUtilWp', false)) {
         {
             if (is_null(self::$safeAbsPath)) {
                 if (defined('ABSPATH')) {
-                    self::$safeAbsPath = rtrim(DupLiteSnapLibIOU::safePath(ABSPATH), '/');
+                    self::$safeAbsPath = DupLiteSnapLibIOU::safePathUntrailingslashit(ABSPATH);
                 } else {
                     self::$safeAbsPath = '';
                 }
             }
 
             return self::$safeAbsPath;
+        }
+
+        /**
+         * 
+         * @param string $folder
+         * @return boolean  // return true if folder is wordpress home folder
+         * 
+         */
+        public static function isWpHomeFolder($folder)
+        {
+            $indexPhp = DupLiteSnapLibIOU::trailingslashit($folder).'index.php';
+            if (!file_exists($indexPhp)) {
+                return false;
+            }
+
+            if (($indexContent = file_get_contents($indexPhp)) === false) {
+                return false;
+            }
+
+            return (preg_match('/require\s*[\s\(].*[\'"].*wp-blog-header.php[\'"]\s*\)?/', $indexContent) === 1);
+        }
+
+        /**
+         * This function is the equivalent of the get_home_path function but with various fixes
+         * 
+         * @staticvar string $home_path
+         * @return string
+         */
+        public static function getHomePath()
+        {
+            static $home_path = null;
+
+            if (is_null($home_path)) {
+                // outside wordpress this function makes no sense
+                if (!defined('ABSPATH')) {
+                    $home_path = false;
+                    return $home_path;
+                }
+
+                if (isset($_SERVER['SCRIPT_FILENAME']) && is_readable($_SERVER['SCRIPT_FILENAME'])) {
+                    $scriptFilename = $_SERVER['SCRIPT_FILENAME'];
+                } else {
+                    $files          = get_included_files();
+                    $scriptFilename = array_shift($files);
+                }
+
+                $realScriptDirname = DupLiteSnapLibIOU::safePathTrailingslashit(dirname($scriptFilename), true);
+                $realAbsPath       = DupLiteSnapLibIOU::safePathTrailingslashit(ABSPATH, true);
+
+                if (strpos($realScriptDirname, $realAbsPath) === 0) {
+                    // normalize URLs without www
+                    $home    = DupLiteSnapLibURLU::wwwRemove(set_url_scheme(get_option('home'), 'http'));
+                    $siteurl = DupLiteSnapLibURLU::wwwRemove(set_url_scheme(get_option('siteurl'), 'http'));
+
+                    if (!empty($home) && 0 !== strcasecmp($home, $siteurl)) {
+                        if (stripos($siteurl, $home) === 0) {
+                            $wp_path_rel_to_home = str_ireplace($home, '', $siteurl); /* $siteurl - $home */
+                            $pos                 = strripos(str_replace('\\', '/', $scriptFilename), DupLiteSnapLibIOU::trailingslashit($wp_path_rel_to_home));
+                            $home_path           = substr($scriptFilename, 0, $pos);
+                            $home_path           = DupLiteSnapLibIOU::trailingslashit($home_path);
+                        } else {
+                            $home_path = ABSPATH;
+                        }
+                    } else {
+                        $home_path = ABSPATH;
+                    }
+                } else {
+                    // On frontend the home path is the folder of index.php
+                    $home_path = DupLiteSnapLibIOU::trailingslashit(dirname($scriptFilename));
+                }
+
+                // make sure the folder exists or consider ABSPATH
+                if (!file_exists($home_path)) {
+                    $home_path = ABSPATH;
+                }
+
+                $home_path = str_replace('\\', '/', $home_path);
+            }
+            return $home_path;
+        }
+
+        public static function setWpCoreRelativeAbsPath($string = '')
+        {
+            self::$wpCoreRelativePath = (string) $string;
         }
 
         /**
@@ -67,8 +157,6 @@ if (!class_exists('DupLiteSnapLibUtilWp', false)) {
                 $path = rtrim(DupLiteSnapLibIOU::safePath($path), '/');
             }
 
-
-
             switch ($fullPath) {
                 case self::PATH_FULL:
                     $absPath = self::getSafeAbsPath();
@@ -78,7 +166,9 @@ if (!class_exists('DupLiteSnapLibUtilWp', false)) {
                     $relPath = ltrim(substr($path, strlen($absPath)), '/');
                     break;
                 case self::PATH_RELATIVE:
-                    $relPath = ltrim($path, '/');
+                    if (($relPath = DupLiteSnapLibIOU::getRelativePath($path, self::$wpCoreRelativePath)) === false) {
+                        return false;
+                    }
                     break;
                 case self::PATH_AUTO:
                 default:
@@ -129,6 +219,29 @@ if (!class_exists('DupLiteSnapLibUtilWp', false)) {
                 require_once(dirname(__FILE__).'/wordpress.core.files.php');
             }
             return self::$corePathList;
+        }
+
+        /**
+         * return object list of sites
+         * 
+         * @return boolean
+         */
+        public static function getSites($args = array())
+        {
+            if (!function_exists('is_multisite') || !is_multisite()) {
+                return false;
+            }
+
+            if (function_exists('get_sites')) {
+                return get_sites($args);
+            } else {
+                $result = array();
+                $blogs  = wp_get_sites($args);
+                foreach ($blogs as $blog) {
+                    $result[] = (object) $blog;
+                }
+                return $result;
+            }
         }
     }
 }

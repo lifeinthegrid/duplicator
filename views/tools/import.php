@@ -15,7 +15,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 			echo '<h2><i class="fas fa-arrow-alt-circle-down"></i> ' .  esc_html__('Drag and Drop imports are available in Duplicator Pro.', 'duplicator')  . '</h2>';
 			esc_html_e('The Import feature lets you skip the FTP and database creation steps when installing a site.', 'duplicator');
             echo '<br/>';
-			esc_html_e('Just drag and drop an archive to quickly replace an existing WordPress installation!', 'duplicator');
+			esc_html_e('Just drag and drop a Duplicator Pro archive to quickly replace an existing WordPress installation!', 'duplicator');
 		?>
 	</div>
 	<p style="text-align:center">

@@ -358,7 +358,7 @@ Auto Posts to view.step3.php  -->
 	$(document).ready(function () {
 		//Init		
         DUPX.togglePanels("basic");
-		$("*[data-type='toggle']").click(DUPX.toggleClick);
+		DUPX.initToggle();
 
 	});
 </script>

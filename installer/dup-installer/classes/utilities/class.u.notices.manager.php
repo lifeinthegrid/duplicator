@@ -1042,7 +1042,6 @@ LONGMSG;
     {
 
     }
-
 }
 
 class DUPX_NOTICE_ITEM

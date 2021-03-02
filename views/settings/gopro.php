@@ -113,7 +113,15 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 			<td class="check-column"></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
-        		<tr>
+		<tr>
+			<td class="feature-column">
+				<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/logo_wasbi.png" style='height:16px; width:16px'  />
+				<?php esc_html_e('Wasabi Storage', 'duplicator') ?>
+			</td>
+			<td class="check-column"></td>
+			<td class="check-column"><i class="fa fa-check"></i></td>
+		</tr>
+        <tr>
 			<td class="feature-column">
 				<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/ftp-64.png" style='height:16px; width:16px'  />
 				<?php esc_html_e('Remote FTP/SFTP Storage', 'duplicator') ?>

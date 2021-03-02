@@ -115,5 +115,15 @@ if (!class_exists('DupLiteSnapLibStringU', false)) {
             }
             return $str;
         }
+
+        /**
+         * 
+         * @param string $string
+         * @return boolean
+         */
+        public static function isHTML($string)
+        {
+            return ($string != strip_tags($string));
+        }
     }
 }

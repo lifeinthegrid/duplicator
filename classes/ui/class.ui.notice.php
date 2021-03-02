@@ -12,16 +12,21 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
  * @copyright (c) 2017, Snapcreek LLC
  *
  */
-// Exit if accessed directly
-if (!defined('DUPLICATOR_VERSION'))
-    exit;
 
 class DUP_UI_Notice
 {
 
-    const OPTION_KEY_INSTALLER_HASH_NOTICE          = 'duplicator_lite_inst_hash_notice';
     const OPTION_KEY_ACTIVATE_PLUGINS_AFTER_INSTALL = 'duplicator_reactivate_plugins_after_installation';
-    const OPTION_KEY_NEW_STORAGE_POSITION           = 'duplicator_new_storage_position';
+
+    //TEMPLATE VALUE: This is a just a simple example for setting up quick notices
+    const OPTION_KEY_NEW_NOTICE_TEMPLATE            = 'duplicator_new_template_notice';
+    const OPTION_KEY_IS_PRO_ENABLE_NOTICE_DISMISSED = 'duplicator_is_pro_enable_notice_dismissed';
+    const OPTION_KEY_IS_MU_NOTICE_DISMISSED         = 'duplicator_is_mu_notice_dismissed';
+
+    const GEN_INFO_NOTICE    = 0;
+    const GEN_SUCCESS_NOTICE = 1;
+    const GEN_WARNING_NOTICE = 2;
+    const GEN_ERROR_NOTICE   = 3;
 
     /**
      * init notice actions
@@ -32,18 +37,22 @@ class DUP_UI_Notice
             'showReservedFilesNotice',
             'installAutoDeactivatePlugins',
             'showFeedBackNotice',
-            //Enable in 1.3.40 maybe
-            //'newStoragePositionOption'
+            'showNoExportCapabilityNotice',
+            //FUTURE NOTICE TEMPLATE
+            //'newNotice_TEMPLATE',
         );
         foreach ($methods as $method) {
             add_action('admin_notices', array(__CLASS__, $method));
         }
     }
 
-
-    public static function newStoragePositionOption()
+     /**
+      * NOTICE SAMPLE:  This method serves as a quick example for how to quickly setup a new notice
+      * Please do not edit this method, but simply use to copy a new setup.
+     */
+    public static function newNotice_TEMPLATE()
     {
-        if (get_option(self::OPTION_KEY_NEW_STORAGE_POSITION) != true) {
+        if (get_option(self::OPTION_KEY_NEW_NOTICE_TEMPLATE) != true) {
             return;
         }
 
@@ -52,31 +61,18 @@ class DUP_UI_Notice
             return;
         }
 
-        if ($screen->id == 'duplicator_page_duplicator-settings') {
-            $action         = filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING);
-            $storagePostion = filter_input(INPUT_POST, 'storage_position', FILTER_SANITIZE_STRING);
-            if ($action == 'save' && $storagePostion == DUP_Settings::STORAGE_POSITION_WP_CONTENT) {
-                delete_option(self::OPTION_KEY_INSTALLER_HASH_NOTICE);
-                return;
-            }
-        }
-
-        if (DUP_Settings::get('storage_position') == DUP_Settings::STORAGE_POSITION_WP_CONTENT) {
-            delete_option(self::OPTION_KEY_NEW_STORAGE_POSITION);
-            return;
-        }
         ?>
-        <div class="notice notice-success duplicator-admin-notice is-dismissible" data-to-dismiss="<?php echo esc_attr(self::OPTION_KEY_NEW_STORAGE_POSITION); ?>" > 
+        <div class="notice notice-success duplicator-admin-notice is-dismissible" data-to-dismiss="<?php echo esc_attr(self::OPTION_KEY_NEW_NOTICE_TEMPLATE); ?>" >
             <p>
-                <?php esc_html_e('Duplicator can now have a new storage location inside the wp-content folder.', 'duplicator'); ?><br>
+                <?php esc_html_e('NOTICE: This is a sample message notice demo.', 'duplicator'); ?><br>
                 <?php
-                echo sprintf(__('If this option is enabled all packages will be moved from <i>%s</i> to <i>%s</i>', 'duplicator'),
-                    esc_html(DUP_Settings::getSsdirPathLegacy()),
-                    esc_html(DUP_Settings::getSsdirPathWpCont()));
+                echo sprintf(__('Example for passing dynamic data to notice message <i>%s</i> to <i>%s</i>', 'duplicator'),
+                    esc_html("test 1"),
+                    esc_html(time()));
                 ?>
             </p>
             <p>
-                <?php echo sprintf(__('To enable this option or to get more information, open the <a href="%s">General Settings</a>', 'duplicator'), 'admin.php?page=duplicator-settings'); ?>
+                <?php echo sprintf(__('More info here: Goto <a href="%s">General Settings</a>', 'duplicator'), 'admin.php?page=duplicator-settings'); ?>
             </p>
         </div>
         <?php
@@ -226,7 +222,9 @@ class DUP_UI_Notice
             return;
         }
 
-        $packagesCount = $GLOBALS['wpdb']->get_var('SELECT count(id)    FROM '.DUP_Util::getTablePrefix().'duplicator_packages         WHERE status=100');
+        // not using DUP_Util::getTablePrefix() in place of $tablePrefix because DUP_UI_Notice included initially (Duplicator\Lite\Requirement is depended on the DUP_UI_Notice)
+        $tablePrefix = (is_multisite() && is_plugin_active_for_network('duplicator/duplicator.php')) ? $GLOBALS['wpdb']->base_prefix : $GLOBALS['wpdb']->prefix;
+        $packagesCount = $GLOBALS['wpdb']->get_var('SELECT count(id) FROM '.$tablePrefix.'duplicator_packages WHERE status=100');
 
         if ($packagesCount < DUPLICATOR_FEEDBACK_NOTICE_SHOW_AFTER_NO_PACKAGE) {
             return;
@@ -256,6 +254,82 @@ class DUP_UI_Notice
                     </p>
                 </div>
             </div>
+        </div>
+        <?php
+    }
+
+    /**
+     * Shows a display message in the wp-admin if the logged in user role has not export capability
+     *
+     * @return void
+     */
+    public static function showNoExportCapabilityNotice()
+    {
+        if (is_admin() && in_array('administrator', $GLOBALS['current_user']->roles) && !current_user_can('export')) {
+            $errorMessage = __('<strong>Duplicator</strong><hr> Your logged-in user role does not have export capability so you don\'t have access to Duplicator functionality.', 'duplicator').
+                "<br>".
+                sprintf(__('<strong>RECOMMENDATION:</strong> Add export capability to your role. See FAQ: <a target="_blank" href="%s">%s</a>', 'duplicator'), 'https://snapcreek.com/duplicator/docs/faqs-tech/#faq-licensing-040-q', __('Why is the Duplicator/Packages menu missing from my admin menu?', 'duplicator'));
+            DUP_UI_Notice::displayGeneralAdminNotice($errorMessage, self::GEN_ERROR_NOTICE, true);
+        }
+    }
+
+    /**
+     * display genral admin notice by printing it
+     *
+     * @param string $htmlMsg html code to be printed
+     * @param integer $noticeType constant value of SELF::GEN_
+     * @param boolean $isDismissible whether the notice is dismissable or not. Default is true 
+     * @param array|string $extraClasses add more classes to the notice div
+     * @return void
+     */
+    public static function displayGeneralAdminNotice($htmlMsg, $noticeType, $isDismissible = true, $extraClasses = array())
+    {
+        if (empty($extraClasses)) {
+            $classes = array();
+        } elseif (is_array($extraClasses)) {
+            $classes = $extraClasses;
+        } else {
+            $classes = array($extraClasses);
+        }
+
+        $classes[] = 'notice';
+
+        switch ($noticeType) {
+            case self::GEN_INFO_NOTICE:
+                $classes[] = 'notice-info';
+                break;
+            case self::GEN_SUCCESS_NOTICE:
+                $classes[] = 'notice-success';
+                break;
+            case self::GEN_WARNING_NOTICE:
+                $classes[] = 'notice-warning';
+                break;
+            case self::GEN_ERROR_NOTICE:
+                $classes[] = 'notice-error';
+                break;
+            default:
+                throw new Exception('Invalid Admin notice type!');
+        }
+
+        if ($isDismissible) {
+            $classes[] = 'is-dismissible';
+        }
+
+        $classesStr = implode(' ', $classes);
+        ?>
+        <div class="<?php echo esc_attr($classesStr); ?>">
+            <p>
+                <?php
+                if (self::GEN_ERROR_NOTICE == $noticeType) {
+                    ?>
+                    <i class='fa fa-exclamation-triangle'></i>
+                    <?php
+                }
+                ?>
+                <?php
+                echo $htmlMsg;
+                ?>
+            </p>
         </div>
         <?php
     }

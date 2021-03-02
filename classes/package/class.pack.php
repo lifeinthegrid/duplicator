@@ -286,7 +286,7 @@ class DUP_Package
         $report['LL']['Status']['TotalSize'] = ($rawTotalSize > DUPLICATOR_MAX_DUPARCHIVE_SIZE) ? 'Fail' : 'Good';
 
         $warnings = array(
-            $report['SRV']['PHP']['ALL'],
+            $report['SRV']['SYS']['ALL'],
             $report['SRV']['WP']['ALL'],
             $report['ARC']['Status']['Size'],
             $report['ARC']['Status']['Names'],

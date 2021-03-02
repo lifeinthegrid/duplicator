@@ -114,8 +114,12 @@ $unhook_third_party_css = DUP_Settings::Get('unhook_third_party_css');
         <tr valign="top">
             <th scope="row"><label><?php esc_html_e("Version", 'duplicator'); ?></label></th>
             <td>
-                <?php echo DUPLICATOR_VERSION ?> &nbsp;
-                <i><small>(<?php echo DUPLICATOR_VERSION_BUILD ?>)</small></i>
+                <?php 
+                    echo DUPLICATOR_VERSION . ' &nbsp; ';
+                    echo (stristr(DUPLICATOR_VERSION_BUILD, 'rc'))
+                        ? "<span style='color:red'>["  . DUPLICATOR_VERSION_BUILD . "]</span>"
+                        : "<span style='color:gray'>[" . DUPLICATOR_VERSION_BUILD . "]</span>";
+                ?>
             </td>
         </tr>
         <tr valign="top">

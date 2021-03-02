@@ -18,7 +18,7 @@ if (!class_exists('DupLiteSnapLibLogger', false)) {
     {
 
         public static $logFilepath = null;
-        static $logHandle          = null;
+        public static $logHandle   = null;
 
         public static function init($logFilepath)
         {
@@ -108,6 +108,37 @@ if (!class_exists('DupLiteSnapLibLogger', false)) {
             self::$prevTS              = $currentTime;
 
             self::log("  {$dPrev}  :  {$dSame}  :  {$currentTime}  :     {$s}");
+        }
+
+        /**
+         *
+         * @param mixed $var
+         * @param bool $checkCallable // if true check if var is callable and display it
+         * @return string
+         */
+        public static function varToString($var, $checkCallable = false)
+        {
+            if ($checkCallable && is_callable($var)) {
+                return '(callable) '.print_r($var, true);
+            }
+            switch (gettype($var)) {
+                case "boolean":
+                    return $var ? 'true' : 'false';
+                case "integer":
+                case "double":
+                    return (string) $var;
+                case "string":
+                    return '"'.$var.'"';
+                case "array":
+                case "object":
+                    return print_r($var, true);
+                case "resource":
+                case "resource (closed)":
+                case "NULL":
+                case "unknown type":
+                default:
+                    return gettype($var);
+            }
         }
     }
 }

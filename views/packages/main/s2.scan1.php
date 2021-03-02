@@ -35,7 +35,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 
 <style>
 	/*PROGRESS-BAR - RESULTS - ERROR */
-	form#form-duplicator {text-align:center; max-width:650px; min-height:200px; margin:0px auto 0px auto; padding:0px;}
+	form#form-duplicator {text-align:center; max-width:750px; min-height:200px; margin:0px auto 0px auto; padding:0px;}
 	div.dup-progress-title {font-size:22px; padding:5px 0 20px 0; font-weight:bold}
 	div#dup-msg-success {padding:0 5px 5px 5px; text-align:left}
 	div#dup-msg-success div.details {padding:10px 15px 10px 15px; margin:5px 0 15px 0; background:#fff; border-radius:5px; border:1px solid #ddd; box-shadow:0 8px 6px -6px #999; }
@@ -53,7 +53,7 @@ defined('ABSPATH') || defined('DUPXABSPATH') || exit;
 	div.scan-item {border:1px solid #E0E0E0; border-bottom:none;}
 	div.scan-item-first { border-top-right-radius:4px; border-top-left-radius:4px}
 	div.scan-item-last {border-bottom:1px solid #E0E0E0}
-	div.scan-item div.title {background-color:#F1F1F1; width:100%; padding:4px 0 4px 0; cursor:pointer; height:20px;}
+	div.scan-item div.title {background-color:#F1F1F1; width:100%; padding:8px 0 8px 0; cursor:pointer; height:20px;}
 	div.scan-item div.title:hover {background-color:#ECECEC;}
 	div.scan-item div.text {font-weight:bold; font-size:14px; float:left;  position:relative; left:10px}
 	div.scan-item div.badge {float:right; border-radius:4px; color:#fff; min-width:40px; text-align:center; position:relative; right:10px; font-size:12px; padding:0 3px 1px 3px}

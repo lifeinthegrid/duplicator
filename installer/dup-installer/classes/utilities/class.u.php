@@ -1671,7 +1671,7 @@ class DUPX_U
     /**
      * Test if a given path is a stream URL
      * 
-     * from wordpress function wp_is_stream
+     * from WordPress function wp_is_stream
      *
      * @param string $path The resource path or URL.
      * @return bool True if the path is a stream URL.
@@ -1688,6 +1688,36 @@ class DUPX_U
         $stream = substr($path, 0, $scheme_separator);
 
         return in_array($stream, stream_get_wrappers(), true);
+    }
+     
+    /**
+     * Toggle maintenance mode for the site.
+     *
+     * Creates/deletes the maintenance file to enable/disable maintenance mode.
+     *
+     * @param bool $enable True to enable maintenance mode, false to disable.
+     */
+    public static function maintenanceMode($enable = false)
+    {
+        $pathNew = DupLiteSnapLibIOU::safePathUntrailingslashit($GLOBALS['DUPX_ROOT']);
+        if (!is_writable($pathNew)) {
+            DUPX_Log::info('CAN\'T SET/REMOVE MAINTENANCE MODE, ROOT FOLDER NOT WRITABLE');
+            return;
+        }
+
+        $file = $pathNew.'/.maintenance';
+        if ($enable) {
+            DUPX_Log::info('MAINTENANCE MODE ENABLE');
+            // Create maintenance file to signal that we are upgrading
+            $maintenanceString = '<?php $upgrading = '.time().'; ?>';
+            if (file_exists($file)) {
+                @unlink($file);
+            }
+            file_put_contents($file, $maintenanceString);
+        } else if (!$enable && file_exists($file)) {
+            DUPX_Log::info('MAINTENANCE MODE DISABLE');
+            unlink($file);
+        }
     }
 
     /**

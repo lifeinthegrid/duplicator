@@ -333,7 +333,7 @@ if (!empty($unespectOutput)) {
 
 		if ($GLOBALS['DUPX_AC']->installSiteOverwriteOn) {
 			echo  ($GLOBALS['DUPX_STATE']->mode === DUPX_InstallerMode::OverwriteInstall)
-				? "<span class='dupx-overwrite'>Mode: Overwrite Install {$db_only_txt}</span>"
+				? "<span class='dupx-overwrite'>Mode: Overwrite Install (Beta) {$db_only_txt}</span>"
 				: "Mode: Standard Install {$db_only_txt}";
 		} else {
 			echo "Mode: Standard Install {$db_only_txt}";

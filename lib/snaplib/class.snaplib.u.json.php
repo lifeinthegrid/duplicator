@@ -90,15 +90,6 @@ if (!class_exists('DupLiteSnapJsonU', false)) {
         }
 
         /**
-         * @param mixed $val object to be encoded
-         * @return string escaped json string
-         */
-        public static function json_encode_esc_attr($val)
-        {
-            return esc_attr(json_encode($val));
-        }
-
-        /**
          * wp_json_encode with pretty print if define exists
          *
          * @param mixed $data    Variable (usually an array or object) to encode as JSON.
@@ -290,6 +281,31 @@ if (!class_exists('DupLiteSnapJsonU', false)) {
             }
 
             return '';
+        }
+
+        /**
+         * @param mixed $val object to be encoded
+         * @return string escaped json string
+         */
+        public static function json_encode_esc_attr($val)
+        {
+            return esc_attr(json_encode($val));
+        }
+
+        /**
+         * this function return a json encoded string without quotes at the beginning and the end
+         * 
+         * @param string $string
+         * @return string
+         * @throws Exception
+         */
+        public static function getJsonWithoutQuotes($string)
+        {
+            if (!is_string($string)) {
+                throw new Exception('the function getJsonStringWithoutQuotes take only strings');
+            }
+
+            return substr(self::wp_json_encode($string), 1, -1);
         }
     }
 }

@@ -153,11 +153,7 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
                     <th style="width: 70px;"><?php esc_html_e("Size", 'duplicator') ?></th>
                     <th><?php esc_html_e("Package Name", 'duplicator') ?></th>
                     <th class="inst-name">
-                        <a href='admin.php?page=duplicator-settings&tab=packageadmin.php?page=duplicator-settings&tab=package#duplicator-installer-settings'>
-                            <?php
-                            esc_html_e("Installer Name", 'duplicator');
-                            ?>
-                        </a>
+                        <?php esc_html_e("Installer Name", 'duplicator'); ?>
                         <i class="fas fa-question-circle fa-sm" 
                            data-tooltip-title="<?php esc_html_e("Installer Name:", 'duplicator'); ?>"
                            data-tooltip="<?php echo esc_attr($packageExeNameModeMsg); ?>" >
@@ -238,7 +234,9 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
                             }
                             $installerName = $Package->getInstDownloadName();
                             ?>
-                            <i class="fas <?php echo $lockIcon; ?>"></i>
+                            <a href="admin.php?page=duplicator-settings&tab=packageadmin.php?page=duplicator-settings&tab=package#duplicator-installer-settings" title="<?php esc_html_e("Click to open settings page.", 'duplicator') ?>">
+                                <i class="fas <?php echo $lockIcon; ?>"></i>
+                            </a>
                             <input type="text" readonly="readonly" value="<?php echo esc_attr($installerName); ?>" title="<?php echo esc_attr($installerName); ?>" onfocus="jQuery(this).select();"/>
                             <span data-dup-copy-text="<?php echo $installerName; ?>" ><i class='far fa-copy' style='cursor: pointer'></i>
                         </td>

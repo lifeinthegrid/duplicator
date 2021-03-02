@@ -31,13 +31,25 @@ if (!class_exists('DupLiteSnapLibUtil', false)) {
             }
         }
 
-        public static function getCallingFunctionName()
+        /**
+         * Gets the calling function name from where this method is called
+         *
+         * @return  string   Returns the calling function name from where this method is called
+         */
+        public static function getCallingFunctionName($backTraceBack = 0)
         {
-            $callers      = debug_backtrace();
-            $functionName = $callers[2]['function'];
-            $className    = isset($callers[2]['class']) ? $callers[2]['class'] : '';
+            $callers     = debug_backtrace();
+            $backTraceL1 = 1 + $backTraceBack;
+            $backTraceL2 = 2 + $backTraceBack;
+            $result      = '['.str_pad(basename($callers[$backTraceL1]['file']), 25, '_', STR_PAD_RIGHT).':'.str_pad($callers[$backTraceL1]['line'], 4, ' ', STR_PAD_LEFT).']';
+            if (isset($callers[$backTraceL2]) && (isset($callers[$backTraceL2]['class']) || isset($callers[$backTraceL2]['function']))) {
+                $result .= ' [';
+                $result .= isset($callers[$backTraceL2]['class']) ? $callers[$backTraceL2]['class'].'::' : '';
+                $result .= isset($callers[$backTraceL2]['function']) ? $callers[$backTraceL2]['function'] : '';
+                $result .= ']';
+            }
 
-            return "{$className}::{$functionName}";
+            return str_pad($result, 80, '_', STR_PAD_RIGHT);
         }
 
         public static function getWorkPercent($startingPercent, $endingPercent, $totalTaskCount, $currentTaskCount)
@@ -45,10 +57,10 @@ if (!class_exists('DupLiteSnapLibUtil', false)) {
             if ($totalTaskCount > 0) {
                 $percent = $startingPercent + (($endingPercent - $startingPercent) * ($currentTaskCount / (float) $totalTaskCount));
             } else {
-                $percent = 0;
+                $percent = $startingPercent;
             }
 
-            return $percent;
+            return min(max($startingPercent, $percent), $endingPercent);
         }
 
         public static function make_hash()
@@ -121,27 +133,6 @@ if (!class_exists('DupLiteSnapLibUtil', false)) {
             return $grouped;
         }
 
-
-        /**
-        * Implemented array_key_first
-        *
-        * @link https://www.php.net/manual/en/function.array-key-first.php
-        * @param array $arr
-        * @return int|string|null
-        */
-       public static function arrayKeyFirst($arr)
-       {
-           if (!function_exists('array_key_first')) {
-               foreach ($arr as $key => $unused) {
-                   return $key;
-               }
-               return null;
-           } else {
-               return array_key_first($arr);
-           }
-       }
-        
-
         /**
          * Converts human readable types (10GB) to bytes
          *
@@ -188,7 +179,7 @@ if (!class_exists('DupLiteSnapLibUtil', false)) {
         }
 
         /**
-         * remove all non stamo chars from string
+         * remove all non stamp chars from string
          * 
          * @param string $string
          * @return string
@@ -197,7 +188,7 @@ if (!class_exists('DupLiteSnapLibUtil', false)) {
         {
             return preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F]/u', '', $string);
         }
-        
+
         /**
          * remove all non stamp chars from string and newline
          * trim string 
@@ -206,10 +197,10 @@ if (!class_exists('DupLiteSnapLibUtil', false)) {
          * @return string
          */
         public static function sanitize_non_stamp_chars_and_newline($string)
-        {            
+        {
             return preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F\r\n]/u', '', $string);
         }
-        
+
         /**
          * remove all non stamp chars from string and newline
          * trim string 
@@ -218,9 +209,9 @@ if (!class_exists('DupLiteSnapLibUtil', false)) {
          * @return string
          */
         public static function sanitize_non_stamp_chars_newline_and_trim($string)
-        {            
+        {
             return trim(self::sanitize_non_stamp_chars_and_newline($string));
-        }  
+        }
 
         /**
          * Determines whether a PHP ini value is changeable at runtime.
@@ -236,6 +227,11 @@ if (!class_exists('DupLiteSnapLibUtil', false)) {
          */
         public static function wp_is_ini_value_changeable($setting)
         {
+            // if ini_set is disabled can change the values
+            if (!function_exists('ini_set')) {
+                return false;
+            }
+
             if (function_exists('wp_is_ini_value_changeable')) {
                 return wp_is_ini_value_changeable($setting);
             }
@@ -277,6 +273,145 @@ if (!class_exists('DupLiteSnapLibUtil', false)) {
         }
 
         /**
+         * Find matching string from $strArr1 and $strArr2 until first numeric occurence
+         *
+         * @param array   $strArr1                  array of strings
+         * @param array   $strArr2                  array of strings
+         * @return string matching str which will be best for replacement
+         */
+        public static function getMatchingStrFromArrayElemsUntilFirstNumeric($strArr1, $strArr2)
+        {
+            $matchingStr   = '';
+            $strPartialArr = array();
+            foreach ($strArr1 as $str1) {
+                $str1_str_length     = strlen($str1);
+                $tempStr1Chars       = str_split($str1);
+                $tempPartialStr      = '';
+                // The flag is for whether non-numeric character passed after numeric character occurence in str1. For ex. str1 is utf8mb4, the flag wil be true when parsing m after utf8.
+                $numericCharPassFlag = false;
+                $charPositionInStr1  = 0;
+                while ($charPositionInStr1 < $str1_str_length) {
+                    if ($numericCharPassFlag && !is_numeric($tempStr1Chars[$charPositionInStr1])) {
+                        break;
+                    }
+                    if (is_numeric($tempStr1Chars[$charPositionInStr1])) {
+                        $numericCharPassFlag = true;
+                    }
+                    $tempPartialStr .= $tempStr1Chars[$charPositionInStr1];
+                    $charPositionInStr1++;
+                }
+                $strPartialArr[] = $tempPartialStr;
+            }
+            foreach ($strPartialArr as $strPartial) {
+                if (!empty($matchingStr)) {
+                    break;
+                }
+                foreach ($strArr2 as $str2) {
+                    if (0 === stripos($str2, $strPartial)) {
+                        $matchingStr = $str2;
+                        break;
+                    }
+                }
+            }
+
+            return $matchingStr;
+        }
+
+        /**
+         * Find matching string from $strArr1 and $strArr2
+         *
+         * @param array   $strArr1                  array of strings
+         * @param array   $strArr2                  array of strings
+         * @param boolean $match_until_first_numeric only match until first numeric occurrence
+         * @return string matching str which will be best for replacement
+         */
+        public static function getMatchingStrFromArrayElemsBasedOnUnderScore($strArr1, $strArr2)
+        {
+            $matchingStr = '';
+
+            $str1PartialFirstArr        = array();
+            $str1PartialFirstArr        = array();
+            $str1PartialStartNMiddleArr = array();
+            $str1PartialMiddleNLastArr  = array();
+            $str1PartialLastArr         = array();
+            foreach ($strArr1 as $str1) {
+                $str1PartialArr        = explode('_', $str1);
+                $str1_parts_count      = count($str1PartialArr);
+                $str1PartialFirstArr[] = $str1PartialArr[0];
+                $str1LastPartIndex     = $str1_parts_count - 1;
+                if ($str1LastPartIndex > 0) {
+                    $str1PartialLastArr[]         = $str1PartialArr[$str1LastPartIndex];
+                    $str1PartialStartNMiddleArr[] = substr($str1, 0, strripos($str1, '_'));
+                    $str1PartialMiddleNLastArr[]  = substr($str1, stripos($str1, '_') + 1);
+                }
+            }
+            for ($caseNo = 1; $caseNo <= 5; $caseNo++) {
+                if (!empty($matchingStr)) {
+                    break;
+                }
+                foreach ($strArr2 as $str2) {
+                    switch ($caseNo) {
+                        // Both Start and End match
+                        case 1:
+                            $str2PartialArr    = explode('_', $str2);
+                            $str2FirstPart     = $str2PartialArr[0];
+                            $str2PartsCount    = count($str2PartialArr);
+                            $str2LastPartIndex = $str2PartsCount - 1;
+                            if ($str2LastPartIndex > 0) {
+                                $str2LastPart = $str2PartialArr[$str2LastPartIndex];
+                            } else {
+                                $str2LastPart = '';
+                            }
+                            if (!empty($str2LastPart) && !empty($str1PartialLastArr) && in_array($str2FirstPart, $str1PartialFirstArr) && in_array($str2LastPart, $str1PartialLastArr)) {
+                                $matchingStr = $str2;
+                            }
+                            break;
+                        // Start Middle Match
+                        case 2:
+                            $str2PartialFirstNMiddleParts = substr($str2, 0, strripos($str2, '_'));
+                            if (in_array($str2PartialFirstNMiddleParts, $str1PartialStartNMiddleArr)) {
+                                $matchingStr = $str2;
+                            }
+                            break;
+                        // End Middle Match
+                        case 3:
+                            $str2PartialMiddleNLastParts = stripos($str2, '_') !== false ? substr($str2, stripos($str2, '_') + 1) : '';
+                            if (!empty($str2PartialMiddleNLastParts) && in_array($str2PartialMiddleNLastParts, $str1PartialMiddleNLastArr)) {
+                                $matchingStr = $str2;
+                            }
+                            break;
+                        // Start Match
+                        case 4:
+                            $str2PartialArr = explode('_', $str2);
+                            $str2FirstPart  = $str2PartialArr[0];
+                            if (in_array($str2FirstPart, $str1PartialFirstArr)) {
+                                $matchingStr = $str2;
+                            }
+                            break;
+                        // End Match
+                        case 5:
+                            $str2PartialArr    = explode('_', $str2);
+                            $str2PartsCount    = count($str2PartialArr);
+                            $str2LastPartIndex = $str2PartsCount - 1;
+                            if ($str2LastPartIndex > 0) {
+                                $str2LastPart = $str2PartialArr[$str2LastPartIndex];
+                            } else {
+                                $str2LastPart = '';
+                            }
+                            if (!empty($str2LastPart) && in_array($str2LastPart, $str1PartialLastArr)) {
+                                $matchingStr = $str2;
+                            }
+                            break;
+                    }
+                    if (!empty($matchingStr)) {
+                        break;
+                    }
+                }
+            }
+            return $matchingStr;
+        }
+
+        /**
          * Gets a specific external variable by name and optionally filters it
          * @param int $type <p>One of <b><code>INPUT_GET</code></b>, <b><code>INPUT_POST</code></b>, <b><code>INPUT_COOKIE</code></b>, <b><code>INPUT_SERVER</code></b>, or <b><code>INPUT_ENV</code></b>.</p>
          * @param string $variable_name <p>Name of a variable to get.</p>
@@ -294,6 +429,35 @@ if (!class_exists('DupLiteSnapLibUtil', false)) {
             }
 
             return filter_input(INPUT_POST, $variable_name, $filter, $options);
+        }
+
+        /**
+         * Implemented array_key_first
+         *
+         * @link https://www.php.net/manual/en/function.array-key-first.php
+         * @param array $arr
+         * @return int|string|null
+         */
+        public static function arrayKeyFirst($arr)
+        {
+            if (!function_exists('array_key_first')) {
+                foreach ($arr as $key => $unused) {
+                    return $key;
+                }
+                return null;
+            } else {
+                return array_key_first($arr);
+            }
+        }
+
+        /**
+         * Get number of bit supported by PHP
+         *
+         * @return string
+         */
+        public static function getArchitectureString()
+        {
+            return (PHP_INT_SIZE * 8).'-bit';
         }
     }
 }

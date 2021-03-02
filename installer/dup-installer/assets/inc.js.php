@@ -76,6 +76,24 @@
 		}
 	}
 
+	DUPX.initToggle = function() {
+        $("body").on('click', "*[data-type~='toggle']", DUPX.toggleClick);
+
+        var hasFailedReq = false;
+        $("*[data-type~='auto'][data-status='fail']").each(function(){
+            hasFailedReq = true;
+            $(this).trigger('click');
+        });
+
+        $("*[data-type~='auto'][data-status='warn']").each(function(){
+            if (hasFailedReq) {
+                return ;
+            }
+
+            $(this).trigger('click');
+        });
+    }
+
 	DUPX.toggleAll = function(id) {
 		$(id + " *[data-type='toggle']").each(function() {
 			$(this).trigger('click');
@@ -125,7 +143,6 @@
 				: $(this).html("+ " + text );
 			target.hide();
 		}
-
 	}
 
 	DUPX.Util.formatBytes = function (bytes,decimals)
@@ -140,6 +157,27 @@
 
 	$(document).ready(function()
     {
+        $('body').on( "click", ".copy-to-clipboard-block button", function(e) {
+            e.preventDefault();
+            var button = $(this);
+            var buttonText = button.html();
+            var textarea = button.parent().find("textarea")[0];
+
+            textarea.select();
+
+            try {
+                message = document.execCommand('copy') ? "Copied to Clipboard" : 'Unable to copy';
+            } catch (err) {
+                console.log(err);
+            }
+
+            button.html(message);
+
+            setTimeout(function () {
+                button.text(buttonText);
+            }, 2000);
+        });
+
 		<?php if (DUPX_Log::isLevel(DUPX_Log::LV_DEBUG)) : ?>
 			$("div.dupx-debug input[type=hidden], div.dupx-debug textarea").each(function() {
 				var label = '<label>' + $(this).attr('name') + ':</label>';

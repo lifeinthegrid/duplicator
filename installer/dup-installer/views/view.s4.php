@@ -413,7 +413,7 @@ LONGMSG;
 $(document).ready(function () {
 
     //INIT Routines
-	$("*[data-type='toggle']").click(DUPX.toggleClick);
+    DUPX.initToggle();
 	$("#tabs").tabs();
 
 });
