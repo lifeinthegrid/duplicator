@@ -208,16 +208,20 @@ $archive_config         = DUPX_ArchiveConfig::getInstance();
                                     <?php
                                     if ($arcCheck == 'Warn') {
                                         ?>
-                                        The archive file named above must be the <u>exact</u> name of the archive file placed in the root path (character for character). But you can proceed with choosing Manual Archive Extraction.
+                                        An archive/installer mismatch has been detected.   Be sure to download the installer.php and archive.zip/daf files from the same
+                                        package line in your WordPress Admin.  The correct installer can also be found inside of the archive.zip/daf file named
+                                        "installer-backup.php".  Users can still proceed with the install by choosing Manual Archive Extraction to ignore this message,
+                                        but must manually extract the archive themselves.
                                         <?php
                                     } else {
                                         ?>
-                                        The archive file named above must be the <u>exact</u> name of the archive file placed in the root path (character for character).
-                                        When downloading the package files make sure both files are from the same package line.  <br/><br/>
+                                         An archive/installer mismatch has been detected.   Be sure to download the installer.php and archive.zip/daf files from the same
+                                         package line in your WordPress Admin.  The correct installer can also be found inside of the archive.zip/daf file named
+                                        "installer-backup.php".  <br/><br/>
 
                                         If the contents of the archive were manually transferred to this location without the archive file then simply create a temp file named with
-                                        the exact name shown above and place the file in the same directory as the installer.php file.  The temp file will not need to contain any data.
-                                        Afterward, refresh this page and continue with the install process.
+                                        the exact name of the archive see WordPress Admin > Duplicator > Package Line > Details > Archive Name and place the file in the same directory
+                                        as the installer.php file.  The temp file will not need to contain any data.   Afterward, refresh this page and continue with the install process.
                                         <?php
                                     }
                                     ?>

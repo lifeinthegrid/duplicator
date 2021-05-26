@@ -148,7 +148,9 @@ class DUPX_CSRF {
 		if (!isset(self::$CSRFVars) || false === self::$CSRFVars) {
 			$filePath = self::getFilePath();
 			if (file_exists($filePath)) {
-				$contents = file_get_contents($filePath);
+				if (!($contents = file_get_contents($filePath))) {
+					throw new Exception('Fail to read the CSRF file.');
+				}
 				if (empty($contents)) {
 					self::$CSRFVars = array();
 				} else {
@@ -173,6 +175,8 @@ class DUPX_CSRF {
 	private static function saveCSRFVars($CSRFVars) {
 		$contents = DupLiteSnapJsonU::wp_json_encode($CSRFVars);
 		$filePath = self::getFilePath();
-		file_put_contents($filePath, $contents);
+		if (!file_put_contents($filePath, $contents, LOCK_EX)) {
+			throw new Exception('Fail to write the CSRF file.');
+		}
 	}
 }

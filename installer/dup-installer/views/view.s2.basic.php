@@ -189,6 +189,10 @@ BASIC: DB VALIDATION -->
             </tr>
             <tr>
                 <td></td>
+                <td><input type="checkbox" name="dbobj_funcs" id="dbobj_funcs" checked="true" /><label for="dbobj_funcs">Enable Function Creation</label></td>
+            </tr>
+            <tr>
+                <td></td>
                 <td><input type="checkbox" name="db_remove_definer" id="db_remove_definer"/><label for="db_remove_definer">Remove DEFINER from CREATE queries</label></td>
             </tr>
             <tr>

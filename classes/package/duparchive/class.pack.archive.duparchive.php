@@ -218,7 +218,7 @@ class DUP_DupArchive
                 DUP_LOG::trace("c15");
                 $message = __('Problem adding items to archive.', 'duplicator').' '.$ex->getMessage();
 
-                DUP_Log::Error(__('Problems adding items to archive.', 'duplicator'), $message, Dup_ErrorBehavior::LogOnly);
+                DUP_Log::error(__('Problems adding items to archive.', 'duplicator'), $message, Dup_ErrorBehavior::LogOnly);
                 DUP_Log::TraceObject($message." EXCEPTION:", $ex);
                 //$buildProgress->failed = true;
                 $buildProgress->set_failed($message);
@@ -315,7 +315,7 @@ class DUP_DupArchive
 
                         $error_message = __('Critical failure present in validation', 'duplicator');
 
-                        DUP_Log::Error($error_message, $expandState->getFailureSummary(), Dup_ErrorBehavior::LogOnly);
+                        DUP_Log::error($error_message, $expandState->getFailureSummary(), Dup_ErrorBehavior::LogOnly);
 
                         //$buildProgress->failed = true;
                         $buildProgress->set_failed($error_message);

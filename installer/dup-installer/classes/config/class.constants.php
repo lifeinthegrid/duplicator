@@ -160,6 +160,10 @@ class DUPX_Constants
             .'Please remove all procedures from this database and try the installation again. '
             .'If no procedures show in the database, then Drop the database and re-create it.<br/>'
             .'ERROR MESSAGE: %s <br/><br/>');
+        define('ERR_DROP_FUNCTION_TRYCLEAN', 'FUNCTION CLEAN FAILURE. '
+            .'Please remove all functions from this database and try the installation again. '
+            .'If no functions show in the database, then Drop the database and re-create it.<br/>'
+            .'ERROR MESSAGE: %s <br/><br/>');
         define('ERR_DROP_VIEW_TRYCLEAN', 'VIEW CLEAN FAILURE. '
             .'Please remove all views from this database and try the installation again. '
             .'If no views show in the database, then Drop the database and re-create it.<br/>'

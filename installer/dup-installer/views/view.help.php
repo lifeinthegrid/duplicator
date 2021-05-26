@@ -103,7 +103,7 @@ $expandClass =  $sectionId == $open_section ? 'open' : 'close';
                 </td>
             </tr>
             <tr>
-                <td class="col-opt">Overwrite Install <sup>pro</sup></td>
+                <td class="col-opt">Overwrite Install</td>
                 <td>
                     This mode indicates that the installer was started in a location that contains an existing site.  With this mode <b>the existing site will be overwritten</b> with
                     the contents of the archive.zip/daf and the database.sql file.  This is an advanced option and users should be pre-paired to know that state of their database

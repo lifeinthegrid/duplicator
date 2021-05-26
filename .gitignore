@@ -1,2 +1,3 @@
 .utils/scripts/composer.lock
 .utils/scripts/vendor
+.DS_Store

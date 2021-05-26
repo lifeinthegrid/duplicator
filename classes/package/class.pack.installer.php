@@ -308,7 +308,7 @@ class DUP_Installer
 			$success = true;
 		}
 		catch (Exception $ex) {
-			DUP_Log::Error("Error adding installer files to archive. ", $ex->getMessage(), Dup_ErrorBehavior::ThrowException);
+			DUP_Log::error("Error adding installer files to archive. ", $ex->getMessage(), Dup_ErrorBehavior::ThrowException);
 		}
 
 		return $success;

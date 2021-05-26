@@ -250,7 +250,7 @@ class DUP_Settings
             if (self::Get('storage_position') === self::STORAGE_POSITION_LECAGY) {
                 self::$ssDirUrl = DupLiteSnapLibIOU::trailingslashit(DUPLICATOR_SITE_URL).self::SSDIR_NAME_LEGACY;
             } else {
-                self::$ssDirUrl = DupLiteSnapLibIOU::trailingslashit(WP_CONTENT_URL).self::SSDIR_NAME_NEW;
+                self::$ssDirUrl = DupLiteSnapLibIOU::trailingslashit(content_url()).self::SSDIR_NAME_NEW;
             }
         }
         return self::$ssDirUrl;

@@ -38,17 +38,15 @@ if (!class_exists('DuplicatorPhpVersionCheck')) {
             <div class="error notice">
                 <p>
                     <?php
-                    $str = 'DUPLICATOR: '.__('Your system is running a very old version of PHP (%s) that is no longer suppported by Duplicator.', 'duplicator');
+                    $str = 'DUPLICATOR: '.__('Your system is running a very old version of PHP (%s) that is no longer supported by Duplicator.  ', 'duplicator');
                     printf($str, PHP_VERSION);
-                    ?>
-                </p>
-                <p>
-                    <?php
-                    $str = __('Please ask your host or server administrator to update to PHP %1s or greater. If this is not possible, ', 'duplicator');
-                    $str .= '<a href="https://snapcreek.com/ticket" target="blank">';
-                    $str .= __('open a ticket', 'duplicator');
+                    
+                    $str = __('Please ask your host or server administrator to update to PHP %1s or greater.') . '<br/>';
+                    $str .= __('If this is not possible, please visit the FAQ link titled ', 'duplicator');
+                    $str .= '<a href="https://snapcreek.com/duplicator/docs/faqs-tech/#faq-licensing-017-q" target="blank">';
+                    $str .= __('"What version of PHP Does Duplicator Support?"', 'duplicator');
                     $str .= '</a>';
-                    $str .= __(' to request a previous version of Duplicator compatible with PHP %2s.', 'duplicator');
+                    $str .= __(' for instructions on how to download a previous version of Duplicator compatible with PHP %2s.', 'duplicator');
                     printf($str, self::$suggestedVer, PHP_VERSION);
                     ?>
                 </p>

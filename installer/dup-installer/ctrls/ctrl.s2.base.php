@@ -50,6 +50,7 @@ if (isset($_POST['dbcollate'])) {
 $_POST['dbcollatefb']	= (isset($_POST['dbcollatefb']) && $_POST['dbcollatefb'] == '1') ? true : false;
 $_POST['dbobj_views']	= isset($_POST['dbobj_views']) ? true : false; 
 $_POST['dbobj_procs']	= isset($_POST['dbobj_procs']) ? true : false;
+$_POST['dbobj_funcs']	= isset($_POST['dbobj_funcs']) ? true : false;
 $_POST['config_mode']	= (isset($_POST['config_mode'])) ? DUPX_U::sanitize_text_field($_POST['config_mode']) : 'NEW';
 
 $ajax2_start	 = DUPX_U::getMicrotime();
@@ -119,6 +120,7 @@ if($not_yet_logged){
     DUPX_Log::info(str_pad('COLLATE FB', $labelPadSize, '_', STR_PAD_RIGHT).': '.DUPX_Log::varToString($_POST['dbcollatefb']));
     DUPX_Log::info(str_pad('VIEW CREATION', $labelPadSize, '_', STR_PAD_RIGHT).': '.DUPX_Log::varToString($_POST['dbobj_views']));
     DUPX_Log::info(str_pad('STORED PROCEDURE', $labelPadSize, '_', STR_PAD_RIGHT).': '.DUPX_Log::varToString($_POST['dbobj_procs']));
+    DUPX_Log::info(str_pad('FUNCTION CREATION', $labelPadSize, '_', STR_PAD_RIGHT).': '.DUPX_Log::varToString($_POST['dbobj_funcs']));
     DUPX_Log::info("********************************************************************************\n");
 
     $POST_LOG = $_POST;

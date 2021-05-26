@@ -225,7 +225,7 @@ class DUP_Database
                 $package->BuildProgress->set_failed($error_message);
                 $package->Status = DUP_PackageStatus::ERROR;
                 $package->Update();
-                DUP_Log::Error($error_message, "File does not look complete.  Check permission on file and parent directory at [{$this->tempDbPath}]", $errorBehavior);
+                DUP_Log::error($error_message, "File does not look complete.  Check permission on file and parent directory at [{$this->tempDbPath}]", $errorBehavior);
                 do_action('duplicator_lite_build_database_fail', $package);
             } else {
                 do_action('duplicator_lite_build_database_completed', $package);
@@ -240,7 +240,7 @@ class DUP_Database
         }
         catch (Exception $e) {
             do_action('duplicator_lite_build_database_fail', $package);
-            DUP_Log::Error("Runtime error in DUP_Database::Build. ".$e->getMessage(), "Exception: {$e}", $errorBehavior);
+            DUP_Log::error("Runtime error in DUP_Database::Build. ".$e->getMessage(), "Exception: {$e}", $errorBehavior);
         }
     }
 
@@ -631,6 +631,16 @@ class DUP_Database
             foreach ($procedures as $procedure) {
                 @fwrite($handle, "DELIMITER ;;\n");
                 $create = $wpdb->get_row("SHOW CREATE PROCEDURE `{$procedure}`", ARRAY_N);
+                @fwrite($handle, "{$create[2]} ;;\n");
+                @fwrite($handle, "DELIMITER ;\n\n");
+            }
+        }
+
+        $functions = $wpdb->get_col("SHOW FUNCTION STATUS WHERE `Db` = '{$wpdb->dbname}'", 1);
+        if (count($functions)) {
+            foreach ($functions as $function) {
+                @fwrite($handle, "DELIMITER ;;\n");
+                $create = $wpdb->get_row("SHOW CREATE FUNCTION `{$function}`", ARRAY_N);
                 @fwrite($handle, "{$create[2]} ;;\n");
                 @fwrite($handle, "DELIMITER ;\n\n");
             }

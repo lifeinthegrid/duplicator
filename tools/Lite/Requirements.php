@@ -59,15 +59,12 @@ class Requirements
 
         if ($result === true && self::isPluginActive(self::DUP_PRO_PLUGIN_KEY)) {
             /* Deactivation of the plugin disabled in favor of a notification for the next version
-             * Uncomment this to enable the logic. 
-             * 
+             * Uncomment this to enable the logic. */
               add_action('admin_init', array(__CLASS__, 'addProEnableNotice'));
-              self::$deactivationMessage = __('Can\'t enable Duplicator LITE if the PRO version is enabled', 'duplicator');
-              $result                    = false;
-             */
-
-            // TEMP WARNING NOTICE, remove this when the deactiovation logic is enable
-            add_action('admin_init', array(__CLASS__, 'addTempWarningProEnableNotice'));
+              self::$deactivationMessage = __('The "Duplicator Lite" and "Duplicator Pro" plugins cannot both be active at the same time.', 'duplicator') . '<br/>'
+                  . __('Please deactivate one of them, then reactivate either Lite or Pro from the ', 'duplicator')
+                  ."<a href='plugins.php'>" . __('plugins page', 'duplicator') . ".</a>";
+              $result = false;
         }
 
         if ($result === false) {
@@ -119,16 +116,6 @@ class Requirements
         }
     }
 
-    /**
-     * display admin notice only if user can manage plugins.
-     */
-    public static function addTempWarningProEnableNotice()
-    {
-        if (current_user_can('activate_plugins') && false === get_option(\DUP_UI_Notice::OPTION_KEY_IS_PRO_ENABLE_NOTICE_DISMISSED, false)) {
-            add_action('admin_notices', array(__CLASS__, 'tempWarningProEnableNotice'));
-        }
-    }
-
     public static function addTempWarningMultisiteNotice()
     {
         if (current_user_can('activate_plugins') && !is_plugin_active_for_network(plugin_basename(self::$pluginFile))  && false === get_option(\DUP_UI_Notice::OPTION_KEY_IS_MU_NOTICE_DISMISSED, false)) {
@@ -154,18 +141,13 @@ class Requirements
         <div class="error notice">
             <p>
                 <?php
-                echo 'DUPLICATOR LITE: ' . __('Duplicator LITE cannot be work if Duplicator PRO is active.', 'duplicator');
+                    echo '<span class="dashicons dashicons-warning"></span>&nbsp;';
+                    echo '<b>' . __('Duplicator Notice:', 'duplicator') . '</b>&nbsp; ';
+                    echo __('The "Duplicator Lite" and "Duplicator Pro" plugins cannot both be active at the same time.  ', 'duplicator');
+                    echo '</br>';
+                    echo __('To use "Duplicator Lite" please deactivate "Duplicator Pro" from the ', 'duplicator');
+                    echo "<a href='plugins.php'>" . __('plugins page', 'duplicator') . ".</a>";
                 ?>
-            </p>
-            <p>
-                <?php
-                echo __('If you want to use Duplicator LITE you must first deactivate the PRO version', 'duplicator');
-                ?><br>
-                <b>
-                    <?php
-                    echo __('Please disable the LITE version if it is not needed.', 'duplicator');
-                    ?>
-                </b>
             </p>
         </div>
         <?php
@@ -186,24 +168,6 @@ class Requirements
             <p>
                 <?php
                 echo __('The PRO version also works in multi-site installations.', 'duplicator');
-                ?>
-            </p>
-        </div>
-        <?php
-    }
-
-    /**
-     * Display admin notice if duplicator pro is enabled
-     */
-    public static function tempWarningProEnableNotice()
-    {
-        ?>
-        <div class="notice notice-warning duplicator-admin-notice is-dismissible" data-to-dismiss="<?php echo \DUP_UI_Notice::OPTION_KEY_IS_PRO_ENABLE_NOTICE_DISMISSED;?>">
-            <p>
-                <?php
-                echo '<i class="fas fa-exclamation-circle"></i> ' . __('NOTICE: Duplicator is undergoing changes to enhance its backend logic. These changes will prevent Duplicator Lite &amp; Duplicator Pro from being activated at the same time.', 'duplicator');
-                echo "<br/>";
-                echo '<i>' . __('This message is simply a notice to inform users that the changes will be coming soon.', 'duplicator') . '</i>';
                 ?>
             </p>
         </div>

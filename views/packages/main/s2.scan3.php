@@ -459,7 +459,7 @@ DATABASE -->
     if (count($triggers)) { ?>
         <div class="scan-item scan-item-last">
             <div class='title' onclick="Duplicator.Pack.toggleScanItem(this);">
-                <div class="text"><i class="fa fa-caret-right"></i> <?php esc_html_e('Contains Triggers', 'duplicator');?></div>
+                <div class="text"><i class="fa fa-caret-right"></i> <?php esc_html_e('Triggers', 'duplicator');?></div>
                 <div id="data-arc-status-triggers"></div>
             </div>
             <div class="info">
@@ -481,30 +481,31 @@ DATABASE -->
         </div>
     <?php } ?>
     <?php
-    $procedures = $GLOBALS['wpdb']->get_col("SHOW PROCEDURE STATUS WHERE `Db` = '{$wpdb->dbname}'", 1);
-    if (count($procedures)) { ?>
-    <div id="showcreateproc-block"  class="scan-item scan-item-last">
+    $procedures = $GLOBALS['wpdb']->get_col("SHOW PROCEDURE STATUS WHERE `Db` = '{$GLOBALS['wpdb']->dbname}'", 1);
+    $functions  = $GLOBALS['wpdb']->get_col("SHOW FUNCTION STATUS WHERE `Db` = '{$GLOBALS['wpdb']->dbname}'", 1);
+    if (count($procedures) || count($functions)) { ?>
+    <div id="showcreateprocfunc-block"  class="scan-item scan-item-last">
         <div class='title' onclick="Duplicator.Pack.toggleScanItem(this);">
-            <div class="text"><i class="fa fa-caret-right"></i> <?php esc_html_e('Stored Proc Access', 'duplicator');?></div>
-            <div id="data-arc-status-showcreateproc"></div>
+            <div class="text"><i class="fa fa-caret-right"></i> <?php esc_html_e('Object Access', 'duplicator');?></div>
+            <div id="data-arc-status-showcreateprocfunc"></div>
         </div>
         <div class="info">
-            <script id="hb-showcreateproc-result" type="text/x-handlebars-template">
+            <script id="hb-showcreateprocfunc-result" type="text/x-handlebars-template">
                 <div class="container">
                     <div class="data">
-                        {{#if ARC.Status.showCreateProc}}
-                        <?php esc_html_e("The database user for this WordPress site has sufficient permissions to write stored procedures to the sql file of the archive. [The command SHOW CREATE FUNCTION will work.]", 'duplicator'); ?>
+                        {{#if ARC.Status.showCreateProcFunc}}
+                        <?php esc_html_e("The database user for this WordPress site has sufficient permissions to write stored procedures and functions to the sql file of the archive. [The command SHOW CREATE FUNCTION will work.]", 'duplicator'); ?>
                         {{else}}
                         <span style="color: red;">
-                        <?php
-                        esc_html_e("The database user for this WordPress site does NOT sufficient permissions to write stored procedures to the sql file of the archive.  Stored procedures will not be added to the sql file.", 'duplicator');
-                        ?>
-                    </span>
+                            <?php
+                            esc_html_e("The database user for this WordPress site does NOT sufficient permissions to write stored procedures or functions to the sql file of the archive.  Stored procedures will not be added to the sql file.", 'duplicator');
+                            ?>
+                        </span>
                         {{/if}}
                     </div>
                 </div>
             </script>
-            <div id="showcreateproc-package-result"></div>
+            <div id="showcreateprocfunc-package-result"></div>
         </div>
     </div>
     <?php } ?>
@@ -885,7 +886,7 @@ jQuery(document).ready(function($)
         $('#data-arc-status-triggers').html(Duplicator.Pack.setScanStatus(data.DB.Status.Triggers));
         
 		$('#data-arc-status-migratepackage').html(Duplicator.Pack.setScanStatus(data.ARC.Status.MigratePackage));
-+        $('#data-arc-status-showcreateproc').html(Duplicator.Pack.setScanStatus(data.ARC.Status.showCreateProcStatus));
++        $('#data-arc-status-showcreateprocfunc').html(Duplicator.Pack.setScanStatus(data.ARC.Status.showCreateProcFuncStatus));
 		$('#data-arc-size1').text(data.ARC.Size || errMsg);
 		$('#data-arc-size2').text(data.ARC.Size || errMsg);
 		$('#data-arc-files').text(data.ARC.FileCount || errMsg);
@@ -938,11 +939,11 @@ jQuery(document).ready(function($)
         }
 
         //SHOW CREATE
-        if ($("#hb-showcreateproc-result").length) {
-            var template = $('#hb-showcreateproc-result').html();
+        if ($("#hb-showcreateprocfunc-result").length) {
+            var template = $('#hb-showcreateprocfunc-result').html();
             var templateScript = Handlebars.compile(template);
             var html = templateScript(data);
-            $('#showcreateproc-package-result').html(html);
+            $('#showcreateprocfunc-package-result').html(html);
         }
 
         //TRIGGERS

@@ -5,7 +5,7 @@ class DUPX_DBInstall
 {
     const USER_DEFINER_REPLACE_PATTERN = "/^(\s*(?:\/\*!\d+\s)?\s*(?:CREATE.+)?DEFINER\s*=)(\S+)(.*)$/m";
     const USER_DEFINER_REMOVE_PATTERN  = "/^(\s*(?:\/\*!\d+\s)?\s*(?:CREATE.+)?)(DEFINER\s*=\s*\S+)(.*)$/m";
-    const SQL_SECURITY_INVOKER_PATTERN = "/^([\s\t]*CREATE.+PROCEDURE[\s\S]*)(BEGIN)([\s\S]*)$/";
+    const SQL_SECURITY_INVOKER_PATTERN = "/^([\s\t]*CREATE.+(?:PROCEDURE|FUNCTION)[\s\S]*)(BEGIN)([\s\S]*)$/";
     const SQL_SECURITY_INVOKER_REPLACE = "$1SQL SECURITY INVOKER\n$2$3";
     const QUERY_ERROR_LOG_LEN          = 200;
 
@@ -40,6 +40,7 @@ class DUPX_DBInstall
     public $dbcollatefb;
     public $dbobj_views;
     public $dbobj_procs;
+    public $dbobj_funcs;
     public $dbRemoveDefiner;
 	public $dbFileSize = 0;
 	public $dbDefinerReplace;
@@ -86,6 +87,7 @@ class DUPX_DBInstall
         $this->dbcollatefb      = isset($post['dbcollatefb']) ? DUPX_U::sanitize_text_field($post['dbcollatefb']) : 0;
         $this->dbobj_views      = isset($post['dbobj_views']) ? DUPX_U::sanitize_text_field($post['dbobj_views']) : 0;
         $this->dbobj_procs      = isset($post['dbobj_procs']) ? DUPX_U::sanitize_text_field($post['dbobj_procs']) : 0;
+        $this->dbobj_funcs      = isset($post['dbobj_funcs']) ? DUPX_U::sanitize_text_field($post['dbobj_funcs']) : 0;
         $this->dbRemoveDefiner  = isset($post['db_remove_definer']) ? DUPX_U::sanitize_text_field($post['db_remove_definer']) : 0;
     }
 
@@ -150,10 +152,11 @@ class DUPX_DBInstall
 
             //DROP DB TABLES:  DROP TABLE statement does not support views
             case "empty":
-                //Drop all tables, views and procs
+                //Drop all tables, views, funcs and procs
                 $this->dropTables();
                 $this->dropViews();
                 $this->dropProcs();
+                $this->dropFuncs();
                 break;
 
             //RENAME DB TABLES
@@ -384,6 +387,14 @@ class DUPX_DBInstall
         } else {
             DUPX_Log::info("DB PROCEDURES:\tenabled");
         }
+
+        //Remove FUNCTIONS from DB
+        if (!$this->dbobj_funcs) {
+            $this->dropFuncs();
+            DUPX_Log::info("DB FUNCTIONS:\tdisabled");
+        } else {
+            DUPX_Log::info("DB FUNCTIONS:\tenabled");
+        }
     }
 
     private function dropTables()
@@ -451,6 +462,50 @@ class DUPX_DBInstall
                 ), DUPX_NOTICE_MANAGER::ADD_UNIQUE_PREPEND_IF_EXISTS, 'drop-proc-fail-msg');
             }
         }
+    }
+
+    private function dropFuncs()
+    {
+        $sql = "SHOW FUNCTION STATUS WHERE db='{$this->post['dbname']}'";
+        if (($result = mysqli_query($this->dbh, $sql)) === false || mysqli_num_rows($result) === 0) {
+            return;
+        }
+
+        DUPX_Log::info("MYSQL RESULT: ".DUPX_Log::varToString($result));
+        DUPX_Log::info("NUMBER OF FUNCS: ".DUPX_Log::varToString(mysqli_num_rows($result)));
+
+        $nManager = DUPX_NOTICE_MANAGER::getInstance();
+        while ($row = mysqli_fetch_row($result)) {
+            $func_name = $row[1];
+            $sql       = "DROP FUNCTION IF EXISTS `".mysqli_real_escape_string($this->dbh, $this->post['dbname'])."`.`".mysqli_real_escape_string($this->dbh, $func_name)."`";
+            if (!mysqli_query($this->dbh, $sql)) {
+                $err = mysqli_error($this->dbh);
+
+                $nManager->addNextStepNotice(array(
+                    'shortMsg'    => 'FUNCTION CLEAN ERROR',
+                    'level'       => DUPX_NOTICE_ITEM::SOFT_WARNING,
+                    'longMsg'     => sprintf('Unable to remove FUNCTION "%s" from database "%s".<br/>', $func_name, $this->post['dbname']),
+                    'longMsgMode' => DUPX_NOTICE_ITEM::MSG_MODE_HTML,
+                ), DUPX_NOTICE_MANAGER::ADD_UNIQUE_APPEND, 'drop-func-fail-msg');
+
+                $nManager->addFinalReportNotice(array(
+                    'shortMsg'    => 'PROCEDURE CLEAN ERROR: '.$err,
+                    'level'       => DUPX_NOTICE_ITEM::SOFT_WARNING,
+                    'longMsg'     => sprintf('Unable to remove FUNCTION "%s" from database "%s".', $func_name, $this->post['dbname']),
+                    'longMsgMode' => DUPX_NOTICE_ITEM::MSG_MODE_HTML,
+                    'sections'    => 'database',
+                ));
+
+                DUPX_Log::info("FUNCTION CLEAN ERROR: '{$err}'\n\t[SQL=".substr($sql, 0, self::QUERY_ERROR_LOG_LEN)."...]\n\n");
+            }
+        }
+
+        $nManager->addNextStepNotice(array(
+            'shortMsg'    => 'PROCEDURE CLEAN ERROR',
+            'level'       => DUPX_NOTICE_ITEM::SOFT_WARNING,
+            'longMsg'     => sprintf(ERR_DROP_FUNCTION_TRYCLEAN, mysqli_error($this->dbh)),
+            'longMsgMode' => DUPX_NOTICE_ITEM::MSG_MODE_HTML,
+        ), DUPX_NOTICE_MANAGER::ADD_UNIQUE_PREPEND_IF_EXISTS, 'drop-func-fail-msg');
     }
 
     private function dropViews()
@@ -581,17 +636,6 @@ class DUPX_DBInstall
         }
 
         return $query;
-    }
-
-    private function applyProcUserFix()
-    {
-        foreach ($this->sql_result_data as $key => $query) {
-            if (preg_match("/DEFINER.*PROCEDURE/", $query) === 1) {
-                $query                       = preg_replace("/DEFINER.*PROCEDURE/", "PROCEDURE", $query);
-                $query                       = str_replace("BEGIN", "SQL SECURITY INVOKER\nBEGIN", $query);
-                $this->sql_result_data[$key] = $query;
-            }
-        }
     }
 
     private function applyQueryProcAndViewFix($query)

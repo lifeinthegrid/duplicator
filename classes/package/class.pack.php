@@ -259,17 +259,22 @@ class DUP_Package
         $report['ARC']['Status']['MigratePackage'] = $package_can_be_migrate ? 'Good' : 'Warn';
         $report['ARC']['Status']['CanbeMigratePackage'] = $package_can_be_migrate;
 
+        $privileges_to_show_create_proc_func = true;
         $procedures = $GLOBALS['wpdb']->get_col("SHOW PROCEDURE STATUS WHERE `Db` = '".$GLOBALS['wpdb']->dbname."'", 1);
         if (count($procedures)) {
             $create = $GLOBALS['wpdb']->get_row("SHOW CREATE PROCEDURE `".$procedures[0]."`", ARRAY_N);
-            $privileges_to_show_create_proc = empty($create[2]) ? false : true;
-        } else {
-            $privileges_to_show_create_proc = true; 
+            $privileges_to_show_create_proc_func = isset($create[2]);
         }
-        
-        $privileges_to_show_create_proc = apply_filters('duplicator_privileges_to_show_create_proc', $privileges_to_show_create_proc);
-        $report['ARC']['Status']['showCreateProcStatus'] = $privileges_to_show_create_proc ? 'Good' : 'Warn';
-        $report['ARC']['Status']['showCreateProc'] = $privileges_to_show_create_proc;
+
+        $functions = $GLOBALS['wpdb']->get_col("SHOW FUNCTION STATUS WHERE `Db` = '".$GLOBALS['wpdb']->dbname."'", 1);
+        if (count($functions)) {
+            $create = $GLOBALS['wpdb']->get_row("SHOW CREATE FUNCTION `".$functions[0]."`", ARRAY_N);
+            $privileges_to_show_create_proc_func = $privileges_to_show_create_proc_func && isset($create[2]);
+        }
+
+        $privileges_to_show_create_proc_func = apply_filters('duplicator_privileges_to_show_create_proc_func', $privileges_to_show_create_proc_func);
+        $report['ARC']['Status']['showCreateProcFuncStatus'] = $privileges_to_show_create_proc_func ? 'Good' : 'Warn';
+        $report['ARC']['Status']['showCreateProcFunc'] = $privileges_to_show_create_proc_func;
 
         //$report['ARC']['Status']['Big']   = count($this->Archive->FilterInfo->Files->Size) ? 'Warn' : 'Good';
         $report['ARC']['Dirs']  = $this->Archive->Dirs;
@@ -430,7 +435,7 @@ class DUP_Package
         $this->cleanObjectBeforeSave();
 		$packageObj = serialize($this);
 		if (!$packageObj) {
-			DUP_Log::Error("Unable to serialize package object while building record.");
+			DUP_Log::error("Unable to serialize package object while building record.");
 		}
 
 		$this->ID = $this->getHashKey($this->Hash);
@@ -453,7 +458,7 @@ class DUP_Package
 				$wpdb->print_error();
 				DUP_LOG::Trace("Problem inserting package: {$wpdb->last_error}");
 
-				DUP_Log::Error("Duplicator is unable to insert a package record into the database table.", "'{$wpdb->last_error}'");
+				DUP_Log::error("Duplicator is unable to insert a package record into the database table.", "'{$wpdb->last_error}'");
 			}
 			$this->ID = $wpdb->insert_id;
 		}
@@ -839,7 +844,7 @@ class DUP_Package
             $error_text = "ERROR: SQL file not complete.  The file {$sql_temp_path} looks too small ($sql_temp_size bytes) or the end of file marker was not found.";
             $this->BuildProgress->set_failed($error_text);
             $this->setStatus(DUP_PackageStatus::ERROR);
-            DUP_Log::Error("$error_text", '', Dup_ErrorBehavior::LogOnly);
+            DUP_Log::error("$error_text", '', Dup_ErrorBehavior::LogOnly);
             return;
         }
 
@@ -896,7 +901,7 @@ class DUP_Package
                 $this->BuildProgress->set_failed($error_message);
                 $this->setStatus(DUP_PackageStatus::ERROR);
 
-                DUP_Log::Error($error_message, '', Dup_ErrorBehavior::LogOnly);
+                DUP_Log::error($error_message, '', Dup_ErrorBehavior::LogOnly);
                 return;
             }
 
@@ -1461,7 +1466,7 @@ class DUP_Package
         $packageObj = serialize($this);
 
         if (!$packageObj) {
-            DUP_Log::Error("Package SetStatus was unable to serialize package object while updating record.");
+            DUP_Log::error("Package SetStatus was unable to serialize package object while updating record.");
         }
 
         $wpdb->flush();
@@ -1505,7 +1510,7 @@ class DUP_Package
     public function setStatus($status)
     {
         if (!isset($status)) {
-            DUP_Log::Error("Package SetStatus did not receive a proper code.");
+            DUP_Log::error("Package SetStatus did not receive a proper code.");
         }
         $this->Status = $status;
         $this->update();

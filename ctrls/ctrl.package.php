@@ -189,7 +189,7 @@ function duplicator_duparchive_package_build()
         }
         catch (Exception $ex) {
             DUP_Log::Info('[CTRL DUP ARCIVE] ERROR: caught exception');
-            Dup_Log::Error('[CTRL DUP ARCIVE]  Caught exception', $ex->getMessage(), Dup_ErrorBehavior::LogOnly);
+            Dup_Log::error('[CTRL DUP ARCIVE]  Caught exception', $ex->getMessage(), Dup_ErrorBehavior::LogOnly);
             DUP_Log::Info('[CTRL DUP ARCIVE] ERROR: after log');
             $package->setStatus(DUP_PackageStatus::ERROR);
             $hasCompleted = true;
@@ -215,7 +215,7 @@ function duplicator_duparchive_package_build()
                 $error_message .= implode(',', $failure->description);
             }
 
-            Dup_Log::Error("Build failed so sending back error", esc_html($error_message), Dup_ErrorBehavior::LogOnly);
+            Dup_Log::error("Build failed so sending back error", esc_html($error_message), Dup_ErrorBehavior::LogOnly);
             DUP_Log::Info('[CTRL DUP ARCIVE] ERROR AFTER LOG 2');
 
             $json['status'] = 3;

@@ -130,10 +130,12 @@ class DUP_Log
 		$backup_path = DUP_Log::getBackupTraceFilepath();
 
 		if (file_exists($file_path)) {
-			$filesize = filesize($file_path);
 
-			if (file_exists($backup_path)) {
-				$filesize += filesize($backup_path);
+            $filesize = is_file($file_path) ? @filesize($file_path) : 0;
+
+            //Its possible mulitple trace log files exist due to size
+			if (is_file($backup_path)) {
+				$filesize += @filesize($backup_path);
 			}
 
 			$message = sprintf('%1$s', DUP_Util::byteSize($filesize));
@@ -209,6 +211,11 @@ class DUP_Log
 		return hash('md5', $auth_key);
 	}
 
+    /**
+	 * Gets the current file size of the old trace file "1"
+	 *
+	 * @return string   Returns a human readable file size of the active trace file
+	 */
 	public static function GetBackupTraceFilepath()
 	{
 		$default_key		 = self::getDefaultKey();
@@ -245,12 +252,14 @@ class DUP_Log
 		@unlink($backup_path);
 	}
 
-	/**
-	 *  Called when an error is detected and no further processing should occur
-	 *  @param string $msg The message to log
-	 *  @param string $details Additional details to help resolve the issue if possible
-	 */
-	public static function Error($msg, $detail, $behavior = Dup_ErrorBehavior::Quit)
+    /**
+     *  Called when an error is detected and no further processing should occur
+     * @param string $msg The message to log
+     * @param string $detail Additional details to help resolve the issue if possible
+     * @param int $behavior
+     * @throws Exception
+     */
+	public static function error($msg, $detail = '', $behavior = Dup_ErrorBehavior::Quit)
 	{
 
 		error_log($msg.' DETAIL:'.$detail);
@@ -402,7 +411,7 @@ class DUP_Handler
             case self::MODE_OFF:
                 if ($errno == E_ERROR) {
                     $log_message = self::getMessage($errno, $errstr, $errfile, $errline);
-                    DUP_Log::Error($log_message);
+                    DUP_Log::error($log_message);
                 }
                 break;
             case self::MODE_VAR:
@@ -413,7 +422,7 @@ class DUP_Handler
                 switch ($errno) {
                     case E_ERROR :
                         $log_message = self::getMessage($errno, $errstr, $errfile, $errline);
-                        DUP_Log::Error($log_message);
+                        DUP_Log::error($log_message);
                         break;
                     case E_NOTICE :
                     case E_WARNING :

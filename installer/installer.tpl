@@ -1433,7 +1433,7 @@ class DUPX_Handler
             case E_ERROR :
                 $log_message = self::getMessage($errno, $errstr, $errfile, $errline);
                 if (DUPX_Bootstrap::log($log_message) === false) {
-                    $log_message = "Can\'t wrinte logfile\n\n".$log_message;
+                    $log_message = "Can\'t write logfile\n\n".$log_message;
                 }
                 die('<pre>'.htmlspecialchars($log_message).'</pre>');
                 break;
@@ -1622,7 +1622,7 @@ class DUPX_CSRF {
 
 	/**
 	 * Get all CSRF vars in array format
-	 * 
+	 *
 	 * @return array Key as CSRF name and value as CSRF value
 	 */
 	private static function getCSRFVars() {
@@ -1630,6 +1630,9 @@ class DUPX_CSRF {
 			$filePath = self::getFilePath();
 			if (file_exists($filePath)) {
 				$contents = file_get_contents($filePath);
+				if (!($contents = file_get_contents($filePath))) {
+					throw new Exception('Fail to read the CSRF file.');
+				}
 				if (empty($contents)) {
 					self::$CSRFVars = array();
 				} else {
@@ -1654,7 +1657,9 @@ class DUPX_CSRF {
 	private static function saveCSRFVars($CSRFVars) {
 		$contents = json_encode($CSRFVars);
 		$filePath = self::getFilePath();
-		file_put_contents($filePath, $contents);
+		if (!file_put_contents($filePath, $contents, LOCK_EX)) {
+			throw new Exception('Fail to write the CSRF file.');
+		}
 	}
 }
 
@@ -1662,21 +1667,22 @@ try {
     $boot  = new DUPX_Bootstrap();
     $boot_error = $boot->run();
     $auto_refresh = isset($_POST['auto-fresh']) ? true : false;
+
+	if ($boot_error == null) {
+		$step1_csrf_token = DUPX_CSRF::generate('step1');
+		DUPX_CSRF::setKeyVal('archive', $boot->archive);
+		DUPX_CSRF::setKeyVal('bootloader', $boot->bootloader);
+		DUPX_CSRF::setKeyVal('secondaryHash', DUPX_Bootstrap::SECONDARY_PACKAGE_HASH);
+		DUPX_CSRF::setKeyVal('installerOrigCall', DUPX_Bootstrap::getCurrentUrl());
+		DUPX_CSRF::setKeyVal('installerOrigPath', __FILE__);
+		DUPX_CSRF::setKeyVal('booturl', '//'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+		DUPX_CSRF::setKeyVal('bootLogFile', DUPX_Bootstrap::getBootLogFilePath());
+		DUPX_CSRF::setKeyVal('package_hash', DUPX_Bootstrap::PACKAGE_HASH);
+	}
 } catch (Exception $e) {
    $boot_error = $e->getMessage();
 }
 
-if ($boot_error == null) {
-	$step1_csrf_token = DUPX_CSRF::generate('step1');
-	DUPX_CSRF::setKeyVal('archive', $boot->archive);
-	DUPX_CSRF::setKeyVal('bootloader', $boot->bootloader);
-    DUPX_CSRF::setKeyVal('secondaryHash', DUPX_Bootstrap::SECONDARY_PACKAGE_HASH);
-    DUPX_CSRF::setKeyVal('installerOrigCall', DUPX_Bootstrap::getCurrentUrl());
-    DUPX_CSRF::setKeyVal('installerOrigPath', __FILE__);
-    DUPX_CSRF::setKeyVal('booturl', '//'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
-    DUPX_CSRF::setKeyVal('bootLogFile', DUPX_Bootstrap::getBootLogFilePath());
-    DUPX_CSRF::setKeyVal('package_hash', DUPX_Bootstrap::PACKAGE_HASH);
-}
 ?>
 
 <html>
