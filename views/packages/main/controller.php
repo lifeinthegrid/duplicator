@@ -57,19 +57,19 @@ switch ($current_tab) {
 	switch ($current_tab) {
 		case 'list': 
 			duplicator_header(__("Packages &raquo; All", 'duplicator'));
-			include('packages.php');
+			include(DUPLICATOR_PLUGIN_PATH.'views/packages/main/packages.php');
 			break;
 		case 'new1': 
 			duplicator_header(__("Packages &raquo; New", 'duplicator'));
-			include('s1.setup1.php');
+			include(DUPLICATOR_PLUGIN_PATH.'views/packages/main/s1.setup1.php');
 			break;
 		case 'new2': 
 			duplicator_header(__("Packages &raquo; New", 'duplicator'));
-			include('s2.scan1.php');
+			include(DUPLICATOR_PLUGIN_PATH.'views/packages/main/s2.scan1.php');
 			break;
 		case 'new3': 
 			duplicator_header(__("Packages &raquo; New", 'duplicator'));
-			include('s3.build.php');
+			include(DUPLICATOR_PLUGIN_PATH.'views/packages/main/s3.build.php');
 			break;
 	}
 ?>

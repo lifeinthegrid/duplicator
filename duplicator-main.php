@@ -21,7 +21,7 @@ if (Duplicator\Requirements::canRun($currentPluginBootFile) === false) {
     define('DUPLICATOR_LITE_PATH', dirname($currentPluginBootFile));
     define('DUPLICATOR_LITE_FILE', $currentPluginBootFile);
     define('DUPLICATOR_LITE_PLUGIN_URL', plugins_url('', $currentPluginBootFile));
-    
+
     if (!defined('DUPXABSPATH')) {
         define('DUPXABSPATH', dirname(DUPLICATOR_LITE_FILE));
     }
@@ -39,6 +39,7 @@ if (Duplicator\Requirements::canRun($currentPluginBootFile) === false) {
         require_once 'classes/class.logging.php';
         require_once 'classes/class.plugin.upgrade.php';
         require_once 'classes/utilities/class.u.php';
+        require_once 'classes/utilities/class.u.migration.php';
         require_once 'classes/utilities/class.u.string.php';
         require_once 'classes/utilities/class.u.validator.php';
         require_once 'classes/class.db.php';
@@ -195,11 +196,11 @@ if (Duplicator\Requirements::canRun($currentPluginBootFile) === false) {
         {
             $current_page = isset($_REQUEST['page']) ? sanitize_text_field($_REQUEST['page']) : 'duplicator';
             switch ($current_page) {
-                case 'duplicator': include('views/packages/controller.php'); break;
-                case 'duplicator-settings': include('views/settings/controller.php'); break;
-                case 'duplicator-tools': include('views/tools/controller.php'); break;
-                case 'duplicator-debug': include('debug/main.php'); break;
-                case 'duplicator-gopro': include('views/settings/gopro.php'); break;
+                case 'duplicator': include(DUPLICATOR_PLUGIN_PATH.'views/packages/controller.php'); break;
+                case 'duplicator-settings': include(DUPLICATOR_PLUGIN_PATH.'views/settings/controller.php'); break;
+                case 'duplicator-tools': include(DUPLICATOR_PLUGIN_PATH.'views/tools/controller.php'); break;
+                case 'duplicator-debug': include(DUPLICATOR_PLUGIN_PATH.'debug/main.php'); break;
+                case 'duplicator-gopro': include(DUPLICATOR_PLUGIN_PATH.'views/settings/gopro.php'); break;
             }
         }
 

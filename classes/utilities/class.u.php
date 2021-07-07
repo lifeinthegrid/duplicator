@@ -424,6 +424,10 @@ class DUP_Util
                 return apply_filters('duplicator_is_shellzip_available', false);
         }
 
+        if (! function_exists('shell_exec')) {
+			return apply_filters('duplicator_is_shellzip_available', false);
+	    }
+
         // Can we issue a simple echo command?
         if (!@shell_exec('echo duplicator'))
             return apply_filters('duplicator_is_shellzip_available', false);

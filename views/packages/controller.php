@@ -69,9 +69,8 @@ $download_installer_nonce = wp_create_nonce('duplicator_download_installer');
 <div class="wrap">
     <?php 
 		    switch ($current_view) {
-				case 'main': include('main/controller.php'); break;
-				case 'detail' : include('details/controller.php'); break;
-            break;	
+				case 'main': include(DUPLICATOR_PLUGIN_PATH.'views/packages/main/controller.php'); break;
+				case 'detail' : include(DUPLICATOR_PLUGIN_PATH.'views/packages/details/controller.php'); break;
     }
     ?>
 </div>

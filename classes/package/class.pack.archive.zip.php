@@ -123,7 +123,7 @@ class DUP_Zip extends DUP_Archive
             $info = '';
             if (self::$networkFlush) {
                 foreach (self::$scanReport->ARC->Files as $file) {
-                    $file_size = filesize($file);
+                    $file_size = @filesize($file);
                     $localFileName = $archive->getLocalFilePath($file);
 
                     if (is_readable($file)) {
@@ -160,7 +160,7 @@ class DUP_Zip extends DUP_Archive
             //Normal
             else {
                 foreach (self::$scanReport->ARC->Files as $file) {
-                    $file_size = filesize($file);
+                    $file_size = @filesize($file);
                     $localFileName = $archive->getLocalFilePath($file);
 
                     if (is_readable($file)) {

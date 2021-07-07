@@ -6,8 +6,6 @@ DUP_Util::hasCapability('export');
 
 global $wpdb;
 
-$dup_local_settings_path = dirname(__FILE__);
-
 //COMMON HEADER DISPLAY
 require_once(DUPLICATOR_PLUGIN_PATH . '/assets/js/javascript.php');
 require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
@@ -31,17 +29,17 @@ $current_tab = isset($_REQUEST['tab']) ? sanitize_text_field($_REQUEST['tab']) :
 
     <?php
     switch ($current_tab) {
-        case 'general': include("{$dup_local_settings_path}/general.php");
+        case 'general': include(DUPLICATOR_PLUGIN_PATH."views/settings/general.php");
             break;
-		case 'package': include("{$dup_local_settings_path}/packages.php");
+		case 'package': include(DUPLICATOR_PLUGIN_PATH."views/settings/packages.php");
             break;
-		case 'schedule': include("{$dup_local_settings_path}/schedule.php");
+		case 'schedule': include(DUPLICATOR_PLUGIN_PATH."views/settings/schedule.php");
             break;
-        case 'storage': include("{$dup_local_settings_path}/storage.php");
+        case 'storage': include(DUPLICATOR_PLUGIN_PATH."views/settings/storage.php");
             break;
-        case 'license': include("{$dup_local_settings_path}/license.php");
+        case 'license': include(DUPLICATOR_PLUGIN_PATH."views/settings/license.php");
             break;
-        case 'about': include("{$dup_local_settings_path}/about-info.php");
+        case 'about': include(DUPLICATOR_PLUGIN_PATH."views/settings/about-info.php");
             break;
     }
     ?>

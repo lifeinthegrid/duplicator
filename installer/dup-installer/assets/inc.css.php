@@ -1,7 +1,7 @@
 <?php defined('ABSPATH') || defined('DUPXABSPATH') || exit; ?>
 <style>
     body {font-family:Verdana,Arial,sans-serif; font-size:13px}
-    fieldset {border:1px solid silver; border-radius:5px; padding:10px}
+    fieldset {border:1px solid silver; border-radius:3px; padding:10px}
     h3 {margin:1px; padding:1px; font-size:13px;}
     a {color:#222}
     a:hover{color:gray}
@@ -56,14 +56,14 @@
     /* ============================
     COMMON VIEWS
      ============================ */
-    div#content {border:1px solid #CDCDCD; width:850px; min-height:550px; margin:auto; margin-top:18px; border-radius:5px; box-shadow:0 8px 6px -6px #333; font-size:13px}
+    div#content {border:1px solid #CDCDCD; width:850px; min-height:550px; margin:auto; margin-top:18px; border-radius:2px; box-shadow:0 8px 6px -6px #999; font-size:13px}
     div#content-inner {padding:10px 25px; min-height:550px}
     form.content-form {min-height:550px; position:relative; line-height:17px}
     div.logfile-link {float:right; font-weight:normal; font-size:11px; font-style:italic}
     span.sub-notes {font-size:10px;}
 
     /* Header */
-    table.header-wizard {border-top-left-radius:5px; border-top-right-radius:5px; width:100%; box-shadow:0 5px 3px -3px #999; background-color:#F1F1F1; font-weight:bold}
+    table.header-wizard {width:100%; box-shadow:0 5px 3px -3px #999; background-color:#F1F1F1; font-weight:bold}
     div.dupx-logfile-link {float:right; font-weight:normal; font-style:italic; font-size:11px; cursor:pointer}
     .wiz-dupx-version {white-space:nowrap; color:#777; font-size:11px; font-style:italic; text-align:right;  padding:3px 15px 5px 0; line-height:14px; font-weight:normal}
     .wiz-dupx-version a { color:#777; }
@@ -88,12 +88,12 @@
 
     div.log-ui-error {padding-top:2px; font-size:13px}
     div#progress-area {padding:5px; margin:150px 0 0 0; text-align:center;}
-    div#ajaxerr-data {padding:6px; height:425px; width:99%; border:1px solid silver; border-radius:5px; background-color:#F1F1F1; font-size:13px; overflow-y:scroll; line-height:20px}
+    div#ajaxerr-data {padding:6px; height:425px; width:99%; border:1px solid silver; border-radius:2px; background-color:#F1F1F1; font-size:13px; overflow-y:scroll; line-height:20px}
     div.hdr-main {font-size:22px; padding:0 0 5px 0; border-bottom:1px solid #D3D3D3; font-weight:bold; margin:15px 0 20px 0;}
     div.hdr-main span.step {color:#DB4B38}
 
     div.sub-header {font-size:11px; font-style:italic; font-weight:normal; margin:5px 0 -1px 0}
-    div.hdr-sub1 {font-size:18px; margin-bottom:5px;border:1px solid #D3D3D3;padding:7px; background-color:#f9f9f9; font-weight:bold; border-radius:4px}
+    div.hdr-sub1 {font-size:18px; margin-bottom:5px;border:1px solid #D3D3D3;padding:7px; background-color:#f9f9f9; font-weight:bold; border-radius:2px}
     div.hdr-sub1 a {cursor:pointer; text-decoration: none !important}
     div.hdr-sub1 i.fa {font-size:15px; display:inline-block; margin:2px 5px 0 0; vertical-align:top}
     div.hdr-sub1-area {padding:5px}
@@ -106,6 +106,7 @@
 
     [data-type="toggle"] > i.fa,
     i.fa.fa-toggle-empty { min-width: 8px; }
+    div#s1-area-archive-file .ui-widget-header {border: none; border-bottom: 1px solid #D3D3D3 !important; background:#fff}
 
     /* ============================
     NOTICES
@@ -118,7 +119,7 @@
         border-left: 4px solid #fff;
         margin: 4px;
         padding: 5px;
-        border-radius: 4px;
+        border-radius: 2px;
         font-size: 12px;
     }
 
@@ -179,7 +180,7 @@
     }
 
     .notice-level-status {
-        border-radius: 4px;
+        border-radius: 2px;
         padding: 2px;
         margin: 1px;
         font-size: 10px;
@@ -201,7 +202,7 @@
         margin:5px 0; 
         padding:10px; 
         background:#f9f9f9; 
-        border-radius:5px
+        border-radius:2px
     }
     .gray-panel.warn-text,
     .gray-panel .warn-text {
@@ -270,7 +271,7 @@
     table.s1-archive-local {width:100%}
     table.s1-archive-local td {padding:4px 4px 4px 4px}
     table.s1-archive-local td:first-child {font-weight:bold; width:55px}
-    div.s1-archive-failed-msg {padding:15px; border:1px dashed maroon; font-size: 12px; border-radius:5px;}
+    div.s1-archive-failed-msg {padding:15px; border:1px dashed maroon; font-size: 12px; border-radius:2px;}
     div.s1-err-msg {padding:0 0 80px 0; line-height:20px}
     div.s1-err-msg i {color:maroon}
     .maroon {color:maroon}
@@ -282,9 +283,9 @@
     table.s1-checks-area td.title small {font-size:11px; font-weight:normal}
     table.s1-checks-area td.toggle {font-size:11px; margin-right:7px; font-weight:normal}
 
-    div.s1-reqs {background-color:#efefef; border:1px solid silver; border-radius:4px; padding-bottom:4px}
+    div.s1-reqs {background-color:#efefef; border:1px solid silver; border-radius:2px; padding-bottom:4px}
     div.s1-reqs div.header {background-color:#E0E0E0; color:#000;  border-bottom: 1px solid silver; padding:2px; font-weight:bold }
-    div.s1-reqs div.status {float:right; border-radius:4px; color:#fff; padding:0 3px 0 3px; margin:4px 5px 0 0; font-size:11px; min-width:30px; text-align:center;}
+    div.s1-reqs div.status {float:right; border-radius:2px; color:#fff; padding:0 3px 0 3px; margin:4px 5px 0 0; font-size:11px; min-width:30px; text-align:center;}
     div.s1-reqs div.pass {background-color:green;}
     div.s1-reqs div.fail {background-color:maroon;}
     div.s1-reqs div.title {padding:3px 3px 3px 5px; font-size:13px;}
@@ -303,7 +304,7 @@
 
     /*Terms and Notices*/
     div#s1-warning-check label{cursor:pointer;}
-    div#s1-warning-msg {padding:5px;font-size:12px; color:#333; line-height:14px;font-style:italic; overflow-y:scroll; height:460px; border:1px solid #dfdfdf; background:#fff; border-radius:3px}
+    div#s1-warning-msg {padding:5px;font-size:12px; color:#333; line-height:14px;font-style:italic; overflow-y:scroll; height:460px; border:1px solid #dfdfdf; background:#fff; border-radius:2px}
     div#s1-warning-check {padding:3px; font-size:14px; font-weight:normal;}
     .s1-warning-check [type=checkbox] {
         height: 17px; 
@@ -343,11 +344,11 @@
 
     /*cPanel DB */    
     div.s2-cpnl-pane {margin-top:5px}
-    div.s2-gopro {color: black; margin-top:10px; padding:0 20px 10px 20px; border: 1px solid silver; background-color:#F6F6F6; border-radius: 4px}
+    div.s2-gopro {color: black; margin-top:10px; padding:0 20px 10px 20px; border: 1px solid silver; background-color:#F6F6F6; border-radius: 2px}
     div.s2-gopro h2 {text-align: center; margin:10px}
     div.s2-gopro small {font-style: italic}
-    div.s2-cpanel-login {padding:15px; color:#fff; text-align:center; margin:15px 5px 15px 5px; border:1px solid silver; border-radius:5px; background-color:#13659C; font-size:14px; line-height:22px}
-    div.s2-cpanel-off {padding:15px; color:#fff; text-align:center; margin:15px 5px 15px 5px; border:1px solid silver; border-radius:5px; background-color:#b54949; font-size:14px; line-height:22px}
+    div.s2-cpanel-login {padding:15px; color:#fff; text-align:center; margin:15px 5px 15px 5px; border:1px solid silver; border-radius:2px; background-color:#13659C; font-size:14px; line-height:22px}
+    div.s2-cpanel-off {padding:15px; color:#fff; text-align:center; margin:15px 5px 15px 5px; border:1px solid silver; border-radius:2px; background-color:#b54949; font-size:14px; line-height:22px}
     div.s2-cpnl-panel-no-support {text-align:center; font-size:18px; font-weight:bold; line-height:30px; margin-top:40px}
 
     /*DATABASE CHECKS */
@@ -360,13 +361,13 @@
     div.s2-dbtest-area div.success-msg {color:green}
     div.s2-dbtest-area pre {font-family:Verdana,Arial,sans-serif; font-size:13px; margin:0; white-space:normal;}
 
-    div.s2-reqs-hdr {border-radius:0; border-top-right-radius:6px; border-top-left-radius:6px; border-bottom:none}
+    div.s2-reqs-hdr {border-radius:2px 2px 0 0; border-bottom:none}
     div.s2-notices-hdr {border-radius:0; border-bottom:1px solid #D3D3D3; }
     div#s2-reqs-all {display:none}
     div#s2-notices-all {display:none}
 
     div.s2-reqs {background-color:#efefef; border:1px solid #D3D3D3; border-top:none}
-    div.s2-reqs div.status {float:right; border-radius:4px; color:#fff; padding:0 4px 0 4px; margin:4px 7px 0 0; font-size:12px; min-width:30px; text-align:center;}
+    div.s2-reqs div.status {float:right; border-radius:2px; color:#fff; padding:0 4px 0 4px; margin:4px 7px 0 0; font-size:12px; min-width:30px; text-align:center;}
     div.s2-reqs div.title {padding:3px 8px 3px 20px; font-size:13px; background-color:#f1f1f1; border-top: 1px solid #D3D3D3;}
     div.s2-reqs div.title:hover {background-color:#dfdfdf; cursor:pointer}
     div.s2-reqs div.info {padding:4px 12px 15px 12px;; background-color:#fff; display:none; line-height:18px; font-size: 12px}
@@ -413,7 +414,7 @@
     /* ============================
     STEP 4 VIEW
     ============================ */
-    div.s4-final-msg {height:110px; border:1px solid #CDCDCD; padding:8px;font-size:12px; border-radius:5px;box-shadow:0 4px 2px -2px #777;}
+    div.s4-final-msg {height:110px; border:1px solid #CDCDCD; padding:8px;font-size:12px; border-radius:2px;box-shadow:0 4px 2px -2px #777;}
     div.s4-final-title {color:#BE2323; font-size:18px}
     div.s4-connect {font-size:12px; text-align:center; font-style:italic; position:absolute; bottom:10px; padding:10px; width:100%; margin-top:20px}
     table.s4-report-results,
@@ -422,9 +423,9 @@
     table.s4-report-results th, table.s4-report-errs th {background-color:#d0d0d0; padding:3px; font-size:14px;}
     table.s4-report-results td, table.s4-report-errs td {padding:3px; white-space:nowrap; border:1px solid #dfdfdf; text-align:center; font-size:11px}
     table.s4-report-results td:first-child {text-align:left; font-weight:bold; padding-left:3px}
-    div.s4-err-title {background-color:#dfdfdf; font-weight: bold; margin:-3px 0 15px 0; padding:5px; border-radius:3px; font-size:13px}
+    div.s4-err-title {background-color:#dfdfdf; font-weight: bold; margin:-3px 0 15px 0; padding:5px; border-radius:2px; font-size:13px}
 
-    div.s4-err-msg {padding:8px;  display:none; border:1px dashed #999; margin:10px 0 20px 0; border-radius:5px;}
+    div.s4-err-msg {padding:8px;  display:none; border:1px dashed #999; margin:10px 0 20px 0; border-radius:2px;}
     div.s4-err-msg div.content{padding:5px; font-size:11px; line-height:17px; max-height:125px; overflow-y:scroll; border:1px solid silver; margin:3px;  }
     div.s4-err-msg div.info-error{padding:7px; background-color:#f9c9c9; border:1px solid silver; border-radius:2px; font-size:12px; line-height:16px }
     div.s4-err-msg div.info-notice{padding:7px; background-color:#FCFEC5; border:1px solid silver; border-radius:2px; font-size:12px; line-height:16px;}
@@ -469,7 +470,7 @@
     #main-help section {
         border: 1px solid silver;
         margin-top: 28px;
-        border-radius: 4px;
+        border-radius:2px;
         overflow: hidden;
     }
 
@@ -574,7 +575,7 @@
 
 
     <?php if (DUPX_Log::isLevel(DUPX_Log::LV_DEBUG)): ?>
-        .dupx-debug {display:block; margin:0 0 25px 0; font-size:11px; background-color:#f5dbda; padding:8px; border:1px solid silver; border-radius:4px}
+        .dupx-debug {display:block; margin:0 0 25px 0; font-size:11px; background-color:#f5dbda; padding:8px; border:1px solid silver; border-radius:2px}
         .dupx-debug label {font-weight:bold; display:block; margin:4px 0 1px 0}
         .dupx-debug textarea {width:95%; height:100px; font-size:11px}
         .dupx-debug input {font-size:11px; padding:3px}

@@ -59,26 +59,17 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
     tr.dup-pack-info sup  {font-style:italic;font-size:10px; cursor: pointer; vertical-align: baseline; position: relative; top: -0.8em;}
     tr#pack-processing {display: none}
 
-    th.inst-name {
-        width: 1000px;
-        padding: 2px 7px;
-    }
-    .inst-name  input {
-        width: 175px;
-        margin: 0 5px;
-        border:1px solid #CCD0D4;
-        cursor:pointer;
-    }
-    .inst-name  input:focus {
-        width: 600px;
-    }
+    th.inst-name {width: 1000px; padding: 2px 7px; }
+    .inst-name  input {width: 175px; margin: 0 5px; border:1px solid #CCD0D4; cursor:pointer;}
+    .inst-name  input:focus { width: 600px;}
 
     /* Building package */
-
     .dup-pack-info .building-info {display: none; color: #2C8021; font-style: italic}
     .dup-pack-info .building-info .perc {font-weight: bold}
     .dup-pack-info.is-running .building-info {display: inline;}
     .dup-pack-info.is-running .get-btns button {display: none;}
+    div.sc-footer-left {color:maroon; font-size:11px; font-style: italic; float:left}
+    div.sc-footer-right {font-style: italic; float:right; font-size:12px}
 
 </style>
 
@@ -151,7 +142,7 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
                     <th style="width: 30px;" ><input type="checkbox" id="dup-bulk-action-all"  title="<?php esc_attr_e("Select all packages", 'duplicator') ?>" style="margin-left:15px" onclick="Duplicator.Pack.SetDeleteAll()" /></th>
                     <th style="width: 100px;" ><?php esc_html_e("Created", 'duplicator') ?></th>
                     <th style="width: 70px;"><?php esc_html_e("Size", 'duplicator') ?></th>
-                    <th><?php esc_html_e("Package Name", 'duplicator') ?></th>
+                    <th><?php esc_html_e("Name", 'duplicator') ?></th>
                     <th class="inst-name">
                         <?php esc_html_e("Installer Name", 'duplicator'); ?>
                         <i class="fas fa-question-circle fa-sm" 
@@ -280,15 +271,24 @@ if (DUP_Settings::Get('installer_name_mode') == DUP_Settings::INSTALLER_NAME_MOD
             ?>
             <tfoot>
                 <tr>
-                    <th colspan="11" style="text-align:right; font-size:12px;">
-                        <?php //esc_html_e("Total Size", 'duplicator');	echo ': ';  esc_html_e(DUP_Util::byteSize($totalSize));    ?>
-                        <span style="font-style:italic; cursor:help" title="<?php esc_attr_e("Current Server Time", 'duplicator') ?>">
+                    <th colspan="11">
+                        <div class="sc-footer-left">
+                            <?php
+                            if ( DUP_Settings::Get('trace_log_enabled')) {
+                                esc_html_e("Trace Logging Enabled.  Please disable when trace capture is complete.", 'duplicator');
+                            }
+                            ?>
+                        </div>
+                        <div class="sc-footer-right">
+                           <span style="cursor:help" title="<?php esc_attr_e("Current Server Time", 'duplicator') ?>">
                             <?php
                             $dup_serv_time = @date("H:i");
                             esc_html_e("Time", 'duplicator');
                             echo ": {$dup_serv_time}";
                             ?>
                         </span>
+                        </div>
+
                     </th>
                 </tr>
             </tfoot>

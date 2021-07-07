@@ -1218,16 +1218,24 @@ class DUPX_Bootstrap
 		$cmds = array('shell_exec', 'escapeshellarg', 'escapeshellcmd', 'extension_loaded');
 
 		//Function disabled at server level
-		if (array_intersect($cmds, array_map('trim', explode(',', @ini_get('disable_functions'))))) return false;
+		if (array_intersect($cmds, array_map('trim', explode(',', @ini_get('disable_functions')))))
+            return false;
 
 		//Suhosin: http://www.hardened-php.net/suhosin/
 		//Will cause PHP to silently fail
 		if (extension_loaded('suhosin')) {
 			$suhosin_ini = @ini_get("suhosin.executor.func.blacklist");
-			if (array_intersect($cmds, array_map('trim', explode(',', $suhosin_ini)))) return false;
+			if (array_intersect($cmds, array_map('trim', explode(',', $suhosin_ini))))
+                return false;
 		}
+
+        if (! function_exists('shell_exec')) {
+			return false;
+	    }
+
 		// Can we issue a simple echo command?
-		if (!@shell_exec('echo duplicator')) return false;
+		if (!@shell_exec('echo duplicator'))
+            return false;
 
 		return true;
 	}

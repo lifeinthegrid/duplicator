@@ -51,9 +51,9 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
         
 		<!-- =====================
 		CORE FEATURES-->
-        <tr>
+<!--        <tr>
             <td colspan="3" class="group-header"><?php esc_html_e('Core Features', 'duplicator') ?></td>
-        </tr>
+        </tr>-->
 		<tr>
 			<td class="feature-column"><?php esc_html_e('Backup Files & Database', 'duplicator') ?></td>
 			<td class="check-column"><i class="fa fa-check"></i></td>
@@ -100,12 +100,12 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
             <td class="check-column"></td>
             <td class="check-column"><i class="fa fa-check"></i></td>
 		</tr>
-        <tr>
-            <td colspan="3" class="group-header"><?php esc_html_e('Cloud Storage', 'duplicator') ?></td>
-        </tr>
 
 		<!-- =====================
 		CLOUD STORAGE-->
+<!--        <tr>
+            <td colspan="3" class="group-header"><?php esc_html_e('Cloud Storage', 'duplicator') ?></td>
+        </tr>        -->
 		<tr>
 			<td class="feature-column">
 				<img src="<?php echo esc_url(DUPLICATOR_PLUGIN_URL."assets/img/amazon-64.png") ?>" style='height:16px; width:16px'  />
@@ -157,9 +157,9 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 
 		<!-- =====================
 		ENHANCED OPTIONS -->
-        <tr>
+<!--        <tr>
             <td colspan="3" class="group-header"><?php esc_html_e('Enhanced Options', 'duplicator') ?></td>
-        </tr>
+        </tr>-->
 		<tr>
 			<td class="feature-column">
 				<img src="<?php echo DUPLICATOR_PLUGIN_URL ?>assets/img/cpanel-48.png" style="width:16px; height:12px" />
@@ -246,12 +246,12 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 
 		<!-- =====================
 		POWER TOOLS  -->
-        <tr>
+<!--        <tr>
             <td colspan="3" class="group-header">
                 <?php esc_html_e('Power Tools', 'duplicator');  ?>
                 <span style="font-weight:normal; font-size:11px"><?php esc_html_e('Freelancer+', 'duplicator');  ?></span>
             </td>
-        </tr>
+        </tr>-->
    		<tr>
 			<td class="feature-column"><?php esc_html_e('Hourly Schedules', 'duplicator') ?></td>
 			<td class="check-column"></td>
@@ -309,11 +309,11 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 
 		<!-- =====================
 		MULTI-SITE -->
-        <tr>
+<!--        <tr>
             <td colspan="3" class="group-header">
                 <?php esc_html_e('MultiSite', 'duplicator');  ?>
             </td>
-        </tr>
+        </tr>-->
 		<tr>
 			<td class="feature-column"><?php esc_html_e('Multisite Network Migration', 'duplicator') ?></td>
 			<td class="check-column"></td>

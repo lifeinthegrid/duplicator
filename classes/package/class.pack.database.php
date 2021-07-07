@@ -217,7 +217,7 @@ class DUP_Database
             $time_sum = DUP_Util::elapsedTime($time_end, $time_start);
 
             //File below 10k considered incomplete
-            $sql_file_size = filesize($this->tempDbPath);
+            $sql_file_size = is_file($this->tempDbPath) ? @filesize($this->tempDbPath) : 0;
             DUP_Log::Info("SQL FILE SIZE: ".DUP_Util::byteSize($sql_file_size)." ({$sql_file_size})");
 
             if ($sql_file_size < 1350) {
@@ -234,7 +234,7 @@ class DUP_Database
             DUP_Log::Info("SQL FILE TIME: ".date("Y-m-d H:i:s"));
             DUP_Log::Info("SQL RUNTIME: {$time_sum}");
 
-            $this->Size = @filesize($this->tempDbPath);
+            $this->Size = is_file($this->tempDbPath) ? @filesize($this->tempDbPath) : 0;
 
             $this->Package->setStatus(DUP_PackageStatus::DBDONE);
         }

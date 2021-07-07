@@ -94,7 +94,13 @@
         });
     }
 
-	DUPX.toggleAll = function(id) {
+	DUPX.toggleAllReqs = function(id) {
+		$(id + " *[data-type='toggle auto']").each(function() {
+			$(this).trigger('click');
+		});
+	}
+
+    DUPX.toggleAllNotices = function(id) {
 		$(id + " *[data-type='toggle']").each(function() {
 			$(this).trigger('click');
 		});

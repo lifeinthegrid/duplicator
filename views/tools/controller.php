@@ -7,8 +7,6 @@ require_once(DUPLICATOR_PLUGIN_PATH . '/views/inc.header.php');
 global $wpdb;
 global $wp_version;
 
-$dup_local_tools_path = dirname(__FILE__);
-
 DUP_Handler::init_error_handler();
 DUP_Util::hasCapability('manage_options');
 $current_tab = isset($_REQUEST['tab']) ? esc_html($_REQUEST['tab']) : 'diagnostics';
@@ -29,13 +27,13 @@ if ('d' == $current_tab) {
 
     <?php
 		switch ($current_tab) {
-			case 'diagnostics': include('diagnostics/main.php');
+			case 'diagnostics': include(DUPLICATOR_PLUGIN_PATH.'views/tools/diagnostics/main.php');
 				break;
-            case 'templates': include("{$dup_local_tools_path}/templates.php");
+            case 'templates': include(DUPLICATOR_PLUGIN_PATH."views/tools/templates.php");
 				break;
-			case 'recovery': include("{$dup_local_tools_path}/recovery.php");
+			case 'recovery': include(DUPLICATOR_PLUGIN_PATH."views/tools/recovery.php");
 				break;
-			case 'import': include("{$dup_local_tools_path}/import.php");
+			case 'import': include(DUPLICATOR_PLUGIN_PATH."views/tools/import.php");
 				break;
 		}
 	?>

@@ -1,8 +1,8 @@
-#[Duplicator v1.3](http://snapcreek.com/duplicator)
+#[Duplicator v1.4](http://snapcreek.com/duplicator)
 ###Easy WordPress Cloning
 
 Duplicate, clone, backup, move and transfer an entire site from one location to another.
-maintained by [Cory Lamle](http://snapcreek.com). 
+maintained by [Cory Lamle](http://snapcreek.com).
 
 Get started at http://wordpress.org/plugins/duplicator/
 

@@ -97,9 +97,10 @@ class DUP_UI_Notice
 
         $is_installer_cleanup_req = ($screen->id == 'duplicator_page_duplicator-tools' && isset($_GET['action']) && $_GET['action'] == 'installer');
         if (DUP_Server::hasInstallerFiles() && !$is_installer_cleanup_req) {
+            DUP_Migration::renameInstallersPhpFiles();
 
             $on_active_tab = isset($_GET['section']) ? $_GET['section'] : '';
-            echo '<div class="dup-updated notice-success" id="dup-global-error-reserved-files"><p>';
+            echo '<div class="dup-updated notice notice-success dup-global-error-reserved-files" id="message"><p>';
 
             //Safe Mode Notice
             $safe_html = '';

@@ -48,9 +48,9 @@ $err_link_ticket	= '<a target="_blank" href="https://snapcreek.com/duplicator/do
 
     <?php
     switch ($current_tab) {
-        case 'detail': include('detail.php');
+        case 'detail': include(DUPLICATOR_PLUGIN_PATH.'views/packages/details/detail.php');
             break;
-		case 'transfer': include('transfer.php');
+		case 'transfer': include(DUPLICATOR_PLUGIN_PATH.'views/packages/details/transfer.php');
             break;
     }
     ?>

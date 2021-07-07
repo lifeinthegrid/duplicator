@@ -247,23 +247,58 @@ if (!class_exists('DupLiteSnapLibIOU', false)) {
             return $failures;
         }
 
+        /**
+         * Remove file path
+         *
+         * @param string $file path
+         *
+         * @return bool <p>Returns <b><code>TRUE</code></b> on success or <b><code>FALSE</code></b> on failure.</p>
+         */
+        public static function unlink($file)
+        {
+            try {
+                if (!file_exists($file)) {
+                    return true;
+                }
+                if (!function_exists('unlink') || is_dir($file)) {
+                    return false;
+                }
+                self::chmod($file, 'u+rw');
+                return @unlink($file);
+            } catch (Exception $e) {
+                return false;
+            } catch (Error $e) {
+                return false;
+            }
+        }
+
+        /**
+         * Rename file from old name to new name
+         *
+         * @param string $oldname        path
+         * @param string $newname        path
+         * @param bool   $removeIfExists if true remove exists file
+         *
+         * @return bool <p>Returns <b><code>TRUE</code></b> on success or <b><code>FALSE</code></b> on failure.</p>
+         */
         public static function rename($oldname, $newname, $removeIfExists = false)
         {
-            if ($removeIfExists) {
-                if (file_exists($newname)) {
-                    if (is_dir($newname)) {
-                        self::rmdir($newname);
-                    } else {
-                        self::rm($newname);
+            try {
+                if (!file_exists($oldname) || !function_exists('rename')) {
+                    return false;
+                }
+
+                if ($removeIfExists && file_exists($newname)) {
+                    if (!self::rrmdir($newname)) {
+                        return false;
                     }
                 }
+                return @rename($oldname, $newname);
+            } catch (Exception $e) {
+                return false;
+            } catch (Error $e) {
+                return false;
             }
-
-            if (!@rename($oldname, $newname)) {
-                throw new Exception("Couldn't rename {$oldname} to {$newname}");
-            }
-
-            return true;
         }
 
         public static function fopen($filepath, $mode, $throwOnError = true)

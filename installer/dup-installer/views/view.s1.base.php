@@ -264,7 +264,7 @@ $archive_config         = DUPX_ArchiveConfig::getInstance();
                 <table class="s1-checks-area">
                     <tr>
                         <td class="title">Requirements <small>(must pass)</small></td>
-                        <td class="toggle"><a href="javascript:void(0)" onclick="DUPX.toggleAll('#s1-reqs-all')">[toggle]</a></td>
+                        <td class="toggle"><a href="javascript:void(0)" onclick="DUPX.toggleAllReqs('#s1-reqs-all')">[toggle]</a></td>
                     </tr>
                 </table>
             </div>
@@ -357,7 +357,7 @@ $archive_config         = DUPX_ArchiveConfig::getInstance();
                 <table class="s1-checks-area">
                     <tr>
                         <td class="title">Notices <small>(optional)</small></td>
-                        <td class="toggle"><a href="javascript:void(0)" onclick="DUPX.toggleAll('#s1-notice-all')">[toggle]</a></td>
+                        <td class="toggle"><a href="javascript:void(0)" onclick="DUPX.toggleAllNotices('#s1-notice-all')">[toggle]</a></td>
                     </tr>
                 </table>
             </div>
@@ -485,8 +485,9 @@ $archive_config         = DUPX_ArchiveConfig::getInstance();
                 <?php
                 $cssStyle   = $notice['45'] == 'Good' ? 'color:green' : 'color:red';
                 echo "<b style='{$cssStyle}'>You are migrating site from the PHP {$packagePHP} to the PHP {$currentPHP}</b>.<br/>"
-                ."If this servers PHP version is different to the PHP version of your package was created it might cause problems with proper functioning of your website
-						and/or plugins and themes.   It is highly recommended to try and use the same version of PHP if you are able to do so. <br/>";
+                ."If this servers PHP version is different from the PHP version of where the package was created it might cause problems with various parts of your website
+						and/or plugins and themes.   It is highly recommended to try and use the same version of PHP if you are able to do so.  This is simply a warning
+                        and in the event no problems arise then you can igonre this message.<br/>";
                 ?>
             </div>
 
@@ -655,20 +656,21 @@ $archive_config         = DUPX_ArchiveConfig::getInstance();
                             Remove all files and extract
                         </option>
                     </select>
-                    <div class="sub-note" style="margin-top: 5px;max-width: 90%;" >
+                    <div class="sub-note" style="margin-top:5px; max-width:90%; font-size:10px">
                         <div class="archive-action-note archive-action-<?php echo DUP_LITE_Extraction::ACTION_DO_NOTHING; ?>">
-                            Note: <b>Files are extracted over existing files.</b> After install, the destination folder will contain a combination of the old site files and the files extracted from the archive.<br>
-                            This option is the most conservative option for those who want to make sure they do not want to lose data.
+                            Note: <b>Files are extracted over existing files.</b> After install, the destination folder will contain a combination of the old site files and 
+                            the files extracted from the archive.  This option is the most conservative option for those who want to make sure they do not want to lose data.
                         </div>
                         <div class="archive-action-note archive-action-<?php echo DUP_LITE_Extraction::ACTION_REMOVE_ALL_FILES; ?> no-display">
-                            Note: Before extracting the package files, <b>all files and folders in the installation folder will be removed</b> except for folders that contain WordPress installations or Duplicator backup folders<br>
-                            This option is recommended for those who want to delete all files related to old installations or external applications.
+                            Note: Before extracting the package files, <b>all files and folders in the installation folder will be removed</b> except for folders that contain 
+                            WordPress installations or Duplicator backup folders. This option is recommended for those who want to delete all files related to old installations
+                            or external applications.
                         </div>
                         <div class="archive-action-note archive-action-<?php echo DUP_LITE_Extraction::ACTION_REMOVE_WP_FILES; ?> no-display">
-                            Note: Before extracting the package files, <b>all current WordPress core and content files and folders will be removed</b> (wp-include, wp-content ... )<br>
-                            This option is for those who want to avoid having old site media mixed with new but have other files/folders in the home path that they don't want to delete.
+                            Note: Before extracting the package files, <b>all current WordPress core and content files and folders will be removed</b> (wp-include, wp-content ... )
+                            This option is for those who want to avoid having old site media mixed with new but have other files/folders in the home path that they don't want to
+                            delete.
                         </div>
-                    </div>
                     </div>
                 </td>
             </tr>
